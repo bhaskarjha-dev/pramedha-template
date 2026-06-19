@@ -1,0 +1,42 @@
+# Generated files (auto-built by assemble.py + RenderCV)
+resume/generated/
+resume/output/
+
+# ═══════════════════════════════════════════════════════════
+# PRIVATE DATA — Excluded AFTER you fill the template.
+#
+# ⚠️ These lines are COMMENTED OUT in the template so that
+# empty scaffolding files get committed. UNCOMMENT these
+# lines after you clone and start filling with real data.
+# ═══════════════════════════════════════════════════════════
+# personal/
+# data-corpus/documents/
+# strategy/financial.md
+# strategy/networking.md
+# identity/references.yaml
+# assets/form-fill-cheatsheet.md
+# journal/feedback.md
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+.env
+
+# Node (if using Pramedha web)
+node_modules/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Sensitive (never commit)
+*.key
+*.pem

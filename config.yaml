@@ -1,0 +1,54 @@
+# ============================================================================
+# PRAMEDHA TEMPLATE — User Configuration
+# ============================================================================
+# Fill this FIRST. Everything else builds on this.
+#
+# This file tells AI assistants and the resume cascade engine who you are.
+# Pramedha import reads this to initialize your profile.
+# ============================================================================
+
+# ─── Your Identity ───────────────────────────────────────────────────────────
+user:
+  name: ""                    # Full name (as it appears on resume)
+  email: ""                   # Primary professional email
+  phone: ""                   # With country code, e.g., "+91-9876543210"
+  website: ""                 # Personal website URL (if any)
+  headline: ""                # One-line professional headline
+                              # e.g., "Senior Backend Engineer | GenAI Specialist"
+
+# ─── Profession Type ────────────────────────────────────────────────────────
+# This shapes how AI fills your template — which fields to prioritize,
+# what resume format to suggest, which portfolio style to recommend.
+#
+# Options: engineering | creative | medical | business | academic
+#          legal | freelance | executive | other
+profession_type: ""
+
+# ─── Location ────────────────────────────────────────────────────────────────
+location:
+  city: ""
+  region: ""                  # State/province
+  country_code: ""            # ISO 3166-1 alpha-2 (e.g., "IN", "US", "GB")
+  willing_to_relocate: false
+  preferred_locations: []     # e.g., ["Bangalore", "Remote", "San Francisco"]
+
+# ─── Online Presence ─────────────────────────────────────────────────────────
+profiles:
+  linkedin: ""                # Full URL
+  github: ""                  # Full URL
+  twitter: ""                 # Full URL (optional)
+  portfolio: ""               # Portfolio/blog URL (optional)
+  # Add more as needed:
+  # dribbble: ""              # For designers
+  # scholar: ""               # For academics (Google Scholar)
+  # orcid: ""                 # For researchers
+
+# ─── Locale & Preferences ───────────────────────────────────────────────────
+locale: "en"                  # Language code (en, hi, de, ja, etc.)
+currency: "INR"               # ISO 4217 currency code for salary fields
+date_format: "YYYY-MM"        # How dates appear in YAML files
+
+# ─── Career Context (helps AI give better advice) ───────────────────────────
+# career_stage and notice_period live in personal/preferences.yaml (private).
+# Keep salary target here as a quick reference for resume/variant generation.
+target_salary_range: ""       # e.g., "₹30-50 LPA" or "$150-200K"
