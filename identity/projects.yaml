@@ -38,7 +38,7 @@ public:
 internal:
   # - name: ""
   #   tagline: ""
-  #   context: ""               # e.g., "Built at TCS for Client X"
+  #   context: ""               # e.g., "Built at Employer for Client X"
   #   tech: []
   #   highlights:
   #     - ""

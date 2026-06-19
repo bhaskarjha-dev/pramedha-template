@@ -20,7 +20,7 @@ references:
   # - name: ""
   #   title: ""                    # Their current job title
   #   company: ""                  # Their current company
-  #   relationship: ""             # e.g., "Direct manager at TCS (2022-2024)"
+  #   relationship: ""             # e.g., "Direct manager at Acme Corp (2022-2024)"
   #   email: ""
   #   phone: ""
   #   linkedin: ""

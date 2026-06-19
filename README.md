@@ -2,7 +2,7 @@
 
 > **Your career data — portable, version-controlled, AI-readable, and yours.**
 
-A structured career repository that works standalone (generate resumes immediately) or as the data layer for [Pramedha](https://github.com/pramedha) — the AI-first career platform.
+A structured career repository that works standalone (generate resumes immediately) or as the data layer for [Pramedha](https://github.com/bhaskarjha-dev/pramedha-template) — the AI-first career platform.
 
 ---
 
@@ -22,17 +22,45 @@ A structured career repository that works standalone (generate resumes immediate
 
 ## Quick Start
 
+> ⚠️ **DO NOT FORK this repo.** GitHub forks inherit the parent's visibility —
+> a fork of a public repo **cannot be made private**. Your salary, DOB, references,
+> and career strategy would be exposed. Use one of the methods below instead.
+
 **→ [Read GETTING_STARTED.md](GETTING_STARTED.md) for the full 30-minute walkthrough.**
 
+### Option A: GitHub "Use this template" (Recommended)
+
+1. Click the green **"Use this template"** button at the top of this repo
+2. Select **"Create a new repository"**
+3. Set visibility to **Private** ✅
+4. Clone your new private repo locally
+
+### Option B: Clone + fresh private repo
+
 ```bash
-# 1. Clone this template
-git clone https://github.com/pramedha/pramedha-template my-career
+# 1. Clone (this does NOT create a fork)
+git clone https://github.com/bhaskarjha-dev/pramedha-template my-career
 cd my-career
 
-# 2. Fill config.yaml with your name + basics
-# 3. Dump raw career data into data-corpus/
-# 4. Let AI fill the rest (see .pramedha/agent-instructions.md)
-# 5. Generate resumes:
+# 2. Disconnect from the template repo
+git remote remove origin
+
+# 3. Connect to YOUR private repo
+git remote add origin git@github.com:YOUR-USERNAME/my-career.git
+git push -u origin main
+```
+
+### Option C: Download ZIP
+
+Download the ZIP from the releases page → extract → `git init` in the folder.
+
+### Then:
+
+```bash
+# Fill config.yaml with your name + basics
+# Dump raw career data into data-corpus/
+# Let AI fill the rest (see .pramedha/agent-instructions.md)
+# Generate resumes:
 cd resume && python assemble.py && rendercv render generated/*.yaml
 ```
 
@@ -58,6 +86,7 @@ Fill at your own pace. Each layer adds value independently.
 pramedha-template/
 │
 ├── VISION.md                  ← READ FIRST: career mission & north star
+├── AGENTS.md                  ← AI agent instructions (universal standard)
 ├── GETTING_STARTED.md         ← 30-minute setup walkthrough
 ├── config.yaml                ← Your identity + preferences
 │
@@ -163,7 +192,7 @@ It contains the complete protocol for extracting, structuring, and verifying car
 
 ## Pramedha Compatibility
 
-This template's schema aligns 1:1 with [PramedhaProfile](https://github.com/pramedha):
+This template's schema aligns 1:1 with [PramedhaProfile](https://github.com/bhaskarjha-dev/pramedha-template):
 
 ```
 identity/*.yaml     →  PramedhaProfile.professional
@@ -178,7 +207,15 @@ Export: `pramedha export --to ./my-career`
 
 ## Security & Privacy
 
-> ⚠️ **Before making this repo public**, review these rules:
+> 🔴 **Rule #1: Use a PRIVATE repository.**
+> This template stores sensitive career data (salary, DOB, references, deal-breakers).
+> A private repo is the only safe default.
+
+> 🔴 **Rule #2: NEVER fork a public repo.**
+> GitHub forks inherit the parent's visibility. A fork of a public repo **cannot be
+> made private**. Use "Use this template" or clone instead (see Quick Start above).
+
+### Sensitivity Map
 
 | File/Folder | Contains | Public Repo Safe? |
 |------------|----------|:-----------------:|
@@ -186,14 +223,16 @@ Export: `pramedha export --to ./my-career`
 | `identity/` (most files) | Career facts | ✅ Yes (resume-level info) |
 | `identity/references.yaml` | Contact details of references | ❌ **Never public** |
 | `personal/` | Life context, salary, deal-breakers, reflections | ❌ **Never public** |
-| `data-corpus/documents/` | Offer letters, tax docs, IDs | ❌ **Never public** |
+| `data-corpus/` | Raw evidence — certs, offer letters, IDs | ❌ **Never public** |
 | `strategy/financial.md` | Current salary, targets | ❌ **Never public** |
 | `strategy/networking.md` | Contact details, relationship notes | ❌ **Never public** |
 | `assets/form-fill-cheatsheet.md` | DOB, address, phone, references | ❌ **Never public** |
 | `journal/feedback.md` | Performance review data | ❌ **Never public** |
 | `resume/output/` | Generated PDFs | ⚠️ Depends on content |
 
-**If your repo is public**, uncomment the private file exclusions in `.gitignore`:
+### If you MUST use a public repo
+
+Uncomment the private file exclusions in `.gitignore`:
 ```bash
 # In .gitignore, remove the # from these lines:
 personal/
@@ -219,11 +258,85 @@ python .pramedha/validate.py --strict   # Fail on warnings too
 
 ---
 
-## Use as GitHub Template
+## Staying Updated
 
-1. Push this repo to GitHub
-2. Go to Settings → check "Template repository"
-3. Others can click "Use this template" to create their own copy
+> GitHub's "Use this template" creates a **disconnected copy** — there's no
+> upstream link. If the template adds new files, fixes bugs, or improves schemas,
+> your copy won't know. Set up an upstream remote to pull updates.
+
+### One-time setup (after creating your repo)
+
+```bash
+# Add the template as a secondary remote called "upstream"
+git remote add upstream https://github.com/bhaskarjha-dev/pramedha-template.git
+
+# Verify
+git remote -v
+# origin    git@github.com:YOU/my-career.git (your private repo)
+# upstream  https://github.com/bhaskarjha-dev/pramedha-template.git (template)
+```
+
+### Pulling template updates
+
+**Choose the right strategy based on your repo state:**
+
+#### If you HAVEN'T filled your data yet (fresh template):
+
+```bash
+# Template is authoritative — accept all upstream changes
+git fetch upstream
+git merge upstream/main --allow-unrelated-histories -X theirs
+```
+
+#### If you HAVE filled your data (active career repo):
+
+```bash
+# 1. Fetch latest template changes
+git fetch upstream
+
+# 2. See what changed
+git log --oneline upstream/main --not main
+
+# 3. Merge (your filled data wins on conflicts)
+git merge upstream/main --allow-unrelated-histories -X ours
+
+# 4. Review what came in (new files, bug fixes)
+git diff HEAD~1 --stat
+
+# 5. Check for template improvements you might want to adopt manually
+git diff upstream/main -- .pramedha/ ops/ resume/assemble.py
+```
+
+### Why two strategies?
+
+| Your repo state | Strategy | Why |
+|----------------|----------|-----|
+| **Unfilled** (just created) | `-X theirs` | Template is authoritative — you have no data to protect |
+| **Filled** (has your career data) | `-X ours` | Your data is authoritative — template can't overwrite your career facts |
+
+### What merges cleanly vs. what conflicts
+
+| Template Change | Your Filled Repo | Result |
+|----------------|-----------------|--------|
+| New file added (e.g., `assets/new-template.md`) | Doesn't exist | ✅ Auto-merges |
+| Bug fix in `resume/assemble.py` | You didn't edit it | ✅ Auto-merges |
+| Updated `ops/guide.md` | You didn't edit it | ✅ Auto-merges |
+| New fields in `identity/skills.yaml` | You filled it with your data | ⚠️ `-X ours` keeps YOUR version |
+| Updated `.pramedha/agent-instructions.md` | You didn't edit it | ✅ Auto-merges |
+
+> **After merging with `-X ours`**, review what the template changed in files you've filled:
+> ```bash
+> git diff upstream/main -- identity/ personal/ strategy/
+> ```
+> Manually adopt any improvements (new fields, better comments) you want.
+
+### Checking for updates without merging
+
+```bash
+git fetch upstream
+git log --oneline upstream/main --not main
+# Shows template commits you don't have yet
+```
 
 ---
 

@@ -20,12 +20,12 @@ All notable changes to the Pramedha Career Template.
 - Partial Fill Protocol in agent-instructions.md
 
 ### Changed
-- `resume/assemble.py` — Removed bhaskar-career references, moved config read outside loop
+- `resume/assemble.py` — Generalized config handling, moved config read outside loop
 - `.pramedha/schema-reference.md` — Documented experience schema flattening on import
 - `.pramedha/agent-instructions.md` — Added partial fill protocol + common tasks
 
 ### Fixed
-- assemble.py docstring referenced "5 variants" and "sarvam.yaml"
+- assemble.py docstring referenced hardcoded variant names
 - Config.yaml read happened inside variant loop (N reads instead of 1)
 
 ## [1.0.0] — 2026-06-19
@@ -33,7 +33,7 @@ All notable changes to the Pramedha Career Template.
 ### Added
 - Initial template: 58 files across 8 folders
 - Schema aligned with PramedhaProfile (4-layer architecture)
-- Resume cascade engine (generalized from bhaskar-career)
+- Resume cascade engine (generalized for any profession)
 - Agent fill instructions (universal protocol for any AI)
 - Progressive disclosure (Layer 0-4)
 - Verification system (✅/⚠️/❌)
