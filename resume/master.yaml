@@ -1,0 +1,98 @@
+# ============================================================================
+# MASTER RESUME — Keyed Bullet Pool
+# ============================================================================
+# This is your SINGLE SOURCE OF TRUTH for all resume content.
+# Edit bullets here. Variants select FROM this file.
+#
+# Structure:
+#   header    → Name, contact, links (auto-filled from ../config.yaml)
+#   experience → employer_key → bullets → bullet_key → {phrasing: text}
+#   projects   → project_key → bullets → {phrasing: text}
+#   education  → Standard RenderCV format
+#   achievements → achievement_key → text
+#
+# Phrasings: Write multiple versions of each bullet for different audiences.
+#   default    — Standard version
+#   short      — For space-constrained variants
+#   technical  — Emphasizes tech depth
+#   leadership — Emphasizes impact/management
+#   Add your own custom phrasing keys as needed.
+# ============================================================================
+
+# ─── Header ──────────────────────────────────────────────────────────────
+# NOTE: assemble.py reads name/contact from ../config.yaml automatically.
+# Only override here if you want DIFFERENT info on resume vs config.
+header:
+  name: ""                    # Leave empty to use config.yaml
+  location: ""
+  email: ""
+  phone: ""
+  website: ""
+  social_networks: []
+  # - network: LinkedIn
+  #   username: your-username
+
+# ─── Experience ──────────────────────────────────────────────────────────
+# ⚠️ DELETE the _example_ entry below after adding your own real entries.
+# It exists only to show you the exact structure.
+experience:
+  _example_role_:                  # ← DELETE THIS ENTRY. Unique key = snake_case
+    company: "Acme Corp"
+    position: "Software Engineer"
+    start_date: "2023-01"
+    end_date: "present"
+    location: "Bangalore, India"
+    bullets:
+      api_redesign:                # ← Each bullet has a unique key
+        default: "Redesigned REST API reducing response time by 40% [measured]"
+        short: "API redesign, 40% faster responses"
+        technical: "Migrated monolith REST API to FastAPI with async handlers, reducing p99 latency from 800ms to 480ms [measured]"
+      ml_pipeline:
+        default: "Built ML inference pipeline processing 50K requests/day with 99.9% uptime [measured]"
+        leadership: "Led 3-person team to build production ML pipeline serving 50K daily requests [measured]"
+
+  # Add your real roles below. Copy the structure above.
+  # your_role_key:
+  #   company: ""
+  #   position: ""
+  #   start_date: ""
+  #   end_date: "present"
+  #   location: ""
+  #   bullets:
+  #     bullet_key:
+  #       default: "Action verb + what you did + measurable impact"
+
+# ─── Projects ────────────────────────────────────────────────────────────
+projects:
+  # project_key:
+  #   name: "Project Name"
+  #   date: "2024"
+  #   location: "github.com/you/project"
+  #   bullets:
+  #     default: "One-line project description with impact"
+  #     technical: "Technical description emphasizing architecture"
+
+# ─── Education ───────────────────────────────────────────────────────────
+education: []
+  # - institution: "University Name"
+  #   area: "Computer Science"
+  #   degree: "B.Tech"
+  #   start_date: "2018"
+  #   end_date: "2022"
+  #   highlights:
+  #     - "CGPA: 8.5/10"
+  #     - "Relevant coursework: ML, Data Structures"
+
+# ─── Achievements ────────────────────────────────────────────────────────
+achievements: {}
+  # hackathon_win:
+  #   text: "Won XYZ Hackathon — built AI solution in 48 hours"
+  # certification:
+  #   text: "AWS Solutions Architect certified"
+
+# ─── Technologies (shared across variants) ───────────────────────────────
+technologies: []
+  # - label: "Languages"
+  #   details: "Python, JavaScript, SQL"
+  # - label: "Frameworks"
+  #   details: "FastAPI, React, LangChain"

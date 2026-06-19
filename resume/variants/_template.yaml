@@ -1,0 +1,41 @@
+# ============================================================================
+# VARIANT TEMPLATE — Copy this file to create a new resume variant
+# ============================================================================
+# Filename convention: descriptive_name.yaml (e.g., genai_engineer.yaml)
+#
+# This file selects bullets FROM master.yaml for a specific target role.
+# It does NOT contain bullet text — only references to master.yaml keys.
+# ============================================================================
+
+variant_name: ""              # e.g., "GenAI Engineer", "Backend Lead"
+output_filename: ""           # e.g., "Your_Name_GenAI_CV" (no extension)
+
+# ─── Summary (specific to this variant) ──────────────────────────────────
+summary: >
+  Write a 2-3 line summary tailored to this specific role.
+  Reference skills and experience most relevant to this variant.
+
+# ─── Experience Selection ────────────────────────────────────────────────
+# Format: role_key → list of [bullet_key, phrasing] pairs
+# If phrasing omitted, "default" is used.
+experience:
+  # role_key_from_master:
+  #   - [bullet_key_1, default]    # Use default phrasing
+  #   - [bullet_key_2, technical]  # Use technical phrasing
+  #   - [bullet_key_3]             # Shorthand for [key, default]
+
+# ─── Projects Selection ──────────────────────────────────────────────────
+projects: []
+  # - project_key_from_master
+  # - another_project_key
+
+# ─── Technologies (override master if needed) ────────────────────────────
+technologies: []
+  # - label: "GenAI"
+  #   details: "RAG, LLM APIs, LangChain, Vector DBs"
+  # - label: "Backend"
+  #   details: "Python, FastAPI, PostgreSQL"
+
+# ─── Achievements Selection ──────────────────────────────────────────────
+achievements: []
+  # - achievement_key_from_master

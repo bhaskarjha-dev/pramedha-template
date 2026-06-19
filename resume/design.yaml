@@ -1,0 +1,32 @@
+# ============================================================================
+# DESIGN — Shared RenderCV theme config for all variants
+# ============================================================================
+# Extracted as a shared config. Changes here cascade to ALL generated resumes.
+# Available themes: engineeringresumes | classic | sb2nov | moderncv
+# ============================================================================
+
+design:
+  theme: engineeringresumes
+  page:
+    top_margin: 0.4in
+    bottom_margin: 0.4in
+    left_margin: 0.45in
+    right_margin: 0.45in
+    show_top_note: false
+    show_footer: false
+  typography:
+    font_size:
+      name: 22pt
+      body: 9.5pt
+      connections: 9pt
+  header:
+    space_below_name: 0.15cm
+    space_below_connections: 0.15cm
+  section_titles:
+    space_above: 0.3cm
+    space_below: 0.15cm
+  sections:
+    space_between_regular_entries: 0.25cm
+    space_between_text_based_entries: 0.1cm
+  entries:
+    space_between_columns: 0.08cm

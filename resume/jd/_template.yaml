@@ -1,0 +1,30 @@
+# ============================================================================
+# JD OVERLAY TEMPLATE — Per-Job-Description Resume Customization
+# ============================================================================
+# When you want a resume tailored to a SPECIFIC job posting.
+# Copy this file and name it after the company/role.
+#
+# Usage: python assemble.py --jd jd/company_role.yaml
+# ============================================================================
+
+variant_name: ""              # e.g., "Google L5 Backend"
+output_filename: ""           # e.g., "Your_Name_Google_Backend_CV"
+
+# Paste the JD summary here (helps you reference while selecting bullets)
+jd_notes: >
+  Key requirements from the JD:
+  - 
+  - 
+  - 
+
+summary: >
+  Tailored summary matching this specific JD.
+
+experience:
+  # Select bullets that match the JD requirements
+  # role_key:
+  #   - [bullet_key, phrasing]
+
+projects: []
+technologies: []
+achievements: []
