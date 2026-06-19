@@ -1,0 +1,38 @@
+# ============================================================================
+# EXAMPLE — Resume variant overlay
+# ============================================================================
+# This variant selects backend-focused bullets from master.yaml
+
+variant_name: "Backend Engineer"
+output_filename: "Alex_Chen_Backend_CV"
+
+summary: >
+  Senior Software Engineer with 5+ years building distributed systems
+  at scale. Led payment retry ML pipeline at Stripe (12% recovery improvement)
+  and built rate limiting service handling 100K+ concurrent clients at Twilio.
+  Deep expertise in Go, Python, and cloud-native architecture.
+
+experience:
+  stripe_senior:
+    - [payment_retry_ml, default]
+    - [realtime_pipeline, technical]
+    - [false_decline, default]
+  twilio_swe:
+    - [rate_limiter, default]
+    - [monolith_migration, default]
+
+projects:
+  - distributed_cache
+  - api_gateway
+
+technologies:
+  - label: "Languages"
+    details: "Go, Python, SQL, TypeScript"
+  - label: "Infrastructure"
+    details: "Kubernetes, Terraform, Docker, AWS"
+  - label: "Data"
+    details: "PostgreSQL, Redis, BigQuery, Apache Beam"
+
+achievements:
+  - stripe_hackathon
+  - twilio_eng_award

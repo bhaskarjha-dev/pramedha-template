@@ -1,0 +1,34 @@
+# ============================================================================
+# EXAMPLE — Filled identity.yaml + experience snippet
+# ============================================================================
+# This shows what a properly filled identity file looks like.
+# Use this as a reference when filling your own.
+# ============================================================================
+
+# --- identity.yaml example ---
+name: "Alex Chen"
+
+contact:
+  phone: "+1-555-123-4567"                              # ✅ VERIFIED
+  email: "alex.chen@example.com"                         # ✅ VERIFIED
+
+location:
+  current_city: "San Francisco, CA, USA"                 # ✅ VERIFIED
+  willing_to_relocate: true
+  preferred_cities:
+    - "San Francisco"
+    - "Seattle"
+    - "Remote"
+
+online_presence:
+  linkedin: "https://linkedin.com/in/alexchen"           # ✅ VERIFIED
+  github: "https://github.com/alexchen"                   # ✅ VERIFIED
+  website: "https://alexchen.dev"                          # ✅ VERIFIED
+
+languages:
+  - language: "English"
+    level: "native"
+  - language: "Mandarin"
+    level: "fluent"
+
+nationality: "US Citizen"                                  # ✅ VERIFIED

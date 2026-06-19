@@ -1,0 +1,67 @@
+# ============================================================================
+# Pramedha Template Manifest — Machine-Readable Metadata
+# ============================================================================
+# This file enables Pramedha CLI and external tools to:
+#   - Auto-detect career repos (look for .pramedha/manifest.yaml)
+#   - Validate template structure
+#   - Track schema compatibility
+#   - Report fill status
+# ============================================================================
+
+template:
+  name: "Pramedha Career Template"
+  version: "1.0.0"
+  schema_version: "1.0.0"               # Matches PramedhaProfile schema version
+  pramedha_compatible: true
+  min_pramedha_version: "0.1.0"
+
+# File registry — which files are required, optional, or generated
+files:
+  required:
+    - path: "config.yaml"
+      maps_to: "PramedhaProfile.professional.identity"
+    - path: "identity/identity.yaml"
+      maps_to: "PramedhaProfile.professional.identity"
+    - path: "identity/experience.yaml"
+      maps_to: "PramedhaProfile.professional.experience"
+    - path: "identity/skills.yaml"
+      maps_to: "PramedhaProfile.professional.skills"
+    - path: "identity/credentials.yaml"
+      maps_to: "PramedhaProfile.professional.education+certifications+awards"
+    - path: "identity/projects.yaml"
+      maps_to: "PramedhaProfile.professional.projects"
+    - path: "identity/claims-and-evidence.md"
+      maps_to: "PramedhaProfile.meta.claims_registry"
+    - path: "identity/professional-summary.md"
+      maps_to: "PramedhaProfile.professional.identity.professional_summary"
+    - path: "resume/master.yaml"
+      maps_to: "artifact_generation"
+    - path: "resume/design.yaml"
+      maps_to: "artifact_generation"
+
+  optional:
+    - path: "personal/about-me.md"
+      maps_to: "PramedhaProfile.personal.life_context"
+    - path: "personal/life-goals.md"
+      maps_to: "PramedhaProfile.personal.career_goals"
+    - path: "personal/preferences.yaml"
+      maps_to: "PramedhaProfile.personal.work_preferences"
+    - path: "strategy/target-roles.md"
+      maps_to: "PramedhaProfile.professional.targets"
+    - path: "journal/wins.md"
+      maps_to: "n/a"
+    - path: "journal/learning-log.md"
+      maps_to: "n/a"
+
+  generated:
+    - path: "resume/generated/*.yaml"
+      note: "Auto-assembled by assemble.py — DO NOT EDIT"
+    - path: "resume/output/*.pdf"
+      note: "Rendered PDFs — DO NOT COMMIT"
+
+# Tools
+tools:
+  cascade_engine: "resume/assemble.py"
+  validator: ".pramedha/validate.py"
+  build_script_windows: "resume/build.ps1"
+  build_script_unix: "resume/build.sh"

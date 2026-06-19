@@ -1,0 +1,57 @@
+# ============================================================================
+# EXAMPLE — Filled experience.yaml snippet
+# ============================================================================
+
+experience:
+  - company: "Stripe"
+    title: "Senior Software Engineer"
+    subtitle: "Payments Platform"
+    start_date: "2022-03"
+    end_date: "present"
+    location: "San Francisco, CA"
+    employment_type: "full_time"
+    verification: "✅ VERIFIED — offer letter + LinkedIn"
+
+    projects:
+      - name: "Payment Retry Intelligence"
+        client: "Internal"
+        period: "Sep 2023 – Present"
+        verification: "✅ VERIFIED — internal JIRA + launch announcement"
+
+        deliverables:
+          - name: "Smart Retry ML Pipeline"
+            period: "Sep–Dec 2023"
+            verification: "✅ VERIFIED — production metrics dashboard"
+            description: >
+              ML pipeline that predicts optimal retry timing for failed
+              card payments, increasing recovery rate across all merchants.
+            bullets:
+              - "Designed and deployed ML pipeline predicting optimal retry timing for failed payments, increasing recovery rate by 12% [measured]"
+              - "Processed 2M+ daily payment events through real-time feature engineering pipeline [measured]"
+              - "Reduced false decline rate by 8% through improved issuer response modeling [measured]"
+            skills: ["Python", "TensorFlow", "Apache Beam", "BigQuery", "Kubernetes"]
+
+  - company: "Twilio"
+    title: "Software Engineer"
+    start_date: "2020-06"
+    end_date: "2022-02"
+    location: "Remote"
+    employment_type: "full_time"
+    verification: "✅ VERIFIED — experience letter"
+
+    projects:
+      - name: "Messaging API v3"
+        period: "Jan 2021 – Feb 2022"
+        verification: "✅ VERIFIED — public API docs"
+
+        deliverables:
+          - name: "Rate Limiting Service"
+            period: "Jan–Jun 2021"
+            verification: "✅ VERIFIED — architecture doc"
+            description: >
+              Distributed rate limiter for the messaging API serving
+              100K+ concurrent clients.
+            bullets:
+              - "Built distributed rate limiting service handling 100K+ concurrent API clients with p99 latency under 5ms [measured]"
+              - "Migrated legacy monolithic rate limiter to microservice architecture, reducing operational incidents by 60% [estimated]"
+            skills: ["Go", "Redis", "gRPC", "Kubernetes", "Prometheus"]
