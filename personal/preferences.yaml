@@ -1,0 +1,67 @@
+# ============================================================================
+# WORK PREFERENCES — What You Want in Your Next Role
+# ============================================================================
+# Maps to: PramedhaProfile.personal.work_preferences
+#
+# ⚠️ PRIVATE — Used by Pramedha for matching and career guidance.
+# Never appears on resumes or shared externally.
+# ============================================================================
+
+# Your primary career driver (Schein Career Anchor)
+# Options: technical_competence | management | autonomy | security
+#          entrepreneurship | service | challenge | lifestyle
+career_anchor: ""
+
+# What you value in work (list your top 5)
+work_values: []
+  # - "Learning & growth"
+  # - "Autonomy"
+  # - "Impact"
+  # - "Work-life balance"
+  # - "Compensation"
+
+# Remote preference: onsite | remote | hybrid
+remote_preference: ""
+
+# Team preferences
+team_size_preference: ""          # small (2-5) | medium (5-15) | large (15+)
+structure_preference: ""          # startup | corporate | hybrid
+pace_preference: ""               # fast | steady | flexible
+growth_orientation: ""            # technical | management | hybrid
+
+# Absolute deal-breakers (things that would make you leave/decline)
+deal_breakers: []
+  # - "No remote option"
+  # - "Micromanagement"
+  # - "No learning budget"
+
+# Strengths you recognize in yourself
+self_identified_strengths: []
+  # - "Fast learner"
+  # - "Systems thinking"
+  # - "Clear communication"
+
+# ─── Life Context ────────────────────────────────────────────────────────
+# Maps to: PramedhaProfile.personal.life_context
+# These shape how AI calibrates advice. DEEPLY private.
+
+# Where are you in your career journey?
+career_stage: ""                  # early_career | mid_career | senior | career_change | re_entry | sabbatical
+
+# How much risk can you take right now?
+risk_tolerance: ""                # conservative | moderate | aggressive
+
+# How much time can you dedicate to the career transition?
+time_availability: ""             # full_time_search | evenings_weekends | limited | unemployed
+
+# How long can you search without income? ⚠️ NEVER SHARE
+financial_runway_months: 0
+
+# Location constraints that shape job search
+location_constraints: []
+  # - "Must stay in [city] for family reasons"
+  # - "Open to relocation within [country]"
+  # - "Cannot relocate before [date]"
+
+# Notice period at current employer
+notice_period_days: 0             # 0 = immediate, 30, 60, 90
