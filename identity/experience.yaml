@@ -1,0 +1,81 @@
+# ============================================================================
+# EXPERIENCE — Employment History & Project Details
+# ============================================================================
+# Maps to: PramedhaProfile.professional.experience[]
+#
+# Structure: employer → projects → deliverables → bullets
+# Each bullet should be a single, measurable achievement.
+# Use the verification tags on every claim.
+#
+# Verification Legend:
+#   ✅ VERIFIED   — Evidence exists
+#   ⚠️ ESTIMATED  — Reasonable but unverified
+#   ❌ UNVERIFIED — Aspiration or uncertain
+#
+# Tips:
+#   - List employers in reverse chronological order (newest first)
+#   - Each bullet: "Action verb + what you did + measurable impact"
+#   - Tag metrics: [measured] = from real data, [estimated] = reasonable guess
+#   - The `skills` list per deliverable feeds your skills.yaml auto-population
+# ============================================================================
+
+experience:
+  # ────────────────────────────────────────────────────────────────────────
+  # EMPLOYER 1 (Most Recent)
+  # ────────────────────────────────────────────────────────────────────────
+  - company: ""
+    title: ""                     # Official job title
+    subtitle: ""                  # Functional role (if different from title)
+    start_date: ""                # YYYY-MM format
+    end_date: "present"           # YYYY-MM or "present"
+    location: ""                  # City, State
+    employment_type: ""           # full_time | part_time | contract | internship | freelance
+    industry: ""                  # e.g., "Fintech", "Healthcare", "EdTech", "E-commerce"
+    team_size: 0                  # Size of your team / org
+    reporting_to: ""              # Title of your manager (shows your level)
+    verification: ""              # e.g., "✅ VERIFIED — offer letter on file"
+
+    projects:
+      - name: ""
+        client: ""                # Client name (if consulting/services)
+        period: ""                # e.g., "Jan 2025 – Present"
+        verification: ""
+
+        deliverables:
+          - name: ""
+            period: ""
+            verification: ""
+            description: >
+              One paragraph describing what this deliverable was about.
+              Context, problem, your role.
+            bullets:
+              - ""                # "Action verb + what + measurable impact"
+              - ""
+            skills: []            # Technologies/tools used
+
+      # Uncomment and fill for more projects:
+      # - name: ""
+      #   client: ""
+      #   period: ""
+      #   deliverables:
+      #     - name: ""
+      #       bullets:
+      #         - ""
+
+  # ────────────────────────────────────────────────────────────────────────
+  # EMPLOYER 2
+  # ────────────────────────────────────────────────────────────────────────
+  # - company: ""
+  #   title: ""
+  #   start_date: ""
+  #   end_date: ""
+  #   location: ""
+  #   industry: ""
+  #   team_size: 0
+  #   reason_for_leaving: ""      # ⚠️ PRIVATE — helps AI advise on career transitions
+  #   projects:
+  #     - name: ""
+  #       deliverables:
+  #         - name: ""
+  #           bullets:
+  #             - ""

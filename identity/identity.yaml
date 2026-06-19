@@ -1,0 +1,47 @@
+# ============================================================================
+# IDENTITY — Extended Personal & Demographic Information
+# ============================================================================
+# Maps to: PramedhaProfile.professional.identity
+#
+# NOTE: Name, email, phone, website, profiles, and location are defined
+# in config.yaml (the SINGLE source of truth for contact info).
+# This file stores ADDITIONAL identity fields that config.yaml doesn't cover.
+#
+# When they conflict: config.yaml ALWAYS wins for contact info.
+# This file wins for: languages, nationality, work authorization, pronouns.
+#
+# Verification Legend:
+#   ✅ VERIFIED   — Evidence exists (cert, screenshot, official doc)
+#   ⚠️ ESTIMATED  — Reasonable but unverified
+#   ❌ UNVERIFIED — Aspiration or uncertain
+# ============================================================================
+
+# ─── Demographics (not in config.yaml) ───────────────────────────────────
+pronouns: ""                    # e.g., "he/him", "she/her", "they/them"
+date_of_birth: ""               # YYYY-MM-DD (optional, some applications require)
+nationality: ""                 #                            # VERIFICATION_TAG
+
+# ─── Work Authorization ──────────────────────────────────────────────────
+work_authorization:
+  status: ""                    # citizen | permanent_resident | work_visa | need_sponsorship
+  countries: []                 # Countries where you're authorized to work
+  visa_details: ""              # e.g., "H-1B valid until 2027", "OCI cardholder"
+  verification: ""
+
+# ─── Languages ───────────────────────────────────────────────────────────
+languages:
+  - language: ""
+    level: ""                   # native | fluent | professional | conversational | elementary
+  # - language: ""
+  #   level: ""
+
+# ─── Years of Experience ─────────────────────────────────────────────────
+# Quick reference. Computed from experience.yaml but useful for filtering.
+total_years_experience: 0       # Total professional experience
+years_in_current_role: 0
+
+# ─── Headline (extended version) ─────────────────────────────────────────
+# config.yaml has a short headline. This is the full professional identity.
+professional_headline: ""       # e.g., "Senior Backend Engineer specializing in
+                                # distributed systems and GenAI, with 5 years
+                                # building high-scale platforms at Fortune 500s"

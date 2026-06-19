@@ -1,0 +1,54 @@
+# ============================================================================
+# REFERENCES — Professional References
+# ============================================================================
+# Maps to: PramedhaProfile.professional.references[]
+#
+# Maintain at least 3 warm references at all times.
+# Update "last_contacted" quarterly to keep relationships warm.
+#
+# ⚠️ PRIVATE — Never share this file. Only share individual reference
+# contact details when specifically requested by a potential employer.
+#
+# Tips:
+#   - Ideal mix: 1 manager + 1 peer + 1 client/stakeholder
+#   - Always ASK before listing someone as a reference
+#   - Brief them on the role you're applying for
+#   - Send a thank-you note after they provide a reference
+# ============================================================================
+
+references:
+  # - name: ""
+  #   title: ""                    # Their current job title
+  #   company: ""                  # Their current company
+  #   relationship: ""             # e.g., "Direct manager at TCS (2022-2024)"
+  #   email: ""
+  #   phone: ""
+  #   linkedin: ""
+  #   strength: ""                 # strong | moderate | weak
+  #   best_for: []                 # What they can speak to
+  #     # - "Technical skills"
+  #     # - "Leadership ability"
+  #     # - "Work ethic"
+  #   last_contacted: ""           # YYYY-MM — keep warm quarterly
+  #   permission_granted: false    # Have you asked if they'll be a reference?
+  #   notes: ""                    # Any context for when to use this person
+
+  # Uncomment and fill:
+  # - name: ""
+  #   title: ""
+  #   company: ""
+  #   relationship: ""
+  #   email: ""
+  #   phone: ""
+  #   strength: ""
+  #   best_for: []
+  #   last_contacted: ""
+  #   permission_granted: false
+
+# ─── Reference Request Template ──────────────────────────────────────────
+# When asking someone to be a reference, send something like:
+#
+#   "Hi [Name], I'm applying for [Role] at [Company] and I think your
+#   perspective on [specific thing they know about you] would be really
+#   valuable. Would you be comfortable serving as a reference?
+#   I can share the job description and talking points to make it easy."

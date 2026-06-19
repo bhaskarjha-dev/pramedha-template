@@ -1,0 +1,92 @@
+# ============================================================================
+# SKILLS — Categorized Skill Matrix
+# ============================================================================
+# Maps to: PramedhaProfile.professional.skills[]
+#
+# Group skills by category. Each skill has:
+#   name       — Canonical name (e.g., "Python", not "python" or "Python 3.x")
+#   level      — beginner | intermediate | advanced | expert
+#   years      — Years of experience (approximate)
+#   evidence   — What proves this skill (project name, cert, etc.)
+#   verification — ✅ VERIFIED | ⚠️ ESTIMATED | ❌ UNVERIFIED
+#
+# Categories are flexible. Common ones:
+#   Programming, Frameworks, AI/ML, Cloud, Databases, DevOps, Tools,
+#   Design, Communication, Leadership, Domain Knowledge
+#
+# For Pramedha import, skills are normalized to canonical IDs:
+#   canonical_id: "pramedha:python"  (auto-generated on import)
+# ============================================================================
+
+# ─── Example Category (delete and replace with your own) ─────────────────
+
+# programming:
+#   - name: "Python"
+#     level: "advanced"
+#     years: 3
+#     evidence: "Used in all AI projects, 5 production deployments"
+#     verification: "✅ VERIFIED"
+#
+#   - name: "JavaScript"
+#     level: "intermediate"
+#     years: 2
+#     evidence: "Built 3 web apps"
+#     verification: "✅ VERIFIED"
+
+# ─── Your Skills ─────────────────────────────────────────────────────────
+
+# Fill categories relevant to your profession. Delete irrelevant ones.
+
+programming:
+  # - name: ""
+  #   level: ""                 # beginner | intermediate | advanced | expert
+  #   years: 0
+  #   last_used: ""             # YYYY-MM — skill freshness
+  #   interest: ""              # high | medium | low — "I can" vs "I want to"
+  #   importance: 0.0           # 0.0-1.0 — how central to your professional identity
+  #   skill_type: "hard"        # hard | soft | tool
+  #   evidence: ""
+  #   verification: ""
+
+# frameworks:
+#   - name: ""
+#     level: ""
+#     years: 0
+#     last_used: ""
+#     interest: ""
+#     evidence: ""
+
+# ai_ml:
+#   - name: ""
+#     level: ""
+#     evidence: ""
+
+# cloud:
+#   - name: ""
+#     level: ""
+#     evidence: ""
+
+# databases:
+#   - name: ""
+#     level: ""
+#     evidence: ""
+
+# devops:
+#   - name: ""
+#     level: ""
+#     evidence: ""
+
+# tools:
+#   - name: ""
+#     level: ""
+#     evidence: ""
+
+# soft_skills:
+#   - name: ""
+#     level: ""
+#     evidence: ""
+
+# domain_knowledge:
+#   - name: ""
+#     level: ""
+#     evidence: ""

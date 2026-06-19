@@ -1,0 +1,56 @@
+# ============================================================================
+# PROJECTS — Portfolio Projects
+# ============================================================================
+# Maps to: PramedhaProfile.professional.projects[]
+#
+# Include both public (GitHub, live demos) and internal/professional projects.
+# Each project should demonstrate skills relevant to your target roles.
+#
+# Tips:
+#   - Lead with the problem solved, not the tech used
+#   - Include measurable outcomes where possible
+#   - Link to live demos, GitHub repos, or screenshots
+#   - Technologies list feeds skill auto-detection
+# ============================================================================
+
+# ─── Public Projects (open source, personal, visible) ────────────────────
+public:
+  # - name: ""
+  #   tagline: ""               # One-line description
+  #   status: ""                # active | completed | archived | paused
+  #   role: ""                  # e.g., "Solo developer", "Team lead", "Contributor"
+  #   team_size: 1              # 1 = solo, 5 = small team, etc.
+  #   start_date: ""            # YYYY-MM
+  #   end_date: ""              # YYYY-MM or "present"
+  #   repo: ""                  # GitHub/GitLab URL
+  #   live_url: ""              # Live demo URL (if any)
+  #   tech: []                  # Technologies used
+  #   highlights:
+  #     - ""                    # Key achievement/feature
+  #     - ""
+  #   impact_metrics: ""        # e.g., "500 stars, 2K downloads/month"
+  #   license: ""               # e.g., "MIT", "Apache-2.0"
+  #   verification: ""
+  #   relevance: []             # Which target roles this supports
+
+# ─── Internal/Professional Projects ──────────────────────────────────────
+# Projects done at work that can't be open-sourced but can be described.
+internal:
+  # - name: ""
+  #   tagline: ""
+  #   context: ""               # e.g., "Built at TCS for Client X"
+  #   tech: []
+  #   highlights:
+  #     - ""
+  #   verification: ""
+  #   relevance: []
+
+# ─── Featured Items (Pinned Content) ─────────────────────────────────────
+# Maps to: PramedhaProfile.professional.featured[]
+# Content you'd pin on LinkedIn Featured, GitHub profile, or portfolio homepage.
+# featured:
+#   - title: ""                   # e.g., "Building RAG Pipelines at Scale"
+#     type: ""                    # article | project | talk | certification | case_study
+#     url: ""
+#     description: ""             # One-line summary
+#     platform: ""                # linkedin | github | medium | personal_site

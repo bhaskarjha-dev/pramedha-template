@@ -1,0 +1,41 @@
+# ============================================================================
+# VOLUNTEERING — Community Work, Open Source & Pro Bono
+# ============================================================================
+# Maps to: PramedhaProfile.professional.volunteering[]
+#
+# Includes: open source contributions, community leadership, mentoring,
+# NGO work, hackathon organizing, teaching, pro bono consulting.
+#
+# Important for: early-career professionals, career changers, and anyone
+# wanting to demonstrate initiative beyond paid work.
+# ============================================================================
+
+volunteering:
+  # - organization: ""
+  #   role: ""                     # e.g., "Core Maintainer", "Volunteer Mentor"
+  #   cause: ""                    # e.g., "Education", "Open Source", "Environment"
+  #   start_date: ""               # YYYY-MM
+  #   end_date: ""                 # YYYY-MM or "present"
+  #   description: >
+  #     What you did and the impact it had.
+  #   highlights:
+  #     - ""
+  #   skills_demonstrated: []
+  #   url: ""                      # Organization website or contribution link
+  #   verification: ""
+
+open_source:
+  # - project: ""                  # Project name
+  #   role: ""                     # maintainer | contributor | creator
+  #   repo: ""                     # GitHub URL
+  #   contributions: ""            # e.g., "42 PRs merged, 3 features shipped"
+  #   highlights:
+  #     - ""
+  #   verification: ""             # ✅ VERIFIED — commit history public
+
+mentoring:
+  # - context: ""                  # e.g., "College juniors", "Bootcamp students"
+  #   period: ""                   # e.g., "2024-present"
+  #   mentees_count: 0
+  #   impact: ""                   # e.g., "3 mentees placed at FAANG"
+  #   verification: ""
