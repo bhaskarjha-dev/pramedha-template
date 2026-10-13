@@ -3,6 +3,9 @@
 # Assembles all variants from master.yaml and renders to PDF.
 
 $ErrorActionPreference = "Stop"
+[Console]::OutputEncoding = [System.Text.Encoding]::UTF8
+$OutputEncoding = [System.Text.Encoding]::UTF8
+$env:PYTHONIOENCODING = "utf-8"
 $scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Definition
 
 Write-Host "`n=== Resume Cascade Build ===" -ForegroundColor Cyan

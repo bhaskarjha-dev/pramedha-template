@@ -120,19 +120,39 @@ def resolve_project(master_projects: dict, project_ref, variant_name: str) -> di
     """
     Resolve a project reference to a RenderCV project entry.
     project_ref can be:
-      - "project_key"                    → uses 'default' bullet
-      - ["project_key", "phrasing"]      → uses specified bullet phrasing
-      - {"project_key": "phrasing"}      → alternate dict syntax (not used currently)
+      - "project_key"                              → uses 'default' bullet
+      - ["project_key", "phrasing"]                → uses specified bullet phrasing
+      - ["project_key", ["phrasing1", "phrasing2"]]→ uses multiple bullet phrasings
+      - {"project_key": "phrasing"}                → dict syntax with phrasing
+      - {"project_key": ["p1", "p2"]}              → dict syntax with multiple phrasings
+      - {"project": "project_key", "bullets": [...]}→ explicit dict syntax
     """
     if isinstance(project_ref, str):
         proj_key = project_ref
-        phrasing = "default"
+        phrasings = ["default"]
     elif isinstance(project_ref, list):
         proj_key = project_ref[0]
-        phrasing = project_ref[1] if len(project_ref) > 1 else "default"
+        if len(project_ref) > 1:
+            raw_p = project_ref[1]
+            phrasings = raw_p if isinstance(raw_p, list) else [raw_p]
+        else:
+            phrasings = ["default"]
     elif isinstance(project_ref, dict):
-        proj_key = list(project_ref.keys())[0]
-        phrasing = project_ref[proj_key]
+        if 'project' in project_ref or 'name' in project_ref:
+            proj_key = project_ref.get('project') or project_ref.get('name')
+            if 'bullets' in project_ref:
+                raw_b = project_ref['bullets']
+                phrasings = raw_b if isinstance(raw_b, list) else [raw_b]
+            elif 'bullet' in project_ref:
+                phrasings = [project_ref['bullet']]
+            elif 'phrasing' in project_ref:
+                phrasings = [project_ref['phrasing']]
+            else:
+                phrasings = ["default"]
+        else:
+            proj_key = list(project_ref.keys())[0]
+            val = project_ref[proj_key]
+            phrasings = val if isinstance(val, list) else [val]
     else:
         raise AssemblyError(f"[{variant_name}] Invalid project reference: {project_ref}")
 
@@ -146,24 +166,40 @@ def resolve_project(master_projects: dict, project_ref, variant_name: str) -> di
     proj = master_projects[proj_key]
     bullet_data = proj.get('bullets', {})
 
+    highlights = []
     if isinstance(bullet_data, str):
-        bullet_text = bullet_data
-    elif phrasing not in bullet_data:
-        available = list(bullet_data.keys())
-        raise AssemblyError(
-            f"[{variant_name}] Phrasing '{phrasing}' not found for project '{proj_key}'.\n"
-            f"  Available phrasings: {available}"
-        )
-    else:
-        bullet_text = bullet_data[phrasing]
+        highlights.append(bullet_data)
+    elif isinstance(bullet_data, list):
+        highlights.extend(bullet_data)
+    elif isinstance(bullet_data, dict):
+        for phrasing in phrasings:
+            if phrasing in bullet_data:
+                highlights.append(bullet_data[phrasing])
+            else:
+                available = list(bullet_data.keys())
+                raise AssemblyError(
+                    f"[{variant_name}] Phrasing '{phrasing}' not found for project '{proj_key}'.\n"
+                    f"  Available phrasings: {available}"
+                )
 
     entry = {
-        'name': proj['name'],
-        'date': proj['date'],
-        'highlights': [bullet_text],
+        'name': proj.get('name', proj_key),
+        'highlights': highlights,
     }
+    date_val = proj.get('date')
+    if not date_val:
+        s_date = proj.get('start_date')
+        e_date = proj.get('end_date')
+        if s_date and e_date:
+            date_val = f"{s_date} \u2013 {e_date}" if s_date != e_date else str(s_date)
+        elif s_date:
+            date_val = str(s_date)
+    if date_val:
+        entry['date'] = str(date_val)
     if 'location' in proj:
         entry['location'] = proj['location']
+    if 'url' in proj:
+        entry['url'] = proj['url']
 
     return entry
 
@@ -351,9 +387,10 @@ def assemble_variant(master: dict, design: dict, variant: dict, config: dict = N
     if technologies:
         sections['technologies'] = copy.deepcopy(technologies)
 
-    # Education (from master, shared)
-    if 'education' in master and master['education']:
-        sections['education'] = copy.deepcopy(master['education'])
+    # Education (variant overrides master; falls back to master shared education)
+    education = variant.get('education') or master.get('education', [])
+    if education:
+        sections['education'] = copy.deepcopy(education)
 
     # Achievements (resolve keys)
     achievement_texts = []

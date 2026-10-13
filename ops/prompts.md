@@ -26,6 +26,7 @@
 14. [Portfolio Website Content](#14-portfolio-website-content)
 15. [Offer Comparison Analysis](#15-offer-comparison-analysis)
 16. [Lite Career Template Audit & Health Check](#16-lite-career-template-audit--health-check)
+17. [Add Speaking Engagement / Hackathon Win](#17-add-speaking-engagement--hackathon-win)
 
 ---
 

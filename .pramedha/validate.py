@@ -305,11 +305,21 @@ def check_cascade_consistency(result: ValidationResult):
 VALID_SKILL_LEVELS = {"beginner", "intermediate", "advanced", "expert"}
 VALID_PROFESSION_TYPES = {"engineering", "creative", "medical", "business", "academic", "legal", "freelance", "executive", "other"}
 VALID_CAREER_TYPES = {"employed", "freelance", "portfolio", "academic", "military", "government", "student"}
-VALID_EMPLOYMENT_TYPES = {"full-time", "part-time", "contract", "freelance", "internship"}
+VALID_EMPLOYMENT_TYPES = {
+    "full-time", "part-time", "contract", "freelance", "internship",
+    "full_time", "part_time", "self_employed", "volunteer"
+}
 VALID_LOCATION_TYPES = {"remote", "hybrid", "onsite"}
-VALID_LANGUAGE_FLUENCY = {"native", "fluent", "professional", "conversational", "basic"}
-VALID_CAREER_STAGES = {"early", "mid", "senior", "lead", "executive"}
-VALID_CAREER_BREAK_TYPES = {"parental", "caregiving", "health", "sabbatical", "education", "relocation", "travel", "transition", "other"}
+VALID_LANGUAGE_FLUENCY = {"native", "fluent", "professional", "conversational", "basic", "elementary"}
+VALID_CAREER_STAGES = {
+    "early", "mid", "senior", "lead", "executive",
+    "student", "early_career", "mid_career", "career_changer", "returning", "sabbatical", "freelance"
+}
+VALID_CAREER_BREAK_TYPES = {
+    "parental", "caregiving", "health", "sabbatical", "education", "relocation", "travel", "transition", "other",
+    "parental_leave", "career_transition", "layoff"
+}
+VALID_WORK_AUTHORIZATION = {"citizen", "permanent_resident", "work_visa", "student_visa", "need_sponsorship", "other"}
 
 
 def parse_flexible_date(date_str: str):
@@ -360,7 +370,7 @@ def check_schema_enums(result: ValidationResult):
         if ctype and ctype not in VALID_CAREER_TYPES:
             result.warn(f"config.yaml: career_type '{ctype}' not in allowed enums")
 
-    # 3. Identity languages
+    # 3. Identity languages & work authorization
     id_path = TEMPLATE_ROOT / "identity" / "identity.yaml"
     if id_path.exists():
         with open(id_path, 'r', encoding='utf-8') as f:
@@ -371,6 +381,15 @@ def check_schema_enums(result: ValidationResult):
                 lname = (lang.get('language') or '').strip()
                 if lvl and lvl not in VALID_LANGUAGE_FLUENCY:
                     result.warn(f"identity.yaml: Language '{lname}' has invalid fluency '{lvl}'")
+        wauth_raw = id_data.get('work_authorization')
+        if isinstance(wauth_raw, dict):
+            wauth = (wauth_raw.get('status') or '').strip().lower()
+        elif isinstance(wauth_raw, str):
+            wauth = wauth_raw.strip().lower()
+        else:
+            wauth = ''
+        if wauth and wauth not in VALID_WORK_AUTHORIZATION:
+            result.warn(f"identity.yaml: work_authorization status '{wauth}' not in allowed enums")
 
     # 4. Experience enums (employment_type, location_type, career_break_type)
     exp_path = TEMPLATE_ROOT / "identity" / "experience.yaml"
@@ -648,7 +667,7 @@ def compute_fill_status(result: ValidationResult):
 
     checks = [
         ("config.yaml", "config.yaml", lambda d: bool(((d or {}).get('user') or {}).get('name', '').strip())),
-        ("identity/identity.yaml", "identity.yaml", lambda d: bool((d or {}).get('name', '').strip()) or bool((d or {}).get('total_years_experience', 0) > 0)),
+        ("identity/identity.yaml", "identity.yaml", lambda d: bool((d or {}).get('name', '').strip()) or bool((d or {}).get('total_years_experience')) or bool((d or {}).get('languages')) or bool((d or {}).get('citizenship')) or bool((d or {}).get('work_authorization'))),
         ("identity/experience.yaml", "experience.yaml", lambda d: any(
             isinstance(e, dict) and bool((e.get('company') or '').strip()) for e in ((d or {}).get('experience') or [])
         )),

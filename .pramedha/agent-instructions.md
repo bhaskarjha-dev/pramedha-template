@@ -330,10 +330,10 @@ These are system files, templates, or real-time documents:
 | journal/learning-log.md | Real-time — courses as completed |
 | journal/feedback.md | Real-time — reviews as received |
 | personal/reflections.md | Real-time — rejection learning as it happens |
-| strategy/job-search/tracker.md | Real-time — applications as sent |
+| strategy/job-tracker.md | Real-time — applications as sent |
 | strategy/offer-comparison.md | Real-time — offers as received |
 | strategy/networking.md | Real-time contacts — AI initializes target circles/strategy; user logs individual contacts as met |
-| ops/templates/* | Entry templates — already done |
+| Entry templates (`_template.*`) | Template files — already created |
 | .pramedha/* | System config — already done |
 | resume/assemble.py | Code — already written |
 

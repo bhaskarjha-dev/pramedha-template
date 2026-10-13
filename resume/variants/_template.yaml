@@ -25,9 +25,15 @@ experience:
   #   - [bullet_key_3]             # Shorthand for [key, default]
 
 # ─── Projects Selection ──────────────────────────────────────────────────
+# Supports single string key, phrasing tuple, multi-bullet list, or explicit dict:
+#   - project_key                        # Uses 'default' bullet phrasing
+#   - [project_key, technical]           # Uses specific bullet phrasing
+#   - [project_key, [default, technical]]# Uses multiple bullet highlights
+#   - project: project_key               # Dict syntax
+#     bullets: [default, technical]
 projects: []
   # - project_key_from_master
-  # - another_project_key
+  # - [another_project_key, technical]
 
 # ─── Technologies (override master if needed) ────────────────────────────
 technologies: []
@@ -35,6 +41,16 @@ technologies: []
   #   details: "RAG, LLM APIs, LangChain, Vector DBs"
   # - label: "Backend"
   #   details: "Python, FastAPI, PostgreSQL"
+
+# ─── Education (override master if needed) ───────────────────────────────
+# education: []
+#   # - institution: "University Name"
+#   #   area: "Computer Science"
+#   #   degree: "B.Tech"
+#   #   start_date: "2018"
+#   #   end_date: "2022"
+#   #   highlights:
+#   #     - "CGPA: 8.5/10"
 
 # ─── Achievements Selection ──────────────────────────────────────────────
 achievements: []

@@ -45,6 +45,8 @@ files:
       category: "resume"
     - path: "resume/sync.py"
       category: "resume"
+    - path: "resume/_yaml_utils.py"
+      category: "resume"
 
   optional:
     - path: "identity/volunteering.yaml"
@@ -105,6 +107,12 @@ files:
       category: "assets"
     - path: "assets/platform-copy.md"
       category: "assets"
+    - path: "assets/cover-letters/standard.md"
+      category: "assets"
+    - path: "assets/cover-letters/referral.md"
+      category: "assets"
+    - path: "assets/cover-letters/cold-outreach.md"
+      category: "assets"
     - path: "ops/session-handoff.md"
       category: "ops"
     - path: "ops/guide.md"
@@ -130,6 +138,7 @@ files:
 tools:
   cascade_engine: "resume/assemble.py"
   bridge_sync: "resume/sync.py"
+  yaml_utils: "resume/_yaml_utils.py"
   validator: ".pramedha/validate.py"
   build_script_windows: "resume/build.ps1"
   build_script_unix: "resume/build.sh"

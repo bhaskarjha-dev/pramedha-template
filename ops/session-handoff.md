@@ -14,6 +14,27 @@
 ...
 -->
 
+## Session: 2026-10-13 (Falsification Verification & System Hardening Pass)
+
+### Summary
+Conducted rigorous falsification audit of external review findings in `tmp/audit.md`, proving 4 claims to be hallucinations/false positives, verifying 7 genuine defects, and implementing 4 high-value engine improvements. Hardened schema enums and fill checks in `.pramedha/validate.py`, fortified project dates, multi-bullet highlights, URL preservation, and variant education overrides in `resume/assemble.py`, registered cover letters and shared utilities in `.pramedha/manifest.yaml`, mapped missing authorities in `ops/authority-map.md`, updated PowerShell UTF-8 console output guards, and reconciled path drift across documentation. Achieved 100% test pass rate across all test suites.
+
+### What Was Done
+- **Falsification Verification:** Thoroughly counter-audited and disproved 4 claims from `tmp/audit.md` (no unreferenced `data-corpus/tax-and-pay/` folder existed; privacy warnings were already centralized and non-redundant; `assemble.py` correctly uses `master.yaml` as single bullet pool; manifest schema matches spec).
+- **Validator Enum Parity (`.pramedha/validate.py`):** Expanded `VALID_EMPLOYMENT_TYPES` (supporting underscored & hyphenated forms, plus volunteer & freelance), `VALID_LANGUAGE_FLUENCY` (adding `elementary`), `VALID_CAREER_STAGES`, and `VALID_CAREER_BREAK_TYPES`. Added dict status/string `work_authorization` enum checks and updated `identity.yaml` fill check lambda.
+- **Cascade Engine Project & Education Hardening (`resume/assemble.py`, `resume/variants/_template.yaml`):** Protected `resolve_project()` against date `KeyError` crashes via safe `.get()` and start_date/end_date fallback. Added support for multi-bullet highlights (list of phrasings and dict syntax), project `url` passthrough, and variant-level `education:` overrides with master fallback.
+- **Manifest & Authority Map Completeness (`.pramedha/manifest.yaml`, `ops/authority-map.md`):** Added `assets/cover-letters/*.md` (standard, referral, cold-outreach) and `resume/_yaml_utils.py` to manifest. Fully populated `ops/authority-map.md` with explicit authoritative mappings for STAR stories, interview prep, cover letters, compensation/runway, offer comparison, risk register, personal files, and journal logs.
+- **PowerShell Console Output (`resume/build.ps1`):** Added `[Console]::OutputEncoding` and `$OutputEncoding` UTF-8 guards.
+- **Documentation & TOC Reconciliation (`.pramedha/agent-instructions.md`, `data-corpus/README.md`, `VISION.md`, `ops/prompts.md`):** Replaced legacy `strategy/job-search/tracker.md` and `ops/templates/*` paths, corrected 8-folder system count and destinations in data-corpus, synchronized `ops/prompts.md` TOC with Prompt #17, and reconciled `VISION.md` Quick Start steps with the 7-phase model.
+
+### Key Decisions
+| Decision | Rationale | Affects |
+|----------|-----------|---------|
+| Reject `data-corpus/tax-and-pay/` and redundant privacy files | Falsified as hallucinated/unnecessary; folder does not exist and privacy warnings are already consolidated | `data-corpus/`, `personal/` |
+| Safe project date `.get()` + multi-bullet support | Prevents crashes when date is formatted differently or missing, and empowers variants to select multiple highlights | `resume/assemble.py`, `resume/variants/_template.yaml` |
+| Variant education override with master fallback | Allows tailored CVs to highlight specific education/coursework without modifying master shared pool | `resume/assemble.py` |
+| Dict-aware work_authorization validation | Matches real schema structure where `work_authorization` contains `status`, `countries`, and `visa_details` | `.pramedha/validate.py` |
+
 ## Session: 2026-10-13 (v0.1.0 Architecture Streamlining, Minimum Context Router & Directory Flattening)
 
 ### Summary

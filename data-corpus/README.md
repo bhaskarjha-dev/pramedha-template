@@ -6,7 +6,7 @@
 
 ---
 
-## The 7-Folder System
+## The 8-Folder System
 
 Drop files into the folder that fits. Don't overthink it — wrong folder is
 better than not captured at all.
@@ -32,23 +32,23 @@ data-corpus/
 > 🟡 **Important** — Significantly improves quality
 > 🟢 **Nice to have** — Adds depth and polish
 
-### 1. Digital Footprint → `exports/`
+### 1. Digital Footprint → `exports/`, `linkedin/`, `github/`
 
 Export and download from every platform where you have a professional presence.
 
-| Item | Priority | How To Get It |
-|------|:--------:|---------------|
-| LinkedIn full data export | 🔴 | Settings → Privacy → Get a copy of your data |
-| GitHub repos list + contribution graph | 🔴 | Settings → Archives → Export account data |
-| Naukri / Indeed profile export | 🔴 | Settings → Download profile |
-| HuggingFace profile, models, datasets | 🟡 | Screenshot profile + copy model cards |
-| Kaggle profile, notebooks, competitions | 🟡 | Screenshot profile + export notebooks |
-| Stack Overflow profile + top answers | 🟡 | Copy profile page + top answers |
-| Dev.to / Hashnode / Medium articles list | 🟡 | Export or screenshot article list |
-| PyPI / npm packages published | 🟡 | Screenshot package pages |
-| Twitter/X professional threads | 🟢 | Screenshot or copy thread text |
-| Discord/Slack community contributions | 🟢 | Screenshots of notable contributions |
-| JSON Resume (if you have one) | 🟢 | Copy the JSON file |
+| Item | Priority | Destination | How To Get It |
+|------|:--------:|:-----------:|---------------|
+| LinkedIn full data export | 🔴 | `linkedin/` | Settings → Privacy → Get a copy of your data |
+| GitHub repos list + contribution graph | 🔴 | `github/` | Settings → Archives → Export account data |
+| Naukri / Indeed profile export | 🔴 | `exports/` | Settings → Download profile |
+| HuggingFace profile, models, datasets | 🟡 | `exports/` | Screenshot profile + copy model cards |
+| Kaggle profile, notebooks, competitions | 🟡 | `exports/` | Screenshot profile + export notebooks |
+| Stack Overflow profile + top answers | 🟡 | `exports/` | Copy profile page + top answers |
+| Dev.to / Hashnode / Medium articles list | 🟡 | `exports/` | Export or screenshot article list |
+| PyPI / npm packages published | 🟡 | `exports/` | Screenshot package pages |
+| Twitter/X professional threads | 🟢 | `exports/` | Screenshot or copy thread text |
+| Discord/Slack community contributions | 🟢 | `exports/` | Screenshots of notable contributions |
+| JSON Resume (if you have one) | 🟢 | `exports/` | Copy the JSON file |
 
 ### 2. Career Documents → `documents/`
 

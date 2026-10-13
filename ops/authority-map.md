@@ -20,6 +20,9 @@
 | **References** | `identity/references.yaml` | Old reference lists |
 | **Claims verification** | `identity/claims-and-evidence.md` | Resume bullets themselves |
 | **Professional summary** | `identity/professional-summary.md` | Old LinkedIn about |
+| **Behavioral STAR story bank** | `assets/star-stories.md` | Memory, improvised interview answers |
+| **Interview prep & talk tracks** | `assets/interview-prep/behavioral.md`, `technical.md` | Ad-hoc prep sheets, generic online lists |
+| **Cover letters (standard, referral, cold)** | `assets/cover-letters/*.md` | Old customized cover letters |
 | **Social proof & endorsements** | `assets/testimonials.md` | Scattered recommendation letters |
 | **Platform bios & short copy** | `assets/platform-copy.md` | Scattered bios, old resume headers |
 | **Outreach & referral messages** | `assets/outreach-messages.md` | Ad-hoc email/message drafts |
@@ -30,14 +33,23 @@
 | **Target roles, scoring & evaluation**| `strategy/target-roles.md` | Old role wish lists |
 | **Application pipeline & tracker** | `strategy/job-tracker.md` | Scattered spreadsheets |
 | **Job platforms & application channels**| `strategy/job-platforms.md` | Bookmarks, notes |
+| **Compensation targets & runway** | `strategy/financial.md` | Guesses, recruiter-anchored numbers |
+| **Offer evaluation & decision matrix** | `strategy/offer-comparison.md` | Mental math, impulsive decisions |
+| **Career risks & mitigation plans** | `strategy/risk-register.md` | Untracked transition anxieties |
 | **Pending tasks & actions** | `strategy/master-action-tracker.md` | Scattered TODO lists |
 | **This week's focus** | `strategy/weekly-tracker.md` | Old weekly plans |
 | **Digital presence & content strategy**| `strategy/digital-presence-plan.md` | Scattered platform notes |
 | **Learning roadmap & study sprints** | `strategy/study-plan.md` | Scattered study notes |
 | **Network & contacts** | `strategy/networking.md` | Scattered address books |
 | **Work preferences & life context** | `personal/preferences.yaml` | Assumptions |
+| **Personal narrative & core identity** | `personal/about-me.md` | Public marketing copy |
+| **Long-term life & personal vision** | `personal/life-goals.md` | Short-term task lists |
 | **Career narrative & pivots** | `personal/career-narrative.md` | Scattered cover letters |
 | **Private reflections & notes** | `personal/reflections.md` | Scattered journals |
+| **Shipped wins & achievements log** | `journal/wins.md` | Memory during annual reviews |
+| **Course & learning log** | `journal/learning-log.md` | Forgotten course history |
+| **Performance reviews & feedback** | `journal/feedback.md` | Scattered 1:1 notes |
+| **Weekly work logs** | `journal/work-log/*.md` | Vague timesheets |
 | **Career mission** | `VISION.md` | Old plans, brainstorm docs |
 | **Form-fill answers** | `assets/form-fill-cheatsheet.md` | Memory, old applications |
 | **Session context & handoff** | `ops/session-handoff.md` | Old conversation transcripts |
