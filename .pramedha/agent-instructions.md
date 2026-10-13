@@ -174,11 +174,14 @@ This is the most important file. For each employer:
 - Map to competency categories (leadership, problem-solving, collaboration, etc.)
 - Every story must reference a verified claim
 
-#### Step 15: Generate assets/cover-letters/
-- `standard.md` — Problem-Solution framework (for job board applications)
-- `referral.md` — Hook-Value-Ask framework (for warm introductions)
-- `cold-outreach.md` — Context-Connection-Request (for cold emails)
-- Use professional-summary.md + target-roles for tone
+#### Step 15: Generate assets/cover-letters/ and assets/outreach-messages.md
+- **assets/cover-letters/**:
+  - `standard.md` — Problem-Solution framework (for formal job applications)
+  - `referral.md` — Referred application cover letter (aligning with internal employee referral)
+  - `cold-outreach.md` — Letter of Interest / Unsolicited Application cover letter
+  - Derive tone and positioning from `identity/professional-summary.md` and `strategy/target-roles.md`.
+- **assets/outreach-messages.md**:
+  - Pre-populate outreach copy for LinkedIn, cold outreach to hiring managers/peers, warm referral requests, recruiter follow-ups, and post-interview thank-you notes.
 
 #### Step 16: Fill assets/form-fill-cheatsheet.md
 - Extract from config.yaml + identity.yaml: name, email, phone, DOB, address
@@ -203,15 +206,21 @@ This is the most important file. For each employer:
 - Include universal questions (culture, growth, team, process)
 - Add company-specific question templates
 
-#### Step 20: Generate assets/platform-copy.md
-- Email signature (4-5 lines)
-- GitHub bio (160 char max)
-- LinkedIn headline (220 char max, 2-3 options)
-- Twitter/X bio (160 char max)
-- Speaker bio (1 paragraph, ~100 words)
-- Conference bio (2 paragraphs, ~200 words)
-- Short bio (50 words)
-- Derive all from professional-summary.md + target-roles.md positioning
+#### Step 20: Generate assets/platform-copy.md, assets/testimonials.md, and assets/project-briefs/
+- **assets/platform-copy.md**:
+  - Email signature (4-5 lines)
+  - GitHub bio (160 char max)
+  - LinkedIn headline (220 char max, 2-3 options)
+  - Twitter/X bio (160 char max)
+  - Speaker bio (1 paragraph, ~100 words)
+  - Conference bio (2 paragraphs, ~200 words)
+  - Short bio (50 words)
+  - Derive all from professional-summary.md + target-roles.md positioning
+- **assets/testimonials.md**:
+  - Extract performance review quotes, LinkedIn recommendations, peer feedback, and client praise from `data-corpus/`.
+  - Tag each entry with attribution, relationship context, and verification status.
+- **assets/project-briefs/**:
+  - For Tier A / flagship projects from `identity/projects.yaml`, generate 1-page deep-dive briefs in `assets/project-briefs/` (problem, technical architecture, quantified metrics, lessons learned) for portfolio review and technical interviews.
 
 #### Step 21: Generate assets/interview-prep/ (technical.md & behavioral.md)
 - **technical.md**: Extract core technical competencies from skills.yaml (advanced/expert level); list likely interview topics per target role and add system design topics if applicable. Cross-reference with study-plan.md for gap awareness.
@@ -259,11 +268,11 @@ This is the most important file. For each employer:
 - Otherwise: leave fields empty (salary is sensitive)
 - Never fabricate salary information
 
-#### Step 27: Draft strategy/job-platforms.md & strategy/job-tracker.md
-- Identify relevant job search channels across target regions (Global, US, EU, APAC)
-- Populate initial target companies and pipeline stages in job-tracker.md
-- Link follow-up rules to `assets/outreach-messages.md`
-- Mark as draft
+#### Step 27: Draft strategy/job-platforms.md, strategy/job-tracker.md, and strategy/networking.md
+- **strategy/job-platforms.md**: Identify relevant job search channels across target regions (Global, US, EU, APAC).
+- **strategy/job-tracker.md**: Populate initial target companies and pipeline stages. Link follow-up rules to `assets/outreach-messages.md`.
+- **strategy/networking.md**: Initialize target contact circles (Tier 1 Advocates, Tier 2 Domain Peers, Tier 3 Aspirations), outreach cadence, and strategic event targets. (User logs individual real-time contacts as conversations occur).
+- Mark as draft: `<!-- AI-SUGGESTED — Review and confirm -->`
 
 #### Step 28: Draft strategy/risk-register.md
 - Identify career transition risks based on the profile

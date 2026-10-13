@@ -1,23 +1,26 @@
-<!-- FRAMEWORK: Context-Connection-Request
-     Line 1: Establish the connection (how you know them)
-     Line 2-3: Context (why this role, your relevant proof points)
-     Line 4: Clear, respectful request with easy opt-out
+Dear [Hiring Manager / Team],
+
+<!-- FRAMEWORK: Referred Application Cover Letter
+     Paragraph 1: State the role applied for, connection/referral source, and alignment with company mission
+     Paragraph 2: Highlight 2-3 verified achievements and concrete qualifications solving core challenges
+     Paragraph 3: Team culture fit, gratitude for the referral context, and clear call to action
 -->
-Subject: Referral request — [Role] at [Company]
 
-Hi [Name],
+**[Paragraph 1 — The Referral & Connection]**
+I am writing to express my strong enthusiasm for the [Role Title] position at [Company], which [Referral Name, Title/Relationship] brought to my attention and recommended I apply for. Having collaborated with [Referral Name] on [shared domain/prior project] and followed [Company]'s progress in [specific product/engineering area], I am eager to contribute my background in [domain/specialty] to your team.
 
-I hope you're doing well! I noticed [Company] has an opening for [Role]
-and thought of reaching out since you're at [Company / know someone there].
+**[Paragraph 2 — Core Technical & Business Impact]**
+In my recent work as [Current/Past Title] at [Current/Past Company], I focused on [primary domain focus]. Specifically:
+- [Achievement 1 with quantified metric, e.g., improved system latency by X% / led delivery of Y project].
+- [Achievement 2 with quantified metric, e.g., architected pipeline handling Z throughput / scaled revenue by W%].
+These initiatives required deep expertise in [Skill 1] and [Skill 2], which directly mirror the core technical challenges outlined for this role.
 
-Quick context on why I think I'd be a strong fit:
-- [Achievement 1 relevant to the role]
-- [Achievement 2 relevant to the role]
+**[Paragraph 3 — Culture Fit & Next Steps]**
+[Referral Name] spoke very highly of [Company]'s engineering culture and deliberate focus on [specific team value or technical standard]. I am confident that my experience in [domain] and proven track record of [key strength] will allow me to deliver immediate value to [Team Name].
 
-Would you be comfortable referring me? I've attached my resume and can
-provide any additional information you'd need for the referral form.
+Thank you for your time and consideration. I would welcome the opportunity to discuss how my experience aligns with your team's upcoming initiatives.
 
-Completely understand if the timing isn't right — no pressure at all.
+Best regards,
 
-Thanks,
-[Your Name]
+[Your Name]  
+[Phone] | [Email] | [LinkedIn] | [Portfolio]

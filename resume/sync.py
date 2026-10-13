@@ -389,13 +389,18 @@ def sync_education(id_data: dict, master_data: dict, force: bool = False):
                 if h_str:
                     highlights.append(h_str)
 
+            start_date = str(item.get('start_date') or '').strip()
+            end_date = str(item.get('end_date') or item.get('year') or '').strip()
+
             entry = {
                 'institution': institution,
                 'area': field,
                 'degree': degree,
-                'start_date': '',
-                'end_date': year,
             }
+            if start_date:
+                entry['start_date'] = start_date
+            if end_date:
+                entry['end_date'] = end_date
             if highlights:
                 entry['highlights'] = highlights
 

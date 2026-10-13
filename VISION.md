@@ -8,8 +8,10 @@
 ## The Mission
 
 <!-- ⚠️ FILL THIS IN. Replace the [brackets] with your actual information.
-     Example: "Priya Sharma is a Software Engineer at Infosys transitioning to
-     a Senior Backend Engineer role (₹30+ LPA) within 6 months." -->
+     Examples:
+     - Tech: "Alex Chen is a Software Engineer at Acme transitioning to Staff Backend Engineer ($185K+) within 6 months."
+     - Domain Pivot: "Priya Sharma is a Data Analyst at Infosys transitioning to Lead AI/ML Engineer (₹35+ LPA) within 4 months."
+     - Non-Tech: "Elena Rostova is a Marketing Lead transitioning to VP of Growth (£95K+) within 9 months." -->
 
 **[Your Name]** is [current state/role] transitioning to [target state/role] within [timeframe].
 

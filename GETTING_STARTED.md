@@ -90,7 +90,9 @@ Drop everything career-related into `data-corpus/`:
 |--------------|----------------|
 | Old resumes (PDF/DOCX) | `data-corpus/resumes/` |
 | Certificates, degrees, awards | `data-corpus/documents/` |
-| LinkedIn export, GitHub JSON | `data-corpus/exports/` |
+| LinkedIn data export (ZIP / CSVs) | `data-corpus/linkedin/` |
+| GitHub profile / repository exports | `data-corpus/github/` |
+| Other data archives & exports | `data-corpus/exports/` |
 | Brain dumps, career notes | `data-corpus/text/` |
 | Screenshots of projects/metrics | `data-corpus/media/` |
 
@@ -143,6 +145,10 @@ pip install pyyaml rendercv
 After `identity/` is filled:
 
 ```bash
+# Option A (Windows PowerShell 1-Click):
+.\resume\build.ps1
+
+# Option B (Manual CLI in any terminal):
 # 1. Sync verified career facts into master resume bullet pool:
 py resume/sync.py
 
@@ -154,6 +160,7 @@ cp resume/variants/_template.yaml resume/variants/my-role.yaml
 py resume/assemble.py --validate    # Verify all references
 py resume/assemble.py               # Assembles to resume/generated/
 rendercv render resume/generated/my-role.yaml
+# (On Windows PowerShell if encoding errors occur: $env:PYTHONIOENCODING = "utf-8")
 # Your PDF is compiled in resume/output/ in <1s via Typst (no LaTeX needed!)
 ```
 

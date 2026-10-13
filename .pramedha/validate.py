@@ -320,6 +320,7 @@ VALID_CAREER_BREAK_TYPES = {
     "parental_leave", "career_transition", "layoff"
 }
 VALID_WORK_AUTHORIZATION = {"citizen", "permanent_resident", "work_visa", "student_visa", "need_sponsorship", "other"}
+VALID_ROLE_LEVELS = {"entry", "mid", "senior", "lead", "staff", "principal", "executive"}
 
 
 def parse_flexible_date(date_str: str):
@@ -358,7 +359,7 @@ def check_schema_enums(result: ValidationResult):
                                 f"(expected: {', '.join(sorted(VALID_SKILL_LEVELS))})"
                             )
 
-    # 2. Config enums (profession_type, career_type)
+    # 2. Config enums (profession_type, career_type, target_role_level)
     cfg_path = TEMPLATE_ROOT / "config.yaml"
     if cfg_path.exists():
         with open(cfg_path, 'r', encoding='utf-8') as f:
@@ -369,6 +370,9 @@ def check_schema_enums(result: ValidationResult):
         ctype = (cfg.get('career_type') or '').strip().lower()
         if ctype and ctype not in VALID_CAREER_TYPES:
             result.warn(f"config.yaml: career_type '{ctype}' not in allowed enums")
+        rlevel = (cfg.get('target_role_level') or '').strip().lower()
+        if rlevel and rlevel not in VALID_ROLE_LEVELS:
+            result.warn(f"config.yaml: target_role_level '{rlevel}' not in allowed enums")
 
     # 3. Identity languages & work authorization
     id_path = TEMPLATE_ROOT / "identity" / "identity.yaml"
@@ -667,7 +671,13 @@ def compute_fill_status(result: ValidationResult):
 
     checks = [
         ("config.yaml", "config.yaml", lambda d: bool(((d or {}).get('user') or {}).get('name', '').strip())),
-        ("identity/identity.yaml", "identity.yaml", lambda d: bool((d or {}).get('name', '').strip()) or bool((d or {}).get('total_years_experience')) or bool((d or {}).get('languages')) or bool((d or {}).get('citizenship')) or bool((d or {}).get('work_authorization'))),
+        ("identity/identity.yaml", "identity.yaml", lambda d: (
+            bool((d or {}).get('name', '').strip())
+            or bool((d or {}).get('total_years_experience', 0) > 0)
+            or any(isinstance(l, dict) and bool(l.get('language', '').strip()) for l in ((d or {}).get('languages') or []))
+            or bool(str((d or {}).get('citizenship', '')).strip())
+            or bool(((d or {}).get('work_authorization') or {}).get('status', '').strip() if isinstance((d or {}).get('work_authorization'), dict) else str((d or {}).get('work_authorization', '')).strip())
+        )),
         ("identity/experience.yaml", "experience.yaml", lambda d: any(
             isinstance(e, dict) and bool((e.get('company') or '').strip()) for e in ((d or {}).get('experience') or [])
         )),

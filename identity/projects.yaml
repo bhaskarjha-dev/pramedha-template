@@ -30,14 +30,14 @@ public:
   #   team_size: 1              # 1 = solo, 5 = small team, etc.
   #   start_date: ""            # YYYY-MM
   #   end_date: ""              # YYYY-MM or "present"
-  #   repo: ""                  # GitHub/GitLab URL
-  #   live_url: ""              # Live demo URL (if any)
-  #   tech: []                  # Technologies used
+  #   repo: ""                  # Code repository URL (for technical / open-source projects)
+  #   live_url: ""              # Live demo, portfolio piece, case study, or report URL
+  #   tech: []                  # Tools, technologies, frameworks, or methodologies used
   #   highlights:
   #     - ""                    # Key achievement/feature
   #     - ""
-  #   impact_metrics: ""        # e.g., "500 stars, 2K downloads/month"
-  #   license: ""               # e.g., "MIT", "Apache-2.0"
+  #   impact_metrics: ""        # e.g., "500 stars, 2K downloads/month", "$200K saved", "45% faster"
+  #   license: ""               # e.g., "MIT", "Apache-2.0", "Proprietary"
   #   verification: ""
   #   relevance: []             # Which target roles this supports
 
@@ -47,7 +47,7 @@ internal:
   # - name: ""
   #   tagline: ""
   #   context: ""               # e.g., "Built at Employer for Client X"
-  #   tech: []
+  #   tech: []                  # Technologies, tools, or domain methods used
   #   highlights:
   #     - ""
   #   verification: ""

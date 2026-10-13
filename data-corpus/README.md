@@ -50,26 +50,34 @@ Export and download from every platform where you have a professional presence.
 | Discord/Slack community contributions | 🟢 | `exports/` | Screenshots of notable contributions |
 | JSON Resume (if you have one) | 🟢 | `exports/` | Copy the JSON file |
 
-### 2. Career Documents → `documents/`
+### 2. Prior Resumes & CVs → `resumes/`
+
+Every resume version and CV draft you've ever compiled.
+
+| Item | Priority | Destination | Why It Matters |
+|------|:--------:|:-----------:|---------------|
+| **Every resume version** — all drafts, oldest to newest | 🔴 | `resumes/` | Shows career progression, catches forgotten roles |
+| LaTeX, Typst, Word, or Markdown source files | 🔴 | `resumes/` | Raw text extraction for master bullet pool |
+
+### 3. Career Documents → `documents/`
 
 Every piece of official paperwork. Even expired ones are useful for timeline reconstruction.
 
-| Item | Priority | Why It Matters |
-|------|:--------:|---------------|
-| **Every resume version** — all drafts, oldest to newest | 🔴 | Shows career progression, catches forgotten roles |
-| Performance reviews from all employers | 🔴 | Verified metrics + manager assessment of your skills |
-| Reference & recommendation letters | 🔴 | Third-party validation of your claims |
-| All course/certification certificates (every platform) | 🔴 | Credential IDs, dates, verification URLs |
-| Award citations & recognition documentation | 🔴 | Evidence for claims-and-evidence.md |
-| Degree certificates & academic transcripts | 🔴 | Education verification |
-| Hackathon & competition result certificates | 🟡 | Project evidence + awards |
-| Offer letters (show title & compensation progression) | 🟡 | Timeline + financial.md data |
-| Experience letters & relieving letters | 🟡 | Employment date verification |
-| Cover letters you've written | 🟡 | Reveals how YOU frame your narrative |
-| Patent filings or IP disclosures | 🟡 | If applicable |
-| Publications, preprints, co-authored papers | 🟡 | If applicable |
+| Item | Priority | Destination | Why It Matters |
+|------|:--------:|:-----------:|---------------|
+| Performance reviews from all employers | 🔴 | `documents/` | Verified metrics + manager assessment of your skills |
+| Reference & recommendation letters | 🔴 | `documents/` | Third-party validation of your claims |
+| All course/certification certificates | 🔴 | `documents/` | Credential IDs, dates, verification URLs |
+| Award citations & recognition documentation | 🔴 | `documents/` | Evidence for claims-and-evidence.md |
+| Degree certificates & academic transcripts | 🔴 | `documents/` | Education verification |
+| Hackathon & competition result certificates | 🟡 | `documents/` | Project evidence + awards |
+| Offer letters (show title & compensation progression) | 🟡 | `documents/` | Timeline + financial.md data |
+| Experience letters & relieving letters | 🟡 | `documents/` | Employment date verification |
+| Cover letters you've written in the past | 🟡 | `documents/` | Reveals how YOU frame your narrative |
+| Patent filings or IP disclosures | 🟡 | `documents/` | If applicable |
+| Publications, preprints, co-authored papers | 🟡 | `documents/` | If applicable |
 
-### 3. Project Artifacts → `documents/` or `media/`
+### 4. Project Artifacts → `documents/` or `media/`
 
 Tangible evidence of your actual work. This is what turns "I built X" into a verified claim.
 
@@ -85,7 +93,7 @@ Tangible evidence of your actual work. This is what turns "I built X" into a ver
 | Database schemas, data models, system design docs | 🟡 | `documents/` |
 | README files for private/internal repos | 🟢 | `text/` |
 
-### 4. Social Proof → `documents/` or `text/`
+### 5. Social Proof → `documents/` or `text/`
 
 What OTHER people say about your work. The most powerful evidence category.
 
@@ -101,7 +109,7 @@ What OTHER people say about your work. The most powerful evidence category.
 | Podcast or panel appearances | 🟡 | `text/` (links + descriptions) |
 | Community shoutouts | 🟢 | `text/` |
 
-### 5. Content You've Created → `text/` or `documents/`
+### 6. Content You've Created → `text/` or `documents/`
 
 Everything you've written, taught, or presented. Shows expertise depth.
 
@@ -116,7 +124,7 @@ Everything you've written, taught, or presented. Shows expertise depth.
 | Long-form LinkedIn/Twitter technical threads | 🟡 | `text/` |
 | Video tutorials, screencasts, YouTube content | 🟢 | `media/` (or links in `text/`) |
 
-### 6. Impact Numbers → `text/`
+### 7. Impact Numbers → `text/`
 
 Every measurable outcome. If you don't have exact numbers, write your best estimates — AI will tag them as `[estimated]`.
 
@@ -135,7 +143,7 @@ Every measurable outcome. If you don't have exact numbers, write your best estim
 > every number you can remember. Even rough estimates are valuable — AI will
 > cross-reference them against your resume bullets.
 
-### 7. Visual Assets → `media/`
+### 8. Visual Assets → `media/`
 
 Images, recordings, and design files. These feed into portfolio and project briefs.
 

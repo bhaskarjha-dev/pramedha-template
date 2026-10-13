@@ -56,7 +56,9 @@ risk_tolerance: ""                # conservative | moderate | aggressive
 time_availability: ""             # full_time_search | evenings_weekends | limited | unemployed
 
 # ─── Financial & Compensation Targets (⚠️ DEEPLY PRIVATE) ───────────
-target_salary_range: ""           # e.g., "₹30-50 LPA" or "$150-200K"
+# Note: strategy/financial.md is the authoritative source for detailed runway math,
+# market benchmarks, breakdown economics, and salary negotiation scripts.
+target_salary_range: ""           # e.g., "$150-200K", "£90-120K", or "₹30-50 LPA"
 salary_floor: ""                  # Minimum compensation floor (walk-away number)
 current_salary: ""                # Current or last drawn total compensation
 financial_runway_months: 0        # How long can you search without income? ⚠️ NEVER SHARE

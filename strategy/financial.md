@@ -47,7 +47,7 @@
 
 | Factor | Current City | Target City A | Target City B |
 |--------|:------------:|:-------------:|:-------------:|
-| Average rent (1–2 Bed / 2BHK) | | | |
+| Average rent (1–2 Bed Apartment / Flat) | | | |
 | Tax rate (effective) | | | |
 | Cost of living index | | | |
 | Commute cost | | | |

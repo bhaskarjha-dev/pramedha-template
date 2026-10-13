@@ -37,7 +37,7 @@ data-corpus/         ← Raw career evidence (resumes, certs, exports, brain dum
 
 | Objective / Task | 🎯 Minimum Files to Read & Edit | Context Budget |
 |------------------|---------------------------------|:--------------:|
-| **Tailor Resume for a Job Posting** | `resume/master.yaml`, `identity/experience.yaml`, `identity/skills.yaml`, `resume/variants/_template.yaml` | ~2,500 tokens |
+| **Tailor Resume for a Job Posting** | `resume/master.yaml`, `identity/experience.yaml`, `identity/skills.yaml`, `resume/variants/<target>.yaml` (or copy `_template.yaml`) | ~2,500 tokens |
 | **Prepare for Behavioral Interview** | `assets/star-stories.md`, `assets/interview-prep/behavioral.md` | ~2,800 tokens |
 | **Prepare for Technical / Domain Interview** | `identity/skills.yaml`, `assets/interview-prep/technical.md`, `identity/projects.yaml` | ~3,200 tokens |
 | **Rapid ATS Application Form Fill** | `assets/form-fill-cheatsheet.md`, `strategy/job-tracker.md`, `assets/cover-letters/standard.md` | ~2,100 tokens |
@@ -45,7 +45,7 @@ data-corpus/         ← Raw career evidence (resumes, certs, exports, brain dum
 | **Friday 5-Minute Weekly Review** | `strategy/weekly-tracker.md`, `journal/wins.md`, `journal/work-log/_template.md` | ~1,400 tokens |
 | **Target Role & Pivot Evaluation** | `strategy/target-roles.md`, `identity/skills.yaml` | ~2,200 tokens |
 | **Offer Evaluation & Comp Negotiation** | `strategy/financial.md`, `strategy/offer-comparison.md`, `personal/preferences.yaml` | ~2,000 tokens |
-| **Log New Win or Shipped Feature** | `journal/wins.md`, `identity/experience.yaml`, `resume/master.yaml` | ~2,400 tokens |
+| **Log New Win or Shipped Feature** | `journal/wins.md`, `identity/experience.yaml`, `resume/master.yaml`, `identity/claims-and-evidence.md` | ~2,600 tokens |
 | **Quarterly Audit & System Health** | `ops/guide.md`, `ops/authority-map.md`, `config.yaml` | ~2,000 tokens |
 
 ---
@@ -55,7 +55,8 @@ data-corpus/         ← Raw career evidence (resumes, certs, exports, brain dum
 1. **`ops/authority-map.md`** is the source-of-truth reference. When in doubt about which file owns a piece of data, check there.
 2. **Never fabricate data.** If evidence doesn't exist, leave the field empty.
 3. **Every claim gets a verification tag:** ✅ (verified), ⚠️ (estimated), ❌ (unverified).
-4. **`personal/` content NEVER appears on resumes or shared materials.**
+4. **`personal/` content NEVER appears on resumes or public assets.** (It guides private interview coaching, transition narratives, and role evaluation, but is never copied verbatim into outward materials).
+   - `identity/references.yaml` is strictly confidential — only extract individual contact details when specifically required by a formal application or background check.
 5. **`identity/` is the single source.** All outward materials (resume, LinkedIn, cover letters) derive from identity — never the reverse.
 6. **Anti-inflation:** Don't upgrade skill levels, metrics, or titles without evidence. See `ops/guide.md` for the 6 anti-inflation rules.
 7. **Check `ops/session-handoff.md`** at the start of each session for prior context.

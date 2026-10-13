@@ -42,7 +42,7 @@ CONTEXT: Read these files FIRST:
 
 Then scan ALL files in data-corpus/ (resumes, documents, exports, text, media).
 
-EXECUTE: Follow the 7-phase, 33-step protocol in agent-instructions.md exactly:
+EXECUTE: Follow the 7-phase protocol in .pramedha/agent-instructions.md exactly:
 - Phase A (Steps 0-1): Scan data-corpus/ and build complete mental model
 - Phase B (Steps 2-10): Fill all 10 identity/ files (verified facts + claims + professional summary)
 - Phase C (Steps 11-13): Generate resume master + variants and validate

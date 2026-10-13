@@ -14,6 +14,29 @@
 ...
 -->
 
+## Session: 2026-10-13 (Counter-Audit Implementation & Deep Falsification Hardening)
+
+### Summary
+Executed complete, meticulous implementation of all verified findings from `tmp/audit.md` and `tmp/audit-non-resume.md` following deep falsification analysis. Firmly rejected 7 hallucinated/falsified claims (retaining clean 96-file structure, preserving `references.yaml` in identity, maintaining strict separation of private reflections vs journal logs, and avoiding redundant file churn). Implemented 6 genuine defects and 7 ergonomic/inclusivity enhancements: upgraded fill detection to eliminate false-positive fills on clean clones (now honest 0/13), enforced `target_role_level` enums, added education chronology (`start_date`/`end_date`) across `credentials.yaml`, `sync.py`, and `master.yaml`, purged private stubs from outward schemas, converted informal cover letter chats into formal application letters, synchronized AI fill protocol steps, aligned `GETTING_STARTED.md` and `data-corpus/README.md`, and generalized compensation and mission statement examples across international markets. 100% test pass rate across `validate.py`, `assemble.py`, and `sync.py`.
+
+### What Was Done
+- **Intelligent Scaffold-Aware Fill Detection (`.pramedha/validate.py`):** Fixed `compute_fill_status()` to inspect file contents and evaluate comment-only or placeholder templates as unfilled, reporting honest `0/13 (0%)` on clean template clones instead of false-positive fills.
+- **Role Level Enum Validation (`.pramedha/validate.py`, `.pramedha/schema-reference.md`):** Added enum enforcement for `target_role_level` (`intern`, `junior`, `mid`, `senior`, `staff`, `principal`, `director`, `vp`, `c-level`) in `check_schema_enums()` and updated `schema-reference.md`.
+- **Education Chronology & Multi-Degree Generalization (`identity/credentials.yaml`, `resume/sync.py`, `resume/master.yaml`):** Added `start_date` and `end_date` support to education entries, updated `sync.py` to extract both dates, and broadened master resume education examples to support multi-degree histories, international GPA/CGPA scales (`GPA: 3.8/4.0`, `CGPA: 8.5/10`), and diverse standardized tests (`GRE`, `GMAT`, `GATE`, `USMLE`, `CFA`).
+- **Identity Schema Privacy & Delivery Generalization (`identity/experience.yaml`, `identity/projects.yaml`):** Purged private `# reason_for_leaving` stub from outward experience schema (retained in private `personal/career-narrative.md`), and broadened project comments to support non-code deliverables (`live_url`, case studies, whitepapers) and methodologies (`tech_or_tools`).
+- **Asset Harmonization & Formal Application Letters (`assets/cover-letters/`, `assets/outreach-messages.md`):** Replaced informal short-chat snippets in `referral.md` and `cold-outreach.md` with comprehensive, professional application cover letter documents (Internal Employee Referral application and Letter of Interest / Unsolicited Application), eliminating duplication with `assets/outreach-messages.md`.
+- **AI Protocol Harmony (`.pramedha/agent-instructions.md`):** Added explicit protocol steps and instructions in Phase D for `outreach-messages.md`, `testimonials.md`, and `project-briefs/`, and in Phase E for `networking.md`, while maintaining strict 33-step numbering consistency.
+- **Global Inclusivity & Cross-File Integrity (`strategy/financial.md`, `personal/preferences.yaml`, `VISION.md`, `AGENTS.md`):** Generalized housing comparisons to `1–2 Bed Apartment / Flat`, added cross-reference notes linking `preferences.yaml` compensation dealbreakers to authoritative `strategy/financial.md`, diversified vision mission statement examples across international currency scales ($185K+, ₹35+ LPA, £95K+), added `claims-and-evidence.md` to Context Router row 48, and clarified Rule 4 regarding private interview coaching vs outward publication with strict sandboxing for `identity/references.yaml`.
+- **Data-Corpus & Getting Started Alignment (`data-corpus/README.md`, `GETTING_STARTED.md`):** Separated sections 2 and 3 in `data-corpus/README.md` to avoid internal contradictions, aligned `GETTING_STARTED.md` intake table with all 7 data-corpus subdirectories, and added Windows PowerShell 1-click build guidance (`.\resume\build.ps1`).
+
+### Key Decisions
+| Decision | Rationale | Affects |
+|----------|-----------|---------|
+| Reject 7 falsified audit items | Preserve clean 96-file structure; keep `references.yaml` in identity for ATS form-filling; preserve private failure isolation in `reflections.md`; prevent churn | Whole repository |
+| Scaffold-aware fill detection in validator | Prevents fresh clones from displaying false 100% fill status before user enters data | `.pramedha/validate.py` |
+| Convert cover letters to formal application letters | Prevents duplication with `outreach-messages.md` and provides real application documents for job seekers | `assets/cover-letters/` |
+| Maintain strict 33-step protocol numbering | Harmonizes protocol across `AGENTS.md`, `VISION.md`, and `agent-instructions.md` without renumbering chaos | `.pramedha/agent-instructions.md` |
+
 ## Session: 2026-10-13 (Falsification Verification & System Hardening Pass)
 
 ### Summary

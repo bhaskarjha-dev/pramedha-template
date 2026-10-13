@@ -92,12 +92,12 @@ publications: []
 education: []
   # - institution: "University Name"
   #   area: "Computer Science"
-  #   degree: "B.Tech"
+  #   degree: "B.S. / B.Tech / B.A."
   #   start_date: "2018"
   #   end_date: "2022"
   #   highlights:
-  #     - "CGPA: 8.5/10"
-  #     - "Relevant coursework: ML, Data Structures"
+  #     - "GPA: 3.8/4.0 or CGPA: 8.5/10"
+  #     - "Relevant coursework: Algorithms, Distributed Systems"
 
 # ─── Achievements ────────────────────────────────────────────────────────
 achievements: {}

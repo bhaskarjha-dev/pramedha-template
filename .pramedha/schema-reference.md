@@ -22,6 +22,7 @@
 | `career_stage` | `student`, `early_career`, `mid_career`, `senior`, `executive`, `career_changer`, `returning`, `sabbatical`, `freelance` |
 | `career_break_type` | `sabbatical`, `caregiving`, `parental_leave`, `education`, `health`, `relocation`, `career_transition` |
 | `work_authorization` | `citizen`, `permanent_resident`, `work_visa`, `student_visa`, `need_sponsorship`, `other` |
+| `target_role_level` | `entry`, `mid`, `senior`, `lead`, `staff`, `principal`, `executive` |
 
 ---
 
@@ -35,6 +36,7 @@
 | `profiles.linkedin` | `identity.profiles[network=linkedin].url` | string | identity.yaml > config.yaml |
 | `profiles.github` | `identity.profiles[network=github].url` | string | identity.yaml > config.yaml |
 | `user.website` / `portfolio` | `identity.url` | string | identity.yaml > config.yaml |
+| `target_role_level` | *(positioning reference)* | RoleLevel | config.yaml (exclusive) |
 | `location.*` | `identity.location` | Location | identity.yaml > config.yaml |
 | `languages[].language` | `identity.languages[].language` | string | identity.yaml (exclusive) |
 | `languages[].level` | `identity.languages[].fluency` | LanguageFluency | identity.yaml (exclusive) |
