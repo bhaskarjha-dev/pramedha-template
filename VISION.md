@@ -45,15 +45,13 @@ If facts change, the identity layer updates first, then everything downstream re
 
 | Phase | Status | What It Covers |
 |-------|:------:|----------------|
-| 0. Data Intake | ⬜ | Raw career data dumped into `data-corpus/` |
-| 1. Identity | ⬜ | Fact database: experience, skills, projects, credentials, speaking |
-| 2. Strategy + Assets | ⬜ | Target roles, study plan, STAR stories, cover letters, platform copy |
-| 3. Personal Context | ⬜ | About me, career narrative, preferences, reflections |
-| 4. Resume Pipeline | ⬜ | master.yaml + role-specific variants generating → PDF |
-| 5. Claims Audit | ⬜ | Every claim verified against source evidence |
-| 6. Portfolio Polish | ⬜ | GitHub profile, flagship project READMEs, pinned repos |
-| 7. Digital Presence | ⬜ | Website, LinkedIn, secondary platforms, content publishing |
-| 8. Application Ready | ⬜ | Content engine, networking, active applications |
+| Phase A: Foundation | ⬜ | Identity config + raw evidence in `data-corpus/` |
+| Phase B: Identity Layer | ⬜ | Fact database: experience, skills, credentials, projects, claims |
+| Phase C: Resume Pipeline | ⬜ | master.yaml bullet pool + role-specific variants → RenderCV PDF |
+| Phase D: Assets Generation | ⬜ | STAR stories, cover letters, LinkedIn pack, platform copy |
+| Phase E: Strategy Layer | ⬜ | Target roles, study plan, master action tracker, digital presence |
+| Phase F: Personal Context | ⬜ | About me, career narrative, preferences, reflections |
+| Phase G: Governance & Vision | ⬜ | VISION.md, validation, maintenance rituals |
 
 ---
 
@@ -113,8 +111,8 @@ This repository doesn't die after the job search. It becomes:
 5. Fill identity/ files                     → Structured career facts
 6. Fill strategy/ files                     → Plans, targets, tracker
 7. Generate assets/                         → STAR stories, cover letters, platform copy
-8. Build resume variants                    → resume/variants/
-9. Audit claims                             → identity/claims-and-evidence.md
+8. Audit claims                             → identity/claims-and-evidence.md
+9. Build resume variants                    → resume/variants/
 ```
 
 ---

@@ -11,12 +11,12 @@ Map your pre-written STAR stories (from [star-stories.md](../star-stories.md)) t
 
 | Behavioral Category | Common Question | Primary Story Ref | Backup Story Ref |
 |---------------------|-----------------|-------------------|------------------|
-| **Leadership / Ownership** | "Tell me about a time you took ownership of a critical problem without being asked." | Story 1: Leadership | Story 4: Impact |
-| **Technical Conflict** | "Describe a situation where you strongly disagreed with a peer or lead on technical direction." | Story 5: Conflict | Story 2: Problem Solving |
-| **Failure / Resilience** | "Tell me about a project that failed or missed its delivery deadline." | Story 6: Failure | Story 1: Leadership |
-| **Ambiguity / Direction** | "How do you navigate vague project specifications or shifting business priorities?" | Story 7: Ambiguity | Story 2: Problem Solving |
-| **Collaboration** | "Tell me about working with a difficult stakeholder or non-technical partner." | Story 3: Collaboration | Story 5: Conflict |
-| **Execution Under Pressure** | "Describe a high-stakes outage, crunch period, or severe deadline crunch." | Story 8: Pressure | Story 4: Impact |
+| **Leadership / Ownership** | "Tell me about a time you took ownership of a critical problem without being asked." | Story 1: Leadership & Initiative | Story 5: Innovation & Creativity |
+| **Technical Conflict** | "Describe a situation where you strongly disagreed with a peer or lead on technical direction." | Story 8: Conflict Resolution | Story 2: Problem Solving & Analytical Thinking |
+| **Failure / Resilience** | "Tell me about a project that failed or missed its delivery deadline." | Story 4: Handling Failure & Learning from Mistakes | Story 1: Leadership & Initiative |
+| **Ambiguity / Direction** | "How do you navigate vague project specifications or shifting business priorities?" | Story 7: Time Management & Prioritization | Story 2: Problem Solving & Analytical Thinking |
+| **Collaboration** | "Tell me about working with a difficult stakeholder or non-technical partner." | Story 3: Teamwork & Collaboration | Story 6: Communication & Influence |
+| **Execution Under Pressure** | "Describe a high-stakes outage, crunch period, or severe deadline crunch." | Story 2: Problem Solving & Analytical Thinking | Story 7: Time Management & Prioritization |
 
 ---
 

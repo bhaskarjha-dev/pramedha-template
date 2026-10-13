@@ -10,6 +10,9 @@
 | Question | File |
 |---------|------|
 | "What roles should I target?" | [target-roles.md](target-roles.md) |
+| "How do I evaluate role viability & fit?" | [role-analysis.md](role-analysis.md) |
+| "What are my consolidated action priorities?" | [master-action-tracker.md](master-action-tracker.md) |
+| "How should I build my digital presence?" | [digital-presence-plan.md](digital-presence-plan.md) |
 | "What skills do I need to learn?" | [study-plan.md](study-plan.md) |
 | "What's my financial picture?" | [financial.md](financial.md) ⚠️ Private |
 | "How should I build my brand?" | [content-plan.md](content-plan.md) |

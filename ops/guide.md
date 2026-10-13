@@ -46,7 +46,7 @@ When an AI assistant works on this repo, these rules apply:
 | **Received offer** | — | — | — | strategy/offer-comparison.md |
 | **Claim becomes stronger** | — | — | claims-and-evidence.md (upgrade tier) | — |
 | **Claim becomes weaker** | — | — | claims-and-evidence.md (downgrade tier) | Remove from resume |
-| **Contact info changed** | — | config.yaml | — | — |
+| **Contact info changed** | — | identity/identity.yaml (and config.yaml) | — | — |
 | **Gave a talk / hackathon** | journal/wins.md | identity/speaking-and-community.yaml | claims-and-evidence.md | professional-summary → platform-copy |
 | **New raw data in data-corpus** | — | Extract → identity/*.yaml | claims-and-evidence.md | All downstream files |
 

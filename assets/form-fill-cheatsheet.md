@@ -79,7 +79,7 @@
 | Field | Value |
 |-------|-------|
 | **Expected salary (range)** | |
-| **Current CTC** | ⚠️ **NEVER SHARE** — say "prefer not to disclose" |
+| **Current Compensation / Salary (CTC)** | ⚠️ **NEVER SHARE** — say "prefer not to disclose" |
 
 > Script: "Based on my research and the scope of this role, I'm targeting [range].
 > I'm open to discussing the full compensation package."

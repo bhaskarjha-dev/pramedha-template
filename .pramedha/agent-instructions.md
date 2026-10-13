@@ -47,7 +47,9 @@ This shapes everything that follows.
 Read ALL files in `data-corpus/` subdirectories:
 - `resumes/` — Extract work history, skills, education, projects
 - `documents/` — Extract certifications, awards, scores with verification
-- `exports/` — Parse LinkedIn/GitHub exports for additional data
+- `exports/` — Parse generic data exports for additional background
+- `linkedin/` — Extract full profile text, endorsements, and network data
+- `github/` — Extract repository history, commit volumes, tech stacks
 - `text/` — Extract career context, goals, preferences from freeform text
 - `media/` — Note what visual evidence exists (reference in verification tags)
 

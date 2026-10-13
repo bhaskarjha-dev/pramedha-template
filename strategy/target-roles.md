@@ -32,7 +32,7 @@ Rate each role 1-5 on these dimensions:
 
 | Role | Skills | Interest | Market | Salary | Growth | Gaps | Interview | Competition | Total | Tier |
 |------|:------:|:--------:|:------:|:------:|:------:|:----:|:---------:|:-----------:|:-----:|:----:|
-| *Example: ML Engineer* | *4* | *5* | *4* | *5* | *4* | *3* | *3* | *3* | *31* | *A* |
+| *Example: ML Engineer* | *4* | *5* | *4* | *5* | *4* | *4* | *4* | *3* | *33* | *A* |
 
 ### Tier Definitions
 - **Tier A (32-40):** Primary targets — apply aggressively

@@ -378,9 +378,10 @@ def assemble_variant(master: dict, design: dict, variant: dict, config: dict = N
     if project_entries:
         sections['projects'] = project_entries
 
-    # Technologies (verbatim from variant)
-    if 'technologies' in variant and variant['technologies']:
-        sections['technologies'] = variant['technologies']
+    # Technologies (variant overrides master; falls back to master shared technologies)
+    technologies = variant.get('technologies') or master.get('technologies', [])
+    if technologies:
+        sections['technologies'] = copy.deepcopy(technologies)
 
     # Education (from master, shared)
     if 'education' in master and master['education']:
@@ -413,6 +414,17 @@ def assemble_variant(master: dict, design: dict, variant: dict, config: dict = N
     elif 'publications' in master and master.get('publications') and variant.get('include_publications', False):
         sections['publications'] = copy.deepcopy(master['publications'])
 
+    # Section ordering: variant can specify custom section_order, else default sequence
+    default_order = ['summary', 'experience', 'projects', 'technologies', 'education', 'achievements', 'publications']
+    section_order = variant.get('section_order') or default_order
+    ordered_sections = {}
+    for sec in section_order:
+        if sec in sections:
+            ordered_sections[sec] = sections[sec]
+    for sec, val in sections.items():
+        if sec not in ordered_sections:
+            ordered_sections[sec] = val
+
     # --- Assemble final structure ---
     cv_data = {}
     for k, v in header.items():
@@ -420,7 +432,7 @@ def assemble_variant(master: dict, design: dict, variant: dict, config: dict = N
             cv_data[k] = copy.deepcopy(v)
     if 'name' not in cv_data:
         cv_data['name'] = header.get('name') or "Your Name"
-    cv_data['sections'] = sections
+    cv_data['sections'] = ordered_sections
 
     design_data = design.get('design', {}) if design else {}
     result = {

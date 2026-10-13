@@ -46,14 +46,14 @@ Open `config.yaml` and fill in your basic identity:
 user:
   name: "Your Full Name"
   email: "you@example.com"
-  phone: "+91-9876543210"
+  phone: "+1-555-0100"
   headline: "Software Engineer | Your Specialization"
 
 profession_type: "engineering"    # or: creative, medical, business, academic, legal
 
 location:
-  city: "Bangalore"
-  country_code: "IN"
+  city: "San Francisco"           # or your city
+  country_code: "US"              # ISO code (US, IN, GB, DE, etc.)
 ```
 
 > **Don't overthink it.** You can change everything later. Just get the basics in.
@@ -112,11 +112,24 @@ The AI will fill **~40 files automatically**:
 - ⚠️ Strategy files (drafted, needs your review)
 - ❌ Journal files (you fill these over time)
 
+> 💡 **Phased Execution Tip (Avoid Context Limits):** If your AI chat interface has token output constraints, ask it to fill in two stages:
+> 1. **Stage 1:** Execute **Phase A & B** (scan `data-corpus/` → generate `identity/*.yaml` and `claims-and-evidence.md`). Review the facts.
+> 2. **Stage 2:** Execute **Phase C through G** (generate resume variants, STAR stories, strategy, and platform copy from the verified identity).
+>
 > **No AI assistant?** Fill the identity files manually. Start with `identity/experience.yaml` — it's the most important file.
 
 ---
 
 ## Step 5: Generate Your First Resume (5 min)
+
+### Prerequisites
+
+Ensure you have Python 3.10+ and the required packages installed:
+```bash
+pip install pyyaml rendercv
+```
+
+### Resume Generation Workflow
 
 After `identity/` is filled:
 

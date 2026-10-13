@@ -13,6 +13,8 @@
 | [questions-to-ask.md](questions-to-ask.md) | Prepared questions for interviewers | Last 5 minutes of any interview |
 | [testimonials.md](testimonials.md) | Social proof quotes from colleagues | Portfolio, LinkedIn, cover letters |
 | [linkedin-pack.md](linkedin-pack.md) | LinkedIn profile optimization pack | When updating your LinkedIn |
+| [platform-copy.md](platform-copy.md) | Multi-platform bios, abstracts, and pitches | CFPs, conference bios, freelance profiles |
+| [form-fill-cheatsheet.md](form-fill-cheatsheet.md) | Standard job application answers and copy-paste values | Tedious job application forms & ATS portals |
 | [github-readme.md](github-readme.md) | GitHub profile README template | When setting up GitHub profile |
 
 ---
@@ -23,7 +25,7 @@
 |--------|-----------------|
 | [cover-letters/](cover-letters/) | 3 cover letter frameworks for different contexts |
 | [project-briefs/](project-briefs/) | Detailed write-ups for portfolio projects |
-| [interview-prep/](interview-prep/) | Technical and behavioral interview preparation |
+| [interview-prep/](interview-prep/) | Technical ([technical.md](interview-prep/technical.md)) and behavioral ([behavioral.md](interview-prep/behavioral.md)) interview preparation |
 
 ---
 

@@ -86,7 +86,7 @@ The bridge between raw identity facts and RenderCV resume generation operates as
 | `identity/projects.yaml` | `projects:`<br>`[proj_key]:`<br>&nbsp;&nbsp;`name`<br>&nbsp;&nbsp;`date`<br>&nbsp;&nbsp;`location` (URL/repo)<br>&nbsp;&nbsp;`bullets: {phrasings}` | `NormalEntry`:<br>• `name`<br>• `date`<br>• `location`<br>• `highlights: [...]` |
 | `identity/credentials.yaml` (`education[]`) | `education:`<br>`- institution`<br>&nbsp;&nbsp;`area`<br>&nbsp;&nbsp;`degree`<br>&nbsp;&nbsp;`start_date`, `end_date`<br>&nbsp;&nbsp;`highlights: [...]` | `EducationEntry`:<br>• `institution`<br>• `area`<br>• `degree`<br>• `start_date`, `end_date`<br>• `highlights: [...]` |
 | `identity/credentials.yaml` (`publications[]`) | `publications:`<br>`- title`<br>&nbsp;&nbsp;`authors: [...]`<br>&nbsp;&nbsp;`date`<br>&nbsp;&nbsp;`journal` / `publisher`<br>&nbsp;&nbsp;`doi` / `url` | `PublicationEntry`:<br>• `title`<br>• `authors`<br>• `date`<br>• `journal`<br>• `doi`<br>• `url` |
-| `identity/skills.yaml` | `technologies:` (or `skills:`)<br>`- label: "Category"`<br>&nbsp;&nbsp;`details: "item1, item2"` | `BulletEntry` or `NormalEntry` under Technologies section |
+| `identity/skills.yaml` | `technologies:` (or `skills:`)<br>`- label: "Category"`<br>&nbsp;&nbsp;`details: "item1, item2"` | `OneLineEntry` under Technologies section |
 
 ---
 

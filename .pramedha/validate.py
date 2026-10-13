@@ -62,10 +62,28 @@ OPTIONAL_FILES = [
     "strategy/study-plan.md",
     "strategy/financial.md",
     "strategy/weekly-tracker.md",
+    "strategy/content-plan.md",
+    "strategy/networking.md",
+    "strategy/offer-comparison.md",
+    "strategy/risk-register.md",
+    "strategy/role-analysis.md",
+    "strategy/role-deep-dives.md",
+    "strategy/job-search/outreach.md",
+    "strategy/job-search/platforms.md",
+    "strategy/job-search/salary.md",
+    "strategy/job-search/tracker.md",
     "assets/star-stories.md",
     "assets/linkedin-pack.md",
     "assets/platform-copy.md",
     "assets/form-fill-cheatsheet.md",
+    "assets/questions-to-ask.md",
+    "assets/testimonials.md",
+    "assets/github-readme.md",
+    "assets/interview-prep/behavioral.md",
+    "assets/interview-prep/technical.md",
+    "assets/cover-letters/standard.md",
+    "assets/cover-letters/referral.md",
+    "assets/cover-letters/cold-outreach.md",
     "journal/wins.md",
     "journal/learning-log.md",
     "journal/feedback.md",
@@ -154,10 +172,23 @@ def check_config(result: ValidationResult):
     name = (user.get('name') or '').strip()
     email = (user.get('email') or '').strip()
 
-    if not name:
-        result.warn("config.yaml: user.name is empty")
-    if not email:
-        result.warn("config.yaml: user.email is empty")
+    # Resolve effective contact details across config.yaml and identity/identity.yaml
+    id_path = TEMPLATE_ROOT / "identity" / "identity.yaml"
+    id_data = {}
+    if id_path.exists():
+        try:
+            with open(id_path, 'r', encoding='utf-8') as id_f:
+                id_data = yaml.safe_load(id_f) or {}
+        except Exception:
+            pass
+
+    effective_name = name or (id_data.get('name') or '').strip()
+    effective_email = email or (id_data.get('email') or '').strip()
+
+    if not effective_name:
+        result.warn("config.yaml / identity.yaml: user name is empty in both files")
+    if not effective_email:
+        result.warn("config.yaml / identity.yaml: user email is empty in both files")
 
     profession = (config.get('profession_type') or '').strip()
     if not profession:
@@ -255,6 +286,13 @@ def check_cascade_consistency(result: ValidationResult):
 
 
 VALID_SKILL_LEVELS = {"beginner", "intermediate", "advanced", "expert"}
+VALID_PROFESSION_TYPES = {"engineering", "creative", "medical", "business", "academic", "legal", "freelance", "executive", "other"}
+VALID_CAREER_TYPES = {"employed", "freelance", "portfolio", "academic", "military", "government", "student"}
+VALID_EMPLOYMENT_TYPES = {"full-time", "part-time", "contract", "freelance", "internship"}
+VALID_LOCATION_TYPES = {"remote", "hybrid", "onsite"}
+VALID_LANGUAGE_FLUENCY = {"native", "fluent", "professional", "conversational", "basic"}
+VALID_CAREER_STAGES = {"early", "mid", "senior", "lead", "executive"}
+VALID_CAREER_BREAK_TYPES = {"parental", "caregiving", "health", "sabbatical", "education", "relocation", "travel", "transition", "other"}
 
 
 def parse_flexible_date(date_str: str):
@@ -272,33 +310,84 @@ def parse_flexible_date(date_str: str):
     return None
 
 
-def check_skill_enums(result: ValidationResult):
-    """Validate skill levels against allowed schema enums."""
-    path = TEMPLATE_ROOT / "identity" / "skills.yaml"
-    if not path.exists():
-        return
+def check_schema_enums(result: ValidationResult):
+    """Validate all schema enums against allowed values in schema-reference.md."""
+    # 1. Skill levels in skills.yaml
+    skills_path = TEMPLATE_ROOT / "identity" / "skills.yaml"
+    if skills_path.exists():
+        with open(skills_path, 'r', encoding='utf-8') as f:
+            data = yaml.safe_load(f) or {}
+        if isinstance(data, dict):
+            for cat_name, skills in data.items():
+                if cat_name in ('last_updated',) or not isinstance(skills, list):
+                    continue
+                for s in skills:
+                    if isinstance(s, dict):
+                        name = (s.get('name') or '').strip()
+                        level = (s.get('level') or '').strip()
+                        if name and level and level.lower() not in VALID_SKILL_LEVELS:
+                            result.warn(
+                                f"skills.yaml: Skill '{name}' in '{cat_name}' has invalid level '{level}' "
+                                f"(expected: {', '.join(sorted(VALID_SKILL_LEVELS))})"
+                            )
 
-    with open(path, 'r', encoding='utf-8') as f:
-        data = yaml.safe_load(f) or {}
+    # 2. Config enums (profession_type, career_type)
+    cfg_path = TEMPLATE_ROOT / "config.yaml"
+    if cfg_path.exists():
+        with open(cfg_path, 'r', encoding='utf-8') as f:
+            cfg = yaml.safe_load(f) or {}
+        prof = (cfg.get('profession_type') or '').strip().lower()
+        if prof and prof not in VALID_PROFESSION_TYPES:
+            result.warn(f"config.yaml: profession_type '{prof}' not in allowed enums")
+        ctype = (cfg.get('career_type') or '').strip().lower()
+        if ctype and ctype not in VALID_CAREER_TYPES:
+            result.warn(f"config.yaml: career_type '{ctype}' not in allowed enums")
 
-    if not isinstance(data, dict):
-        return
+    # 3. Identity languages
+    id_path = TEMPLATE_ROOT / "identity" / "identity.yaml"
+    if id_path.exists():
+        with open(id_path, 'r', encoding='utf-8') as f:
+            id_data = yaml.safe_load(f) or {}
+        for lang in (id_data.get('languages') or []):
+            if isinstance(lang, dict):
+                lvl = (lang.get('level') or '').strip().lower()
+                lname = (lang.get('language') or '').strip()
+                if lvl and lvl not in VALID_LANGUAGE_FLUENCY:
+                    result.warn(f"identity.yaml: Language '{lname}' has invalid fluency '{lvl}'")
 
-    for cat_name, skills in data.items():
-        if cat_name in ('last_updated',) or not isinstance(skills, list):
-            continue
-        for s in skills:
-            if not isinstance(s, dict):
-                continue
-            name = (s.get('name') or '').strip()
-            level = (s.get('level') or '').strip()
-            if not name:
-                continue
-            if level and level.lower() not in VALID_SKILL_LEVELS:
-                result.warn(
-                    f"skills.yaml: Skill '{name}' in '{cat_name}' has invalid level '{level}' "
-                    f"(expected: {', '.join(sorted(VALID_SKILL_LEVELS))})"
-                )
+    # 4. Experience enums (employment_type, location_type, career_break_type)
+    exp_path = TEMPLATE_ROOT / "identity" / "experience.yaml"
+    if exp_path.exists():
+        with open(exp_path, 'r', encoding='utf-8') as f:
+            exp_data = yaml.safe_load(f) or {}
+        for entry in (exp_data.get('experience') or []):
+            if isinstance(entry, dict):
+                comp = (entry.get('company') or '').strip()
+                etype = (entry.get('employment_type') or '').strip().lower()
+                if etype and etype not in VALID_EMPLOYMENT_TYPES:
+                    result.warn(f"experience.yaml: Role at '{comp}' has invalid employment_type '{etype}'")
+                ltype = (entry.get('location_type') or '').strip().lower()
+                if ltype and ltype not in VALID_LOCATION_TYPES:
+                    result.warn(f"experience.yaml: Role at '{comp}' has invalid location_type '{ltype}'")
+        for brk in (exp_data.get('career_breaks') or []):
+            if isinstance(brk, dict):
+                btype = (brk.get('type') or '').strip().lower()
+                btitle = (brk.get('title') or '').strip()
+                if btype and btype not in VALID_CAREER_BREAK_TYPES:
+                    result.warn(f"experience.yaml: Career break '{btitle}' has invalid type '{btype}'")
+
+    # 5. Preferences enums (career_stage)
+    pref_path = TEMPLATE_ROOT / "personal" / "preferences.yaml"
+    if pref_path.exists():
+        with open(pref_path, 'r', encoding='utf-8') as f:
+            pref_data = yaml.safe_load(f) or {}
+        cstage = (pref_data.get('career_stage') or '').strip().lower()
+        if cstage and cstage not in VALID_CAREER_STAGES:
+            result.warn(f"preferences.yaml: career_stage '{cstage}' not in allowed enums")
+
+
+# Alias for backward compatibility
+check_skill_enums = check_schema_enums
 
 
 def check_date_chronology(result: ValidationResult):
@@ -588,7 +677,7 @@ def compute_fill_status(result: ValidationResult):
             status_lines.append(f"  ⬜ {label} (not created)")
 
     pct = int(100 * filled / total) if total > 0 else 0
-    result.note(f"\n📊 Fill Status: {filled}/{total} ({pct}%)")
+    result.note(f"\n📊 Core System Fill Status: {filled}/{total} ({pct}%) [13 Core Identity & Cascade Files]")
     for line in status_lines:
         result.note(line)
 

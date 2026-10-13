@@ -78,9 +78,9 @@ STOP_WORDS = {
 
 
 def slugify(text: str) -> str:
-    """Convert text into a snake_case slug."""
+    """Convert text into a snake_case slug (Unicode-aware)."""
     text = (text or '').strip().lower()
-    text = re.sub(r'[^a-z0-9]+', '_', text)
+    text = re.sub(r'[^\w]+', '_', text, flags=re.UNICODE)
     return text.strip('_')
 
 
@@ -112,7 +112,7 @@ def generate_bullet_key(bullet_text: str, existing_keys: set, fallback_idx: int 
     """Extract 2-4 keywords from a bullet to create an informative snake_case key."""
     # Remove bracketed tags like [measured], [estimated]
     cleaned = re.sub(r'\[.*?\]', '', bullet_text)
-    words = [w.lower() for w in re.findall(r'[a-zA-Z0-9]+', cleaned)]
+    words = [w.lower() for w in re.findall(r'[\w]+', cleaned, flags=re.UNICODE)]
     meaningful = [w for w in words if w not in STOP_WORDS]
     if meaningful:
         base = "_".join(meaningful[:3])
@@ -163,12 +163,14 @@ def sync_experience(id_data: dict, master_data: dict, force: bool = False):
             stats['skipped'] += 1
             continue
 
-        # Look for matching existing role by company + position or find/create key
+        # Look for matching existing role by company + position + start_date
         matching_key = None
         for k, v in master_exp.items():
             if isinstance(v, dict):
-                if v.get('company', '').lower() == company.lower() and \
-                   v.get('position', '').lower() == position.lower():
+                same_comp = v.get('company', '').lower() == company.lower()
+                same_pos = v.get('position', '').lower() == position.lower()
+                same_start = str(v.get('start_date', '')).strip() == str(start_date).strip()
+                if same_comp and same_pos and (same_start or not v.get('start_date')):
                     matching_key = k
                     break
 
@@ -251,7 +253,8 @@ def sync_experience(id_data: dict, master_data: dict, force: bool = False):
         if not b_title and not b_start:
             continue
 
-        break_key = f"career_break_{generate_slug(b_title, 20)}"
+        break_slug = slugify(b_title)[:20].strip('_') or 'transition'
+        break_key = f"career_break_{break_slug}"
         if break_key not in master_exp:
             desc = str(b.get('description') or '').strip()
             bullets = {'summary': {'default': desc}} if desc else {'summary': {'default': b_title}}
@@ -455,6 +458,61 @@ def sync_publications(id_data: dict, master_data: dict, force: bool = False):
     return stats
 
 
+def sync_skills(id_data: dict, master_data: dict, force: bool = False):
+    """
+    Sync skills from identity/skills.yaml into master.yaml['technologies']
+    using RenderCV OneLineEntry format (label: Category, details: "Skill1, Skill2").
+    """
+    master_tech = master_data.get('technologies', []) or []
+    if not isinstance(master_tech, list):
+        master_tech = []
+
+    stats = {'added': 0, 'updated': 0, 'skipped': 0}
+    if not isinstance(id_data, dict):
+        return stats
+
+    for cat_name, skills in id_data.items():
+        if cat_name in ('last_updated',) or not isinstance(skills, list):
+            continue
+
+        skill_names = []
+        for s in skills:
+            if isinstance(s, dict):
+                name = str(s.get('name') or '').strip()
+                if name:
+                    skill_names.append(name)
+            elif isinstance(s, str) and s.strip():
+                skill_names.append(s.strip())
+
+        if not skill_names:
+            stats['skipped'] += 1
+            continue
+
+        cat_label = cat_name.replace('_', ' ').title()
+        details_str = ", ".join(skill_names)
+
+        # Check if category label already exists in master technologies
+        existing_idx = None
+        for idx, entry in enumerate(master_tech):
+            if isinstance(entry, dict) and entry.get('label', '').lower() == cat_label.lower():
+                existing_idx = idx
+                break
+
+        if existing_idx is not None:
+            if force:
+                master_tech[existing_idx]['details'] = details_str
+                stats['updated'] += 1
+        else:
+            master_tech.append({
+                'label': cat_label,
+                'details': details_str
+            })
+            stats['added'] += 1
+
+    master_data['technologies'] = master_tech
+    return stats
+
+
 # ============================================================================
 # Main Entry Point
 # ============================================================================
@@ -469,7 +527,7 @@ def main():
     )
     parser.add_argument(
         '--section',
-        choices=['all', 'exp', 'experience', 'proj', 'projects', 'edu', 'education', 'pubs', 'publications'],
+        choices=['all', 'exp', 'experience', 'proj', 'projects', 'edu', 'education', 'pubs', 'publications', 'skills', 'technologies'],
         default='all',
         help="Section to sync (default: all)"
     )
@@ -487,6 +545,7 @@ def main():
     exp_path = repo_root / 'identity' / 'experience.yaml'
     proj_path = repo_root / 'identity' / 'projects.yaml'
     creds_path = repo_root / 'identity' / 'credentials.yaml'
+    skills_path = repo_root / 'identity' / 'skills.yaml'
 
     if not master_path.exists():
         print(f"ERROR: {master_path} not found.", file=sys.stderr)
@@ -537,6 +596,15 @@ def main():
             print(f"📚 Publications: +{stats['added']} entries ({stats['skipped']} blank skipped)")
         else:
             print("📚 Publications: identity/credentials.yaml not found (skipped)")
+
+    # Skills / Technologies
+    if section in ('all', 'skills', 'technologies'):
+        if skills_path.exists():
+            skills_data = load_yaml(skills_path)
+            stats = sync_skills(skills_data, master_data, force=args.force)
+            print(f"🛠️  Skills:       +{stats['added']} categories ({stats['updated']} updated, {stats['skipped']} blank skipped)")
+        else:
+            print("🛠️  Skills:       identity/skills.yaml not found (skipped)")
 
     print("-" * 60)
 

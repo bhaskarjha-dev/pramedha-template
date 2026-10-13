@@ -1,0 +1,41 @@
+name: Validate Career Template
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  validate:
+    name: Validate (${{ matrix.os }} / Python ${{ matrix.python-version }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        python-version: ["3.11", "3.12"]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pyyaml rendercv
+
+      - name: Validate Career Repository Integrity
+        run: python .pramedha/validate.py
+
+      - name: Validate Resume Bullet References
+        run: python resume/assemble.py --validate
+
+      - name: Validate Resume Sync Pipeline (Dry Run)
+        run: python resume/sync.py --dry-run

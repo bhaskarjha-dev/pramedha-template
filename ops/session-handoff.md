@@ -14,6 +14,26 @@
 ...
 -->
 
+## Session: 2026-10-13 (v0.1.0 Round 2 Remediation & CI Matrix Hardening)
+
+### Summary
+Addressed all 25 valid findings from the second external audit report. Eliminated all Python runtime crashes and edge case flaws, completed multi-domain interview track expansion, reconciled role scoring math and file registries, added comprehensive schema enum validator checks, created automated GitHub Actions CI workflow, and ensured 100% test pass rates across all tools.
+
+### What Was Done
+- **Runtime & Cascade Fixes (`resume/sync.py`, `resume/assemble.py`):** Fixed `NameError: generate_slug` in `sync.py`. Upgraded `slugify()` and `generate_bullet_key()` with Unicode regex (`re.UNICODE`) to preserve non-Latin scripts. Added `(company, start_date)` tenure disambiguation in `sync.py` so disconnected stints at the same company are not merged. Implemented `sync_skills()` bridging `identity/skills.yaml` to `master.yaml['technologies']` (`OneLineEntry` format). Added variant `section_order` and technologies fallback in `assemble.py`.
+- **Math & Cross-References:** Corrected role viability scoring in `strategy/target-roles.md` and `strategy/role-analysis.md` (33 pts for Tier A). Aligned `assets/interview-prep/behavioral.md` question matrix with canonical STAR story headings in `assets/star-stories.md`. Reconciled `VISION.md` status table to 7-phase model (A through G) and Quick Start sequence to Rule #3. Reconciled contact info authority source in `ops/guide.md` and `resume/master.yaml` to `identity/identity.yaml (fallback: config.yaml)`.
+- **Schema & Validator Integrity:** Corrected line 89 of `.pramedha/schema-reference.md` from `BulletEntry or NormalEntry` to `OneLineEntry`. Added `linkedin/` and `github/` to Step 1 data corpus scanning in `.pramedha/agent-instructions.md`. Updated `check_config()` in `validate.py` to check `identity/identity.yaml` before warning for name/email. Added comprehensive `check_schema_enums()` covering all 8 schema enum types. Clarified fill metric output to specify core files.
+- **Multi-Domain Generalization & Scaffolding Polish:** Expanded `assets/interview-prep/technical.md` with structured preparation tracks across 6 professional domains (Engineering, Business & Product, Creative & Design, Medical & Clinical, Academic & Research, Legal & Policy). Standardized phone formatting and localized terminology (`Current Compensation / Salary (CTC)`, `$2M / ₹2Cr`). Updated `strategy/README.md` and `assets/README.md` file registries. Added phased fill advice and prerequisite pip install in `GETTING_STARTED.md`.
+- **Automated CI Workflow:** Created `.github/workflows/validate.yml` running validation matrix on Ubuntu and Windows across Python 3.11 and 3.12.
+
+### Key Decisions
+| Decision | Rationale | Affects |
+|----------|-----------|---------|
+| Unicode regex for slugs | Preserves non-Latin scripts (Devanagari, Hanzi, Cyrillic) instead of stripping all text | `resume/sync.py` |
+| Disambiguate stints by start_date | Prevents clobbering or merging separate employment periods at the same company | `resume/sync.py` |
+| Modular technical interview tracks | Ensures template delivers equal rigor across all 9 supported profession types | `assets/interview-prep/technical.md` |
+| GitHub Actions matrix testing | Guarantees cross-platform pipeline reliability on both Windows and Linux environments | `.github/workflows/validate.yml` |
+
 ## Session: 2026-10-13 (v0.1.0 Full System Remediation & Rigorous Falsification Audit)
 
 ### Summary

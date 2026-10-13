@@ -11,7 +11,7 @@
 user:
   name: ""                    # Full name (as it appears on resume)
   email: ""                   # Primary professional email
-  phone: ""                   # With country code, e.g., "+91-9876543210"
+  phone: ""                   # With country code, e.g., "+1-555-0100" or "+XX-XXXXXXXXXX"
   website: ""                 # Personal website URL (if any)
   headline: ""                # One-line professional headline
                               # e.g., "Senior Backend Engineer | GenAI Specialist"

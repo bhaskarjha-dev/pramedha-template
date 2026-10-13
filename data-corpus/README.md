@@ -123,7 +123,7 @@ Every measurable outcome. If you don't have exact numbers, write your best estim
 |------|:--------:|---------|
 | Users, customers, or teams served per project | 🔴 | "Served 50K daily users" |
 | Performance improvements (speed, accuracy, etc.) | 🔴 | "Reduced latency from 2s to 200ms" |
-| Revenue generated or directly influenced | 🔴 | "Generated ₹2Cr pipeline" |
+| Revenue generated or directly influenced | 🔴 | "Generated $2M / ₹2Cr pipeline" |
 | Cost or time savings achieved | 🔴 | "Saved 40 engineering hours/week" |
 | Scale: requests/day, data volume, API calls | 🔴 | "Processed 10M records daily" |
 | Team size led or coordinated | 🟡 | "Led 5-person team" |
