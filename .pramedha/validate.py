@@ -47,6 +47,7 @@ REQUIRED_FILES = [
     "resume/design.yaml",
     "resume/assemble.py",
     "resume/sync.py",
+    "resume/_yaml_utils.py",
 ]
 
 OPTIONAL_FILES = [
@@ -85,6 +86,10 @@ OPTIONAL_FILES = [
     "journal/wins.md",
     "journal/learning-log.md",
     "journal/feedback.md",
+    "ops/session-handoff.md",
+    "ops/guide.md",
+    "ops/authority-map.md",
+    "ops/prompts.md",
 ]
 
 YAML_FILES_TO_VALIDATE = [
@@ -320,7 +325,9 @@ VALID_CAREER_BREAK_TYPES = {
     "parental_leave", "career_transition", "layoff"
 }
 VALID_WORK_AUTHORIZATION = {"citizen", "permanent_resident", "work_visa", "student_visa", "need_sponsorship", "other"}
-VALID_ROLE_LEVELS = {"entry", "mid", "senior", "lead", "staff", "principal", "executive"}
+VALID_ROLE_LEVELS = {
+    "intern", "entry", "junior", "mid", "senior", "lead", "staff", "principal", "director", "vp", "c-level", "executive"
+}
 
 
 def parse_flexible_date(date_str: str):

@@ -22,7 +22,7 @@
 | `career_stage` | `student`, `early_career`, `mid_career`, `senior`, `executive`, `career_changer`, `returning`, `sabbatical`, `freelance` |
 | `career_break_type` | `sabbatical`, `caregiving`, `parental_leave`, `education`, `health`, `relocation`, `career_transition` |
 | `work_authorization` | `citizen`, `permanent_resident`, `work_visa`, `student_visa`, `need_sponsorship`, `other` |
-| `target_role_level` | `entry`, `mid`, `senior`, `lead`, `staff`, `principal`, `executive` |
+| `target_role_level` | `intern`, `entry`, `junior`, `mid`, `senior`, `lead`, `staff`, `principal`, `director`, `vp`, `c-level`, `executive` |
 
 ---
 

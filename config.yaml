@@ -31,7 +31,7 @@ profession_type: ""
 career_type: "employed"
 
 # Target role level (non-sensitive reference for AI positioning):
-# entry | mid | senior | lead | staff | executive
+# intern | entry | junior | mid | senior | lead | staff | principal | director | vp | c-level | executive
 target_role_level: ""
 
 # ─── Location ────────────────────────────────────────────────────────────────

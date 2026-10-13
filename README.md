@@ -94,11 +94,14 @@ pramedha-template/
 ├── config.yaml                ← Your identity + preferences
 │
 ├── data-corpus/               ← Phase 0: Dump raw career data
+│   ├── inbox/                    Unsorted intake landing zone (drop raw files here first)
 │   ├── resumes/                  Old resumes, CVs (PDF/DOCX)
 │   ├── documents/                Certificates, transcripts, awards
-│   ├── exports/                  LinkedIn CSV, GitHub JSON, Naukri
+│   ├── exports/                  Generic platform data exports (Naukri, Indeed, Kaggle)
+│   ├── linkedin/                 LinkedIn profile archive and data export files
+│   ├── github/                   GitHub repositories archive and commit metrics
 │   ├── text/                     Brain dumps, career notes
-│   └── media/                    Photos, screenshots
+│   └── media/                    Photos, screenshots, demo recordings
 │
 ├── identity/                  ← Phase 1: Structured career facts
 │   ├── identity.yaml             Demographics, languages, work auth
@@ -114,6 +117,7 @@ pramedha-template/
 ├── resume/                    ← Resume cascade system
 │   ├── master.yaml               Bullet pool (keyed phrasings)
 │   ├── design.yaml               Visual theme
+│   ├── sync.py                   Identity-to-master bridge synchronizer
 │   ├── assemble.py               Cascade engine
 │   ├── variants/                 Role-specific overlays
 │   ├── jd/                       Per-job-description overlays
