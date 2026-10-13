@@ -8,6 +8,7 @@ Usage:
     python assemble.py --jd jd/company_role.yaml  # Build from JD-specific overlay
     python assemble.py --validate               # Validate all references without building
     python assemble.py --diff                   # Show what changed vs existing generated files
+    python assemble.py --orphans                # Report unreferenced master bullets/roles
 """
 
 import argparse
@@ -25,55 +26,22 @@ import yaml
 
 
 # ============================================================================
-# YAML Helpers — Preserve key order, handle RenderCV's 'present' literal
+# YAML Helpers — Imported from _yaml_utils with RenderCV schema header
 # ============================================================================
 
-class OrderedDumper(yaml.SafeDumper):
-    """Dump YAML preserving insertion order and using block style."""
-    pass
+try:
+    from resume._yaml_utils import OrderedDumper, PresentLiteral, dump_yaml as _base_dump_yaml, load_yaml
+except ImportError:
+    from _yaml_utils import OrderedDumper, PresentLiteral, dump_yaml as _base_dump_yaml, load_yaml
 
-def _dict_representer(dumper, data):
-    return dumper.represent_mapping(yaml.resolver.BaseResolver.DEFAULT_MAPPING_TAG, data.items())
-
-def _str_representer(dumper, data):
-    if '\n' in data:
-        return dumper.represent_scalar('tag:yaml.org,2002:str', data, style='|')
-    if len(data) > 80:
-        return dumper.represent_scalar('tag:yaml.org,2002:str', data, style='"')
-    return dumper.represent_scalar('tag:yaml.org,2002:str', data)
-
-def _present_representer(dumper, data):
-    """Handle the bare word 'present' (no quotes) for RenderCV end_date."""
-    if data == 'present':
-        return dumper.represent_scalar('tag:yaml.org,2002:str', data, style='')
-    return dumper.represent_scalar('tag:yaml.org,2002:str', data)
-
-OrderedDumper.add_representer(dict, _dict_representer)
-
-
-class PresentLiteral(str):
-    """Marker class for the bare word 'present' in YAML output."""
-    pass
-
-def _present_literal_representer(dumper, data):
-    return dumper.represent_scalar('tag:yaml.org,2002:str', str(data), style='')
-
-OrderedDumper.add_representer(PresentLiteral, _present_literal_representer)
-
-
-def load_yaml(path: Path) -> dict:
-    """Load a YAML file, returning its contents as a dict."""
-    with open(path, 'r', encoding='utf-8') as f:
-        return yaml.safe_load(f)
+RENDERCV_SCHEMA_HEADER = (
+    "# yaml-language-server: $schema=https://raw.githubusercontent.com/rendercv/rendercv/refs/tags/v2.8/schema.json\n\n"
+)
 
 
 def dump_yaml(data: dict, path: Path):
     """Write a dict to a YAML file with clean formatting and RenderCV JSON schema directive."""
-    path.parent.mkdir(parents=True, exist_ok=True)
-    with open(path, 'w', encoding='utf-8') as f:
-        f.write("# yaml-language-server: $schema=https://raw.githubusercontent.com/rendercv/rendercv/refs/tags/v2.8/schema.json\n\n")
-        yaml.dump(data, f, Dumper=OrderedDumper, default_flow_style=False,
-                  allow_unicode=True, width=200, sort_keys=False)
+    _base_dump_yaml(data, path, header=RENDERCV_SCHEMA_HEADER)
 
 
 LOCALE_MAP = {
@@ -476,6 +444,8 @@ def validate_variant(master: dict, variant: dict) -> list[str]:
             errors.append(f"[{variant_name}] Experience '{exp_key}' not in master")
             continue
         exp_data = master_exp[exp_key]
+        if isinstance(exp_data, dict) and exp_data.get('archived') is True:
+            print(f"   ℹ️ [{variant_name}] References role '{exp_key}' marked archived: true")
         for ref in (bullet_refs or []):
             try:
                 resolve_bullet(exp_data, exp_key, ref, variant_name)
@@ -498,6 +468,110 @@ def validate_variant(master: dict, variant: dict) -> list[str]:
     return errors
 
 
+def check_orphans(master: dict, overlay_paths: list[Path]) -> bool:
+    """Analyze master.yaml for entries never referenced in any variant or JD overlay."""
+    if not overlay_paths:
+        print("ℹ️  No active variants found in resume/variants/ or resume/jd/ to check against.")
+        print("   Create a variant (e.g. resume/variants/A_Role.yaml) first.")
+        return True
+
+    referenced_roles = set()
+    referenced_bullets = {}  # exp_key -> set of bullet keys
+    referenced_projects = set()
+    referenced_achievements = set()
+
+    for p in overlay_paths:
+        data = load_yaml(p) or {}
+        # Experience
+        for exp_key, bullet_refs in (data.get('experience') or {}).items():
+            referenced_roles.add(exp_key)
+            if exp_key not in referenced_bullets:
+                referenced_bullets[exp_key] = set()
+            for ref in (bullet_refs or []):
+                if isinstance(ref, str):
+                    referenced_bullets[exp_key].add(ref)
+                elif isinstance(ref, list) and ref:
+                    referenced_bullets[exp_key].add(ref[0])
+
+        # Projects
+        for proj_ref in (data.get('projects') or []):
+            if isinstance(proj_ref, str):
+                referenced_projects.add(proj_ref)
+            elif isinstance(proj_ref, list) and proj_ref:
+                referenced_projects.add(proj_ref[0])
+            elif isinstance(proj_ref, dict):
+                for k in proj_ref.keys():
+                    referenced_projects.add(k)
+
+        # Achievements
+        for ach_ref in (data.get('achievements') or []):
+            if isinstance(ach_ref, str):
+                referenced_achievements.add(ach_ref)
+
+    master_exp = master.get('experience') or {}
+    master_proj = master.get('projects') or {}
+    master_ach = master.get('achievements') or {}
+
+    unref_roles = []
+    unref_bullets = {}
+    for role_key, role_data in master_exp.items():
+        if role_key == '_example_role_':
+            continue
+        is_archived = bool(isinstance(role_data, dict) and role_data.get('archived') is True)
+        if role_key not in referenced_roles:
+            unref_roles.append((role_key, is_archived))
+        else:
+            bullets = (role_data.get('bullets') or {}) if isinstance(role_data, dict) else {}
+            used = referenced_bullets.get(role_key, set())
+            unused = [b for b in bullets if b not in used]
+            if unused:
+                unref_bullets[role_key] = unused
+
+    unref_projects = [p for p in master_proj.keys() if p not in referenced_projects]
+    unref_achievements = [a for a in master_ach.keys() if a not in referenced_achievements]
+
+    print(f"🔍 Orphan Analysis across {len(overlay_paths)} active variant overlay(s):\n")
+
+    has_orphans = False
+
+    if unref_roles:
+        has_orphans = True
+        print(f"💼 Unreferenced Experience Roles ({len(unref_roles)}):")
+        for r, is_arch in unref_roles:
+            tag = " [archived]" if is_arch else ""
+            print(f"   - {r}{tag}")
+        print()
+
+    if unref_bullets:
+        has_orphans = True
+        total_unused_b = sum(len(b) for b in unref_bullets.values())
+        print(f"📝 Unreferenced Bullets in Referenced Roles ({total_unused_b}):")
+        for r, b_list in unref_bullets.items():
+            print(f"   • {r}:")
+            for b in b_list:
+                print(f"       - {b}")
+        print()
+
+    if unref_projects:
+        has_orphans = True
+        print(f"🚀 Unreferenced Projects ({len(unref_projects)}):")
+        for p in unref_projects:
+            print(f"   - {p}")
+        print()
+
+    if unref_achievements:
+        has_orphans = True
+        print(f"🏆 Unreferenced Achievements ({len(unref_achievements)}):")
+        for a in unref_achievements:
+            print(f"   - {a}")
+        print()
+
+    if not has_orphans:
+        print("✅ No orphaned master entries found. All master roles, projects, and achievements are referenced!")
+
+    return not has_orphans
+
+
 # ============================================================================
 # CLI Driver
 # ============================================================================
@@ -514,6 +588,7 @@ def main():
     parser.add_argument('--jd', help='Build from a JD-specific overlay file')
     parser.add_argument('--validate', action='store_true', help='Validate only, no output')
     parser.add_argument('--diff', action='store_true', help='Show what would change vs existing generated files')
+    parser.add_argument('--orphans', action='store_true', help='Detect and report unreferenced master.yaml bullets, roles, projects, and achievements')
     parser.add_argument('--no-autofill', action='store_true', help='Disable auto-filling header from config.yaml')
     args = parser.parse_args()
 
@@ -534,6 +609,16 @@ def main():
 
     master = load_yaml(master_path) or {}
     design = load_yaml(design_path) or {}
+
+    if args.orphans:
+        all_overlays = []
+        if variants_dir.exists():
+            all_overlays.extend([f for f in sorted(variants_dir.glob('*.yaml')) if not f.name.startswith('_')])
+        jd_dir = script_dir / 'jd'
+        if jd_dir.exists():
+            all_overlays.extend([f for f in sorted(jd_dir.glob('*.yaml')) if not f.name.startswith('_')])
+        check_orphans(master, all_overlays)
+        return
 
     # Read identity/identity.yaml and config.yaml for header auto-fill and filenames
     identity_path = script_dir.parent / 'identity' / 'identity.yaml'

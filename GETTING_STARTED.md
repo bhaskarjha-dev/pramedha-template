@@ -35,6 +35,15 @@ git push -u origin main
 > 3. [resume/master.yaml](resume/master.yaml) — Your resume bullet pool
 >
 > Once these 3 files are filled, you already have an uninflated, single-source career engine. You can copy bullets directly into any resume builder, or let Python assemble them automatically. Every other file (strategy, assets, journal) can be adopted gradually when you need it.
+>
+> 💡 **Pivoting or Career Changer?**
+> If you're switching domains (e.g., non-tech → tech, clinical → healthtech, military/law → corporate):
+> - Focus on **transferable outcomes** in [identity/experience.yaml](identity/experience.yaml) (leadership, stakeholder management, optimization).
+> - Showcase self-directed proof (portfolio projects, open-source, case studies) in [identity/projects.yaml](identity/projects.yaml).
+> - Map out your transition story in [personal/career-narrative.md](personal/career-narrative.md) before applying.
+>
+> 🚀 **Applying to Jobs Right Away?**
+> Keep [assets/form-fill-cheatsheet.md](assets/form-fill-cheatsheet.md) open in a side window. It centralizes your standard URLs, address formats, visa details, and recurring application question answers so you can breeze through lengthy ATS forms (Workday, Greenhouse, Lever) without repetitive typing.
 
 ---
 

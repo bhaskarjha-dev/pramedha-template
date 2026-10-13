@@ -13,6 +13,7 @@ better than not captured at all.
 
 ```
 data-corpus/
+├── inbox/        ← Unsorted intake landing zone (drop raw files here first)
 ├── resumes/      ← Every resume/CV version you've ever made (PDF, Word, LaTeX)
 ├── documents/    ← Certificates, degrees, reviews, offer letters, official papers
 ├── exports/      ← Generic platform data exports (Naukri, Indeed, Kaggle, etc.)

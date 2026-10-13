@@ -73,6 +73,7 @@ When an AI assistant works on this repo, these rules apply:
 - [ ] Update `strategy/job-search/tracker.md` if actively applying
 - [ ] Log any feedback received in `journal/feedback.md`
 - [ ] Review `strategy/master-action-tracker.md` — check off completed items
+- [ ] Update `strategy/weekly-tracker.md` with priority goals for the coming week
 
 ### Monthly (15 min)
 - [ ] Review and update `identity/skills.yaml` — new skills learned?

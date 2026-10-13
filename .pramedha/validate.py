@@ -6,10 +6,12 @@ Usage:
     python validate.py                # Full validation
     python validate.py --status       # Show fill status only
     python validate.py --strict       # Fail on warnings too
+    python validate.py --json         # Output JSON summary for CI
 """
 
 import argparse
 import datetime
+import json
 import re
 import sys
 from pathlib import Path
@@ -193,6 +195,25 @@ def check_config(result: ValidationResult):
     profession = (config.get('profession_type') or '').strip()
     if not profession:
         result.warn("config.yaml: profession_type is empty")
+
+    # Schema version validation against manifest.yaml
+    manifest_path = TEMPLATE_ROOT / ".pramedha" / "manifest.yaml"
+    if manifest_path.exists():
+        try:
+            with open(manifest_path, 'r', encoding='utf-8') as mf:
+                mdata = yaml.safe_load(mf) or {}
+            expected_ver = (mdata.get('template') or {}).get('schema_version', '0.1.0')
+            config_ver = config.get('schema_version')
+            if config_ver is not None:
+                if str(config_ver).strip() != str(expected_ver).strip():
+                    result.warn(
+                        f"config.yaml: schema_version '{config_ver}' does not match "
+                        f"manifest schema_version '{expected_ver}'"
+                    )
+            else:
+                result.note(f"config.yaml: schema_version not specified (manifest: {expected_ver})")
+        except Exception:
+            pass
 
 
 def check_experience(result: ValidationResult):
@@ -441,42 +462,101 @@ def check_date_chronology(result: ValidationResult):
 
 
 def check_identity_master_parity(result: ValidationResult):
-    """Check parity between identity/experience.yaml and resume/master.yaml."""
-    exp_path = TEMPLATE_ROOT / "identity" / "experience.yaml"
+    """Check parity between identity/ files and resume/master.yaml (experience, projects, education)."""
     master_path = TEMPLATE_ROOT / "resume" / "master.yaml"
-
-    if not exp_path.exists() or not master_path.exists():
+    if not master_path.exists():
         return
 
-    with open(exp_path, 'r', encoding='utf-8') as f:
-        exp_data = yaml.safe_load(f) or {}
     with open(master_path, 'r', encoding='utf-8') as f:
         master_data = yaml.safe_load(f) or {}
 
-    id_companies = []
-    for e in (exp_data.get('experience', []) or []):
-        if isinstance(e, dict):
-            comp = (e.get('company') or '').strip()
-            if comp:
-                id_companies.append(comp)
+    # 1. Experience Parity
+    exp_path = TEMPLATE_ROOT / "identity" / "experience.yaml"
+    if exp_path.exists():
+        with open(exp_path, 'r', encoding='utf-8') as f:
+            exp_data = yaml.safe_load(f) or {}
 
-    if not id_companies:
-        return
+        id_companies = []
+        for e in (exp_data.get('experience', []) or []):
+            if isinstance(e, dict):
+                comp = (e.get('company') or '').strip()
+                if comp:
+                    id_companies.append(comp)
 
-    master_exp = master_data.get('experience', {}) or {}
-    master_companies = set()
-    for k, v in master_exp.items():
-        if k != '_example_role_' and isinstance(v, dict):
-            comp = (v.get('company') or '').strip()
-            if comp:
-                master_companies.add(comp.lower())
+        if id_companies:
+            master_exp = master_data.get('experience', {}) or {}
+            master_companies = set()
+            for k, v in master_exp.items():
+                if k != '_example_role_' and isinstance(v, dict):
+                    comp = (v.get('company') or '').strip()
+                    if comp:
+                        master_companies.add(comp.lower())
 
-    for comp in id_companies:
-        if comp.lower() not in master_companies:
-            result.warn(
-                f"Parity: Employer '{comp}' in experience.yaml is not in resume/master.yaml. "
-                f"Run 'py resume/sync.py' to synchronize."
-            )
+            for comp in id_companies:
+                if comp.lower() not in master_companies:
+                    result.warn(
+                        f"Parity: Employer '{comp}' in experience.yaml is not in resume/master.yaml. "
+                        f"Run 'py resume/sync.py' to synchronize."
+                    )
+
+    # 2. Projects Parity
+    proj_path = TEMPLATE_ROOT / "identity" / "projects.yaml"
+    if proj_path.exists():
+        with open(proj_path, 'r', encoding='utf-8') as f:
+            proj_data = yaml.safe_load(f) or {}
+
+        id_projects = []
+        for p in (proj_data.get('projects', []) or []):
+            if isinstance(p, dict):
+                pname = (p.get('name') or '').strip()
+                if pname:
+                    id_projects.append(pname)
+
+        if id_projects:
+            master_proj = master_data.get('projects', {}) or {}
+            master_project_names = set()
+            for k, v in master_proj.items():
+                if isinstance(v, dict):
+                    name = (v.get('name') or k).strip().lower()
+                    master_project_names.add(name)
+                elif isinstance(k, str):
+                    master_project_names.add(k.lower())
+
+            for pname in id_projects:
+                if pname.lower() not in master_project_names:
+                    result.warn(
+                        f"Parity: Project '{pname}' in projects.yaml is not in resume/master.yaml. "
+                        f"Run 'py resume/sync.py' to synchronize."
+                    )
+
+    # 3. Education Parity
+    creds_path = TEMPLATE_ROOT / "identity" / "credentials.yaml"
+    if creds_path.exists():
+        with open(creds_path, 'r', encoding='utf-8') as f:
+            creds_data = yaml.safe_load(f) or {}
+
+        id_institutions = []
+        for e in (creds_data.get('education', []) or []):
+            if isinstance(e, dict):
+                inst = (e.get('institution') or '').strip()
+                if inst:
+                    id_institutions.append(inst)
+
+        if id_institutions:
+            master_edu = master_data.get('education', []) or []
+            master_insts = set()
+            for e in master_edu:
+                if isinstance(e, dict):
+                    inst = (e.get('institution') or '').strip().lower()
+                    if inst:
+                        master_insts.add(inst)
+
+            for inst in id_institutions:
+                if inst.lower() not in master_insts:
+                    result.warn(
+                        f"Parity: Education institution '{inst}' in credentials.yaml is not in resume/master.yaml. "
+                        f"Run 'py resume/sync.py' to synchronize."
+                    )
 
 
 def check_cross_file_consistency(result: ValidationResult):
@@ -717,6 +797,7 @@ def main():
     parser = argparse.ArgumentParser(description='Pramedha Template Validator')
     parser.add_argument('--status', action='store_true', help='Show fill status only')
     parser.add_argument('--strict', action='store_true', help='Treat warnings as errors')
+    parser.add_argument('--json', action='store_true', help='Output JSON summary for CI/tooling')
     args = parser.parse_args()
 
     # Ensure UTF-8 output on Windows
@@ -724,6 +805,33 @@ def main():
         sys.stdout.reconfigure(encoding='utf-8')
 
     result = ValidationResult()
+
+    if args.json:
+        check_file_exists(result)
+        check_yaml_valid(result)
+        check_config(result)
+        check_experience(result)
+        check_verification_tags(result)
+        check_cascade_consistency(result)
+        check_skill_enums(result)
+        check_date_chronology(result)
+        check_identity_master_parity(result)
+        check_cross_file_consistency(result)
+        check_freshness(result)
+        compute_fill_status(result)
+
+        passed = not bool(result.errors) and not (bool(result.warnings) and args.strict)
+        output = {
+            "passed": passed,
+            "root": str(TEMPLATE_ROOT),
+            "error_count": len(result.errors),
+            "warning_count": len(result.warnings),
+            "errors": result.errors,
+            "warnings": result.warnings,
+            "info": result.info,
+        }
+        print(json.dumps(output, indent=2))
+        sys.exit(0 if passed else 1)
 
     print("\n🔍 Pramedha Template Validator")
     print(f"   Root: {TEMPLATE_ROOT}\n")

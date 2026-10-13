@@ -34,6 +34,8 @@
 | **Learning roadmap** | `strategy/study-plan.md` | Scattered study notes |
 | **Network / contacts** | `strategy/networking.md` | Scattered address books |
 | **Work preferences & life context** | `personal/preferences.yaml` | Assumptions |
+| **Career narrative & pivots** | `personal/career-narrative.md` | Scattered cover letters |
+| **Private reflections & notes** | `personal/reflections.md` | Scattered journals |
 | **Career mission** | `VISION.md` | Old plans, brainstorm docs |
 | **Form-fill answers** | `assets/form-fill-cheatsheet.md` | Memory, old applications |
 | **Session context & handoff** | `ops/session-handoff.md` | Old conversation transcripts |

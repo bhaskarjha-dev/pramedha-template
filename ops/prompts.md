@@ -156,9 +156,10 @@ EXECUTE the weekly ritual:
 2. Check: Any wins to capture in journal/wins.md?
 3. Check: Any applications sent? Update strategy/job-search/tracker.md
 4. Check: Any new skills learned? Update identity/skills.yaml
-5. Run: python resume/assemble.py --validate (cascade health check)
-6. Quick scan: Anything in data-corpus/ not yet extracted to identity/?
-7. Check git status — any uncommitted changes?
+5. Update strategy/weekly-tracker.md with top goals and review strategy/master-action-tracker.md
+6. Run: python resume/assemble.py --validate (cascade health check)
+7. Quick scan: Anything in data-corpus/ not yet extracted to identity/?
+8. Check git status — any uncommitted changes?
 
 OUTPUT: Checklist with DONE/SKIPPED/NEEDS ACTION for each item.
 Commit any changes with message: "weekly: maintenance check [date]"
@@ -462,4 +463,32 @@ EXECUTE:
    - High-priority action items for strategy/master-action-tracker.md
 
 OUTPUT: Compact health report with immediate corrective steps.
+```
+
+---
+
+## 17. Add Speaking Engagement / Hackathon Win
+
+```
+TASK: Add a public speaking engagement or competitive hackathon win to my career system.
+
+EVENT DETAILS:
+[Paste title, event/organizer, date, role/result, topics, prize, slides/code link]
+
+CONTEXT: Read these files first:
+- identity/speaking-and-community.yaml (speaking, hackathons, and community activities)
+- identity/claims-and-evidence.md (claims register)
+- resume/master.yaml (bullet & achievement pool)
+- assets/platform-copy.md (social proof & bio copy)
+- ops/authority-map.md (source authority rules)
+
+EXECUTE:
+1. Add entry to identity/speaking-and-community.yaml (under `speaking:` or `hackathons:`) with full metadata
+2. Tag verification status (✅/⚠️/❌) with evidence path in data-corpus/
+3. If this was a hackathon win or major keynote, sync or add entry to resume/master.yaml (`achievements` pool)
+4. Log the achievement in journal/wins.md
+5. Update identity/professional-summary.md or assets/platform-copy.md if this strengthens thought leadership
+6. Run: py resume/sync.py --section ach --dry-run (verify synchronization)
+
+OUTPUT: Show exact changes across all files. Commit with message: "feat(community): add [event name]"
 ```

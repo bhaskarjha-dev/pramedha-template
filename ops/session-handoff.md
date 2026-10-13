@@ -14,6 +14,28 @@
 ...
 -->
 
+## Session: 2026-10-13 (v0.1.0 Cascade Engine Modularization, Achievement Bridge & CI Matrix Hardening)
+
+### Summary
+Implemented all 13 verified improvements from the deep falsification audit and counter-audit review. Extracted shared YAML utilities, registered PyYAML string scalar representer, built automated achievements synchronization bridging credentials and community activities to the master bullet pool, added orphan detection and archived notices to the cascade assembler, expanded cross-file parity checks to projects and education, introduced JSON reporting for automated CI/CD, established data-corpus inbox intake, and synchronized authority documentation.
+
+### What Was Done
+- **YAML Utilities Extraction & Fix (`resume/_yaml_utils.py`, `resume/assemble.py`, `resume/sync.py`):** Extracted shared `OrderedDumper`, representers, `PresentLiteral`, `load_yaml`, and `dump_yaml` into a single module. Fixed missing `OrderedDumper.add_representer(str, _str_representer)` in `assemble.py` so multiline and long strings format cleanly in generated RenderCV YAMLs without truncation or syntax corruption.
+- **Achievements Sync Bridge (`resume/sync.py`):** Added `sync_achievements()` function to `sync.py` bridging awards and certifications from `identity/credentials.yaml` and hackathons from `identity/speaking-and-community.yaml` into `resume/master.yaml['achievements']`. Added `--section ach` / `achievements` CLI support and safe slug generation with existing-key collision avoidance.
+- **Cascade Orphan Analysis & Archived Notices (`resume/assemble.py`):** Added `--orphans` flag to `assemble.py` analyzing master experience roles, bullets, projects, and achievements against active variants and JD overlays, reporting unreferenced pool entries and distinguishing archived roles. Added informational notice in `validate_variant()` when an active variant references a role marked `archived: true`.
+- **Identity-Master Parity Expansion (`.pramedha/validate.py`):** Expanded `check_identity_master_parity()` in `validate.py` to check parity for `identity/projects.yaml` against `master.yaml['projects']` and `identity/credentials.yaml` (education) against `master.yaml['education']`, guiding the user to run `sync.py`.
+- **Schema Version Tracking & CI Mode (`config.yaml`, `.pramedha/validate.py`):** Added `schema_version: "0.1.0"` to `config.yaml` with validator integrity checks against `.pramedha/manifest.yaml`. Added `--json` flag to `validate.py` producing clean, machine-readable validation reports for CI pipelines.
+- **Intake Buffer & Docs Synchronization (`data-corpus/inbox/`, `ops/`, `GETTING_STARTED.md`):** Created `data-corpus/inbox/.gitkeep` as a zero-friction drop zone for unorganized files. Added `personal/career-narrative.md` and `personal/reflections.md` to `ops/authority-map.md`. Added `strategy/weekly-tracker.md` to `ops/guide.md` and `ops/prompts.md` Prompt #5. Added Prompt #17 ("Add Speaking Engagement / Hackathon Win") to `ops/prompts.md`. Added Career Changer and Form-Fill cheatsheet callouts to `GETTING_STARTED.md`.
+
+### Key Decisions
+| Decision | Rationale | Affects |
+|----------|-----------|---------|
+| Shared `_yaml_utils.py` module | Eliminates code duplication across `assemble.py` and `sync.py` while ensuring identical string and order representer behavior | `resume/_yaml_utils.py`, `assemble.py`, `sync.py` |
+| Keyed achievements bridge | Unifies external recognition (awards, certs, hackathons) into master bullet pool so variants can pick specific achievements | `resume/sync.py`, `resume/master.yaml` |
+| Non-failing archived notice in assembler | Variants should be allowed to deliberately select archived roles for niche CVs without breaking build validation | `resume/assemble.py` |
+| Project and education parity validation | Extends identity-as-single-source-of-truth guarantee from employers to all major career sections | `.pramedha/validate.py` |
+| Unsorted intake folder (`data-corpus/inbox/`) | Lowers onboarding friction so users can dump raw files immediately without worrying about taxonomy | `data-corpus/inbox/` |
+
 ## Session: 2026-10-13 (v0.1.0 Round 2 Remediation & CI Matrix Hardening)
 
 ### Summary

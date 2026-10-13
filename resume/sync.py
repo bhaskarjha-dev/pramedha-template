@@ -3,14 +3,16 @@
 Identity to Master Resume Synchronizer — Syncs verified facts from identity/ to resume/master.yaml.
 
 Reads:
-  - identity/experience.yaml   → master.yaml experience pool
-  - identity/projects.yaml     → master.yaml projects pool
-  - identity/credentials.yaml  → master.yaml education & publications
+  - identity/experience.yaml             → master.yaml experience pool
+  - identity/projects.yaml               → master.yaml projects pool
+  - identity/credentials.yaml            → master.yaml education, publications, certs & awards
+  - identity/speaking-and-community.yaml → master.yaml achievements (hackathons)
+  - identity/skills.yaml                 → master.yaml technologies
 
 Usage:
     py resume/sync.py                 # Sync all sections (safe merge, preserves existing)
     py resume/sync.py --dry-run       # Preview changes without modifying master.yaml
-    py resume/sync.py --section exp   # Sync only experience (exp, proj, edu, pubs, all)
+    py resume/sync.py --section exp   # Sync specific section (exp, proj, edu, pubs, skills, ach, all)
     py resume/sync.py --force         # Overwrite existing keys with identity values
 """
 
@@ -32,39 +34,13 @@ except ImportError:
 
 
 # ============================================================================
-# YAML Helpers (Order-preserving)
+# YAML Helpers (Order-preserving) — Imported from _yaml_utils
 # ============================================================================
 
-class OrderedDumper(yaml.SafeDumper):
-    """Dump YAML preserving insertion order."""
-    pass
-
-def _dict_representer(dumper, data):
-    return dumper.represent_mapping(yaml.resolver.BaseResolver.DEFAULT_MAPPING_TAG, data.items())
-
-def _str_representer(dumper, data):
-    if '\n' in data:
-        return dumper.represent_scalar('tag:yaml.org,2002:str', data, style='|')
-    if len(data) > 80:
-        return dumper.represent_scalar('tag:yaml.org,2002:str', data, style='"')
-    return dumper.represent_scalar('tag:yaml.org,2002:str', data)
-
-OrderedDumper.add_representer(dict, _dict_representer)
-OrderedDumper.add_representer(str, _str_representer)
-
-
-def load_yaml(path: Path) -> dict:
-    if not path.exists():
-        return {}
-    with open(path, 'r', encoding='utf-8') as f:
-        return yaml.safe_load(f) or {}
-
-
-def dump_yaml(data: dict, path: Path):
-    path.parent.mkdir(parents=True, exist_ok=True)
-    with open(path, 'w', encoding='utf-8') as f:
-        yaml.dump(data, f, Dumper=OrderedDumper, default_flow_style=False,
-                  allow_unicode=True, width=200, sort_keys=False)
+try:
+    from resume._yaml_utils import OrderedDumper, dump_yaml, load_yaml
+except ImportError:
+    from _yaml_utils import OrderedDumper, dump_yaml, load_yaml
 
 
 # ============================================================================
@@ -119,6 +95,21 @@ def generate_bullet_key(bullet_text: str, existing_keys: set, fallback_idx: int 
     else:
         base = f"bullet_{fallback_idx}"
 
+    key = base
+    counter = 2
+    while key in existing_keys:
+        key = f"{base}_{counter}"
+        counter += 1
+    return key
+
+
+def generate_achievement_key(name: str, existing_keys: set, prefix: str = "") -> str:
+    """Generate a unique snake_case key for an achievement."""
+    base_slug = slugify(name)
+    if prefix and not base_slug.startswith(prefix):
+        base = f"{prefix}_{base_slug}"
+    else:
+        base = base_slug or prefix or 'achievement'
     key = base
     counter = 2
     while key in existing_keys:
@@ -513,6 +504,149 @@ def sync_skills(id_data: dict, master_data: dict, force: bool = False):
     return stats
 
 
+def sync_achievements(creds_data: dict, community_data: dict, master_data: dict, force: bool = False):
+    """
+    Sync achievements from identity/credentials.yaml (awards, certifications)
+    and identity/speaking-and-community.yaml (hackathons) into master.yaml['achievements'].
+    """
+    master_ach = master_data.get('achievements', {})
+    if not isinstance(master_ach, dict):
+        master_ach = {}
+
+    stats = {'added': 0, 'updated': 0, 'skipped': 0}
+    existing_keys = set(master_ach.keys())
+
+    # 1. Awards from credentials.yaml
+    for item in (creds_data.get('awards', []) or []):
+        if not isinstance(item, dict):
+            continue
+        title = (item.get('title') or '').strip()
+        if not title:
+            stats['skipped'] += 1
+            continue
+        awarder = (item.get('awarder') or '').strip()
+        year = str(item.get('year') or '').strip()
+        if year == '0':
+            year = ''
+        details = (item.get('details') or '').strip()
+
+        parts = [title]
+        meta = []
+        if awarder:
+            meta.append(awarder)
+        if year:
+            meta.append(year)
+        if meta:
+            parts.append(f"({' — '.join(meta)})")
+        if details:
+            parts.append(f"— {details}")
+        text = " ".join(parts)
+
+        ach_key = None
+        for k, v in master_ach.items():
+            if isinstance(v, dict) and v.get('text', '').lower() == text.lower():
+                ach_key = k
+                break
+            elif isinstance(v, str) and v.lower() == text.lower():
+                ach_key = k
+                break
+
+        if not ach_key:
+            ach_key = generate_achievement_key(title, existing_keys, prefix="award")
+            existing_keys.add(ach_key)
+            master_ach[ach_key] = {'text': text}
+            stats['added'] += 1
+        elif force:
+            master_ach[ach_key] = {'text': text}
+            stats['updated'] += 1
+
+    # 2. Certifications from credentials.yaml
+    for item in (creds_data.get('certifications', []) or []):
+        if not isinstance(item, dict):
+            continue
+        name = (item.get('name') or '').strip()
+        if not name:
+            stats['skipped'] += 1
+            continue
+        issuer = (item.get('issuer') or '').strip()
+        year = str(item.get('year') or '').strip()
+        if year == '0':
+            year = ''
+
+        parts = [name]
+        meta = []
+        if issuer:
+            meta.append(issuer)
+        if year:
+            meta.append(year)
+        if meta:
+            parts.append(f"({' — '.join(meta)})")
+        text = " ".join(parts)
+
+        ach_key = None
+        for k, v in master_ach.items():
+            if isinstance(v, dict) and v.get('text', '').lower() == text.lower():
+                ach_key = k
+                break
+            elif isinstance(v, str) and v.lower() == text.lower():
+                ach_key = k
+                break
+
+        if not ach_key:
+            ach_key = generate_achievement_key(name, existing_keys, prefix="cert")
+            existing_keys.add(ach_key)
+            master_ach[ach_key] = {'text': text}
+            stats['added'] += 1
+        elif force:
+            master_ach[ach_key] = {'text': text}
+            stats['updated'] += 1
+
+    # 3. Hackathons from speaking-and-community.yaml
+    for item in (community_data.get('hackathons', []) or []):
+        if not isinstance(item, dict):
+            continue
+        name = (item.get('name') or '').strip()
+        if not name:
+            stats['skipped'] += 1
+            continue
+        result = (item.get('result') or '').strip()
+        organizer = (item.get('organizer') or '').strip()
+        project = (item.get('project') or '').strip()
+        prize = (item.get('prize') or '').strip()
+
+        if result:
+            text = f"{result} at {name}"
+        else:
+            text = name
+        if organizer:
+            text += f" ({organizer})"
+        if project:
+            text += f" — built {project}"
+        if prize:
+            text += f" [{prize}]"
+
+        ach_key = None
+        for k, v in master_ach.items():
+            if isinstance(v, dict) and v.get('text', '').lower() == text.lower():
+                ach_key = k
+                break
+            elif isinstance(v, str) and v.lower() == text.lower():
+                ach_key = k
+                break
+
+        if not ach_key:
+            ach_key = generate_achievement_key(name, existing_keys, prefix="hackathon")
+            existing_keys.add(ach_key)
+            master_ach[ach_key] = {'text': text}
+            stats['added'] += 1
+        elif force:
+            master_ach[ach_key] = {'text': text}
+            stats['updated'] += 1
+
+    master_data['achievements'] = master_ach
+    return stats
+
+
 # ============================================================================
 # Main Entry Point
 # ============================================================================
@@ -527,7 +661,7 @@ def main():
     )
     parser.add_argument(
         '--section',
-        choices=['all', 'exp', 'experience', 'proj', 'projects', 'edu', 'education', 'pubs', 'publications', 'skills', 'technologies'],
+        choices=['all', 'exp', 'experience', 'proj', 'projects', 'edu', 'education', 'pubs', 'publications', 'skills', 'technologies', 'ach', 'achievements'],
         default='all',
         help="Section to sync (default: all)"
     )
@@ -546,6 +680,7 @@ def main():
     proj_path = repo_root / 'identity' / 'projects.yaml'
     creds_path = repo_root / 'identity' / 'credentials.yaml'
     skills_path = repo_root / 'identity' / 'skills.yaml'
+    speaking_path = repo_root / 'identity' / 'speaking-and-community.yaml'
 
     if not master_path.exists():
         print(f"ERROR: {master_path} not found.", file=sys.stderr)
@@ -605,6 +740,16 @@ def main():
             print(f"🛠️  Skills:       +{stats['added']} categories ({stats['updated']} updated, {stats['skipped']} blank skipped)")
         else:
             print("🛠️  Skills:       identity/skills.yaml not found (skipped)")
+
+    # Achievements (Awards, Certifications, Hackathons)
+    if section in ('all', 'ach', 'achievements'):
+        creds_data = load_yaml(creds_path) if creds_path.exists() else {}
+        speaking_data = load_yaml(speaking_path) if speaking_path.exists() else {}
+        if creds_path.exists() or speaking_path.exists():
+            stats = sync_achievements(creds_data, speaking_data, master_data, force=args.force)
+            print(f"🏆 Achievements: +{stats['added']} entries ({stats['updated']} updated, {stats['skipped']} blank skipped)")
+        else:
+            print("🏆 Achievements: credentials/speaking YAML not found (skipped)")
 
     print("-" * 60)
 

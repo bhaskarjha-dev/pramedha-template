@@ -7,6 +7,8 @@
 # If using the Pramedha platform, this file initializes your profile.
 # ============================================================================
 
+schema_version: "0.1.0"
+
 # ─── Your Identity ───────────────────────────────────────────────────────────
 user:
   name: ""                    # Full name (as it appears on resume)

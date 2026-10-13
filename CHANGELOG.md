@@ -9,6 +9,15 @@ All notable changes to the Pramedha Career Template.
 Complete modernization across the entire template: unified identity and resume schemas, automated identity-to-master synchronization, modernized for RenderCV v2.8 (Typst engine, JSON schema autocompletion, 12 themes, publication entries), enhanced validator consistency checks, and comprehensive documentation polish.
 
 ### Added — Automation & Bridge Script
+- **`resume/_yaml_utils.py`** — Extracted shared YAML utilities module providing order-preserving dumping, block style multiline string formatting, and RenderCV `present` literal handling across cascade tools.
+- **`resume/sync.py` Achievements Synchronization** — Added `sync_achievements()` bridging awards and certifications from `identity/credentials.yaml` and hackathons from `identity/speaking-and-community.yaml` into `resume/master.yaml['achievements']`. Added `--section ach` / `achievements` CLI flag and collision-safe slug generation.
+- **`resume/assemble.py --orphans` Analysis** — Added `--orphans` flag detecting unreferenced master bullets, roles, projects, and achievements across active variants, with explicit `[archived]` indicators.
+- **`data-corpus/inbox/`** — Added zero-friction intake landing zone with `.gitkeep` for unsorted career evidence.
+- **`validate.py --json` Mode** — Added machine-readable JSON validation reporting for CI/CD integration.
+- **Expanded Identity-Master Parity** — `validate.py` now enforces parity for projects (`projects.yaml`) and education (`credentials.yaml`) against `master.yaml`.
+- **Schema Version Tracking** — Added `schema_version: "0.1.0"` to `config.yaml` with automated integrity validation against `.pramedha/manifest.yaml`.
+- **Prompt #17 in `ops/prompts.md`** — Added AI prompt for logging speaking engagements and hackathon wins.
+- **Career Changer & Fast-Track Callouts** — Added pivoting strategies and ATS application speedup callouts (`assets/form-fill-cheatsheet.md`) to `GETTING_STARTED.md`.
 - **`resume/sync.py`** — New cascade bridge script that automatically transforms verified facts in `identity/experience.yaml`, `identity/projects.yaml`, and `identity/credentials.yaml` into keyed pools in `resume/master.yaml`. Safe non-destructive merging with `--dry-run`, `--section`, and `--force` flags.
 - **`assets/interview-prep/behavioral.md`** — Dedicated behavioral interview preparation guide mapping STAR stories from `assets/star-stories.md` to common questions, Amazon 16 Leadership Principles, and situational frameworks.
 - **`.pramedha/examples/master-filled.yaml`** — Realistic populated master resume bullet pool pairing with `variant-example.yaml` for Alex Chen (Stripe/Twilio), demonstrating multi-phrasing bullets, publications, projects, and education.
