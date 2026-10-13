@@ -1,213 +1,49 @@
-# Session Handoff Log
+# 🤝 Career Session Handoff Log
 
-> **Purpose:** This file captures all context from every AI session so that future sessions
-> can pick up seamlessly without reading old conversation transcripts.
+> **Purpose:** This file captures cross-session career context so that future AI sessions
+> can pick up seamlessly without burning context tokens re-reading old transcripts or raw evidence files.
 >
-> **Rule:** Add each new session entry directly below the divider (newest first). Never delete old entries.
-> **Format:** Use the template below for each entry.
+> **Scope Rule:** Track **career strategy, role decisions, profile facts, and application milestones** here.
+> ⚠️ **NEVER log template software engineering or code development here** (system release notes belong in `CHANGELOG.md`).
+>
+> **Usage Rule:** Add each new career session entry directly below the divider (newest first). Never delete prior entries.
 
 ---
 
-<!-- Copy and paste this template below this divider (newest first) for each new session.
+<!-- =====================================================================
+     SESSION HANDOFF TEMPLATE
+     Copy and paste this template below this divider (newest first) for each session.
+     =====================================================================
 
-## Session: YYYY-MM-DD (Brief Identifier)
-...
--->
-
-## Session: 2026-10-13 (Counter-Audit Implementation & Deep Falsification Hardening)
-
-### Summary
-Executed complete, meticulous implementation of all verified findings from `tmp/audit.md` and `tmp/audit-non-resume.md` following deep falsification analysis. Firmly rejected 7 hallucinated/falsified claims (retaining clean 96-file structure, preserving `references.yaml` in identity, maintaining strict separation of private reflections vs journal logs, and avoiding redundant file churn). Implemented 6 genuine defects and 7 ergonomic/inclusivity enhancements: upgraded fill detection to eliminate false-positive fills on clean clones (now honest 0/13), enforced `target_role_level` enums, added education chronology (`start_date`/`end_date`) across `credentials.yaml`, `sync.py`, and `master.yaml`, purged private stubs from outward schemas, converted informal cover letter chats into formal application letters, synchronized AI fill protocol steps, aligned `GETTING_STARTED.md` and `data-corpus/README.md`, and generalized compensation and mission statement examples across international markets. 100% test pass rate across `validate.py`, `assemble.py`, and `sync.py`.
-
-### What Was Done
-- **Intelligent Scaffold-Aware Fill Detection (`.pramedha/validate.py`):** Fixed `compute_fill_status()` to inspect file contents and evaluate comment-only or placeholder templates as unfilled, reporting honest `0/13 (0%)` on clean template clones instead of false-positive fills.
-- **Role Level Enum Validation (`.pramedha/validate.py`, `.pramedha/schema-reference.md`):** Added enum enforcement for `target_role_level` (`intern`, `junior`, `mid`, `senior`, `staff`, `principal`, `director`, `vp`, `c-level`) in `check_schema_enums()` and updated `schema-reference.md`.
-- **Education Chronology & Multi-Degree Generalization (`identity/credentials.yaml`, `resume/sync.py`, `resume/master.yaml`):** Added `start_date` and `end_date` support to education entries, updated `sync.py` to extract both dates, and broadened master resume education examples to support multi-degree histories, international GPA/CGPA scales (`GPA: 3.8/4.0`, `CGPA: 8.5/10`), and diverse standardized tests (`GRE`, `GMAT`, `GATE`, `USMLE`, `CFA`).
-- **Identity Schema Privacy & Delivery Generalization (`identity/experience.yaml`, `identity/projects.yaml`):** Purged private `# reason_for_leaving` stub from outward experience schema (retained in private `personal/career-narrative.md`), and broadened project comments to support non-code deliverables (`live_url`, case studies, whitepapers) and methodologies (`tech_or_tools`).
-- **Asset Harmonization & Formal Application Letters (`assets/cover-letters/`, `assets/outreach-messages.md`):** Replaced informal short-chat snippets in `referral.md` and `cold-outreach.md` with comprehensive, professional application cover letter documents (Internal Employee Referral application and Letter of Interest / Unsolicited Application), eliminating duplication with `assets/outreach-messages.md`.
-- **AI Protocol Harmony (`.pramedha/agent-instructions.md`):** Added explicit protocol steps and instructions in Phase D for `outreach-messages.md`, `testimonials.md`, and `project-briefs/`, and in Phase E for `networking.md`, while maintaining strict 33-step numbering consistency.
-- **Global Inclusivity & Cross-File Integrity (`strategy/financial.md`, `personal/preferences.yaml`, `VISION.md`, `AGENTS.md`):** Generalized housing comparisons to `1–2 Bed Apartment / Flat`, added cross-reference notes linking `preferences.yaml` compensation dealbreakers to authoritative `strategy/financial.md`, diversified vision mission statement examples across international currency scales ($185K+, ₹35+ LPA, £95K+), added `claims-and-evidence.md` to Context Router row 48, and clarified Rule 4 regarding private interview coaching vs outward publication with strict sandboxing for `identity/references.yaml`.
-- **Data-Corpus & Getting Started Alignment (`data-corpus/README.md`, `GETTING_STARTED.md`):** Separated sections 2 and 3 in `data-corpus/README.md` to avoid internal contradictions, aligned `GETTING_STARTED.md` intake table with all 7 data-corpus subdirectories, and added Windows PowerShell 1-click build guidance (`.\resume\build.ps1`).
-
-### Key Decisions
-| Decision | Rationale | Affects |
-|----------|-----------|---------|
-| Reject 7 falsified audit items | Preserve clean 96-file structure; keep `references.yaml` in identity for ATS form-filling; preserve private failure isolation in `reflections.md`; prevent churn | Whole repository |
-| Scaffold-aware fill detection in validator | Prevents fresh clones from displaying false 100% fill status before user enters data | `.pramedha/validate.py` |
-| Convert cover letters to formal application letters | Prevents duplication with `outreach-messages.md` and provides real application documents for job seekers | `assets/cover-letters/` |
-| Maintain strict 33-step protocol numbering | Harmonizes protocol across `AGENTS.md`, `VISION.md`, and `agent-instructions.md` without renumbering chaos | `.pramedha/agent-instructions.md` |
-
-## Session: 2026-10-13 (Falsification Verification & System Hardening Pass)
+## Session: YYYY-MM-DD (Brief Identifier, e.g. "Phase B Fill & Role Scoping")
 
 ### Summary
-Conducted rigorous falsification audit of external review findings in `tmp/audit.md`, proving 4 claims to be hallucinations/false positives, verifying 7 genuine defects, and implementing 4 high-value engine improvements. Hardened schema enums and fill checks in `.pramedha/validate.py`, fortified project dates, multi-bullet highlights, URL preservation, and variant education overrides in `resume/assemble.py`, registered cover letters and shared utilities in `.pramedha/manifest.yaml`, mapped missing authorities in `ops/authority-map.md`, updated PowerShell UTF-8 console output guards, and reconciled path drift across documentation. Achieved 100% test pass rate across all test suites.
+Brief 2-3 sentence overview of what was accomplished in this session.
 
-### What Was Done
-- **Falsification Verification:** Thoroughly counter-audited and disproved 4 claims from `tmp/audit.md` (no unreferenced `data-corpus/tax-and-pay/` folder existed; privacy warnings were already centralized and non-redundant; `assemble.py` correctly uses `master.yaml` as single bullet pool; manifest schema matches spec).
-- **Validator Enum Parity (`.pramedha/validate.py`):** Expanded `VALID_EMPLOYMENT_TYPES` (supporting underscored & hyphenated forms, plus volunteer & freelance), `VALID_LANGUAGE_FLUENCY` (adding `elementary`), `VALID_CAREER_STAGES`, and `VALID_CAREER_BREAK_TYPES`. Added dict status/string `work_authorization` enum checks and updated `identity.yaml` fill check lambda.
-- **Cascade Engine Project & Education Hardening (`resume/assemble.py`, `resume/variants/_template.yaml`):** Protected `resolve_project()` against date `KeyError` crashes via safe `.get()` and start_date/end_date fallback. Added support for multi-bullet highlights (list of phrasings and dict syntax), project `url` passthrough, and variant-level `education:` overrides with master fallback.
-- **Manifest & Authority Map Completeness (`.pramedha/manifest.yaml`, `ops/authority-map.md`):** Added `assets/cover-letters/*.md` (standard, referral, cold-outreach) and `resume/_yaml_utils.py` to manifest. Fully populated `ops/authority-map.md` with explicit authoritative mappings for STAR stories, interview prep, cover letters, compensation/runway, offer comparison, risk register, personal files, and journal logs.
-- **PowerShell Console Output (`resume/build.ps1`):** Added `[Console]::OutputEncoding` and `$OutputEncoding` UTF-8 guards.
-- **Documentation & TOC Reconciliation (`.pramedha/agent-instructions.md`, `data-corpus/README.md`, `VISION.md`, `ops/prompts.md`):** Replaced legacy `strategy/job-search/tracker.md` and `ops/templates/*` paths, corrected 8-folder system count and destinations in data-corpus, synchronized `ops/prompts.md` TOC with Prompt #17, and reconciled `VISION.md` Quick Start steps with the 7-phase model.
+### Phases & Actions Executed
+- [Phases executed, e.g., Phase A Foundation & Phase B Identity Ingestion]
+- [Key files modified, e.g., identity/experience.yaml, identity/skills.yaml]
 
-### Key Decisions
-| Decision | Rationale | Affects |
-|----------|-----------|---------|
-| Reject `data-corpus/tax-and-pay/` and redundant privacy files | Falsified as hallucinated/unnecessary; folder does not exist and privacy warnings are already consolidated | `data-corpus/`, `personal/` |
-| Safe project date `.get()` + multi-bullet support | Prevents crashes when date is formatted differently or missing, and empowers variants to select multiple highlights | `resume/assemble.py`, `resume/variants/_template.yaml` |
-| Variant education override with master fallback | Allows tailored CVs to highlight specific education/coursework without modifying master shared pool | `resume/assemble.py` |
-| Dict-aware work_authorization validation | Matches real schema structure where `work_authorization` contains `status`, `countries`, and `visa_details` | `.pramedha/validate.py` |
+### Career Facts & Evidence Ingested
+- Extracted [N] roles and [M] deliverables from data-corpus/[folder].
+- Verified [N] credentials; flagged [1] missing date in identity/claims-and-evidence.md.
+- Uncovered contradiction: [e.g., Resume dates vs LinkedIn dates on Employer X] (logged in claims register).
 
-## Session: 2026-10-13 (v0.1.0 Architecture Streamlining, Minimum Context Router & Directory Flattening)
+### Key Decisions Made (Do NOT Re-litigate)
+> Settled decisions that future sessions should not re-debate unless explicitly requested by the user.
+| Decision | Context / Rationale | Affects |
+|----------|---------------------|---------|
+| Target role framed as "Staff Backend Engineer" | Scope matches 3-team technical leadership despite HR title "Senior II" | experience.yaml, master.yaml, strategy/target-roles.md |
+| Salary floor set to $185K base | Calculated from runway and target market benchmarks | strategy/financial.md, personal/preferences.yaml |
 
-### Summary
-Executed comprehensive architectural streamlining across the repository. Consolidated overlapping role analysis and content planning frameworks, eliminated directory nesting in `strategy/`, relocated outreach messaging copy into `assets/outreach-messages.md`, folded operations tooling and audit checklists into `ops/guide.md`, and embedded a token-budgeted Minimum Context Router in `AGENTS.md`. Repository reduced from 100 to 96 purposeful, non-overlapping files with zero lost content and 100% test pass rates across `validate.py`, `assemble.py`, and `sync.py`.
+### Artifacts Generated & Updated
+- Created: resume/variants/A_Staff_Backend.yaml
+- Updated: assets/star-stories.md (added Story #4 on database migration)
+- Rendered: resume/output/A_Staff_Backend.pdf
 
-### What Was Done
-- **Role Evaluation Consolidation (`strategy/target-roles.md`, deleted `strategy/role-analysis.md`):** Merged Part 1 (Honest Baseline), P1-P8 evaluation scoring (max 40), shared foundation analysis, positioning statement, variant mapping, and Part 6 deep-dive into `strategy/target-roles.md`. Removed redundant `strategy/role-analysis.md`.
-- **Digital Presence & Content Engine Unification (`strategy/digital-presence-plan.md`, deleted `strategy/content-plan.md`):** Merged 3 core content pillars, multi-platform publishing cadence, content repurposing chain, idea bank, and quality checklist into `strategy/digital-presence-plan.md`. Removed redundant `strategy/content-plan.md`.
-- **Outreach Relocation & Strategy Flattening (`assets/outreach-messages.md`, `strategy/job-tracker.md`, `strategy/job-platforms.md`, deleted `strategy/job-search/`):** Relocated networking and follow-up templates into `assets/outreach-messages.md` and expanded with hiring manager, peer, and post-interview thank-you notes. Flattened `job-search/tracker.md` to `strategy/job-tracker.md` and `job-search/platforms.md` to `strategy/job-platforms.md`. Removed nested `strategy/job-search/` directory.
-- **Operations & Audit Consolidation (`ops/guide.md`, deleted `ops/audit-checklist.md`, `ops/tooling.md`):** Integrated the 10-Area Systematic Audit Checklist, audit scoring table, and Core Tool Stack into `ops/guide.md`. Removed separate `ops/audit-checklist.md` and `ops/tooling.md`.
-- **Minimum Context Router (`AGENTS.md`, `README.md`):** Embedded an explicit Task-to-Files Routing Matrix in `AGENTS.md` and linked in `README.md`, defining exact 2–4 file bundles (~1,400 to ~3,200 tokens) for all primary tasks (Resume tailoring, Interview prep, ATS form-filling, Weekly review, Offer evaluation, Win logging).
-- **Cross-Reference & Registry Updates:** Updated `.pramedha/manifest.yaml`, `.pramedha/agent-instructions.md`, `.pramedha/validate.py`, `ops/authority-map.md`, `ops/prompts.md`, `strategy/README.md`, `assets/README.md`, `assets/linkedin-pack.md`, `strategy/master-action-tracker.md`, `GETTING_STARTED.md`, and `README.md`.
+### Next Session Priorities
+- [ ] Tailor cover letter for Target Company X using assets/cover-letters/referral.md
+- [ ] Prepare for technical interview using assets/interview-prep/technical.md
+- [ ] Review claim debt items in strategy/master-action-tracker.md
 
-### Key Decisions
-| Decision | Rationale | Affects |
-|----------|-----------|---------|
-| Merge role analysis into `target-roles.md` | Eliminates duplicated 8-parameter scoring scale and provides single authoritative file for role evaluation | `strategy/target-roles.md`, `strategy/role-analysis.md` |
-| Merge content plan into `digital-presence-plan.md` | Public presence audit and publishing strategy are two sides of the same coin; unifies digital surface management | `strategy/digital-presence-plan.md`, `strategy/content-plan.md` |
-| Relocate outreach copy to `assets/outreach-messages.md` | All communication templates belong in `assets/`, keeping `strategy/` focused on decisions and tracking | `assets/outreach-messages.md`, `strategy/job-search/` |
-| Flatten `strategy/job-search/` | Eliminates nested directory asymmetry in `strategy/` and makes tracker and platforms immediately discoverable | `strategy/job-tracker.md`, `strategy/job-platforms.md` |
-| Merge ops audit and tooling into `guide.md` | Establishes `ops/guide.md` as the single authoritative operations manual, reducing ops file fragmentation | `ops/guide.md`, `ops/audit-checklist.md`, `ops/tooling.md` |
-| Minimum Context Router in `AGENTS.md` | Prevents token window degradation, eliminates hallucination risks, and guarantees deterministic task routing | `AGENTS.md`, `README.md` |
-
-## Session: 2026-10-13 (v0.1.0 Cascade Engine Modularization, Achievement Bridge & CI Matrix Hardening)
-
-### Summary
-Implemented all 13 verified improvements from the deep falsification audit and counter-audit review. Extracted shared YAML utilities, registered PyYAML string scalar representer, built automated achievements synchronization bridging credentials and community activities to the master bullet pool, added orphan detection and archived notices to the cascade assembler, expanded cross-file parity checks to projects and education, introduced JSON reporting for automated CI/CD, established data-corpus inbox intake, and synchronized authority documentation.
-
-### What Was Done
-- **YAML Utilities Extraction & Fix (`resume/_yaml_utils.py`, `resume/assemble.py`, `resume/sync.py`):** Extracted shared `OrderedDumper`, representers, `PresentLiteral`, `load_yaml`, and `dump_yaml` into a single module. Fixed missing `OrderedDumper.add_representer(str, _str_representer)` in `assemble.py` so multiline and long strings format cleanly in generated RenderCV YAMLs without truncation or syntax corruption.
-- **Achievements Sync Bridge (`resume/sync.py`):** Added `sync_achievements()` function to `sync.py` bridging awards and certifications from `identity/credentials.yaml` and hackathons from `identity/speaking-and-community.yaml` into `resume/master.yaml['achievements']`. Added `--section ach` / `achievements` CLI support and safe slug generation with existing-key collision avoidance.
-- **Cascade Orphan Analysis & Archived Notices (`resume/assemble.py`):** Added `--orphans` flag to `assemble.py` analyzing master experience roles, bullets, projects, and achievements against active variants and JD overlays, reporting unreferenced pool entries and distinguishing archived roles. Added informational notice in `validate_variant()` when an active variant references a role marked `archived: true`.
-- **Identity-Master Parity Expansion (`.pramedha/validate.py`):** Expanded `check_identity_master_parity()` in `validate.py` to check parity for `identity/projects.yaml` against `master.yaml['projects']` and `identity/credentials.yaml` (education) against `master.yaml['education']`, guiding the user to run `sync.py`.
-- **Schema Version Tracking & CI Mode (`config.yaml`, `.pramedha/validate.py`):** Added `schema_version: "0.1.0"` to `config.yaml` with validator integrity checks against `.pramedha/manifest.yaml`. Added `--json` flag to `validate.py` producing clean, machine-readable validation reports for CI pipelines.
-- **Intake Buffer & Docs Synchronization (`data-corpus/inbox/`, `ops/`, `GETTING_STARTED.md`):** Created `data-corpus/inbox/.gitkeep` as a zero-friction drop zone for unorganized files. Added `personal/career-narrative.md` and `personal/reflections.md` to `ops/authority-map.md`. Added `strategy/weekly-tracker.md` to `ops/guide.md` and `ops/prompts.md` Prompt #5. Added Prompt #17 ("Add Speaking Engagement / Hackathon Win") to `ops/prompts.md`. Added Career Changer and Form-Fill cheatsheet callouts to `GETTING_STARTED.md`.
-- **Repository Pruning & Zero-Bloat Streamlining:** Consolidated `strategy/job-search/salary.md` negotiation scripts into `strategy/financial.md` and pruned redundant/orphaned files (`strategy/role-deep-dives.md`, `ops/conversation-context-archive.md`, `CLAUDE.md`, orphaned `ops/templates/` folder, and 5 redundant `.gitkeep` files in `data-corpus/`). Reduced file count from 113 to 100 purposeful files with zero lost content and 100% clean validation.
-
-### Key Decisions
-| Decision | Rationale | Affects |
-|----------|-----------|---------|
-| Shared `_yaml_utils.py` module | Eliminates code duplication across `assemble.py` and `sync.py` while ensuring identical string and order representer behavior | `resume/_yaml_utils.py`, `assemble.py`, `sync.py` |
-| Keyed achievements bridge | Unifies external recognition (awards, certs, hackathons) into master bullet pool so variants can pick specific achievements | `resume/sync.py`, `resume/master.yaml` |
-| Non-failing archived notice in assembler | Variants should be allowed to deliberately select archived roles for niche CVs without breaking build validation | `resume/assemble.py` |
-| Consolidate salary strategy into financial.md | Unifies private compensation figures and external negotiation scripts into a single authoritative file | `strategy/financial.md`, `strategy/job-search/salary.md` |
-| Prune orphaned ops/templates & redundant gitkeeps | Eliminates template duplication and dead weight while keeping canonical journal templates intact | `ops/templates/`, `data-corpus/` |
-| Project and education parity validation | Extends identity-as-single-source-of-truth guarantee from employers to all major career sections | `.pramedha/validate.py` |
-| Unsorted intake folder (`data-corpus/inbox/`) | Lowers onboarding friction so users can dump raw files immediately without worrying about taxonomy | `data-corpus/inbox/` |
-
-## Session: 2026-10-13 (v0.1.0 Round 2 Remediation & CI Matrix Hardening)
-
-### Summary
-Addressed all 25 valid findings from the second external audit report. Eliminated all Python runtime crashes and edge case flaws, completed multi-domain interview track expansion, reconciled role scoring math and file registries, added comprehensive schema enum validator checks, created automated GitHub Actions CI workflow, and ensured 100% test pass rates across all tools.
-
-### What Was Done
-- **Runtime & Cascade Fixes (`resume/sync.py`, `resume/assemble.py`):** Fixed `NameError: generate_slug` in `sync.py`. Upgraded `slugify()` and `generate_bullet_key()` with Unicode regex (`re.UNICODE`) to preserve non-Latin scripts. Added `(company, start_date)` tenure disambiguation in `sync.py` so disconnected stints at the same company are not merged. Implemented `sync_skills()` bridging `identity/skills.yaml` to `master.yaml['technologies']` (`OneLineEntry` format). Added variant `section_order` and technologies fallback in `assemble.py`.
-- **Math & Cross-References:** Corrected role viability scoring in `strategy/target-roles.md` and `strategy/role-analysis.md` (33 pts for Tier A). Aligned `assets/interview-prep/behavioral.md` question matrix with canonical STAR story headings in `assets/star-stories.md`. Reconciled `VISION.md` status table to 7-phase model (A through G) and Quick Start sequence to Rule #3. Reconciled contact info authority source in `ops/guide.md` and `resume/master.yaml` to `identity/identity.yaml (fallback: config.yaml)`.
-- **Schema & Validator Integrity:** Corrected line 89 of `.pramedha/schema-reference.md` from `BulletEntry or NormalEntry` to `OneLineEntry`. Added `linkedin/` and `github/` to Step 1 data corpus scanning in `.pramedha/agent-instructions.md`. Updated `check_config()` in `validate.py` to check `identity/identity.yaml` before warning for name/email. Added comprehensive `check_schema_enums()` covering all 8 schema enum types. Clarified fill metric output to specify core files.
-- **Multi-Domain Generalization & Scaffolding Polish:** Expanded `assets/interview-prep/technical.md` with structured preparation tracks across 6 professional domains (Engineering, Business & Product, Creative & Design, Medical & Clinical, Academic & Research, Legal & Policy). Standardized phone formatting and localized terminology (`Current Compensation / Salary (CTC)`, `$2M / ₹2Cr`). Updated `strategy/README.md` and `assets/README.md` file registries. Added phased fill advice and prerequisite pip install in `GETTING_STARTED.md`.
-- **Automated CI Workflow:** Created `.github/workflows/validate.yml` running validation matrix on Ubuntu and Windows across Python 3.11 and 3.12.
-
-### Key Decisions
-| Decision | Rationale | Affects |
-|----------|-----------|---------|
-| Unicode regex for slugs | Preserves non-Latin scripts (Devanagari, Hanzi, Cyrillic) instead of stripping all text | `resume/sync.py` |
-| Disambiguate stints by start_date | Prevents clobbering or merging separate employment periods at the same company | `resume/sync.py` |
-| Modular technical interview tracks | Ensures template delivers equal rigor across all 9 supported profession types | `assets/interview-prep/technical.md` |
-| GitHub Actions matrix testing | Guarantees cross-platform pipeline reliability on both Windows and Linux environments | `.github/workflows/validate.yml` |
-
-## Session: 2026-10-13 (v0.1.0 Full System Remediation & Rigorous Falsification Audit)
-
-### Summary
-Conducted rigorous falsification audit of external audit reports, identifying and resolving all valid runtime defects, schema misalignments, pipeline gaps, and portability leaks across the repository. The template build, assembly, and validation pipelines now execute with 100% test pass rates and zero warnings or errors.
-
-### What Was Done
-- **Runtime Scripts & CLI Fixes:** Replaced deprecated/broken `--output-folder-name "output"` with absolute `-o $outputDir` / `-o "$OUTPUT_DIR"` in `resume/build.ps1` and `resume/build.sh`. Added `$env:PYTHONIOENCODING = "utf-8"` in `build.ps1` to prevent Windows `charmap` codec crashes on completion checkmarks. Added BCP-47 / POSIX locale subtag normalization (`raw_locale.split('-')[0].split('_')[0]`) in `resume/assemble.py` to prevent RenderCV Pydantic union tag crashes on codes like `en-US`.
-- **Authority Map & Validation Parity:** Reconciled `ops/authority-map.md` line 12 contact hierarchy to match `assemble.py` (`identity/identity.yaml (fallback: config.yaml)`). Reclassified `speaking-and-community.yaml`, `volunteering.yaml`, and `references.yaml` to `OPTIONAL_FILES` in `.pramedha/validate.py`, ensuring clean clones pass strict validation without false positives.
-- **RenderCV v2.8 Credential Scaffolding:** Updated publication comments in `identity/credentials.yaml` to native RenderCV v2.8 `PublicationEntry` (`title`, `authors`, `date`, `journal`, `doi`, `url`). Added commented scaffolding for professional licenses and security clearances.
-- **Portability & Privacy Sanitization:** Sanitized local workstation absolute links (`file:///d:/dev/...`) in `GETTING_STARTED.md` and `VISION.md`. Scrubbed personal domain leak in `VISION.md` line 84. Added Prompt 16 ("Lite Career Template Audit & Health Check") to `ops/prompts.md` TOC.
-- **AI Protocol Harmony:** Reconciled `assets/interview-prep/behavioral.md` in Master File Map and Step 21 of `.pramedha/agent-instructions.md`. Aligned `networking.md` between File Map and AI fill tables.
-- **Pipeline Continuity (`resume/sync.py`):** Added client attribution preservation (`[{client}] {bullet}`) for freelance deliverables. Added `career_breaks: []` synchronization into `resume/master.yaml` (`archived: true`).
-- **Globalization & Multi-Region Platforms:** Defaulted `config.yaml` to `currency: "USD"` with common ISO 4217 instructions. Neutralized region-specific compensation and housing metrics in `strategy/financial.md`. Restructured `strategy/job-search/platforms.md` into Global, Remote, US/Americas, UK/Europe, and India/APAC platform matrices.
-
-### Key Decisions
-| Decision | Rationale | Affects |
-|----------|-----------|---------|
-| Absolute path for RenderCV `-o` | RenderCV resolves relative paths relative to input YAML, misplacing output | `resume/build.ps1`, `resume/build.sh` |
-| BCP-47 subtag stripping | RenderCV requires lowercased English language names (e.g. 'english') | `resume/assemble.py` |
-| Reclassify community files as optional | Not all professions have public speaking or volunteering | `.pramedha/validate.py` |
-| Currency default USD | Provides universal default for international career template | `config.yaml`, `strategy/financial.md` |
-
-## Session: 2026-10-13 (v0.1.0 Schema Unification, RenderCV Modernization & Version Normalization)
-
-### Summary
-Unified schemas between identity and resume layers, created automated identity-to-master cascade synchronization (`resume/sync.py`), modernized the resume pipeline for RenderCV v2.8 (Typst compilation, JSON Schema autocompletion, 12 themes, PublicationEntry, Settings block), enhanced validator with deep cross-file integrity checks, populated realistic master resume examples, and normalized template versioning across all files to `v0.1.0`.
-
-### What Was Done
-- **Schema Unification:** Renamed `title` → `position` and `subtitle` → `role_subtitle` in `identity/experience.yaml` matching native RenderCV `ExperienceEntry`. Documented authority hierarchy and contact precedence in `identity/identity.yaml` and updated `resume/assemble.py` to prioritize identity data over config.yaml.
-- **Identity → Resume Bridge (`resume/sync.py`):** Built standalone, non-destructive synchronizer transforming verified facts from `identity/experience.yaml`, `identity/projects.yaml`, and `identity/credentials.yaml` into keyed pools in `resume/master.yaml`.
-- **RenderCV v2.8 Modernization:** Configured `# yaml-language-server: $schema=...` in `assemble.py` for editor autocompletion. Supported Typst engine, all 12 themes in `resume/design.yaml`, `PublicationEntry`, `archived: true` skipping, and `settings:` blocks.
-- **Validator Enhancements:** Added `check_skill_enums`, `check_date_chronology`, `check_identity_master_parity`, and cross-file contact/skill consistency checks in `.pramedha/validate.py`.
-- **Examples & Docs:** Created populated `.pramedha/examples/master-filled.yaml` pairing with `variant-example.yaml`, created `assets/interview-prep/behavioral.md`, added schema checklist in `CONTRIBUTING.md`, added Prompt #16 in `ops/prompts.md`, and modernized `GETTING_STARTED.md`.
-- **Version Normalization:** Normalized template versioning across `.pramedha/manifest.yaml` (`0.1.0`), `CHANGELOG.md` (`0.1.0`), and session logs to `v0.1.0`.
-
-### Key Decisions
-| Decision | Rationale | Affects |
-|----------|-----------|---------|
-| Template version set to v0.1.0 | Initial release reflects semantic versioning for new template | `.pramedha/manifest.yaml`, `CHANGELOG.md`, session handoffs |
-| Identity position schema alignment | Prevents divergent terminology between identity and resume layers | `identity/experience.yaml`, `resume/master.yaml` |
-| Non-destructive sync.py bridge | Empowers users to pull facts into master without overwriting hand-tuned phrasings | `resume/sync.py` |
-| Typst as primary rendering engine | Compiles in <1s with zero external TeX dependencies | `resume/README.md`, `GETTING_STARTED.md` |
-
-## Session: 2026-10-13 (v0.1.0 Full System Audit & Polish)
-
-### Summary
-Conducted a comprehensive, file-by-file audit of the entire Pramedha Career Template repository (67+ files). Resolved all 34 audit findings spanning 8 critical issues, 8 high-impact improvements, and 12 discoveries. Pramedha is now mathematically consistent, single-source true, universally accessible across professions, and rock-solid cross-platform.
-
-### What Was Done
-- **Resume Cascade Auto-Fill:** Implemented automated header merge from `config.yaml` into empty fields in `resume/assemble.py`, closing the single-source-of-truth gap.
-- **Assembler Resilience:** Added Windows UTF-8 console output encoding, graceful handling of empty `_template.yaml` files, template role detection, and friendly CLI messages.
-- **Build Scripts:** Upgraded `build.ps1` and `build.sh` to safely detect Python launchers, handle missing RenderCV gracefully, and fix folder argument issues.
-- **Validator Overhaul:** Updated `.pramedha/validate.py` to validate all 10 identity files, added non-scaffold content detection (clean clone now accurately reports 0% fill instead of false 58%), and added 90-day file freshness checks.
-- **Privacy Architecture:** Moved sensitive salary figures out of public `config.yaml` into `personal/preferences.yaml` (private), adding `career_type` and non-sensitive `target_role_level`.
-- **Career Gap & Non-Linear Support:** Added `career_breaks: []` schema to `identity/experience.yaml` with verification tagging, and provided guidance for freelancers, consultants, and researchers.
-- **Schema & Enum Alignment:** Reconciled `career_stage` and `language_fluency` (added `conversational`) in `.pramedha/schema-reference.md` and template files.
-- **Multi-Profession Examples:** Created 4 domain-specific skill matrix overlays in `.pramedha/examples/` (`skills-business.yaml`, `skills-medical.yaml`, `skills-creative.yaml`, `skills-academic.yaml`).
-- **Complete Registry:** Added all previously omitted files across `strategy/`, `assets/`, `personal/`, `journal/`, and `ops/` to `.pramedha/manifest.yaml`.
-- **Documentation Harmony:** Fixed Prompt #1 in `ops/prompts.md` (33 steps across 7 phases), aligned Phase B (2-10) and Phase D (14-21) headers in `agent-instructions.md`, and fixed LinkedIn headline character limit (220 max) in `assets/platform-copy.md`.
-- **Evidence Locker READMEs:** Created structured READMEs for all `data-corpus/` subdirectories (`resumes/`, `documents/`, `exports/`, `text/`, `media/`).
-- **Minimal Viable Career System:** Added "Just 3 Files" fast-track path to `GETTING_STARTED.md` and unified reading order across `README.md`, `GETTING_STARTED.md`, `VISION.md`, and `AGENTS.md`.
-- **Open Source Governance:** Authored `CONTRIBUTING.md` with guidelines, principles, and PR checklists.
-
-### Key Decisions
-| Decision | Rationale | Affects |
-|----------|-----------|---------|
-| Implement header auto-fill in assemble.py | Eliminates duplicate data entry between config.yaml and master.yaml | `resume/assemble.py`, `resume/master.yaml` |
-| Move target_salary_range to preferences.yaml | Prevents accidental leak of sensitive financial numbers from config.yaml | `config.yaml`, `personal/preferences.yaml` |
-| Add career_breaks section to experience.yaml | Explicit support for parental leave, caregiving, health, sabbatical without breaking schema | `identity/experience.yaml`, `schema-reference.md` |
-| Accurate fill status filter in validator | Cloned template should report 0% fill; scaffolding shouldn't be counted as completed data | `.pramedha/validate.py` |
-
-### Artifacts Created & Modified
-- Created: `.pramedha/examples/skills-business.yaml`
-- Created: `.pramedha/examples/skills-medical.yaml`
-- Created: `.pramedha/examples/skills-creative.yaml`
-- Created: `.pramedha/examples/skills-academic.yaml`
-- Created: `CONTRIBUTING.md`
-- Created: `data-corpus/resumes/README.md`
-- Created: `data-corpus/documents/README.md`
-- Created: `data-corpus/exports/README.md`
-- Created: `data-corpus/text/README.md`
-- Created: `data-corpus/media/README.md`
-- Modified: `resume/assemble.py`, `resume/build.ps1`, `resume/build.sh`, `.pramedha/validate.py`
-- Modified: `config.yaml`, `identity/identity.yaml`, `identity/experience.yaml`, `identity/skills.yaml`, `identity/credentials.yaml`, `identity/projects.yaml`, `identity/speaking-and-community.yaml`, `identity/volunteering.yaml`, `identity/references.yaml`, `personal/preferences.yaml`, `resume/master.yaml`
-- Modified: `.pramedha/schema-reference.md`, `.pramedha/manifest.yaml`, `.pramedha/agent-instructions.md`, `ops/prompts.md`, `ops/session-handoff.md`, `assets/platform-copy.md`, `GETTING_STARTED.md`, `README.md`, `VISION.md`, `ops/tooling.md`
+===================================================================== -->
