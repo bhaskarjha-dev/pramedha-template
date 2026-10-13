@@ -1,0 +1,110 @@
+# ============================================================================
+# EXAMPLE — Master Resume (Populated Bullet Pool)
+# ============================================================================
+# Corresponds to .pramedha/examples/variant-example.yaml (Alex Chen)
+# Shows how master.yaml looks when fully populated with multiple phrasings,
+# projects, education, publications, and achievements.
+# ============================================================================
+
+header:
+  name: "Alex Chen"
+  location: "San Francisco, CA, US"
+  email: "alex.chen@example.com"
+  phone: "+1-202-555-0199"
+  website: "https://alexchen.dev"
+  social_networks:
+    - network: LinkedIn
+      username: alexchen-dev
+    - network: GitHub
+      username: alexchen
+
+experience:
+  stripe_senior:
+    company: "Stripe"
+    position: "Senior Software Engineer"
+    start_date: "2022-03"
+    end_date: "present"
+    location: "San Francisco, CA"
+    bullets:
+      payment_retry_ml:
+        default: "Architected adaptive payment retry engine utilizing gradient-boosted decision models, recovering $18M in failed transactions annually [measured]"
+        short: "Built ML payment retry engine recovering $18M ARR [measured]"
+        technical: "Engineered real-time ML retry scoring pipeline in Go and XGBoost with p99 evaluation latency under 12ms [measured]"
+        leadership: "Spearheaded cross-functional initiative across Risk and Infrastructure teams to redesign payment recovery system [measured]"
+      realtime_pipeline:
+        default: "Scaled transaction streaming ingestion layer to 120K events/second with zero data loss over 18 months [measured]"
+        technical: "Migrated legacy Kafka cluster to Apache Flink event processing pipeline, cutting end-to-end data lag from 4.2s to 120ms [measured]"
+      false_decline:
+        default: "Reduced false decline rate by 14% through dynamic risk threshold heuristics across 42 card networks [measured]"
+        short: "Decreased false card declines by 14% [measured]"
+
+  twilio_swe:
+    company: "Twilio"
+    position: "Software Engineer"
+    start_date: "2019-07"
+    end_date: "2022-02"
+    location: "San Francisco, CA"
+    bullets:
+      rate_limiter:
+        default: "Developed distributed rate limiting middleware deployed across 14 edge regions serving 100K+ concurrent API callers [measured]"
+        technical: "Implemented token-bucket rate limiting in Go with Redis Cluster backend and local sliding-window caching, maintaining 99.999% availability [measured]"
+      monolith_migration:
+        default: "Decomposed monolithic messaging dispatcher into 4 decoupled Go microservices, reducing deployment cycle times by 65% [measured]"
+        leadership: "Mentored 4 junior engineers through cloud migration and established team-wide CI/CD best practices [measured]"
+
+projects:
+  distributed_cache:
+    name: "CacheFlow"
+    date: "2023"
+    location: "github.com/alexchen/cacheflow"
+    bullets:
+      default: "Open-source distributed cache with consistent hashing and Raft consensus; reached 1.2K GitHub stars [measured]"
+      technical: "High-throughput in-memory cache written in Rust implementing custom zero-allocation LRU eviction and gRPC clustering [measured]"
+
+  api_gateway:
+    name: "EdgeMesh Gateway"
+    date: "2021"
+    location: "github.com/alexchen/edgemesh"
+    bullets:
+      default: "Lightweight reverse proxy and API gateway with dynamic plugin support and eBPF observability [measured]"
+      technical: "Implemented eBPF packet filters and Envoy WASM filters for zero-overhead HTTP request tracing [measured]"
+
+publications:
+  - title: "Adaptive Retry Strategies for High-Throughput Distributed Payment Systems"
+    authors:
+      - "Alex Chen"
+      - "Priya Sharma"
+    date: "2024-06"
+    journal: "IEEE Transactions on Cloud Computing"
+    doi: "10.1109/TCC.2024.9876543"
+    url: "https://doi.org/10.1109/TCC.2024.9876543"
+
+education:
+  - institution: "University of California, Berkeley"
+    area: "Computer Science"
+    degree: "B.S."
+    start_date: "2015"
+    end_date: "2019"
+    highlights:
+      - "GPA: 3.86/4.00, Dean's Honors List"
+      - "Coursework: Distributed Systems, Database Systems, Computer Security"
+
+achievements:
+  stripe_hackathon:
+    text: "1st Place Winner — Stripe Global Hackathon 2023 (Autonomous Settlement Protocol)"
+  twilio_eng_award:
+    text: "Twilio Excellence in Engineering Award 2021 for Edge Resilience Architecture"
+
+technologies:
+  - label: "Languages"
+    details: "Go, Python, Rust, SQL, TypeScript"
+  - label: "Infrastructure"
+    details: "Kubernetes, Terraform, Docker, AWS, GCP"
+  - label: "Data & Streaming"
+    details: "PostgreSQL, Redis, Apache Kafka, Apache Flink"
+
+settings:
+  pdf_title: "Alex Chen - Senior Software Engineer"
+  bold_keywords: ["Go", "Distributed Systems", "Kubernetes", "Kafka", "Machine Learning"]
+
+last_updated: "2024-10-01"

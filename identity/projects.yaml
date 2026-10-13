@@ -11,6 +11,14 @@
 #   - Include measurable outcomes where possible
 #   - Link to live demos, GitHub repos, or screenshots
 #   - Technologies list feeds skill auto-detection
+#
+# Resume Cascade Mapping:
+#   - Projects sync to resume/master.yaml under `projects:` (via resume/sync.py or manual edit)
+#   - In resume/master.yaml, each project has a snake_case key:
+#       name: matches project name
+#       date: start_date – end_date (or year)
+#       location: repo or live_url
+#       bullets: { default: "...", technical: "..." } derived from highlights
 # ============================================================================
 
 # ─── Public Projects (open source, personal, visible) ────────────────────

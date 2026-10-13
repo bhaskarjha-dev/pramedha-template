@@ -46,21 +46,35 @@ When modifying `.pramedha/validate.py` or `resume/assemble.py`:
   ```
 
 ### 4. Proposing Schema Changes
-If you propose adding or modifying fields:
-- Update `.pramedha/schema-reference.md`
-- Update `.pramedha/manifest.yaml`
-- Update `ops/authority-map.md` if data ownership is affected
-- Update `.pramedha/validate.py` if validation rules change
-- Explain the rationale and backward compatibility considerations in your PR description.
+When modifying or introducing fields in YAML/Markdown schemas, follow this strict checklist to maintain whole-repository consistency:
+
+- [ ] **1. Template Definition:** Update canonical scaffolding files in `identity/`, `resume/`, `strategy/`, or `personal/`. Include clear field comments and verification tag examples.
+- [ ] **2. Schema Reference:** Update `.pramedha/schema-reference.md` (field name, type, enum definitions, PramedhaProfile and RenderCV mappings).
+- [ ] **3. Authority Map:** If data ownership changes, update `ops/authority-map.md`.
+- [ ] **4. Validator Logic:** Update `.pramedha/validate.py`:
+  - Add required/optional checks and enum validations
+  - Update `compute_fill_status()` check predicates if field structure changed
+  - Maintain backward compatibility fallbacks
+- [ ] **5. Cascade Scripts:** Update `resume/sync.py` and `resume/assemble.py` if the change touches resume generation or identity flattening.
+- [ ] **6. Examples:** Update corresponding examples in `.pramedha/examples/`.
+- [ ] **7. Manifest:** Update `.pramedha/manifest.yaml` (bump version and file registry).
+- [ ] **8. Local Validation:** Confirm all verifications pass cleanly:
+  ```bash
+  py .pramedha/validate.py
+  py resume/assemble.py --validate
+  py resume/sync.py --dry-run
+  ```
 
 ---
 
 ## 📝 Pull Request Checklist
 
 Before opening your pull request, verify:
-- [ ] Code runs on Python 3.10+ without syntax or encoding errors
-- [ ] `python .pramedha/validate.py` passes
-- [ ] Cross-references between files remain consistent
+- [ ] Code runs on Python 3.10+ without syntax or encoding errors (tested cross-platform)
+- [ ] `py .pramedha/validate.py` passes with zero errors
+- [ ] `py resume/assemble.py --validate` passes
+- [ ] `py resume/sync.py --dry-run` runs cleanly
+- [ ] Cross-references and relative Markdown links remain intact
 - [ ] No personal or proprietary private data is included in commit history
 - [ ] `CHANGELOG.md` includes a concise note under `[Unreleased]` or the upcoming version
 

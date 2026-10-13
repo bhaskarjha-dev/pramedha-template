@@ -4,8 +4,8 @@
 
 experience:
   - company: "Stripe"
-    title: "Senior Software Engineer"
-    subtitle: "Payments Platform"
+    position: "Senior Software Engineer"
+    role_subtitle: "Payments Platform"
     start_date: "2022-03"
     end_date: "present"
     location: "San Francisco, CA"
@@ -32,7 +32,7 @@ experience:
             skills: ["Python", "TensorFlow", "Apache Beam", "BigQuery", "Kubernetes"]
 
   - company: "Twilio"
-    title: "Software Engineer"
+    position: "Software Engineer"
     start_date: "2020-06"
     end_date: "2022-02"
     location: "Remote"

@@ -128,8 +128,18 @@ This is the most important file. For each employer:
 
 ### Phase C: Resume Layer (Steps 11-13) — Generated From Identity
 
-#### Step 11: Generate resume/master.yaml
-- Convert experience.yaml bullets into the keyed phrasing format:
+#### Step 11: Populate resume/master.yaml via Bridge Script
+- Run the bridge synchronizer to import verified facts from identity into `master.yaml`:
+  ```bash
+  py resume/sync.py
+  ```
+  *(Use `py resume/sync.py --dry-run` to preview additions without writing).*
+- **Transformation Pipeline:**
+  - `identity/experience.yaml` → flattens deliverables into `master.yaml[role_key].bullets[bullet_key].default`.
+  - `identity/projects.yaml` → syncs public/internal projects into `master.yaml[projects]`.
+  - `identity/credentials.yaml` → syncs education & publications into `master.yaml`.
+- **Enrich Bullet Phrasings in master.yaml:**
+  For key achievements, craft alternative phrasings tailored for different audiences:
   ```yaml
   experience:
     role_key:
@@ -137,20 +147,20 @@ This is the most important file. For each employer:
       position: "..."
       bullets:
         bullet_key:
-          default: "Original bullet text"
-          short: "Shorter version"
-          technical: "More technical version"
+          default: "Standard phrasing with metric [measured]"
+          short: "Concise 1-line version for tight layouts"
+          technical: "Deep-dive phrasing highlighting stack/architecture"
+          leadership: "Emphasizes team orchestration and business impact"
   ```
-- Include education, projects, achievements from credentials.yaml
 
 #### Step 12: Generate resume/variants/
-- Create one variant per target role (or per profession area)
-- Each variant selects relevant bullets from master.yaml
-- Include a tailored summary for each variant
+- Create role-specific overlays in `resume/variants/` (e.g. `A_Backend_Lead.yaml`, `B_Fullstack.yaml`).
+- Each variant selects specific bullets and phrasings from `master.yaml`.
+- Include a tailored summary and select relevant projects and technologies.
 
 #### Step 13: Validate resume pipeline
-- Run `python resume/assemble.py --validate` to check references
-- Verify every bullet key in variants exists in master.yaml
+- Run `py resume/assemble.py --validate` to verify all bullet and project references.
+- Test building output with `py resume/assemble.py`. RenderCV will compile variants into `resume/generated/*.yaml` and output PDFs/Typst documents.
 
 ---
 
@@ -263,10 +273,12 @@ This is the most important file. For each employer:
 > ⚠️ Fill ONLY from `data-corpus/text/` freeform data. Never infer personal
 > information. If no personal context exists, leave these empty.
 
-#### Step 29: Draft personal/about-me.md + career-narrative.md
-- Extract life context from freeform text (if available)
-- Write "walk me through your career" in 3 lengths (30s/2min/5min)
-- Career narrative must only use facts from experience.yaml
+#### Step 29: Draft personal/career-narrative.md, then personal/about-me.md
+- **First, Draft `personal/career-narrative.md`:**
+  - Write "walk me through your career" transition arcs in 3 lengths (30s elevator pitch, 2min interview standard, 5min deep dive).
+  - Ground every transition strictly in verified facts from `identity/experience.yaml`.
+- **Second, Draft `personal/about-me.md`:**
+  - Use the career narrative as grounding to articulate life context, personal values, and intellectual motivations (extracted only from `data-corpus/text/` evidence).
 
 #### Step 30: Draft personal/life-goals.md
 - If career goals exist in text/: structure into short/medium/long term

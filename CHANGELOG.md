@@ -2,7 +2,41 @@
 
 All notable changes to the Pramedha Career Template.
 
-## [2.1.0] — 2026-10-13
+## [0.1.0] — 2026-10-13
+
+### Major: Schema Unification, Identity-Resume Bridge, RenderCV v2.8 & Rigorous Validation
+
+Complete modernization across the entire template: unified identity and resume schemas, automated identity-to-master synchronization, modernized for RenderCV v2.8 (Typst engine, JSON schema autocompletion, 12 themes, publication entries), enhanced validator consistency checks, and comprehensive documentation polish.
+
+### Added — Automation & Bridge Script
+- **`resume/sync.py`** — New cascade bridge script that automatically transforms verified facts in `identity/experience.yaml`, `identity/projects.yaml`, and `identity/credentials.yaml` into keyed pools in `resume/master.yaml`. Safe non-destructive merging with `--dry-run`, `--section`, and `--force` flags.
+- **`assets/interview-prep/behavioral.md`** — Dedicated behavioral interview preparation guide mapping STAR stories from `assets/star-stories.md` to common questions, Amazon 16 Leadership Principles, and situational frameworks.
+- **`.pramedha/examples/master-filled.yaml`** — Realistic populated master resume bullet pool pairing with `variant-example.yaml` for Alex Chen (Stripe/Twilio), demonstrating multi-phrasing bullets, publications, projects, and education.
+- **Prompt #16 in `ops/prompts.md`** — Added "Lite Career Template Audit & Health Check" prompt for rapid AI-assisted validation, freshness checking, and anti-inflation auditing.
+
+### Changed — Schema Unification & RenderCV v2.8 Modernization
+- **Unified Experience Schema** — Renamed `title` → `position` and `subtitle` → `role_subtitle` in `identity/experience.yaml` to directly match native RenderCV schema.
+- **Identity Precedence in Cascade** — Updated `resume/assemble.py` header loader to read `identity/identity.yaml` as primary profile source, falling back to `config.yaml`.
+- **JSON Schema Directive** — `assemble.py` outputs `# yaml-language-server: $schema=...` directive pointing to RenderCV v2.8 schema, enabling immediate IDE autocompletion and linting in VS Code, Cursor, and Neovim.
+- **RenderCV v2.8 Themes** — Expanded documented themes in `resume/design.yaml` and `resume/README.md` to all 12 supported themes, including `harvard`, `ink`, `opal`, `ember`, `developer`, `compact`, and `academic`.
+- **Publications Support** — Added `PublicationEntry` schema handling in `resume/assemble.py`, `resume/master.yaml`, and `resume/sync.py`.
+- **Locale & Settings Passthrough** — Mapped `config.yaml` `locale` to RenderCV `locale: { language: ... }` and supported RenderCV `settings:` block (custom date, pdf title, bold keywords).
+- **Archived Roles Convention** — Added `archived: true` convention to `resume/master.yaml` to retain historic career roles in bullet pool while omitting from active variant files.
+
+### Changed — Validator Enhancements (`.pramedha/validate.py`)
+- **Skill Level Enum Validation** — Enforces valid skill levels (`beginner`, `intermediate`, `advanced`, `expert`) per `schema-reference.md`.
+- **Date Chronology Checks** — Detects anachronisms, negative durations (`start_date > end_date`), and invalid date formats across experience and career breaks.
+- **Identity-to-Master Parity** — Checks that filled employers in `identity/experience.yaml` have corresponding representation in `resume/master.yaml`.
+- **Cross-File Technology Consistency** — Flags unlisted technologies used in deliverables or projects that are missing from `identity/skills.yaml`.
+- **Required Files Registry** — Added `resume/sync.py` to validator required files.
+
+### Fixed — Polish & Links
+- **Relative Markdown Links** — Fixed broken cross-folder relative links in `strategy/master-action-tracker.md`.
+- **`CONTRIBUTING.md`** — Added an 8-point schema change checklist ensuring cross-repository synchronization for future contributions.
+- **Line Ending Normalization** — Added `* text=auto` in `.gitattributes`.
+- **Manifest Registry** — Set template version to 0.1.0 in `.pramedha/manifest.yaml` and registered new tools and interview prep files.
+
+## [0.0.4] — 2026-10-13
 
 ### Major: System-Wide Audit, Resilience & Multi-Profession Generalization
 
@@ -31,7 +65,7 @@ Comprehensive audit of all 67+ repository files resolved 34 findings across code
 - **`CONTRIBUTING.md`** — Added open-source contributor guide and pull request standards.
 - **Minimal Viable Career System** — Added "Just 3 Files" fast-track path in `GETTING_STARTED.md` to eliminate cognitive barrier for newcomers.
 
-## [2.0.0] — 2026-10-13
+## [0.0.3] — 2026-10-13
 
 ### Major: Dogfooding-Driven Template Upgrade
 
@@ -66,7 +100,7 @@ improvements — no user-specific content.
 - **`README.md`** — "Pramedha Compatibility" → "Pramedha Integration (Optional)" — reframed as standalone-first with optional Pramedha integration
 - **`.pramedha/agent-instructions.md`** — Integration section reframed as optional, standalone usage is the default path
 - **`.pramedha/schema-reference.md`** — Header rewritten to serve standalone users first, `Maps to:` comments documented as informational
-- **`.pramedha/manifest.yaml`** — Added `standalone: true` flag; version bumped to 2.0.0; added all new files to registry
+- **`.pramedha/manifest.yaml`** — Added `standalone: true` flag; added all new files to registry
 - **All `Maps to:` comments** — Retained throughout template files for schema documentation; explicitly noted as having no functional dependency
 
 ### Template Stats
@@ -78,8 +112,7 @@ improvements — no user-specific content.
 
 ---
 
-
-## [1.1.0] — 2026-06-19
+## [0.0.2] — 2026-06-19
 
 ### Added
 - `LICENSE` — MIT license file
@@ -105,7 +138,7 @@ improvements — no user-specific content.
 - assemble.py docstring referenced hardcoded variant names
 - Config.yaml read happened inside variant loop (N reads instead of 1)
 
-## [1.0.0] — 2026-06-19
+## [0.0.1] — 2026-06-19
 
 ### Added
 - Initial template: 58 files across 8 folders

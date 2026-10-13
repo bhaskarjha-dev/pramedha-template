@@ -7,7 +7,8 @@
 # data-corpus/media/*.jpg filter=lfs diff=lfs merge=lfs -text
 # data-corpus/media/*.mp4 filter=lfs diff=lfs merge=lfs -text
 
-# Ensure consistent line endings
+# Ensure consistent line endings across platforms
+* text=auto
 *.yaml text eol=lf
 *.yml text eol=lf
 *.md text eol=lf

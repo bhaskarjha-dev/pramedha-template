@@ -430,3 +430,35 @@ EXECUTE:
 
 OUTPUT: Recommendation with clear reasoning.
 ```
+
+---
+
+## 16. Lite Career Template Audit & Health Check
+
+```
+TASK: Perform a rapid health check and audit of my Pramedha repository.
+
+CONTEXT: Read:
+- AGENTS.md (system architecture & critical rules)
+- ops/authority-map.md (source-of-truth ownership)
+- ops/session-handoff.md (previous session context)
+
+EXECUTE:
+1. Run the validator:
+   py .pramedha/validate.py
+2. Verify resume cascade consistency:
+   py resume/assemble.py --validate
+3. Preview identity-to-master synchronization:
+   py resume/sync.py --dry-run
+4. Audit for anti-inflation:
+   - Check if any claims in resume/master.yaml lack verification tags in identity/claims-and-evidence.md
+   - Check for unevidenced skill level promotions in identity/skills.yaml
+5. Check file freshness:
+   - Identify any YAML files whose last_updated exceeds 90 days
+6. Generate a compact scorecard:
+   - Fill percentage and coverage gaps
+   - Broken references or missing files
+   - High-priority action items for strategy/master-action-tracker.md
+
+OUTPUT: Compact health report with immediate corrective steps.
+```

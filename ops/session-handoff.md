@@ -14,7 +14,28 @@
 ...
 -->
 
-## Session: 2026-10-13 (v2.1.0 Full System Audit & Polish)
+## Session: 2026-10-13 (v0.1.0 Schema Unification, RenderCV Modernization & Version Normalization)
+
+### Summary
+Unified schemas between identity and resume layers, created automated identity-to-master cascade synchronization (`resume/sync.py`), modernized the resume pipeline for RenderCV v2.8 (Typst compilation, JSON Schema autocompletion, 12 themes, PublicationEntry, Settings block), enhanced validator with deep cross-file integrity checks, populated realistic master resume examples, and normalized template versioning across all files to `v0.1.0`.
+
+### What Was Done
+- **Schema Unification:** Renamed `title` → `position` and `subtitle` → `role_subtitle` in `identity/experience.yaml` matching native RenderCV `ExperienceEntry`. Documented authority hierarchy and contact precedence in `identity/identity.yaml` and updated `resume/assemble.py` to prioritize identity data over config.yaml.
+- **Identity → Resume Bridge (`resume/sync.py`):** Built standalone, non-destructive synchronizer transforming verified facts from `identity/experience.yaml`, `identity/projects.yaml`, and `identity/credentials.yaml` into keyed pools in `resume/master.yaml`.
+- **RenderCV v2.8 Modernization:** Configured `# yaml-language-server: $schema=...` in `assemble.py` for editor autocompletion. Supported Typst engine, all 12 themes in `resume/design.yaml`, `PublicationEntry`, `archived: true` skipping, and `settings:` blocks.
+- **Validator Enhancements:** Added `check_skill_enums`, `check_date_chronology`, `check_identity_master_parity`, and cross-file contact/skill consistency checks in `.pramedha/validate.py`.
+- **Examples & Docs:** Created populated `.pramedha/examples/master-filled.yaml` pairing with `variant-example.yaml`, created `assets/interview-prep/behavioral.md`, added schema checklist in `CONTRIBUTING.md`, added Prompt #16 in `ops/prompts.md`, and modernized `GETTING_STARTED.md`.
+- **Version Normalization:** Normalized template versioning across `.pramedha/manifest.yaml` (`0.1.0`), `CHANGELOG.md` (`0.1.0`), and session logs to `v0.1.0`.
+
+### Key Decisions
+| Decision | Rationale | Affects |
+|----------|-----------|---------|
+| Template version set to v0.1.0 | Initial release reflects semantic versioning for new template | `.pramedha/manifest.yaml`, `CHANGELOG.md`, session handoffs |
+| Identity position schema alignment | Prevents divergent terminology between identity and resume layers | `identity/experience.yaml`, `resume/master.yaml` |
+| Non-destructive sync.py bridge | Empowers users to pull facts into master without overwriting hand-tuned phrasings | `resume/sync.py` |
+| Typst as primary rendering engine | Compiles in <1s with zero external TeX dependencies | `resume/README.md`, `GETTING_STARTED.md` |
+
+## Session: 2026-10-13 (v0.1.0 Full System Audit & Polish)
 
 ### Summary
 Conducted a comprehensive, file-by-file audit of the entire Pramedha Career Template repository (67+ files). Resolved all 34 audit findings spanning 8 critical issues, 8 high-impact improvements, and 12 discoveries. Pramedha is now mathematically consistent, single-source true, universally accessible across professions, and rock-solid cross-platform.

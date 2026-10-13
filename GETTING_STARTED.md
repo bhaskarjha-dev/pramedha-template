@@ -118,25 +118,27 @@ The AI will fill **~40 files automatically**:
 
 ## Step 5: Generate Your First Resume (5 min)
 
-After identity/ is filled:
+After `identity/` is filled:
 
 ```bash
-# 1. Fill resume/master.yaml with your best bullets
-#    (AI can do this from experience.yaml)
+# 1. Sync verified career facts into master resume bullet pool:
+py resume/sync.py
 
-# 2. Create a variant
+# 2. Create a tailored variant overlay (copy template):
 cp resume/variants/_template.yaml resume/variants/my-role.yaml
 # Edit my-role.yaml to select which bullets to include
 
-# 3. Generate
-cd resume
-python assemble.py
-rendercv render generated/my-role.yaml
-# Your PDF is in resume/output/
+# 3. Assemble and render PDF:
+py resume/assemble.py --validate    # Verify all references
+py resume/assemble.py               # Assembles to resume/generated/
+rendercv render resume/generated/my-role.yaml
+# Your PDF is compiled in resume/output/ in <1s via Typst (no LaTeX needed!)
 ```
 
-> **Don't have RenderCV?** Install it: `pip install rendercv`
-> **Don't have Python?** Skip this step — the identity/ data is still valuable on its own.
+> 💡 **Modern Workflows & Web Preview:**
+> - **Web App:** Prefer a browser GUI? Upload your assembled YAML from `resume/generated/` to [rendercv.com](https://rendercv.com) for instant live rendering and visual adjustments.
+> - **AI Agent Skill:** Using Claude Code, Cursor, or AGY agents? Run `npx skills add rendercv/rendercv-skill` so your AI has official AST-verified schema knowledge.
+> - **No Python?** The `identity/` data and markdown assets are completely standalone and work with any resume builder.
 
 ---
 

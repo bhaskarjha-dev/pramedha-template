@@ -26,7 +26,7 @@
 
 | Trigger | Action | Template |
 |---------|--------|----------|
-| After application (Day 7) | Follow up via email or LinkedIn | See `job-search/outreach.md` |
+| After application (Day 7) | Follow up via email or LinkedIn | See [outreach.md](outreach.md) |
 | After interview (within 24h) | Thank-you email to each interviewer | Personalized, reference specific discussion point |
 | After ghosted (Day 14) | One follow-up, then move on | "Checking in on the status of my application..." |
 | After rejection | Thank them, ask for feedback | "I appreciate the update. If possible, I'd value any feedback..." |

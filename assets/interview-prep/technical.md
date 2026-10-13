@@ -3,7 +3,7 @@
 > **Purpose:** Preparation materials for technical interviews.
 > Covers: coding, system design, domain-specific topics.
 >
-> For behavioral interview prep, see `behavioral-stories.md` in this folder.
+> For behavioral interview prep, see `behavioral.md` in this folder.
 
 ---
 

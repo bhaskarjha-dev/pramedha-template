@@ -15,6 +15,11 @@ import copy
 import sys
 from pathlib import Path
 
+if sys.platform == "win32" and hasattr(sys.stdout, "buffer"):
+    import io
+    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
+    sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding="utf-8", errors="replace")
+
 # PyYAML is required — same environment as RenderCV (pip install pyyaml)
 import yaml
 
@@ -63,11 +68,36 @@ def load_yaml(path: Path) -> dict:
 
 
 def dump_yaml(data: dict, path: Path):
-    """Write a dict to a YAML file with clean formatting."""
+    """Write a dict to a YAML file with clean formatting and RenderCV JSON schema directive."""
     path.parent.mkdir(parents=True, exist_ok=True)
     with open(path, 'w', encoding='utf-8') as f:
+        f.write("# yaml-language-server: $schema=https://raw.githubusercontent.com/rendercv/rendercv/refs/tags/v2.8/schema.json\n\n")
         yaml.dump(data, f, Dumper=OrderedDumper, default_flow_style=False,
                   allow_unicode=True, width=200, sort_keys=False)
+
+
+LOCALE_MAP = {
+    'en': 'english',
+    'hi': 'hindi',
+    'fr': 'french',
+    'de': 'german',
+    'es': 'spanish',
+    'it': 'italian',
+    'ja': 'japanese',
+    'ko': 'korean',
+    'zh': 'mandarin_chinese',
+    'pt': 'portuguese',
+    'ru': 'russian',
+    'tr': 'turkish',
+    'ar': 'arabic',
+    'da': 'danish',
+    'nl': 'dutch',
+    'he': 'hebrew',
+    'hu': 'hungarian',
+    'id': 'indonesian',
+    'fa': 'persian',
+    'vi': 'vietnamese',
+}
 
 
 # ============================================================================
@@ -170,68 +200,117 @@ def resolve_project(master_projects: dict, project_ref, variant_name: str) -> di
     return entry
 
 
-def merge_header_from_config(header: dict, config: dict) -> dict:
+def merge_header(header: dict, config: dict = None, identity: dict = None) -> dict:
     """
-    Merge contact info and profiles from config.yaml into empty master header fields.
-    Master values always take precedence if already non-empty.
+    Merge contact info and profiles into empty master header fields.
+    Precedence:
+      1. master.yaml (existing non-empty header values)
+      2. identity/identity.yaml (primary profile)
+      3. config.yaml (fallback profile)
     """
-    if not config:
-        return header
+    config = config or {}
+    identity = identity or {}
 
-    user = config.get('user', {}) or {}
-    loc = config.get('location', {}) or {}
-    profiles = config.get('profiles', {}) or {}
+    id_user = identity.get('user', {}) if isinstance(identity.get('user'), dict) else {}
+    id_contact = identity.get('contact', {}) if isinstance(identity.get('contact'), dict) else {}
+    id_loc = identity.get('location', {}) if isinstance(identity.get('location'), dict) else {}
+    id_profiles = identity.get('profiles', {}) if isinstance(identity.get('profiles'), dict) else (
+        identity.get('online_presence', {}) if isinstance(identity.get('online_presence'), dict) else {}
+    )
+
+    cfg_user = config.get('user', {}) if isinstance(config.get('user'), dict) else {}
+    cfg_loc = config.get('location', {}) if isinstance(config.get('location'), dict) else {}
+    cfg_profiles = config.get('profiles', {}) if isinstance(config.get('profiles'), dict) else {}
 
     # Name
-    if not header.get('name') and user.get('name'):
-        header['name'] = user['name']
+    if not header.get('name'):
+        name = (
+            identity.get('name')
+            or id_user.get('name')
+            or cfg_user.get('name')
+            or ''
+        )
+        if name:
+            header['name'] = name
 
     # Email
-    if not header.get('email') and user.get('email'):
-        header['email'] = user['email']
+    if not header.get('email'):
+        email = (
+            identity.get('email')
+            or id_contact.get('email')
+            or cfg_user.get('email')
+            or ''
+        )
+        if email:
+            header['email'] = email
 
     # Phone
-    if not header.get('phone') and user.get('phone'):
-        header['phone'] = user['phone']
+    if not header.get('phone'):
+        phone = (
+            identity.get('phone')
+            or id_contact.get('phone')
+            or cfg_user.get('phone')
+            or ''
+        )
+        if phone:
+            header['phone'] = phone
 
     # Website / portfolio
     if not header.get('website'):
-        website = user.get('website') or profiles.get('portfolio') or ''
+        website = (
+            identity.get('website')
+            or id_profiles.get('website')
+            or id_profiles.get('portfolio')
+            or cfg_user.get('website')
+            or cfg_profiles.get('portfolio')
+            or ''
+        )
         if website:
             header['website'] = website
 
     # Location (e.g. "Bangalore, Karnataka, IN" or "Bangalore, IN")
     if not header.get('location'):
-        loc_parts = [p for p in [loc.get('city'), loc.get('region'), loc.get('country_code')] if p]
-        if loc_parts:
-            header['location'] = ", ".join(loc_parts)
+        if isinstance(identity.get('location'), str) and identity.get('location').strip():
+            header['location'] = identity.get('location').strip()
+        else:
+            loc_data = id_loc if id_loc else cfg_loc
+            if isinstance(loc_data, dict):
+                loc_parts = [p for p in [loc_data.get('city') or loc_data.get('current_city'), loc_data.get('region'), loc_data.get('country_code')] if p]
+                if loc_parts:
+                    header['location'] = ", ".join(loc_parts)
 
     # Social networks (RenderCV format: list of dicts with network and username)
     social_networks = header.get('social_networks') or []
-    if not social_networks and profiles:
-        new_networks = []
-        if profiles.get('linkedin'):
-            url = str(profiles['linkedin']).strip()
-            if url:
-                username = url.rstrip('/').split('/')[-1] if '/' in url else url
-                new_networks.append({'network': 'LinkedIn', 'username': username})
-        if profiles.get('github'):
-            url = str(profiles['github']).strip()
-            if url:
-                username = url.rstrip('/').split('/')[-1] if '/' in url else url
-                new_networks.append({'network': 'GitHub', 'username': username})
-        if profiles.get('twitter'):
-            url = str(profiles['twitter']).strip()
-            if url:
-                username = url.rstrip('/').split('/')[-1] if '/' in url else url
-                new_networks.append({'network': 'Twitter', 'username': username})
-        if new_networks:
-            header['social_networks'] = new_networks
+    if not social_networks:
+        profiles = id_profiles if id_profiles else cfg_profiles
+        if profiles:
+            new_networks = []
+            if profiles.get('linkedin'):
+                url = str(profiles['linkedin']).strip()
+                if url:
+                    username = url.rstrip('/').split('/')[-1] if '/' in url else url
+                    new_networks.append({'network': 'LinkedIn', 'username': username})
+            if profiles.get('github'):
+                url = str(profiles['github']).strip()
+                if url:
+                    username = url.rstrip('/').split('/')[-1] if '/' in url else url
+                    new_networks.append({'network': 'GitHub', 'username': username})
+            if profiles.get('twitter'):
+                url = str(profiles['twitter']).strip()
+                if url:
+                    username = url.rstrip('/').split('/')[-1] if '/' in url else url
+                    new_networks.append({'network': 'Twitter', 'username': username})
+            if new_networks:
+                header['social_networks'] = new_networks
 
     return header
 
 
-def assemble_variant(master: dict, design: dict, variant: dict, config: dict = None) -> dict:
+# Alias for backward compatibility
+merge_header_from_config = merge_header
+
+
+def assemble_variant(master: dict, design: dict, variant: dict, config: dict = None, identity: dict = None) -> dict:
     """
     Assemble a complete RenderCV YAML from master data + variant overlay.
     Returns the full dict ready to be dumped as YAML.
@@ -241,8 +320,7 @@ def assemble_variant(master: dict, design: dict, variant: dict, config: dict = N
     # --- Header ---
     raw_header = master.get('header', {}) or {}
     header = copy.deepcopy(raw_header)
-    if config:
-        header = merge_header_from_config(header, config)
+    header = merge_header(header, config=config, identity=identity)
 
     # --- Sections ---
     sections = {}
@@ -326,6 +404,15 @@ def assemble_variant(master: dict, design: dict, variant: dict, config: dict = N
     if achievement_texts:
         sections['achievements'] = achievement_texts
 
+    # Publications (RenderCV PublicationEntry)
+    if 'publications' in variant and variant['publications']:
+        if isinstance(variant['publications'], list):
+            sections['publications'] = copy.deepcopy(variant['publications'])
+        elif variant['publications'] is True and 'publications' in master:
+            sections['publications'] = copy.deepcopy(master['publications'])
+    elif 'publications' in master and master.get('publications') and variant.get('include_publications', False):
+        sections['publications'] = copy.deepcopy(master['publications'])
+
     # --- Assemble final structure ---
     cv_data = copy.deepcopy(header)
     cv_data['sections'] = sections
@@ -335,6 +422,19 @@ def assemble_variant(master: dict, design: dict, variant: dict, config: dict = N
         'cv': cv_data,
         'design': copy.deepcopy(design_data),
     }
+
+    # Locale passthrough (config.yaml locale / variant locale)
+    raw_locale = str(variant.get('locale') or (config.get('locale') if config else '') or '').strip().lower()
+    if raw_locale:
+        lang_name = LOCALE_MAP.get(raw_locale, raw_locale)
+        result['locale'] = {'language': lang_name}
+
+    # Settings block (RenderCV v2.8)
+    settings = copy.deepcopy(master.get('settings', {}) or {})
+    if 'settings' in variant and isinstance(variant['settings'], dict):
+        settings.update(variant['settings'])
+    if settings:
+        result['settings'] = settings
 
     return result
 
@@ -417,20 +517,34 @@ def main():
     master = load_yaml(master_path) or {}
     design = load_yaml(design_path) or {}
 
-    # Read config.yaml for header auto-fill and filenames
+    # Read identity/identity.yaml and config.yaml for header auto-fill and filenames
+    identity_path = script_dir.parent / 'identity' / 'identity.yaml'
     config_path = script_dir.parent / 'config.yaml'
+    identity_data = {}
     config_data = {}
     default_name = 'Resume'
+
+    if identity_path.exists():
+        identity_data = load_yaml(identity_path) or {}
+
     if config_path.exists():
         config_data = load_yaml(config_path) or {}
-        user_name = ((config_data.get('user', {}) or {}).get('name', '')) or ''
-        if user_name.strip():
-            default_name = user_name.strip().replace(' ', '_')
+
+    user_name = (
+        identity_data.get('name')
+        or (identity_data.get('user', {}) or {}).get('name')
+        or ((config_data.get('user', {}) or {}).get('name', ''))
+        or ''
+    )
+    if user_name.strip():
+        default_name = user_name.strip().replace(' ', '_')
 
     if args.no_autofill:
         config_for_assembly = None
+        identity_for_assembly = None
     else:
         config_for_assembly = config_data
+        identity_for_assembly = identity_data
 
     # Check if master.yaml is currently only the template placeholder
     master_exp = master.get('experience') or {}
@@ -495,7 +609,7 @@ def main():
 
         # Assemble
         try:
-            result = assemble_variant(master, design, variant, config=config_for_assembly)
+            result = assemble_variant(master, design, variant, config=config_for_assembly, identity=identity_for_assembly)
         except AssemblyError as e:
             print(f"\n❌ {variant_name} — Assembly error:\n   {e}")
             total_errors += 1
@@ -509,6 +623,7 @@ def main():
             existing = output_path.read_text(encoding='utf-8')
             import io
             buf = io.StringIO()
+            buf.write("# yaml-language-server: $schema=https://raw.githubusercontent.com/rendercv/rendercv/refs/tags/v2.8/schema.json\n\n")
             yaml.dump(result, buf, Dumper=OrderedDumper, default_flow_style=False,
                       allow_unicode=True, width=200, sort_keys=False)
             new_content = buf.getvalue()

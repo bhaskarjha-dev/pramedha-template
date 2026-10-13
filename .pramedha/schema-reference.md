@@ -25,19 +25,21 @@
 
 ---
 
-## identity/identity.yaml → PramedhaProfile.professional.identity
+## config.yaml & identity/identity.yaml → PramedhaProfile.professional.identity
 
-| Template Field | Pramedha Field | Type | Required |
-|---------------|---------------|------|:--------:|
-| `name` | `identity.name` | string | ✅ |
-| `contact.email` | `identity.email` | string | ✅ |
-| `contact.phone` | `identity.phone` | string | |
-| `online_presence.linkedin` | `identity.profiles[network=linkedin].url` | string | |
-| `online_presence.github` | `identity.profiles[network=github].url` | string | |
-| `online_presence.website` | `identity.url` | string | |
-| `location.current_city` | `identity.location.city` | string | |
-| `languages[].language` | `identity.languages[].language` | string | |
-| `languages[].level` | `identity.languages[].fluency` | LanguageFluency | |
+| Config / Identity Field | Pramedha Field | Type | Source Priority |
+|-------------------------|---------------|------|:---------------:|
+| `user.name` / `name` | `identity.name` | string | identity.yaml > config.yaml |
+| `user.email` / `contact.email` | `identity.email` | string | identity.yaml > config.yaml |
+| `user.phone` / `contact.phone` | `identity.phone` | string | identity.yaml > config.yaml |
+| `profiles.linkedin` | `identity.profiles[network=linkedin].url` | string | identity.yaml > config.yaml |
+| `profiles.github` | `identity.profiles[network=github].url` | string | identity.yaml > config.yaml |
+| `user.website` / `portfolio` | `identity.url` | string | identity.yaml > config.yaml |
+| `location.*` | `identity.location` | Location | identity.yaml > config.yaml |
+| `languages[].language` | `identity.languages[].language` | string | identity.yaml (exclusive) |
+| `languages[].level` | `identity.languages[].fluency` | LanguageFluency | identity.yaml (exclusive) |
+| `work_authorization` | `identity.work_authorization` | WorkAuth | identity.yaml (exclusive) |
+| `pronouns` | `identity.pronouns` | string | identity.yaml (exclusive) |
 
 ---
 
@@ -46,9 +48,10 @@
 | Template Field | Pramedha Field | Type |
 |---------------|---------------|------|
 | `company` | `employer` | string |
-| `title` | `title` | string |
+| `position` | `title` | string |
+| `role_subtitle` | `functional_role` | string |
 | `start_date` | `dates.start` | date (YYYY-MM) |
-| `end_date` | `dates.end` | date or null |
+| `end_date` | `dates.end` | date or "present" |
 | `location` | `location.city` | string |
 | `employment_type` | `employment_type` | EmploymentType |
 | `projects[].deliverables[].bullets[]` | `bullets[].text` | string |
@@ -64,11 +67,26 @@
 > The template uses a RICHER structure (`projects → deliverables → bullets`)
 > than PramedhaProfile's flat model (`ExperienceEntry → bullets`).
 > On Pramedha import, each deliverable is flattened into a separate
-> `ExperienceEntry` with the parent employer/title preserved.
+> `ExperienceEntry` with the parent employer/position preserved.
 > This richer format is better for humans; the flat format is better for database storage.
 >
 > **Note:** `PramedhaProfile.meta.import_sources` tracks which template
 > deliverables were flattened from which project, enabling round-trip fidelity.
+
+---
+
+## Identity → Resume Cascade Mapping (RenderCV Flow)
+
+The bridge between raw identity facts and RenderCV resume generation operates as follows:
+
+| Identity Source | `resume/master.yaml` Section | RenderCV Entry Type & Fields |
+|-----------------|-----------------------------|------------------------------|
+| `identity/identity.yaml` & `config.yaml` | `header:` (`name`, `email`, `phone`, `website`, `location`, `social_networks`) | Top-level `cv` header: `name`, `email`, `phone`, `website`, `location`, `social_networks` |
+| `identity/experience.yaml` | `experience:`<br>`[role_key]:`<br>&nbsp;&nbsp;`company`<br>&nbsp;&nbsp;`position`<br>&nbsp;&nbsp;`start_date`, `end_date`<br>&nbsp;&nbsp;`location`<br>&nbsp;&nbsp;`bullets: [key]: {phrasings}` | `ExperienceEntry`:<br>• `company`<br>• `position`<br>• `start_date`, `end_date`<br>• `location`<br>• `highlights: [...]` (selected from variant) |
+| `identity/projects.yaml` | `projects:`<br>`[proj_key]:`<br>&nbsp;&nbsp;`name`<br>&nbsp;&nbsp;`date`<br>&nbsp;&nbsp;`location` (URL/repo)<br>&nbsp;&nbsp;`bullets: {phrasings}` | `NormalEntry`:<br>• `name`<br>• `date`<br>• `location`<br>• `highlights: [...]` |
+| `identity/credentials.yaml` (`education[]`) | `education:`<br>`- institution`<br>&nbsp;&nbsp;`area`<br>&nbsp;&nbsp;`degree`<br>&nbsp;&nbsp;`start_date`, `end_date`<br>&nbsp;&nbsp;`highlights: [...]` | `EducationEntry`:<br>• `institution`<br>• `area`<br>• `degree`<br>• `start_date`, `end_date`<br>• `highlights: [...]` |
+| `identity/credentials.yaml` (`publications[]`) | `publications:`<br>`- title`<br>&nbsp;&nbsp;`authors: [...]`<br>&nbsp;&nbsp;`date`<br>&nbsp;&nbsp;`journal` / `publisher`<br>&nbsp;&nbsp;`doi` / `url` | `PublicationEntry`:<br>• `title`<br>• `authors`<br>• `date`<br>• `journal`<br>• `doi`<br>• `url` |
+| `identity/skills.yaml` | `technologies:` (or `skills:`)<br>`- label: "Category"`<br>&nbsp;&nbsp;`details: "item1, item2"` | `BulletEntry` or `NormalEntry` under Technologies section |
 
 ---
 

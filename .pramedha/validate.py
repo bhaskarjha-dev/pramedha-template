@@ -14,6 +14,11 @@ import re
 import sys
 from pathlib import Path
 
+if sys.platform == "win32" and hasattr(sys.stdout, "buffer"):
+    import io
+    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
+    sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding="utf-8", errors="replace")
+
 try:
     import yaml
 except ImportError:
@@ -42,6 +47,7 @@ REQUIRED_FILES = [
     "resume/master.yaml",
     "resume/design.yaml",
     "resume/assemble.py",
+    "resume/sync.py",
 ]
 
 OPTIONAL_FILES = [
@@ -178,17 +184,17 @@ def check_experience(result: ValidationResult):
             continue
 
         company = (entry.get('company') or '').strip()
-        title = (entry.get('title') or '').strip()
+        position = (entry.get('position') or entry.get('title') or '').strip()
         start = (entry.get('start_date') or '').strip()
 
         # If it's a completely blank scaffolding entry, don't spam individual field warnings
-        if not company and not title and not start:
+        if not company and not position and not start:
             continue
 
         if not company:
             result.warn(f"experience.yaml: Entry {i} missing company")
-        if not title:
-            result.warn(f"experience.yaml: Entry {i} missing title")
+        if not position:
+            result.warn(f"experience.yaml: Entry {i} missing position")
         if not start:
             result.warn(f"experience.yaml: Entry {i} missing start_date")
 
@@ -246,6 +252,227 @@ def check_cascade_consistency(result: ValidationResult):
             result.note("No active resume variants created yet (only _template.yaml)")
         else:
             result.note(f"{len(real_variants)} resume variant(s) found")
+
+
+VALID_SKILL_LEVELS = {"beginner", "intermediate", "advanced", "expert"}
+
+
+def parse_flexible_date(date_str: str):
+    """Parse YYYY-MM or YYYY string into a comparable tuple (year, month). Returns None if unparseable."""
+    if not date_str or not isinstance(date_str, str):
+        return None
+    s = date_str.strip().lower()
+    if s in ('present', 'current', 'now'):
+        return (9999, 12)
+    m = re.match(r'^(\d{4})(?:-(\d{2}))?$', s)
+    if m:
+        year = int(m.group(1))
+        month = int(m.group(2)) if m.group(2) else 1
+        return (year, month)
+    return None
+
+
+def check_skill_enums(result: ValidationResult):
+    """Validate skill levels against allowed schema enums."""
+    path = TEMPLATE_ROOT / "identity" / "skills.yaml"
+    if not path.exists():
+        return
+
+    with open(path, 'r', encoding='utf-8') as f:
+        data = yaml.safe_load(f) or {}
+
+    if not isinstance(data, dict):
+        return
+
+    for cat_name, skills in data.items():
+        if cat_name in ('last_updated',) or not isinstance(skills, list):
+            continue
+        for s in skills:
+            if not isinstance(s, dict):
+                continue
+            name = (s.get('name') or '').strip()
+            level = (s.get('level') or '').strip()
+            if not name:
+                continue
+            if level and level.lower() not in VALID_SKILL_LEVELS:
+                result.warn(
+                    f"skills.yaml: Skill '{name}' in '{cat_name}' has invalid level '{level}' "
+                    f"(expected: {', '.join(sorted(VALID_SKILL_LEVELS))})"
+                )
+
+
+def check_date_chronology(result: ValidationResult):
+    """Check start_date <= end_date and date formats in experience and career breaks."""
+    path = TEMPLATE_ROOT / "identity" / "experience.yaml"
+    if not path.exists():
+        return
+
+    with open(path, 'r', encoding='utf-8') as f:
+        data = yaml.safe_load(f) or {}
+
+    # Experience entries
+    experience = data.get('experience', []) or []
+    for i, entry in enumerate(experience):
+        if not isinstance(entry, dict):
+            continue
+        company = entry.get('company', '').strip()
+        start = str(entry.get('start_date') or '').strip()
+        end = str(entry.get('end_date') or '').strip()
+
+        if not company and not start:
+            continue
+
+        p_start = parse_flexible_date(start)
+        p_end = parse_flexible_date(end)
+
+        if start and p_start is None:
+            result.warn(f"experience.yaml: Entry {i} ({company or 'unnamed'}) has invalid start_date '{start}' (expected YYYY-MM)")
+        if end and p_end is None:
+            result.warn(f"experience.yaml: Entry {i} ({company or 'unnamed'}) has invalid end_date '{end}' (expected YYYY-MM or 'present')")
+
+        if p_start and p_end and p_start > p_end:
+            result.warn(f"experience.yaml: Entry {i} ({company or 'unnamed'}) has start_date '{start}' after end_date '{end}'")
+
+    # Career breaks
+    breaks = data.get('career_breaks', []) or []
+    for i, b in enumerate(breaks):
+        if not isinstance(b, dict):
+            continue
+        title = b.get('title', '').strip()
+        start = str(b.get('start_date') or '').strip()
+        end = str(b.get('end_date') or '').strip()
+
+        if not title and not start:
+            continue
+
+        p_start = parse_flexible_date(start)
+        p_end = parse_flexible_date(end)
+        if p_start and p_end and p_start > p_end:
+            result.warn(f"experience.yaml: Career break {i} ('{title}') has start_date '{start}' after end_date '{end}'")
+
+
+def check_identity_master_parity(result: ValidationResult):
+    """Check parity between identity/experience.yaml and resume/master.yaml."""
+    exp_path = TEMPLATE_ROOT / "identity" / "experience.yaml"
+    master_path = TEMPLATE_ROOT / "resume" / "master.yaml"
+
+    if not exp_path.exists() or not master_path.exists():
+        return
+
+    with open(exp_path, 'r', encoding='utf-8') as f:
+        exp_data = yaml.safe_load(f) or {}
+    with open(master_path, 'r', encoding='utf-8') as f:
+        master_data = yaml.safe_load(f) or {}
+
+    id_companies = []
+    for e in (exp_data.get('experience', []) or []):
+        if isinstance(e, dict):
+            comp = (e.get('company') or '').strip()
+            if comp:
+                id_companies.append(comp)
+
+    if not id_companies:
+        return
+
+    master_exp = master_data.get('experience', {}) or {}
+    master_companies = set()
+    for k, v in master_exp.items():
+        if k != '_example_role_' and isinstance(v, dict):
+            comp = (v.get('company') or '').strip()
+            if comp:
+                master_companies.add(comp.lower())
+
+    for comp in id_companies:
+        if comp.lower() not in master_companies:
+            result.warn(
+                f"Parity: Employer '{comp}' in experience.yaml is not in resume/master.yaml. "
+                f"Run 'py resume/sync.py' to synchronize."
+            )
+
+
+def check_cross_file_consistency(result: ValidationResult):
+    """Check consistency across files (config vs identity contact info, and skills in deliverables vs skills.yaml)."""
+    # 1. Config vs Identity contact info check
+    cfg_path = TEMPLATE_ROOT / "config.yaml"
+    id_path = TEMPLATE_ROOT / "identity" / "identity.yaml"
+    if cfg_path.exists() and id_path.exists():
+        with open(cfg_path, 'r', encoding='utf-8') as f:
+            cfg_data = yaml.safe_load(f) or {}
+        with open(id_path, 'r', encoding='utf-8') as f:
+            id_data = yaml.safe_load(f) or {}
+
+        cfg_name = str((cfg_data.get('user', {}) or {}).get('name') or '').strip()
+        id_name = str(id_data.get('name') or id_data.get('full_name') or '').strip()
+        if cfg_name and id_name and cfg_name.lower() != id_name.lower():
+            result.warn(
+                f"Contradiction: config.yaml user.name ('{cfg_name}') does not match identity.yaml ('{id_name}'). "
+                f"Identity takes precedence, but keeping them synchronized is recommended."
+            )
+
+        cfg_email = str((cfg_data.get('user', {}) or {}).get('email') or '').strip()
+        id_email = str(id_data.get('email') or '').strip()
+        if cfg_email and id_email and cfg_email.lower() != id_email.lower():
+            result.warn(
+                f"Contradiction: config.yaml user.email ('{cfg_email}') does not match identity.yaml ('{id_email}')."
+            )
+
+    # 2. Skills referenced in deliverables/projects vs skills.yaml
+    skills_path = TEMPLATE_ROOT / "identity" / "skills.yaml"
+    exp_path = TEMPLATE_ROOT / "identity" / "experience.yaml"
+    proj_path = TEMPLATE_ROOT / "identity" / "projects.yaml"
+
+    if not skills_path.exists():
+        return
+
+    with open(skills_path, 'r', encoding='utf-8') as f:
+        skills_data = yaml.safe_load(f) or {}
+
+    known_skills = set()
+    if isinstance(skills_data, dict):
+        for cat, slist in skills_data.items():
+            if cat != 'last_updated' and isinstance(slist, list):
+                for s in slist:
+                    if isinstance(s, dict) and s.get('name'):
+                        known_skills.add(str(s['name']).strip().lower())
+
+    if not known_skills:
+        return
+
+    unlisted_skills = set()
+
+    # Check experience deliverables
+    if exp_path.exists():
+        with open(exp_path, 'r', encoding='utf-8') as f:
+            exp_data = yaml.safe_load(f) or {}
+        for e in (exp_data.get('experience', []) or []):
+            if isinstance(e, dict):
+                for p in (e.get('projects', []) or []):
+                    if isinstance(p, dict):
+                        for d in (p.get('deliverables', []) or []):
+                            if isinstance(d, dict):
+                                for s in (d.get('skills', []) or []):
+                                    s_clean = str(s).strip()
+                                    if s_clean and s_clean.lower() not in known_skills:
+                                        unlisted_skills.add(s_clean)
+
+    # Check projects
+    if proj_path.exists():
+        with open(proj_path, 'r', encoding='utf-8') as f:
+            proj_data = yaml.safe_load(f) or {}
+        for p in ((proj_data.get('public', []) or []) + (proj_data.get('internal', []) or [])):
+            if isinstance(p, dict):
+                for t in (p.get('tech', []) or []):
+                    t_clean = str(t).strip()
+                    if t_clean and t_clean.lower() not in known_skills:
+                        unlisted_skills.add(t_clean)
+
+    if unlisted_skills:
+        sample = sorted(list(unlisted_skills))[:5]
+        suffix = f" (+{len(unlisted_skills) - 5} more)" if len(unlisted_skills) > 5 else ""
+        result.warn(
+            f"Cross-reference: {len(unlisted_skills)} skill(s) referenced in deliverables/projects "
+            f"not found in skills.yaml: {', '.join(sample)}{suffix}"
+        )
 
 
 def compute_fill_status(result: ValidationResult):
@@ -436,6 +663,18 @@ def main():
 
     print("\n── Resume Cascade ──")
     check_cascade_consistency(result)
+
+    print("\n── Skill Enums ──")
+    check_skill_enums(result)
+
+    print("\n── Date Chronology ──")
+    check_date_chronology(result)
+
+    print("\n── Identity-Master Parity ──")
+    check_identity_master_parity(result)
+
+    print("\n── Cross-File Consistency ──")
+    check_cross_file_consistency(result)
 
     print("\n── Freshness Check ──")
     check_freshness(result)

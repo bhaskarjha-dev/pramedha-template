@@ -13,8 +13,8 @@
 
 template:
   name: "Pramedha Career Template"
-  version: "2.1.0"
-  schema_version: "1.0.0"
+  version: "0.1.0"
+  schema_version: "0.1.0"
   standalone: true                        # Works without any external tools
   pramedha_compatible: true               # Also works with the Pramedha platform
 
@@ -40,6 +40,10 @@ files:
     - path: "resume/master.yaml"
       category: "resume"
     - path: "resume/design.yaml"
+      category: "resume"
+    - path: "resume/assemble.py"
+      category: "resume"
+    - path: "resume/sync.py"
       category: "resume"
 
   optional:
@@ -85,6 +89,10 @@ files:
       category: "strategy"
     - path: "assets/star-stories.md"
       category: "assets"
+    - path: "assets/interview-prep/behavioral.md"
+      category: "assets"
+    - path: "assets/interview-prep/technical.md"
+      category: "assets"
     - path: "assets/linkedin-pack.md"
       category: "assets"
     - path: "assets/github-readme.md"
@@ -125,6 +133,7 @@ files:
 # Tools
 tools:
   cascade_engine: "resume/assemble.py"
+  bridge_sync: "resume/sync.py"
   validator: ".pramedha/validate.py"
   build_script_windows: "resume/build.ps1"
   build_script_unix: "resume/build.sh"

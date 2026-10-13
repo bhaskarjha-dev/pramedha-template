@@ -27,7 +27,7 @@
 
 > These are claims on your resume/LinkedIn tagged `[estimated]` or `[to-verify]`.
 > Each one needs evidence before you can confidently use them in interviews.
-> Source: [claims-and-evidence.md](identity/claims-and-evidence.md)
+> Source: [claims-and-evidence.md](../identity/claims-and-evidence.md)
 
 ### Priority 1: Build Projects to Prove Claims
 
@@ -57,7 +57,7 @@ After collecting evidence for any item above:
 
 ## 🟠 PORTFOLIO — Project Quality Overhaul
 
-> Source: [projects.yaml](identity/projects.yaml)
+> Source: [projects.yaml](../identity/projects.yaml)
 
 ### Tier 1: Flagship Projects (Must Be Polished)
 
@@ -90,9 +90,9 @@ After collecting evidence for any item above:
 
 ## 🔵 DIGITAL PRESENCE — Brand Building
 
-> **Full strategic plan:** [digital-presence-plan.md](strategy/digital-presence-plan.md)
-> **Copy-ready content:** [platform-copy.md](assets/platform-copy.md)
-> **Content schedule:** [content-plan.md](strategy/content-plan.md)
+> **Full strategic plan:** [digital-presence-plan.md](digital-presence-plan.md)
+> **Copy-ready content:** [platform-copy.md](../assets/platform-copy.md)
+> **Content schedule:** [content-plan.md](content-plan.md)
 
 ### Phase 0: Quick Wins (~1 hour total — DO FIRST)
 
@@ -128,7 +128,7 @@ After collecting evidence for any item above:
 
 ## 🟢 SKILL BUILDING — Role Gap Closing
 
-> Source: [study-plan.md](strategy/study-plan.md) · [target-roles.md](strategy/target-roles.md)
+> Source: [study-plan.md](study-plan.md) · [target-roles.md](target-roles.md)
 
 | # | Skill | Current → Target | Unlocks Roles | Priority | Deadline | Status |
 |:-:|-------|:-----------------:|:------------:|:--------:|:--------:|:------:|
@@ -138,7 +138,7 @@ After collecting evidence for any item above:
 
 ## 🟡 JOB SEARCH — Application Pipeline
 
-> Source: [job-search/tracker.md](strategy/job-search/tracker.md) · [target-roles.md](strategy/target-roles.md)
+> Source: [job-search/tracker.md](job-search/tracker.md) · [target-roles.md](target-roles.md)
 
 ### Pre-Search Prep
 

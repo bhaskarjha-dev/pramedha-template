@@ -63,35 +63,35 @@
 > **Impact:** Immediately improves how you appear to anyone who looks you up TODAY.
 
 - [ ] Update GitHub bio, website link, company name
-- [ ] Update LinkedIn headline using `assets/platform-copy.md`
-- [ ] Rewrite LinkedIn About using `identity/professional-summary.md`
+- [ ] Update LinkedIn headline using [platform-copy.md](../assets/platform-copy.md)
+- [ ] Rewrite LinkedIn About using [professional-summary.md](../identity/professional-summary.md)
 - [ ] Set consistent profile photo across all platforms
-- [ ] Add email signature using `assets/platform-copy.md`
+- [ ] Add email signature using [platform-copy.md](../assets/platform-copy.md)
 
 ### Phase 1: Core Platform Polish (Week 1-2)
 
 - [ ] Create GitHub Profile README (`username/username` repo)
 - [ ] Pin 3-6 flagship repos on GitHub profile
-- [ ] Rewrite LinkedIn Experience sections from `identity/experience.yaml`
+- [ ] Rewrite LinkedIn Experience sections from [experience.yaml](../identity/experience.yaml)
 - [ ] Add top certifications to LinkedIn
 - [ ] Design LinkedIn banner image
 
 ### Phase 2: Content Foundation (Month 1)
 
 - [ ] Publish first technical article (Dev.to / Medium)
-- [ ] Write first LinkedIn post (use template from `assets/platform-copy.md`)
-- [ ] Set up bios on secondary platforms (from `assets/platform-copy.md`)
+- [ ] Write first LinkedIn post (use template from [platform-copy.md](../assets/platform-copy.md))
+- [ ] Set up bios on secondary platforms (from [platform-copy.md](../assets/platform-copy.md))
 
 ### Phase 3: Portfolio Website (Month 1-2)
 
 - [ ] Design and build portfolio website
 - [ ] Include: About, Experience, Projects, Writing, Contact sections
 - [ ] Deploy to custom domain
-- [ ] Data source: `identity/*.yaml` files
+- [ ] Data source: `../identity/*.yaml` files
 
 ### Phase 4: Content Engine (Month 2-3)
 
-- [ ] Establish content cadence (see `strategy/content-plan.md`)
+- [ ] Establish content cadence (see [content-plan.md](content-plan.md))
 - [ ] Cross-post successful articles to multiple platforms
 - [ ] Share project demos / architectural deep-dives
 
@@ -107,13 +107,13 @@
 ## Brand Consistency Checklist
 
 > Every platform should reflect the same positioning.
-> Source: `assets/platform-copy.md` for copy, `config.yaml` for profile links.
+> Source: [platform-copy.md](../assets/platform-copy.md) for copy, [config.yaml](../config.yaml) for profile links.
 
 - [ ] **Same professional photo** across all platforms
 - [ ] **Consistent headline/bio** reflecting target positioning
 - [ ] **Link to portfolio website** from every platform
 - [ ] **Same email** (professional domain) on all profiles
-- [ ] **Skills/technologies** aligned with `identity/skills.yaml`
+- [ ] **Skills/technologies** aligned with [skills.yaml](../identity/skills.yaml)
 
 ---
 

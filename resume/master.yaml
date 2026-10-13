@@ -52,12 +52,15 @@ experience:
         leadership: "Led 3-person team to build production ML pipeline serving 50K daily requests [measured]"
 
   # Add your real roles below. Copy the structure above.
+  # Tip: Add `archived: true` to older roles to keep them in master for reference
+  # while omitting them from active variant files.
   # your_role_key:
   #   company: ""
   #   position: ""
   #   start_date: ""
   #   end_date: "present"
   #   location: ""
+  #   # archived: true            # Optional: marks historic role retained in pool
   #   bullets:
   #     bullet_key:
   #       default: "Action verb + what you did + measurable impact"
@@ -71,6 +74,19 @@ projects:
   #   bullets:
   #     default: "One-line project description with impact"
   #     technical: "Technical description emphasizing architecture"
+
+# ─── Publications (Academic / Research / Books) ──────────────────────────
+# RenderCV v2.8 PublicationEntry format. Included in variants via `publications: true`
+# or by listing specific entries.
+publications: []
+  # - title: "Scaling Graph Neural Networks on Heterogeneous Clusters"
+  #   authors:
+  #     - "Your Name"
+  #     - "Co-Author"
+  #   date: "2024-03"
+  #   journal: "IEEE Transactions on Software Engineering"
+  #   doi: "10.1109/TSE.2024.1234567"
+  #   url: "https://doi.org/10.1109/TSE.2024.1234567"
 
 # ─── Education ───────────────────────────────────────────────────────────
 education: []
@@ -96,6 +112,11 @@ technologies: []
   #   details: "Python, JavaScript, SQL"
   # - label: "Frameworks"
   #   details: "FastAPI, React, LangChain"
+
+# ─── RenderCV Settings (Optional overrides) ──────────────────────────────
+# settings:
+#   pdf_title: "Full Name - Resume"
+#   bold_keywords: ["Python", "FastAPI", "Kubernetes"]
 
 # ─── Metadata & Maintenance ─────────────────────────────────────────────────
 last_updated: ""                  # YYYY-MM-DD — updated during quarterly audit

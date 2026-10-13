@@ -2,7 +2,9 @@
 # DESIGN — Shared RenderCV theme config for all variants
 # ============================================================================
 # Extracted as a shared config. Changes here cascade to ALL generated resumes.
-# Available themes: engineeringresumes | classic | sb2nov | moderncv
+# Available RenderCV v2.8 themes:
+#   classic | moderncv | sb2nov | engineeringresumes | engineeringclassic | developer
+#   compact | academic | harvard | ink | opal | ember
 # ============================================================================
 
 design:

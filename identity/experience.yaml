@@ -24,8 +24,8 @@ experience:
   # EMPLOYER 1 (Most Recent)
   # ────────────────────────────────────────────────────────────────────────
   - company: ""
-    title: ""                     # Official job title
-    subtitle: ""                  # Functional role (if different from title)
+    position: ""                  # Official job title / position
+    role_subtitle: ""             # Functional role (if different from position)
     start_date: ""                # YYYY-MM format
     end_date: "present"           # YYYY-MM or "present"
     location: ""                  # City, State
@@ -66,7 +66,7 @@ experience:
   # EMPLOYER 2
   # ────────────────────────────────────────────────────────────────────────
   # - company: ""
-  #   title: ""
+  #   position: ""
   #   start_date: ""
   #   end_date: ""
   #   location: ""
