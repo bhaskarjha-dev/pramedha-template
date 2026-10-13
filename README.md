@@ -86,11 +86,12 @@ Fill at your own pace. Each layer adds value independently.
 ```
 pramedha-template/
 │
+├── .github/                   ← Repository governance & GitHub workflows
+│   └── CONTRIBUTING.md           Open-source contribution guidelines
 ├── GETTING_STARTED.md         ← READ FIRST: 30-minute setup walkthrough (Fast Track: 3 files)
 ├── README.md                  ← System overview & architecture documentation
 ├── VISION.md                  ← Career mission & north star
 ├── AGENTS.md                  ← AI agent instructions (universal standard)
-├── CONTRIBUTING.md            ← Open-source contribution guidelines
 ├── config.yaml                ← Your identity + preferences
 │
 ├── data-corpus/               ← Phase 0: Dump raw career data
@@ -170,6 +171,7 @@ pramedha-template/
 │   └── session-handoff.md        Cross-session context log
 │
 └── .pramedha/                 ← Pramedha ecosystem
+    ├── CHANGELOG.md              Template version history & release notes
     ├── agent-instructions.md     How ANY AI fills this template
     ├── schema-reference.md       Field-by-field schema docs
     ├── import-guide.md           Import into Pramedha platform
@@ -355,6 +357,12 @@ git fetch upstream
 git log --oneline upstream/main --not main
 # Shows template commits you don't have yet
 ```
+
+---
+
+## Contributing
+
+Contributions to the template engine, schemas, and validators are welcome! See [.github/CONTRIBUTING.md](.github/CONTRIBUTING.md) for guidelines.
 
 ---
 

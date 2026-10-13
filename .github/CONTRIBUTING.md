@@ -26,7 +26,7 @@ Before submitting changes, please keep our core tenets in mind:
   - Your OS (Windows, macOS, Linux) and Python version (`python --version`)
   - The exact command you ran (e.g. `python resume/assemble.py --validate`)
   - Full traceback or error message
-  - Which template version you cloned (see `CHANGELOG.md` or `.pramedha/manifest.yaml`)
+  - Which template version you cloned (see `.pramedha/CHANGELOG.md` or `.pramedha/manifest.yaml`)
 
 ### 2. Adding Profession-Specific Examples
 We actively encourage domain experts to contribute examples to `.pramedha/examples/`:
@@ -76,6 +76,6 @@ Before opening your pull request, verify:
 - [ ] `py resume/sync.py --dry-run` runs cleanly
 - [ ] Cross-references and relative Markdown links remain intact
 - [ ] No personal or proprietary private data is included in commit history
-- [ ] `CHANGELOG.md` includes a concise note under `[Unreleased]` or the upcoming version
+- [ ] `.pramedha/CHANGELOG.md` includes a concise note under `[Unreleased]` or the upcoming version
 
 Thank you for contributing to an open, empowering, and disciplined career ecosystem!
