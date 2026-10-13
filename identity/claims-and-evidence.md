@@ -12,8 +12,20 @@
 | Tier | Label | Rule |
 |:----:|-------|------|
 | 🟢 | **SAFE** | Use freely — evidence is strong |
-| 🟡 | **USE CAREFULLY** | Technically true but needs context |
+| 🟡 | **USE CAREFULLY** | Technically true but needs context or metric substantiation |
 | 🔴 | **DO NOT USE** | Cannot prove, or misleading without context |
+
+## Measurement Tags
+
+> These tags annotate the *evidence type* behind each claim.
+> Claims tagged `[estimated]` or `[to-verify]` automatically become items
+> in `strategy/master-action-tracker.md` → 🔴 CLAIM DEBT stream.
+
+| Tag | Meaning | Action Required |
+|-----|---------|----------------|
+| `[measured]` | Exact data from official document (review, letter, dashboard, CSV) | None — claim is substantiated |
+| `[estimated]` | Reasonable claim — needs substantiation via project, demo, or benchmark | Build evidence (code, demo, blog) |
+| `[to-verify]` | Claim is true but formal evidence not yet on file | Collect evidence (screenshot, doc, testimonial) |
 
 ---
 
@@ -37,12 +49,14 @@ When facts conflict, trust sources in this order:
 ## Claims Register
 
 <!-- Fill this as you verify claims. Format:
-| Claim | Source | Tier | Evidence | Notes |
+| Claim | Source | Tier | Evidence | Tag | Notes |
+     Tag values: [measured], [estimated], or [to-verify]
+     Claims with [estimated] or [to-verify] feed into master-action-tracker.md
 -->
 
-| Claim | Source | Tier | Evidence | Notes |
-|-------|--------|:----:|----------|-------|
-| *Example: "Led team of 5"* | *resume_2024.pdf* | 🟡 | *No org chart, was informal lead* | *Rephrase to "coordinated with 5 engineers"* |
+| Claim | Source | Tier | Evidence | Tag | Notes |
+|-------|--------|:----:|----------|-----|-------|
+| *Example: "Led team of 5"* | *resume_2024.pdf* | 🟡 | *No org chart, was informal lead* | *[to-verify]* | *Rephrase to "coordinated with 5 engineers"* |
 
 ---
 

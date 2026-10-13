@@ -190,18 +190,19 @@ It contains the complete protocol for extracting, structuring, and verifying car
 
 ---
 
-## Pramedha Compatibility
+## Integration (Optional)
 
-This template's schema aligns 1:1 with [PramedhaProfile](https://github.com/bhaskarjha-dev/pramedha-template):
+This template is **fully standalone** — it works as a complete career operating system
+without any external tools. Just fill the YAML/Markdown files with any AI assistant
+or text editor.
+
+If you happen to use tools that understand the PramedhaProfile schema, the mapping is:
 
 ```
-identity/*.yaml     →  PramedhaProfile.professional
-personal/*          →  PramedhaProfile.personal
-claims-and-evidence →  PramedhaProfile.meta.claims_registry
+identity/*.yaml     →  professional.*
+personal/*          →  personal.*
+claims-and-evidence →  meta.claims_registry
 ```
-
-Import: `pramedha import --from ./my-career`
-Export: `pramedha export --to ./my-career`
 
 ---
 

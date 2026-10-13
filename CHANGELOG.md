@@ -1,6 +1,55 @@
 # Changelog
 
-All notable changes to the Pramedha Career Template.
+All notable changes to the Career Operating System Template.
+
+## [2.0.0] — 2026-10-13
+
+### Major: Dogfooding-Driven Template Upgrade
+
+All improvements below were discovered through real-world usage of the template over
+4+ months of intensive career transformation work. Changes are strictly generalizable
+improvements — no user-specific content.
+
+### Added — New Files
+- `identity/speaking-and-community.yaml` — **10th identity file**: speaking, hackathons, community memberships, content metrics. Separate data model from volunteering
+- `strategy/master-action-tracker.md` — Central dashboard aggregating all pending work across 5 streams (Claim Debt, Portfolio, Digital Presence, Skill Building, Job Search). The file that turns the repo from a library into an operating system
+- `strategy/digital-presence-plan.md` — Strategic plan for digital presence transformation with P0-P3 platform prioritization, phased execution, and metrics tracking
+- `strategy/role-analysis.md` — **Optional** comprehensive role universe scan (8 parameters, 20+ roles) before narrowing to target roles. Prevents tunnel vision
+- `assets/platform-copy.md` — Copy-paste ready bios at every length/format: email signature, GitHub bio (160 char), LinkedIn headline (120 char), Twitter bio, speaker bio, conference bio, forum signature
+- `ops/session-handoff.md` — Session continuity log for AI-assisted workflows. Append-only, never delete. Prevents cold-start problem across sessions
+
+### Changed — Structural Upgrades
+- **`identity/claims-and-evidence.md`** — Added Measurement Tags system: `[measured]`, `[estimated]`, `[to-verify]`. Tags drive the master-action-tracker's Claim Debt stream, turning claims from a static audit into a dynamic work queue
+- **`strategy/target-roles.md`** — Expanded evaluation from 5 to 8 parameters (+Time to Close Gaps, Interview Readiness, Competition Level). Added ATS keywords field, resume variant mapping table, shared foundation analysis, and positioning statement
+- **`AGENTS.md`** — Added "Key Decisions Already Made (Do NOT Re-litigate)" section to prevent AI decision oscillation across sessions. Added session-handoff rule. Updated architecture block, event→file mapping, and quick-context table for all new files
+- **`VISION.md`** — Expanded status table from 5 to 8 phases (added Claims Audit, Portfolio Polish, Digital Presence). Replaced stale "What's Pending" checklist with pointer to master-action-tracker. Added content engine to Future Scope. Expanded Quick Start to 9 steps
+- **`ops/authority-map.md`** — Added 10 new authority entries for all new files and strategy files
+- **`ops/guide.md`** — Added session-handoff to AI session DO/DON'T rules. Added event→file mappings for speaking/hackathon events and data-corpus extraction. Added master-action-tracker to weekly maintenance ritual
+- **`.pramedha/agent-instructions.md`** — Expanded from 29-step to 33-step protocol. Added Step 8 (speaking-and-community.yaml), Step 20 (platform-copy.md), Steps 24-25 (master-action-tracker, digital-presence-plan). Updated all downstream step numbers. Added measurement tag instructions to claims step
+
+### Added — Bhavya Dogfooding
+- `ops/conversation-context-archive.md` — One-time founding session context preservation. Captures decisions, data gaps, contradictions, and artifacts from the initial fill session. Complementary to session-handoff.md (ongoing) — this is write-once (founding)
+- `data-corpus/linkedin/README.md` + `data-corpus/github/README.md` — Pre-created subdirectories for common platform exports, reducing friction during initial data dump
+- `VISION.md` Sub-Projects section — Universal pattern for tracking portfolio websites, GitHub profiles, and other spin-off projects spawned by the career system
+
+### Changed — Standalone Independence
+- **Removed Pramedha tool dependency** — Template is now fully standalone. No `pramedha import/export` commands referenced. All `PramedhaProfile` schema references reframed as optional integration documentation
+- **`README.md`** — "Pramedha Compatibility" section → "Integration (Optional)" section
+- **`.pramedha/agent-instructions.md`** — "Pramedha Import Compatibility" → "Schema Mapping (Optional Integration)"
+- **`.pramedha/schema-reference.md`** — Header rewritten to be standalone-first
+- **`.pramedha/manifest.yaml`** — Removed `pramedha_compatible` and `min_pramedha_version` fields; renamed template to "Career Operating System Template"; version bumped to 2.0.0; added all new files to registry
+- **`AGENTS.md`** — Title changed from "Pramedha Career Template" to "Career Operating System"
+- **`CHANGELOG.md`** — Title updated to match standalone naming
+
+### Template Stats
+- Files: 58 → 67 (+9 new files total: 6 from Akanksha + 3 from Bhavya)
+- Fill protocol: 29 steps → 33 steps across 7 phases
+- Identity files: 9 → 10
+- Authority map entries: 19 → 31
+- External tool dependencies: 0 (fully standalone)
+
+---
+
 
 ## [1.1.0] — 2026-06-19
 

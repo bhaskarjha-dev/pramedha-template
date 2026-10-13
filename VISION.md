@@ -46,29 +46,47 @@ If facts change, the identity layer updates first, then everything downstream re
 | Phase | Status | What It Covers |
 |-------|:------:|----------------|
 | 0. Data Intake | ⬜ | Raw career data dumped into `data-corpus/` |
-| 1. Identity | ⬜ | Fact database: experience, skills, projects, credentials |
-| 2. Strategy + Assets | ⬜ | Target roles, study plan, STAR stories, cover letters |
-| 3. Resume Pipeline | ⬜ | Variants generating from YAML → PDF automatically |
-| 4. Application Ready | ⬜ | LinkedIn updated, profiles active, tracker running |
+| 1. Identity | ⬜ | Fact database: experience, skills, projects, credentials, speaking |
+| 2. Strategy + Assets | ⬜ | Target roles, study plan, STAR stories, cover letters, platform copy |
+| 3. Personal Context | ⬜ | About me, career narrative, preferences, reflections |
+| 4. Resume Pipeline | ⬜ | master.yaml + role-specific variants generating → PDF |
+| 5. Claims Audit | ⬜ | Every claim verified against source evidence |
+| 6. Portfolio Polish | ⬜ | GitHub profile, flagship project READMEs, pinned repos |
+| 7. Digital Presence | ⬜ | Website, LinkedIn, secondary platforms, content publishing |
+| 8. Application Ready | ⬜ | Content engine, networking, active applications |
 
 ---
 
-## What's Pending
+## What's Next
 
-### Immediate
-- [ ] Fill `config.yaml` with contact info
-- [ ] Dump raw career data into `data-corpus/`
-- [ ] Fill `identity/` files from data-corpus
+> **All action items are tracked in a single file:**
+> 📋 **[Master Action Tracker](strategy/master-action-tracker.md)**
+>
+> That file is the dashboard — organized by stream:
+> - 🔴 **Claim Debt** — evidence needed for resume claims
+> - 🟠 **Portfolio** — projects to build/polish
+> - 🔵 **Digital Presence** — website, profiles, content
+> - 🟢 **Skill Building** — learning gaps to close
+> - 🟡 **Job Search** — applications, interviews, networking
+>
+> Weekly picks from the tracker go into [weekly-tracker.md](strategy/weekly-tracker.md).
 
-### Near-Term
-- [ ] Build resume variants
-- [ ] Fill strategy files (target-roles, study-plan)
-- [ ] Prepare STAR stories and cover letters
+---
 
-### Job Search Phase
-- [ ] Start application tracker
-- [ ] Activate networking contacts
-- [ ] Weekly maintenance rituals
+## Sub-Projects
+
+> As your career system grows, you'll likely spawn related sub-projects:
+> portfolio websites, GitHub profile READMEs, side-project repos, etc.
+> Register them here so the career system stays aware of them.
+
+| Sub-Project | Path | Purpose | Status |
+|-------------|------|---------|:------:|
+| <!-- Example: Portfolio website --> | <!-- bhavyajha.com/ --> | <!-- Career portfolio --> | <!-- ✅ LIVE --> |
+| <!-- Example: GitHub Profile README --> | <!-- github-profile/ --> | <!-- Public GitHub profile --> | <!-- ✅ LIVE --> |
+
+> **Tip:** Sub-projects often have their own git repos but are conceptually
+> children of this career system. Use `.gitignore` to exclude their directories
+> if they have independent version control.
 
 ---
 
@@ -81,6 +99,7 @@ This repository doesn't die after the job search. It becomes:
 3. **Knowledge base** — Reference for interview prep, salary negotiation
 4. **Portfolio data source** — Portfolio website reads from identity/*.yaml
 5. **Maintenance system** — Weekly/monthly rituals prevent career drift
+6. **Content engine** — Technical articles, LinkedIn posts, thought leadership
 
 ---
 
@@ -92,7 +111,10 @@ This repository doesn't die after the job search. It becomes:
 3. Dump data into data-corpus/              → Raw career materials
 4. Read .pramedha/agent-instructions.md     → How AI fills the template
 5. Fill identity/ files                     → Structured career facts
-6. Build resume variants                    → resume/variants/
+6. Fill strategy/ files                     → Plans, targets, tracker
+7. Generate assets/                         → STAR stories, cover letters, platform copy
+8. Build resume variants                    → resume/variants/
+9. Audit claims                             → identity/claims-and-evidence.md
 ```
 
 ---

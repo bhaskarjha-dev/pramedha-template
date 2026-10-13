@@ -1,57 +1,76 @@
 # ============================================================================
-# Pramedha Template Manifest — Machine-Readable Metadata
+# Career Template Manifest — Machine-Readable Metadata
 # ============================================================================
-# This file enables Pramedha CLI and external tools to:
+# This file enables tools and AI assistants to:
 #   - Auto-detect career repos (look for .pramedha/manifest.yaml)
 #   - Validate template structure
 #   - Track schema compatibility
 #   - Report fill status
+#
+# This template is FULLY STANDALONE. No external tools are required.
+# The schema mappings below are for optional integration with compatible tools.
 # ============================================================================
 
 template:
-  name: "Pramedha Career Template"
-  version: "1.0.0"
-  schema_version: "1.0.0"               # Matches PramedhaProfile schema version
-  pramedha_compatible: true
-  min_pramedha_version: "0.1.0"
+  name: "Career Operating System Template"
+  version: "2.0.0"
+  schema_version: "1.0.0"               # Internal schema version
 
 # File registry — which files are required, optional, or generated
 files:
   required:
     - path: "config.yaml"
-      maps_to: "PramedhaProfile.professional.identity"
+      category: "config"
     - path: "identity/identity.yaml"
-      maps_to: "PramedhaProfile.professional.identity"
+      category: "identity"
     - path: "identity/experience.yaml"
-      maps_to: "PramedhaProfile.professional.experience"
+      category: "identity"
     - path: "identity/skills.yaml"
-      maps_to: "PramedhaProfile.professional.skills"
+      category: "identity"
     - path: "identity/credentials.yaml"
-      maps_to: "PramedhaProfile.professional.education+certifications+awards"
+      category: "identity"
     - path: "identity/projects.yaml"
-      maps_to: "PramedhaProfile.professional.projects"
+      category: "identity"
     - path: "identity/claims-and-evidence.md"
-      maps_to: "PramedhaProfile.meta.claims_registry"
+      category: "identity"
     - path: "identity/professional-summary.md"
-      maps_to: "PramedhaProfile.professional.identity.professional_summary"
+      category: "identity"
     - path: "resume/master.yaml"
-      maps_to: "artifact_generation"
+      category: "resume"
     - path: "resume/design.yaml"
-      maps_to: "artifact_generation"
+      category: "resume"
 
   optional:
+    - path: "identity/volunteering.yaml"
+      category: "identity"
+    - path: "identity/references.yaml"
+      category: "identity"
+    - path: "identity/speaking-and-community.yaml"
+      category: "identity"
     - path: "personal/about-me.md"
-      maps_to: "PramedhaProfile.personal.life_context"
+      category: "personal"
     - path: "personal/life-goals.md"
-      maps_to: "PramedhaProfile.personal.career_goals"
+      category: "personal"
     - path: "personal/preferences.yaml"
-      maps_to: "PramedhaProfile.personal.work_preferences"
+      category: "personal"
     - path: "strategy/target-roles.md"
-      maps_to: "PramedhaProfile.professional.targets"
+      category: "strategy"
+    - path: "strategy/master-action-tracker.md"
+      category: "strategy"
+    - path: "strategy/digital-presence-plan.md"
+      category: "strategy"
+    - path: "strategy/role-analysis.md"
+      category: "strategy"
+    - path: "assets/platform-copy.md"
+      category: "assets"
+    - path: "ops/session-handoff.md"
+      category: "ops"
+    - path: "ops/conversation-context-archive.md"
+      category: "ops"
     - path: "journal/wins.md"
-      maps_to: "n/a"
+      category: "journal"
     - path: "journal/learning-log.md"
-      maps_to: "n/a"
+      category: "journal"
 
   generated:
     - path: "resume/generated/*.yaml"

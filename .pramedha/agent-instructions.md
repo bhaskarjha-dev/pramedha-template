@@ -24,10 +24,10 @@ Every file in this template falls into one of these categories:
 
 | Category | AI Can Auto-Fill? | Files |
 |----------|:-:|-------|
-| **Identity (truth)** | ✅ From data-corpus | experience.yaml, skills.yaml, credentials.yaml, projects.yaml, identity.yaml, volunteering.yaml, references.yaml, claims-and-evidence.md, professional-summary.md |
+| **Identity (truth)** | ✅ From data-corpus | experience.yaml, skills.yaml, credentials.yaml, projects.yaml, identity.yaml, volunteering.yaml, speaking-and-community.yaml, references.yaml, claims-and-evidence.md, professional-summary.md |
 | **Resume (generated)** | ✅ From identity | master.yaml, design.yaml, variants/*.yaml |
-| **Assets (generated)** | ✅ From identity | star-stories.md, cover-letters/*.md, linkedin-pack.md, github-readme.md, questions-to-ask.md, form-fill-cheatsheet.md, testimonials.md, project-briefs/*.md, interview-prep/technical.md |
-| **Strategy (needs user input)** | ⚠️ Draft from context | target-roles.md, study-plan.md, financial.md, content-plan.md, risk-register.md, networking.md, role-deep-dives.md |
+| **Assets (generated)** | ✅ From identity | star-stories.md, cover-letters/*.md, linkedin-pack.md, platform-copy.md, github-readme.md, questions-to-ask.md, form-fill-cheatsheet.md, testimonials.md, project-briefs/*.md, interview-prep/technical.md |
+| **Strategy (needs user input)** | ⚠️ Draft from context | target-roles.md, role-analysis.md (optional), study-plan.md, master-action-tracker.md, digital-presence-plan.md, financial.md, content-plan.md, risk-register.md, networking.md, role-deep-dives.md |
 | **Personal (needs user input)** | ⚠️ Draft from text/ | about-me.md, career-narrative.md, life-goals.md, preferences.yaml, reflections.md |
 | **Journal (real-time only)** | ❌ User fills over time | wins.md, learning-log.md, feedback.md, work-log/*.md |
 | **Ops (don't fill)** | ❌ System files | guide.md, authority-map.md, prompts.md, audit-checklist.md, tooling.md, templates/*.md |
@@ -55,7 +55,7 @@ Read ALL files in `data-corpus/` subdirectories:
 
 ---
 
-### Phase B: Identity Layer (Steps 2-8) — The Source of Truth
+### Phase B: Identity Layer (Steps 2-9) — The Source of Truth
 
 #### Step 2: Fill identity/identity.yaml
 - Copy name/email from config.yaml
@@ -104,21 +104,31 @@ This is the most important file. For each employer:
 - Volunteering: community work, open source, mentoring
 - References: professional references with contact details (mark ⚠️ PRIVATE)
 
-#### Step 8: Fill identity/claims-and-evidence.md
+#### Step 8: Fill identity/speaking-and-community.yaml
+- Speaking engagements: title, event, organizer, date, audience, topics, materials links
+- Hackathons: name, result, project built, team size, tech used
+- Community memberships: groups joined, role, activity level
+- Content metrics: LinkedIn followers, GitHub stars, articles published (update periodically)
+- Tag verification status for each entry
+- Cross-reference with LinkedIn exports and event certificates in data-corpus/
+
+#### Step 9: Fill identity/claims-and-evidence.md
 - Review ALL claims in experience.yaml, skills.yaml, and credentials.yaml
 - Assign safety tiers: 🟢 SAFE, 🟡 USE CAREFULLY, 🔴 DO NOT USE
+- Assign measurement tags: `[measured]`, `[estimated]`, `[to-verify]`
+- Items tagged `[estimated]` or `[to-verify]` will become Claim Debt in master-action-tracker
 - Log any contradictions found between sources
 
-#### Step 9: Fill identity/professional-summary.md
+#### Step 10: Fill identity/professional-summary.md
 - Write 3-5 summary variants based on the filled profile
 - Tailor to the user's target roles (from config.yaml or strategy/)
 - Keep factual — every claim in the summary must exist in experience.yaml
 
 ---
 
-### Phase C: Resume Layer (Steps 10-12) — Generated From Identity
+### Phase C: Resume Layer (Steps 11-13) — Generated From Identity
 
-#### Step 10: Generate resume/master.yaml
+#### Step 11: Generate resume/master.yaml
 - Convert experience.yaml bullets into the keyed phrasing format:
   ```yaml
   experience:
@@ -133,55 +143,65 @@ This is the most important file. For each employer:
   ```
 - Include education, projects, achievements from credentials.yaml
 
-#### Step 11: Generate resume/variants/
+#### Step 12: Generate resume/variants/
 - Create one variant per target role (or per profession area)
 - Each variant selects relevant bullets from master.yaml
 - Include a tailored summary for each variant
 
-#### Step 12: Validate resume pipeline
+#### Step 13: Validate resume pipeline
 - Run `python resume/assemble.py --validate` to check references
 - Verify every bullet key in variants exists in master.yaml
 
 ---
 
-### Phase D: Assets Layer (Steps 13-19) — Generated From Identity + Experience
+### Phase D: Assets Layer (Steps 14-20) — Generated From Identity + Experience
 
-#### Step 13: Generate assets/star-stories.md
+#### Step 14: Generate assets/star-stories.md
 - Extract 5-8 stories from experience.yaml bullets
 - Structure each using STAR format: Situation, Task, Action, Result
 - Map to competency categories (leadership, problem-solving, collaboration, etc.)
 - Every story must reference a verified claim
 
-#### Step 14: Generate assets/cover-letters/
+#### Step 15: Generate assets/cover-letters/
 - `standard.md` — Problem-Solution framework (for job board applications)
 - `referral.md` — Hook-Value-Ask framework (for warm introductions)
 - `cold-outreach.md` — Context-Connection-Request (for cold emails)
 - Use professional-summary.md + target-roles for tone
 
-#### Step 15: Fill assets/form-fill-cheatsheet.md
+#### Step 16: Fill assets/form-fill-cheatsheet.md
 - Extract from config.yaml + identity.yaml: name, email, phone, DOB, address
 - Fill education, references, work authorization sections
 - Pre-fill common application questions with suggested answers
 - **Mark ⚠️ PRIVATE** — this file goes in .gitignore
 
-#### Step 16: Generate assets/linkedin-pack.md
+#### Step 17: Generate assets/linkedin-pack.md
 - Headline: 120 chars, keyword-rich
 - About section: 3 variants (narrative, technical, leadership)
 - Featured section: top 3-5 items from projects.yaml featured
 - Experience descriptions: adapted from experience.yaml bullets
 
-#### Step 17: Generate assets/github-readme.md
+#### Step 18: Generate assets/github-readme.md
 - Professional intro from professional-summary.md
 - Tech stack badges from skills.yaml
 - Featured projects from projects.yaml
 - Currently learning from study-plan.md (if filled)
 
-#### Step 18: Fill assets/questions-to-ask.md
+#### Step 19: Fill assets/questions-to-ask.md
 - Generate role-appropriate questions from target-roles.md
 - Include universal questions (culture, growth, team, process)
 - Add company-specific question templates
 
-#### Step 19: Generate assets/interview-prep/technical.md
+#### Step 20: Generate assets/platform-copy.md
+- Email signature (4-5 lines)
+- GitHub bio (160 char max)
+- LinkedIn headline (120 char max, 2-3 options)
+- Twitter/X bio (160 char max)
+- Speaker bio (1 paragraph, ~100 words)
+- Conference bio (2 paragraphs, ~200 words)
+- Short bio (50 words)
+- Derive all from professional-summary.md + target-roles.md positioning
+
+#### Step 21: Generate assets/interview-prep/technical.md
 - Extract core technical areas from skills.yaml (advanced/expert level)
 - List likely interview topics per target role
 - Add system design topics if applicable
@@ -189,69 +209,86 @@ This is the most important file. For each employer:
 
 ---
 
-### Phase E: Strategy Layer (Steps 20-24) — Needs User Input, AI Drafts
+### Phase E: Strategy Layer (Steps 22-28) — Needs User Input, AI Drafts
 
 > ⚠️ These files require user preferences/goals. If `data-corpus/text/` contains
 > career plans, brain dumps, or goals — use them. Otherwise, draft what you can
 > and mark sections needing user input with `<!-- USER INPUT NEEDED -->`.
 
-#### Step 20: Draft strategy/target-roles.md
-- If career goals exist in text/: evaluate roles against skills
+#### Step 22: Draft strategy/target-roles.md
+- If career goals exist in text/: evaluate roles against skills using 8-parameter framework
 - Otherwise: suggest 3-5 roles based on experience + skills profile
+- Include ATS keywords per role
+- Map roles to resume variants
 - Mark as draft: `<!-- AI-SUGGESTED — Review and confirm -->`
+- Optional: Fill `strategy/role-analysis.md` first for comprehensive scan
 
-#### Step 21: Draft strategy/study-plan.md
+#### Step 23: Draft strategy/study-plan.md
 - Identify gaps between current skills.yaml and target role requirements
 - Suggest learning resources and sprint timeline
 - Mark as draft
 
-#### Step 22: Draft strategy/financial.md
+#### Step 24: Draft strategy/master-action-tracker.md
+- Populate 🔴 Claim Debt from claims-and-evidence.md `[estimated]` / `[to-verify]` items
+- Populate 🟠 Portfolio from projects.yaml (repos needing polish)
+- Populate 🟢 Skill Building from study-plan.md gaps
+- Leave 🔵 Digital Presence and 🟡 Job Search for user to fill
+- Update progress summary counts
+
+#### Step 25: Draft strategy/digital-presence-plan.md
+- Audit user's current digital presence from config.yaml profiles
+- Categorize platforms into P0-P3 priority tiers
+- Draft execution phases
+- Mark as draft
+
+#### Step 26: Draft strategy/financial.md
 - If salary data exists in text/ or config.yaml: structure it
 - Otherwise: leave fields empty (salary is sensitive)
 - Never fabricate salary information
 
-#### Step 23: Draft strategy/content-plan.md
+#### Step 27: Draft strategy/content-plan.md
 - Suggest content topics based on expertise areas from skills.yaml
 - Draft a publishing cadence based on time availability
 - Mark as draft
 
-#### Step 24: Draft strategy/risk-register.md
+#### Step 28: Draft strategy/risk-register.md
 - Identify career transition risks based on the profile
 - Suggest mitigation strategies
 - Mark as draft
 
 ---
 
-### Phase F: Personal Layer (Steps 25-27) — Private, User Input Preferred
+### Phase F: Personal Layer (Steps 29-31) — Private, User Input Preferred
 
 > ⚠️ Fill ONLY from `data-corpus/text/` freeform data. Never infer personal
 > information. If no personal context exists, leave these empty.
 
-#### Step 25: Draft personal/about-me.md + career-narrative.md
+#### Step 29: Draft personal/about-me.md + career-narrative.md
 - Extract life context from freeform text (if available)
 - Write "walk me through your career" in 3 lengths (30s/2min/5min)
 - Career narrative must only use facts from experience.yaml
 
-#### Step 26: Draft personal/life-goals.md
+#### Step 30: Draft personal/life-goals.md
 - If career goals exist in text/: structure into short/medium/long term
 - Fill non-negotiables and dream role if context available
 - Otherwise: leave empty for user
 
-#### Step 27: Draft personal/preferences.yaml
+#### Step 31: Draft personal/preferences.yaml
 - Extract work preferences from freeform text (if available)
 - Fill career_stage, risk_tolerance, time_availability if inferrable
 - Otherwise: leave empty
 
 ---
 
-### Phase G: Config & Vision (Steps 28-29) — Finalize
+### Phase G: Config & Vision (Steps 32-33) — Finalize
 
-#### Step 28: Enrich VISION.md
+#### Step 32: Enrich VISION.md
 - Fill mission statement from config.yaml + career goals
 - Set success criteria from target-roles + financial
 - Update current status based on what's been filled
+- Update "What's Next" pointer to master-action-tracker.md
 
-#### Step 29: Final Validation
+#### Step 33: Final Validation
 ```bash
 python .pramedha/validate.py           # Check integrity
 python resume/assemble.py --validate   # Check cascade references
@@ -261,6 +298,7 @@ Report:
 - Claims verified vs. unverified
 - Contradictions found
 - Items needing user input
+- Update `ops/session-handoff.md` with session summary
 
 ---
 
@@ -338,13 +376,16 @@ python resume/assemble.py --validate   # Check cascade references
 
 ---
 
-## Pramedha Import Compatibility
+## Schema Mapping (Optional Integration)
 
-The filled template can be imported directly into Pramedha:
+This template is **fully standalone**. No external tools are required.
+If integrating with tools that use the PramedhaProfile schema, the mapping is:
+
 ```
-identity/*.yaml     →  PramedhaProfile.professional
-personal/*          →  PramedhaProfile.personal
-claims-and-evidence →  PramedhaProfile.meta.claims_registry
+identity/*.yaml     →  professional.*
+personal/*          →  personal.*
+claims-and-evidence →  meta.claims_registry
 ```
 
-Ensure field names match the schema reference for clean import.
+The `Maps to:` comments in individual template files reference this schema
+for documentation purposes only — they have no functional dependency.

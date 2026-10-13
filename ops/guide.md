@@ -11,11 +11,13 @@ When an AI assistant works on this repo, these rules apply:
 
 ### DO:
 1. **Read `.pramedha/agent-instructions.md` first** — it's the master protocol
-2. **Check `authority-map.md` before editing** — know what's truth for what
-3. **Tag every claim with verification status** (✅/⚠️/❌)
-4. **Cross-reference across sources** — don't trust a single document
-5. **Ask when uncertain** — never fabricate data
-6. **Commit with clear messages** — describe what changed and why
+2. **Check `ops/session-handoff.md`** for prior session context
+3. **Check `authority-map.md` before editing** — know what's truth for what
+4. **Tag every claim with verification status** (✅/⚠️/❌)
+5. **Cross-reference across sources** — don't trust a single document
+6. **Ask when uncertain** — never fabricate data
+7. **Commit with clear messages** — describe what changed and why
+8. **Update `ops/session-handoff.md`** at the end of each session
 
 ### DON'T:
 1. **Never fabricate claims or metrics** — leave empty if unknown
@@ -44,6 +46,8 @@ When an AI assistant works on this repo, these rules apply:
 | **Claim becomes stronger** | — | — | claims-and-evidence.md (upgrade tier) | — |
 | **Claim becomes weaker** | — | — | claims-and-evidence.md (downgrade tier) | Remove from resume |
 | **Contact info changed** | — | config.yaml | — | — |
+| **Gave a talk / hackathon** | journal/wins.md | identity/speaking-and-community.yaml | claims-and-evidence.md | professional-summary → platform-copy |
+| **New raw data in data-corpus** | — | Extract → identity/*.yaml | claims-and-evidence.md | All downstream files |
 
 ---
 
@@ -67,6 +71,7 @@ When an AI assistant works on this repo, these rules apply:
 - [ ] Capture any wins in `journal/wins.md`
 - [ ] Update `strategy/job-search/tracker.md` if actively applying
 - [ ] Log any feedback received in `journal/feedback.md`
+- [ ] Review `strategy/master-action-tracker.md` — check off completed items
 
 ### Monthly (15 min)
 - [ ] Review and update `identity/skills.yaml` — new skills learned?

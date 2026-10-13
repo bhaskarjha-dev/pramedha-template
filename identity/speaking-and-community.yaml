@@ -1,0 +1,112 @@
+# ============================================================================
+# SPEAKING & COMMUNITY — Public Speaking, Tech Talks, Community Engagement
+# ============================================================================
+# This file captures ALL public-facing activities that demonstrate thought
+# leadership, community involvement, and industry presence.
+#
+# Why this is separate from volunteering.yaml:
+#   - Speaking/hackathons need: event metadata, audience, topics, materials, verification
+#   - Volunteering needs: org, role, hours, impact
+#   - Mixing them creates a bloated, confused file
+#
+# Categories:
+#   - speaking: Talks, sessions, workshops delivered
+#   - hackathons: Competitive events (with results)
+#   - community: Groups, meetups, events attended/organized
+#   - content_metrics: Platform engagement stats (LinkedIn, GitHub, etc.)
+#
+# Source: Extract from data-corpus/ (LinkedIn exports, event certificates, etc.)
+# ============================================================================
+
+# ─── Speaking Engagements ────────────────────────────────────────────────
+# Talks, workshops, panel discussions, guest lectures, etc.
+speaking:
+
+  # - title: "Talk Title or Session Name"
+  #   event: "Conference / Meetup Name"
+  #   organizer: "Organization"
+  #   date: "YYYY-MM-DD"
+  #   location: "City / Virtual"
+  #   role: "Speaker | Panelist | Workshop Leader | Guest Lecturer"
+  #   audience: "Who attended + approx size"
+  #   topics:
+  #     - "Topic 1"
+  #     - "Topic 2"
+  #   co_speakers:                    # optional
+  #     - "Name (Title/Org)"
+  #   materials:                      # optional — links to slides, videos, repos
+  #     - type: "Slides | YouTube Recording | GitHub Codelab | Blog Post"
+  #       url: "https://..."
+  #   linkedin_post: "https://..."   # optional — social proof
+  #   verification: "✅ VERIFIED — [evidence description]"
+
+
+# ─── Hackathons & Competitions ───────────────────────────────────────────
+# Hackathons, coding competitions, challenges with results
+hackathons:
+
+  # - name: "Hackathon Name"
+  #   organizer: "Organization"
+  #   date: "YYYY-MM-DD"
+  #   location: "City / Virtual"
+  #   result: "1st Place | 2nd Place | Finalist | Participant"
+  #   project: "What you built"
+  #   team_size: 3
+  #   tech_used:
+  #     - "Python"
+  #     - "TensorFlow"
+  #   prize: "Description of prize if won"    # optional
+  #   repo: "https://github.com/..."          # optional
+  #   certificate: "data-corpus/documents/..." # optional
+  #   verification: "✅ VERIFIED — [evidence description]"
+
+
+# ─── Community Memberships & Meetups ─────────────────────────────────────
+# Groups joined, events attended, organizing roles
+community:
+
+  # Format for ongoing memberships:
+  # - name: "Community / Group Name"
+  #   type: "Developer Group | Professional Org | Online Community | Meetup"
+  #   platform: "In-Person | Discord | Slack | LinkedIn Group"
+  #   role: "Member | Organizer | Volunteer | Mentor"
+  #   since: "YYYY-MM"
+  #   activity: "Brief description of participation"
+  #   url: "https://..."                      # optional
+  #   events_attended: 5                       # optional — count
+  #   verification: "✅ VERIFIED — [evidence]"
+
+  # Format for one-time events attended:
+  # - name: "Event Name"
+  #   type: "Conference | Workshop | Bootcamp | Webinar"
+  #   organizer: "Organization"
+  #   date: "YYYY-MM-DD"
+  #   location: "City / Virtual"
+  #   notes: "Key takeaways or connections made"   # optional
+  #   verification: "✅ VERIFIED — [evidence]"
+
+
+# ─── Content & Platform Metrics ──────────────────────────────────────────
+# Engagement stats that demonstrate influence (update periodically)
+content_metrics:
+
+  # linkedin:
+  #   followers: 500
+  #   posts_published: 10
+  #   top_5_percent: false             # LinkedIn "top voice" or similar badge
+  #   last_updated: "YYYY-MM-DD"
+  #
+  # github:
+  #   public_repos: 30
+  #   total_stars: 15
+  #   followers: 20
+  #   contributions_last_year: 200
+  #   last_updated: "YYYY-MM-DD"
+  #
+  # writing:
+  #   articles_published: 5
+  #   platforms:
+  #     - "Dev.to"
+  #     - "Medium"
+  #   total_views: 1000                # optional — if tracked
+  #   last_updated: "YYYY-MM-DD"
