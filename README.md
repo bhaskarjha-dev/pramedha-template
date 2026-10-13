@@ -15,7 +15,7 @@ Optionally compatible with [Pramedha](https://github.com/bhaskarjha-dev/pramedha
 | `config.yaml` + `identity/` | Generate a tailored resume in 30 seconds for any role |
 | `assets/star-stories.md` | Walk into any behavioral interview prepared with 8 stories |
 | `strategy/target-roles.md` | Know exactly which roles to apply to and why |
-| `strategy/job-search/tracker.md` | Track 50+ applications with follow-up reminders |
+| `strategy/job-tracker.md` | Track 50+ applications with follow-up reminders |
 | `assets/form-fill-cheatsheet.md` | Fill any job application form in 2 minutes flat |
 | `journal/` | Have a brag document ready for performance reviews and promotions |
 
@@ -120,24 +120,29 @@ pramedha-template/
 │   └── output/                   Generated PDFs
 │
 ├── strategy/                  ← Phase 2: Career strategy
-│   ├── target-roles.md           Role evaluation framework
-│   ├── study-plan.md             Learning roadmap
-│   ├── financial.md              Compensation & runway (⚠️ private)
+│   ├── target-roles.md           Role evaluation framework & 8-parameter scoring
+│   ├── master-action-tracker.md  Consolidated multi-stream priority board
+│   ├── weekly-tracker.md         Weekly goals & check-in
+│   ├── digital-presence-plan.md  Platform audit + content engine
+│   ├── study-plan.md             Learning roadmap & sprints
+│   ├── financial.md              Compensation, runway & negotiation (⚠️ private)
 │   ├── networking.md             Professional network CRM (⚠️ private)
-│   ├── content-plan.md           Thought leadership plan
+│   ├── job-tracker.md            Application pipeline tracker
+│   ├── job-platforms.md          Regional & global job channels
 │   ├── risk-register.md          Career risk assessment
 │   ├── offer-comparison.md       Multi-offer comparison
-│   ├── company-research/         Per-company research files
-│   └── job-search/               Tracker, outreach, salary
+│   └── company-research/         Per-company research dossiers
 │
 ├── assets/                    ← Phase 2: Application materials
 │   ├── star-stories.md           8 STAR behavioral stories
+│   ├── outreach-messages.md      Cold, referral & follow-up copy
 │   ├── questions-to-ask.md       Prepared interviewer questions
 │   ├── form-fill-cheatsheet.md   Copy-paste job application answers (⚠️)
 │   ├── testimonials.md           Social proof & endorsements
 │   ├── linkedin-pack.md          LinkedIn profile optimization
+│   ├── platform-copy.md          Bios, abstracts & pitches
 │   ├── github-readme.md          GitHub profile README
-│   ├── cover-letters/            3 named frameworks
+│   ├── cover-letters/            3 named frameworks (standard, referral, cold)
 │   ├── interview-prep/           Technical + behavioral prep
 │   └── project-briefs/           Detailed project write-ups
 │
@@ -154,13 +159,11 @@ pramedha-template/
 │   ├── feedback.md               Performance reviews & feedback
 │   └── work-log/                 Fiscal year logs + quarterly summaries
 │
-├── ops/                       ← System maintenance
-│   ├── guide.md                  Session rules + maintenance rituals
-│   ├── authority-map.md          Source of truth reference
+├── ops/                       ← System maintenance & operations
+│   ├── guide.md                  Operations, tooling stack, rituals & audit
+│   ├── authority-map.md          Single source of truth reference
 │   ├── prompts.md                AI operation prompts
-│   ├── audit-checklist.md        Template integrity audit
-│   ├── tooling.md                Tool stack reference
-│   └── templates/                Entry templates
+│   └── session-handoff.md        Cross-session context log
 │
 └── .pramedha/                 ← Pramedha ecosystem
     ├── agent-instructions.md     How ANY AI fills this template

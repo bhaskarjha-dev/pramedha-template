@@ -214,7 +214,7 @@ Fill these at your own pace. Each layer adds value independently:
 | "What AI prompts can I use?" | `ops/prompts.md` |
 | "What's the source of truth for X?" | `ops/authority-map.md` |
 | "How do I maintain this system?" | `ops/guide.md` |
-| "What tools do I need?" | `ops/tooling.md` |
+| "What tools do I need?" | `ops/guide.md` (Tool Stack section) |
 
 ---
 

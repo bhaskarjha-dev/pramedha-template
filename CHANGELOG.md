@@ -4,9 +4,9 @@ All notable changes to the Pramedha Career Template.
 
 ## [0.1.0] — 2026-10-13
 
-### Major: Schema Unification, Identity-Resume Bridge, RenderCV v2.8 & Rigorous Validation
+### Major: Architectural Streamlining, Minimum Context Router & Directory Flattening
 
-Complete modernization across the entire template: unified identity and resume schemas, automated identity-to-master synchronization, modernized for RenderCV v2.8 (Typst engine, JSON schema autocompletion, 12 themes, publication entries), enhanced validator consistency checks, and comprehensive documentation polish.
+Consolidated redundant and overlapping frameworks across the repository to achieve minimum context consumption with maximum purpose. Embedded a token-budgeted Task-to-Files Routing Matrix in `AGENTS.md` and `README.md`, unified role evaluation in `strategy/target-roles.md`, merged content planning into `strategy/digital-presence-plan.md`, relocated networking outreach copy to `assets/outreach-messages.md`, flattened application tracking to `strategy/job-tracker.md` and `strategy/job-platforms.md`, and integrated operations tooling and audits into `ops/guide.md`. Cleanly reduced repository footprint from 100 to 96 purposeful files with 100% test pass rates across all validation and cascade engines.
 
 ### Added — Automation & Bridge Script
 - **`resume/_yaml_utils.py`** — Extracted shared YAML utilities module providing order-preserving dumping, block style multiline string formatting, and RenderCV `present` literal handling across cascade tools.

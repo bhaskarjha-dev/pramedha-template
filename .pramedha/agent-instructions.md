@@ -26,11 +26,11 @@ Every file in this template falls into one of these categories:
 |----------|:-:|-------|
 | **Identity (truth)** | ✅ From data-corpus | experience.yaml, skills.yaml, credentials.yaml, projects.yaml, identity.yaml, volunteering.yaml, speaking-and-community.yaml, references.yaml, claims-and-evidence.md, professional-summary.md |
 | **Resume (generated)** | ✅ From identity | master.yaml, design.yaml, variants/*.yaml |
-| **Assets (generated)** | ✅ From identity | star-stories.md, cover-letters/*.md, linkedin-pack.md, platform-copy.md, github-readme.md, questions-to-ask.md, form-fill-cheatsheet.md, testimonials.md, project-briefs/*.md, interview-prep/technical.md, interview-prep/behavioral.md |
-| **Strategy (needs user input)** | ⚠️ Draft from context | target-roles.md, role-analysis.md (optional), study-plan.md, master-action-tracker.md, digital-presence-plan.md, financial.md, content-plan.md, risk-register.md, networking.md (tiers/targets) |
+| **Assets (generated)** | ✅ From identity | star-stories.md, outreach-messages.md, cover-letters/*.md, linkedin-pack.md, platform-copy.md, github-readme.md, questions-to-ask.md, form-fill-cheatsheet.md, testimonials.md, project-briefs/*.md, interview-prep/technical.md, interview-prep/behavioral.md |
+| **Strategy (needs user input)** | ⚠️ Draft from context | target-roles.md, master-action-tracker.md, weekly-tracker.md, digital-presence-plan.md, study-plan.md, financial.md, job-tracker.md, job-platforms.md, risk-register.md, networking.md (tiers/targets) |
 | **Personal (needs user input)** | ⚠️ Draft from text/ | about-me.md, career-narrative.md, life-goals.md, preferences.yaml, reflections.md |
 | **Journal (real-time only)** | ❌ User fills over time | wins.md, learning-log.md, feedback.md, work-log/*.md |
-| **Ops (don't fill)** | ❌ System files | guide.md, authority-map.md, prompts.md, audit-checklist.md, tooling.md |
+| **Ops (don't fill)** | ❌ System files | guide.md, authority-map.md, prompts.md, session-handoff.md |
 | **Config** | ⚠️ User fills basics, AI enriches | config.yaml, VISION.md |
 
 ---
@@ -226,12 +226,13 @@ This is the most important file. For each employer:
 > and mark sections needing user input with `<!-- USER INPUT NEEDED -->`.
 
 #### Step 22: Draft strategy/target-roles.md
-- If career goals exist in text/: evaluate roles against skills using 8-parameter framework
-- Otherwise: suggest 3-5 roles based on experience + skills profile
-- Include ATS keywords per role
-- Map roles to resume variants
+- Document honest baseline in Part 1 (grounded in verified skills.yaml and experience.yaml)
+- Evaluate roles against skills using the 8-parameter framework (P1–P8, max 40 points)
+- Define Tier A (32-40), Tier B (24-31), Tier C (16-23)
+- Identify shared foundation across Tier A targets and draft unified positioning statement
+- Map roles to resume variants (aim for 2-4 variants max)
+- Complete detailed role deep-dives for Tier A & B targets with ATS keywords
 - Mark as draft: `<!-- AI-SUGGESTED — Review and confirm -->`
-- Optional: Fill `strategy/role-analysis.md` first for comprehensive scan
 
 #### Step 23: Draft strategy/study-plan.md
 - Identify gaps between current skills.yaml and target role requirements
@@ -246,9 +247,11 @@ This is the most important file. For each employer:
 - Update progress summary counts
 
 #### Step 25: Draft strategy/digital-presence-plan.md
-- Audit user's current digital presence from config.yaml profiles
-- Categorize platforms into P0-P3 priority tiers
-- Draft execution phases
+- Audit user's current digital presence from config.yaml profiles across P0–P3 tiers
+- Draft execution phases (Phase 0 Quick Wins to Phase 5 Community Amplification)
+- Define 3 Core Content Pillars based on expertise areas from skills.yaml
+- Establish cross-platform publishing cadence and repurposing chain
+- Pre-populate content idea bank and quality checklist
 - Mark as draft
 
 #### Step 26: Draft strategy/financial.md
@@ -256,9 +259,10 @@ This is the most important file. For each employer:
 - Otherwise: leave fields empty (salary is sensitive)
 - Never fabricate salary information
 
-#### Step 27: Draft strategy/content-plan.md
-- Suggest content topics based on expertise areas from skills.yaml
-- Draft a publishing cadence based on time availability
+#### Step 27: Draft strategy/job-platforms.md & strategy/job-tracker.md
+- Identify relevant job search channels across target regions (Global, US, EU, APAC)
+- Populate initial target companies and pipeline stages in job-tracker.md
+- Link follow-up rules to `assets/outreach-messages.md`
 - Mark as draft
 
 #### Step 28: Draft strategy/risk-register.md

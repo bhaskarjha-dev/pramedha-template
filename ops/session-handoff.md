@@ -14,6 +14,29 @@
 ...
 -->
 
+## Session: 2026-10-13 (v0.1.0 Architecture Streamlining, Minimum Context Router & Directory Flattening)
+
+### Summary
+Executed comprehensive architectural streamlining across the repository. Consolidated overlapping role analysis and content planning frameworks, eliminated directory nesting in `strategy/`, relocated outreach messaging copy into `assets/outreach-messages.md`, folded operations tooling and audit checklists into `ops/guide.md`, and embedded a token-budgeted Minimum Context Router in `AGENTS.md`. Repository reduced from 100 to 96 purposeful, non-overlapping files with zero lost content and 100% test pass rates across `validate.py`, `assemble.py`, and `sync.py`.
+
+### What Was Done
+- **Role Evaluation Consolidation (`strategy/target-roles.md`, deleted `strategy/role-analysis.md`):** Merged Part 1 (Honest Baseline), P1-P8 evaluation scoring (max 40), shared foundation analysis, positioning statement, variant mapping, and Part 6 deep-dive into `strategy/target-roles.md`. Removed redundant `strategy/role-analysis.md`.
+- **Digital Presence & Content Engine Unification (`strategy/digital-presence-plan.md`, deleted `strategy/content-plan.md`):** Merged 3 core content pillars, multi-platform publishing cadence, content repurposing chain, idea bank, and quality checklist into `strategy/digital-presence-plan.md`. Removed redundant `strategy/content-plan.md`.
+- **Outreach Relocation & Strategy Flattening (`assets/outreach-messages.md`, `strategy/job-tracker.md`, `strategy/job-platforms.md`, deleted `strategy/job-search/`):** Relocated networking and follow-up templates into `assets/outreach-messages.md` and expanded with hiring manager, peer, and post-interview thank-you notes. Flattened `job-search/tracker.md` to `strategy/job-tracker.md` and `job-search/platforms.md` to `strategy/job-platforms.md`. Removed nested `strategy/job-search/` directory.
+- **Operations & Audit Consolidation (`ops/guide.md`, deleted `ops/audit-checklist.md`, `ops/tooling.md`):** Integrated the 10-Area Systematic Audit Checklist, audit scoring table, and Core Tool Stack into `ops/guide.md`. Removed separate `ops/audit-checklist.md` and `ops/tooling.md`.
+- **Minimum Context Router (`AGENTS.md`, `README.md`):** Embedded an explicit Task-to-Files Routing Matrix in `AGENTS.md` and linked in `README.md`, defining exact 2–4 file bundles (~1,400 to ~3,200 tokens) for all primary tasks (Resume tailoring, Interview prep, ATS form-filling, Weekly review, Offer evaluation, Win logging).
+- **Cross-Reference & Registry Updates:** Updated `.pramedha/manifest.yaml`, `.pramedha/agent-instructions.md`, `.pramedha/validate.py`, `ops/authority-map.md`, `ops/prompts.md`, `strategy/README.md`, `assets/README.md`, `assets/linkedin-pack.md`, `strategy/master-action-tracker.md`, `GETTING_STARTED.md`, and `README.md`.
+
+### Key Decisions
+| Decision | Rationale | Affects |
+|----------|-----------|---------|
+| Merge role analysis into `target-roles.md` | Eliminates duplicated 8-parameter scoring scale and provides single authoritative file for role evaluation | `strategy/target-roles.md`, `strategy/role-analysis.md` |
+| Merge content plan into `digital-presence-plan.md` | Public presence audit and publishing strategy are two sides of the same coin; unifies digital surface management | `strategy/digital-presence-plan.md`, `strategy/content-plan.md` |
+| Relocate outreach copy to `assets/outreach-messages.md` | All communication templates belong in `assets/`, keeping `strategy/` focused on decisions and tracking | `assets/outreach-messages.md`, `strategy/job-search/` |
+| Flatten `strategy/job-search/` | Eliminates nested directory asymmetry in `strategy/` and makes tracker and platforms immediately discoverable | `strategy/job-tracker.md`, `strategy/job-platforms.md` |
+| Merge ops audit and tooling into `guide.md` | Establishes `ops/guide.md` as the single authoritative operations manual, reducing ops file fragmentation | `ops/guide.md`, `ops/audit-checklist.md`, `ops/tooling.md` |
+| Minimum Context Router in `AGENTS.md` | Prevents token window degradation, eliminates hallucination risks, and guarantees deterministic task routing | `AGENTS.md`, `README.md` |
+
 ## Session: 2026-10-13 (v0.1.0 Cascade Engine Modularization, Achievement Bridge & CI Matrix Hardening)
 
 ### Summary

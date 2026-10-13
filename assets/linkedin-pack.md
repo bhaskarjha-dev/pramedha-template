@@ -98,7 +98,7 @@
 
 ## Content Posting Strategy
 
-> 3-5 topics you'll post about regularly. See `strategy/content-plan.md` for full plan.
+> 3-5 topics you'll post about regularly. See `strategy/digital-presence-plan.md` (Part 3) for the full content engine.
 >
 > Best times to post: Tue-Thu, 8-10 AM local time
 > Ideal frequency: 2-3x per week

@@ -20,13 +20,35 @@ config.yaml          ← User's name, email, profession type
 identity/*.yaml      ← Career facts (experience, skills, credentials, projects, speaking)
 resume/master.yaml   ← Bullet pool → assemble.py → variants → RenderCV → PDF
 strategy/            ← Target roles, study plan, action tracker, digital presence, financial
-assets/              ← STAR stories, cover letters, LinkedIn pack, platform copy, interview prep
+assets/              ← STAR stories, cover letters, outreach copy, LinkedIn pack, interview prep
 personal/            ← Private: life goals, preferences, reflections (⚠️ NEVER on resumes)
 journal/             ← Ongoing: wins, learning log, work log, feedback
-ops/                 ← Maintenance rules, authority map, session handoff, prompts, audit
+ops/                 ← Maintenance guide, authority map, session handoff, prompts
 .pramedha/           ← AI fill protocol, schema reference, examples, validator
 data-corpus/         ← Raw career evidence (resumes, certs, exports, brain dumps)
 ```
+
+---
+
+## 🎯 Minimum Context Router (Load ONLY What You Need)
+
+> To preserve LLM context window quality, prevent hallucinations, and eliminate token waste,
+> **NEVER read the entire repo.** Route directly to the 2–4 files needed for your specific objective:
+
+| Objective / Task | 🎯 Minimum Files to Read & Edit | Context Budget |
+|------------------|---------------------------------|:--------------:|
+| **Tailor Resume for a Job Posting** | `resume/master.yaml`, `identity/experience.yaml`, `identity/skills.yaml`, `resume/variants/_template.yaml` | ~2,500 tokens |
+| **Prepare for Behavioral Interview** | `assets/star-stories.md`, `assets/interview-prep/behavioral.md` | ~2,800 tokens |
+| **Prepare for Technical / Domain Interview** | `identity/skills.yaml`, `assets/interview-prep/technical.md`, `identity/projects.yaml` | ~3,200 tokens |
+| **Rapid ATS Application Form Fill** | `assets/form-fill-cheatsheet.md`, `strategy/job-tracker.md`, `assets/cover-letters/standard.md` | ~2,100 tokens |
+| **Cold Outreach / Referral Request** | `assets/outreach-messages.md`, `identity/professional-summary.md` | ~1,500 tokens |
+| **Friday 5-Minute Weekly Review** | `strategy/weekly-tracker.md`, `journal/wins.md`, `journal/work-log/_template.md` | ~1,400 tokens |
+| **Target Role & Pivot Evaluation** | `strategy/target-roles.md`, `identity/skills.yaml` | ~2,200 tokens |
+| **Offer Evaluation & Comp Negotiation** | `strategy/financial.md`, `strategy/offer-comparison.md`, `personal/preferences.yaml` | ~2,000 tokens |
+| **Log New Win or Shipped Feature** | `journal/wins.md`, `identity/experience.yaml`, `resume/master.yaml` | ~2,400 tokens |
+| **Quarterly Audit & System Health** | `ops/guide.md`, `ops/authority-map.md`, `config.yaml` | ~2,000 tokens |
+
+---
 
 ## Critical Rules
 
@@ -43,9 +65,6 @@ data-corpus/         ← Raw career evidence (resumes, certs, exports, brain dum
 > When working across multiple AI sessions, certain decisions get settled.
 > Once recorded here, they should NOT be questioned or re-debated unless
 > the user explicitly asks to revisit them.
-
-<!-- Fill this as decisions are made during template usage.
-     Format: Decision | Context/Rationale | Date Decided -->
 
 | Decision | Context | Date |
 |----------|---------|------|
@@ -74,8 +93,8 @@ Read `ops/guide.md` — it contains event→file mapping:
 | New job/role | experience.yaml → skills.yaml → master.yaml → claims → professional-summary |
 | New certification | credentials.yaml → claims → study-plan → master.yaml |
 | New project | projects.yaml → experience.yaml → master.yaml → claims |
-| Job application | job-search/tracker.md → (optional) resume/jd/[company].yaml |
-| Interview scheduled | company-research/[company].md → interview-prep → star-stories review |
+| Job application | strategy/job-tracker.md → (optional) resume/jd/[company].yaml |
+| Interview scheduled | strategy/company-research/[company].md → interview-prep → star-stories review |
 | Achievement/win | journal/wins.md → experience.yaml → master.yaml → claims |
 | Speaking / hackathon | speaking-and-community.yaml → claims → professional-summary → platform-copy |
 | New raw data in data-corpus | Extract facts → identity/*.yaml → claims-and-evidence.md → downstream |

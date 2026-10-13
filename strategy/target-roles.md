@@ -1,83 +1,121 @@
-# Target Roles — Role Evaluation & Targeting Strategy
+# 🎯 Target Roles — Role Evaluation & Targeting Strategy
 
-> **Purpose:** Evaluate potential target roles and define your targeting strategy.
-> Fill this when you're actively exploring career directions.
+> **Purpose:** Evaluate potential target roles, score their viability against your verified profile,
+> and define your targeting strategy and resume variant mapping.
 >
-> **Optional deeper analysis:** If you're career-switching or exploring broadly,
-> consider doing a comprehensive scan first in `strategy/role-analysis.md` (optional).
+> **Methodology:** Score each candidate role on 8 objective parameters (1-5 each, max 40).
+> High-scoring roles (Tier A) become your primary focus and dictate your resume variants.
 
 ---
 
-## Evaluation Criteria
+## Part 1: Your Verified Profile (The Honest Baseline)
 
-Rate each role 1-5 on these dimensions:
+> Before scoring ANY role, document what you **actually have** — not what you
+> aspire to, not what's on your resume without evidence, but what's verified.
+> Ground this in `identity/skills.yaml` and `identity/experience.yaml`.
 
-| Dimension | What It Measures |
-|-----------|-----------------|
-| **Skills Match** | How much of the role's requirements do you already have? |
-| **Interest** | How excited are you about this work daily? |
-| **Market Demand** | How many openings exist? Is demand growing? |
-| **Salary Potential** | Does it meet your financial targets? |
-| **Growth Path** | Where does this role lead in 3-5 years? |
-| **Time to Close Gaps** | How long to become competitive? (5 = ready now) |
-| **Interview Readiness** | Can you pass the interview today? (5 = yes) |
-| **Competition Level** | How crowded is the applicant pool? (5 = low) |
+### Core Technical Identity
 
----
+| Dimension | Level (⭐1-5) | Evidence |
+|-----------|:------------:|---------:|
+| *Example: Python engineering* | *⭐⭐⭐⭐ Advanced (5 yrs)* | *Primary language across all employers* |
+| | | |
+| | | |
 
-## Role Evaluation Table
+### Skill Gaps (Be Honest)
 
-<!-- Fill one row per role you're considering.
-     Total = sum of all dimensions (max 40). -->
+| Dimension | Level (⭐1-5) | Impact on Target Roles |
+|-----------|:------------:|-----------------------:|
+| *Example: System design at scale* | *⭐ Beginner* | *Blocks Staff/Architect roles* |
+| | | |
+| | | |
 
-| Role | Skills | Interest | Market | Salary | Growth | Gaps | Interview | Competition | Total | Tier |
-|------|:------:|:--------:|:------:|:------:|:------:|:----:|:---------:|:-----------:|:-----:|:----:|
-| *Example: ML Engineer* | *4* | *5* | *4* | *5* | *4* | *4* | *4* | *3* | *33* | *A* |
+### Domain Context & Soft Strengths
 
-### Tier Definitions
-- **Tier A (32-40):** Primary targets — apply aggressively
-- **Tier B (24-31):** Secondary — apply selectively or invest in gaps
-- **Tier C (16-23):** Stretch — only if opportunity is exceptional
-- **Below 16:** Skip — not worth the effort right now
+| Asset | Evidence |
+|-------|---------|
+| *Example: Enterprise delivery* | *3 years at Fortune 500, client-facing* |
+| | |
 
 ---
 
-## Why Your Target Roles Work Together
+## Part 2: Evaluation Criteria & Scoring
 
-<!-- After scoring, look for the shared foundation across your Tier A roles.
+Rate each role 1–5 on these 8 dimensions (Max 40 points):
+
+| Parameter | What It Measures | Scoring Guide (1-5) |
+|-----------|-----------------|---------------------|
+| **P1: Skills Match** | How much of the requirements do you already have? | 5 = 90%+ match · 1 = Critical gap |
+| **P2: Interest / Passion** | How excited are you about this work daily? | 5 = Dream work · 1 = Dread it |
+| **P3: Market Demand** | How many openings exist? Is demand growing? | 5 = Massive demand · 1 = Dying market |
+| **P4: Salary Potential** | Does it meet your financial targets at your YoE? | 5 = Top of band · 1 = Below target |
+| **P5: Growth Trajectory** | Where does this role lead in 3-5 years? | 5 = High leverage · 1 = Dead end |
+| **P6: Time to Close Gaps** | How long to become competitive? | 5 = Ready now · 1 = 12+ months |
+| **P7: Interview Readiness** | Can you pass the interview today? | 5 = Ready today · 1 = No chance |
+| **P8: Competition Level** | How crowded is the applicant pool? | 5 = Low competition · 1 = Brutal pool |
+
+---
+
+## Part 3: Master Role Evaluation Table
+
+<!-- Fill one row per role you're considering. Don't pre-filter — let the scores decide.
+     Total = sum of P1 through P8 (max 40). -->
+
+| # | Role | P1 | P2 | P3 | P4 | P5 | P6 | P7 | P8 | Total | Tier |
+|:-:|------|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:-----:|:----:|
+| 1 | *Example: ML Engineer* | *4* | *5* | *4* | *5* | *4* | *4* | *4* | *3* | *33* | *A* |
+| 2 | | | | | | | | | | | |
+| 3 | | | | | | | | | | | |
+
+### Tier Definitions (Max 40 Points)
+- **Tier A (32–40):** Primary targets — apply aggressively, create dedicated resume variants
+- **Tier B (24–31):** Secondary targets — apply selectively or invest 1–3 months closing gaps
+- **Tier C (16–23):** Stretch targets — pursue only if exceptional inbound opportunity
+- **Below 16:** Skip — significant foundational gaps, not worth current investment
+
+---
+
+## Part 4: Why Your Target Roles Work Together
+
+<!-- After scoring, find the shared foundation across all Tier A roles.
      This determines your positioning statement and how many resume variants you need. -->
 
-| Shared Foundation (All Target Roles) | Role-Specific Additions |
+| Shared Foundation (All Tier A Roles) | Role-Specific Additions |
 |--------------------------------------|------------------------|
-| *Example: Python + SQL + ML basics* | *Role X: Cloud depth* |
+| *Example: Python + SQL + Distributed Systems* | *Role X: Cloud depth, Role Y: Model Serving* |
 
-**One positioning statement covering ALL targets:**
+### Unified Positioning Statement
+> Write one sentence covering ALL your Tier A targets:
+>
 > *"I build [what] — [specialty 1], [specialty 2], and [specialty 3] — at [scale/context]."*
 
 ---
 
-## Resume Variant Mapping
+## Part 5: Resume Variant Mapping
 
-<!-- Group target roles by which resume variant they share.
-     This prevents variant explosion (aim for 2-4 variants max). -->
+<!-- Group target roles by which resume variant they share. Aim for 2-4 variants max. -->
 
-| Variant | Target Roles | Key Emphasis |
-|:-------:|-------------|-------------|
-| A | *Roles 1, 2, 3* | *Shared positioning + unique differentiator* |
-| B | *Roles 4, 5* | *Different angle for different role family* |
+| Variant | Target Roles | Key Emphasis | Variant Config |
+|:-------:|-------------|-------------|----------------|
+| A | *Roles 1, 2* | *Core engineering + architecture* | `resume/variants/variant-a.yaml` |
+| B | *Roles 3, 4* | *Applied ML / domain specialization* | `resume/variants/variant-b.yaml` |
 
 ---
 
-## Detailed Role Analysis
+## Part 6: Detailed Role Deep-Dive (Tier A & B)
 
-<!-- For each Tier A/B role, write a deeper analysis: -->
+<!-- For each Tier A or B role, complete this deep-dive profile: -->
 
-### Role: [Name]
-- **Why this role:** (personal motivation)
-- **Your match:** (score context — what makes you competitive)
-- **Key skill gaps:** (what you need to learn)
-- **Time to close gaps:** (weeks/months)
-- **Target companies:** (dream tier, stretch tier, target tier)
-- **Salary range (your YoE):** (research-backed range)
-- **Preparation needed:** (courses, projects, practice)
-- **ATS keywords:** (terms from job descriptions to include on resume/LinkedIn)
+### Role: [Role Name] — Score: [X/40] — Tier [A/B]
+
+| Attribute | Detail |
+|-----------|--------|
+| **Why this role** | (Personal motivation / career alignment) |
+| **Your match** | (Score context — what makes you competitive) |
+| **Key skill gaps** | (Specific tools/frameworks missing) |
+| **Time to close gaps** | (Weeks/months needed to become fully competitive) |
+| **Preparation needed** | (Targeted courses, projects, mock interviews) |
+| **Salary range (your YoE)** | (Research-backed range for target market) |
+| **Target companies** | **Dream:** [Co A] · **Target:** [Co B, Co C] · **Safety:** [Co D] |
+| **ATS keywords** | (Keywords from job descriptions to include on resume/LinkedIn) |
+| **Resume variant** | (Maps to `resume/variants/*.yaml`) |

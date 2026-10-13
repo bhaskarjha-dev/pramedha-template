@@ -154,7 +154,7 @@ CONTEXT: Read:
 EXECUTE the weekly ritual:
 1. Check: Any new work this week to add to journal/work-log/?
 2. Check: Any wins to capture in journal/wins.md?
-3. Check: Any applications sent? Update strategy/job-search/tracker.md
+3. Check: Any applications sent? Update strategy/job-tracker.md
 4. Check: Any new skills learned? Update identity/skills.yaml
 5. Update strategy/weekly-tracker.md with top goals and review strategy/master-action-tracker.md
 6. Run: python resume/assemble.py --validate (cascade health check)

@@ -90,9 +90,7 @@ After collecting evidence for any item above:
 
 ## 🔵 DIGITAL PRESENCE — Brand Building
 
-> **Full strategic plan:** [digital-presence-plan.md](digital-presence-plan.md)
-> **Copy-ready content:** [platform-copy.md](../assets/platform-copy.md)
-> **Content schedule:** [content-plan.md](content-plan.md)
+> **Full strategic plan & content schedule:** [digital-presence-plan.md](digital-presence-plan.md)
 
 ### Phase 0: Quick Wins (~1 hour total — DO FIRST)
 
@@ -138,7 +136,7 @@ After collecting evidence for any item above:
 
 ## 🟡 JOB SEARCH — Application Pipeline
 
-> Source: [job-search/tracker.md](job-search/tracker.md) · [target-roles.md](target-roles.md)
+> Source: [job-tracker.md](job-tracker.md) · [target-roles.md](target-roles.md)
 
 ### Pre-Search Prep
 

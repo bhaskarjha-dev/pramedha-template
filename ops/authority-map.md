@@ -21,24 +21,27 @@
 | **Claims verification** | `identity/claims-and-evidence.md` | Resume bullets themselves |
 | **Professional summary** | `identity/professional-summary.md` | Old LinkedIn about |
 | **Social proof & endorsements** | `assets/testimonials.md` | Scattered recommendation letters |
-| **Platform bios & copy** | `assets/platform-copy.md` | Scattered bios, old resume headers |
+| **Platform bios & short copy** | `assets/platform-copy.md` | Scattered bios, old resume headers |
+| **Outreach & referral messages** | `assets/outreach-messages.md` | Ad-hoc email/message drafts |
 | **Resume bullets** | `resume/master.yaml` | Generated files, old YAMLs |
 | **Resume design** | `resume/design.yaml` | Design blocks in variants |
 | **Variant selection** | `resume/variants/*.yaml` | Manually curated files |
 | **Generated YAMLs** | `resume/generated/*.yaml` | Auto-generated — DO NOT EDIT |
-| **Target roles & evaluation** | `strategy/target-roles.md` | Old role wish lists |
-| **Full role analysis** | `strategy/role-analysis.md` (optional) | Ad-hoc role comparisons |
+| **Target roles, scoring & evaluation**| `strategy/target-roles.md` | Old role wish lists |
+| **Application pipeline & tracker** | `strategy/job-tracker.md` | Scattered spreadsheets |
+| **Job platforms & application channels**| `strategy/job-platforms.md` | Bookmarks, notes |
 | **Pending tasks & actions** | `strategy/master-action-tracker.md` | Scattered TODO lists |
 | **This week's focus** | `strategy/weekly-tracker.md` | Old weekly plans |
-| **Digital presence strategy** | `strategy/digital-presence-plan.md` | Scattered platform notes |
-| **Learning roadmap** | `strategy/study-plan.md` | Scattered study notes |
-| **Network / contacts** | `strategy/networking.md` | Scattered address books |
+| **Digital presence & content strategy**| `strategy/digital-presence-plan.md` | Scattered platform notes |
+| **Learning roadmap & study sprints** | `strategy/study-plan.md` | Scattered study notes |
+| **Network & contacts** | `strategy/networking.md` | Scattered address books |
 | **Work preferences & life context** | `personal/preferences.yaml` | Assumptions |
 | **Career narrative & pivots** | `personal/career-narrative.md` | Scattered cover letters |
 | **Private reflections & notes** | `personal/reflections.md` | Scattered journals |
 | **Career mission** | `VISION.md` | Old plans, brainstorm docs |
 | **Form-fill answers** | `assets/form-fill-cheatsheet.md` | Memory, old applications |
 | **Session context & handoff** | `ops/session-handoff.md` | Old conversation transcripts |
+| **Operations, maintenance & audit** | `ops/guide.md` | Ad-hoc maintenance notes |
 | **Sub-project registry** | `VISION.md` (Sub-Projects section) | Scattered project folders |
 
 ---
