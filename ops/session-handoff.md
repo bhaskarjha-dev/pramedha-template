@@ -26,6 +26,7 @@ Implemented all 13 verified improvements from the deep falsification audit and c
 - **Identity-Master Parity Expansion (`.pramedha/validate.py`):** Expanded `check_identity_master_parity()` in `validate.py` to check parity for `identity/projects.yaml` against `master.yaml['projects']` and `identity/credentials.yaml` (education) against `master.yaml['education']`, guiding the user to run `sync.py`.
 - **Schema Version Tracking & CI Mode (`config.yaml`, `.pramedha/validate.py`):** Added `schema_version: "0.1.0"` to `config.yaml` with validator integrity checks against `.pramedha/manifest.yaml`. Added `--json` flag to `validate.py` producing clean, machine-readable validation reports for CI pipelines.
 - **Intake Buffer & Docs Synchronization (`data-corpus/inbox/`, `ops/`, `GETTING_STARTED.md`):** Created `data-corpus/inbox/.gitkeep` as a zero-friction drop zone for unorganized files. Added `personal/career-narrative.md` and `personal/reflections.md` to `ops/authority-map.md`. Added `strategy/weekly-tracker.md` to `ops/guide.md` and `ops/prompts.md` Prompt #5. Added Prompt #17 ("Add Speaking Engagement / Hackathon Win") to `ops/prompts.md`. Added Career Changer and Form-Fill cheatsheet callouts to `GETTING_STARTED.md`.
+- **Repository Pruning & Zero-Bloat Streamlining:** Consolidated `strategy/job-search/salary.md` negotiation scripts into `strategy/financial.md` and pruned redundant/orphaned files (`strategy/role-deep-dives.md`, `ops/conversation-context-archive.md`, `CLAUDE.md`, orphaned `ops/templates/` folder, and 5 redundant `.gitkeep` files in `data-corpus/`). Reduced file count from 113 to 100 purposeful files with zero lost content and 100% clean validation.
 
 ### Key Decisions
 | Decision | Rationale | Affects |
@@ -33,6 +34,8 @@ Implemented all 13 verified improvements from the deep falsification audit and c
 | Shared `_yaml_utils.py` module | Eliminates code duplication across `assemble.py` and `sync.py` while ensuring identical string and order representer behavior | `resume/_yaml_utils.py`, `assemble.py`, `sync.py` |
 | Keyed achievements bridge | Unifies external recognition (awards, certs, hackathons) into master bullet pool so variants can pick specific achievements | `resume/sync.py`, `resume/master.yaml` |
 | Non-failing archived notice in assembler | Variants should be allowed to deliberately select archived roles for niche CVs without breaking build validation | `resume/assemble.py` |
+| Consolidate salary strategy into financial.md | Unifies private compensation figures and external negotiation scripts into a single authoritative file | `strategy/financial.md`, `strategy/job-search/salary.md` |
+| Prune orphaned ops/templates & redundant gitkeeps | Eliminates template duplication and dead weight while keeping canonical journal templates intact | `ops/templates/`, `data-corpus/` |
 | Project and education parity validation | Extends identity-as-single-source-of-truth guarantee from employers to all major career sections | `.pramedha/validate.py` |
 | Unsorted intake folder (`data-corpus/inbox/`) | Lowers onboarding friction so users can dump raw files immediately without worrying about taxonomy | `data-corpus/inbox/` |
 

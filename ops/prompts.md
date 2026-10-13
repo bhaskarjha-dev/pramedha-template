@@ -241,7 +241,7 @@ CONTEXT: Read:
 - identity/skills.yaml (my skill levels)
 - assets/star-stories.md (behavioral stories)
 - assets/questions-to-ask.md (questions for interviewer)
-- strategy/role-deep-dives.md (if this role has been analyzed)
+- strategy/target-roles.md (target role requirements and alignment)
 
 EXECUTE:
 1. Identify top 5 things this interviewer will probe

@@ -54,15 +54,23 @@
 
 ---
 
-## Market Research (link to job-search/salary.md for detail)
+## Market Research
 
 | Role | YoE Band | P25 | P50 (Median) | P75 | Source |
 |------|:--------:|:---:|:------------:|:---:|--------|
 | | | | | | Levels.fyi / Glassdoor / AmbitionBox |
 
+### Recommended Sources
+- Levels.fyi, Glassdoor, AmbitionBox (India)
+- Blind, TeamBlind (peer-verified compensation packages)
+- LinkedIn Salary Insights
+- Hacker News "Who's Hiring" monthly threads
+
 ---
 
-## Negotiation Rules
+## Negotiation Rules & Scripts
+
+### Rules
 1. Never disclose current compensation / CTC to recruiters
 2. State expectations as a range, not a single number
 3. Research market rates before any negotiation
@@ -70,3 +78,14 @@
 5. Get the offer in writing before accepting verbally
 6. Negotiate after the offer, not during interviews
 7. If they can't meet salary, negotiate: title, equity, signing bonus, review timeline, WFH
+
+### Ready Scripts
+
+**When asked "What's your current salary?":**
+> "I'd prefer to focus on the value I bring to this role. Based on my research and the responsibilities of this position, the market range is [range]. I'm targeting [your target]."
+
+**When given a lowball offer:**
+> "Thank you for the offer. I'm very excited about the team and the opportunity. Based on my track record, technical depth, and current market benchmarks, I was expecting compensation in the range of [your target]. Is there flexibility in the base salary or equity to bridge this gap?"
+
+**When asked for expected salary early in the process:**
+> "Based on my market research and the scope of this role, I'm targeting [range]. I'm open to discussing the full compensation package including bonus, equity, and benefits once we determine there's a strong mutual fit."

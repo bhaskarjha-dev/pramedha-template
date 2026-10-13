@@ -18,7 +18,6 @@
 | "How should I build my brand?" | [content-plan.md](content-plan.md) |
 | "What are the risks?" | [risk-register.md](risk-register.md) |
 | "How do I compare offers?" | [offer-comparison.md](offer-comparison.md) |
-| "Tell me about a specific role" | [role-deep-dives.md](role-deep-dives.md) |
 | "Who do I know?" | [networking.md](networking.md) ⚠️ Private |
 | "How's my week going?" | [weekly-tracker.md](weekly-tracker.md) |
 
@@ -30,7 +29,7 @@
 |---------|------|
 | "Where should I apply?" | [job-search/platforms.md](job-search/platforms.md) |
 | "Track my applications" | [job-search/tracker.md](job-search/tracker.md) |
-| "What should I pay?" | [job-search/salary.md](job-search/salary.md) ⚠️ Private |
+| "What's my target compensation & market rates?" | [financial.md](financial.md) ⚠️ Private |
 | "How to reach out?" | [job-search/outreach.md](job-search/outreach.md) |
 | "Research a company" | [company-research/](company-research/) |
 

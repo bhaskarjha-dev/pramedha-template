@@ -27,10 +27,10 @@ Every file in this template falls into one of these categories:
 | **Identity (truth)** | ✅ From data-corpus | experience.yaml, skills.yaml, credentials.yaml, projects.yaml, identity.yaml, volunteering.yaml, speaking-and-community.yaml, references.yaml, claims-and-evidence.md, professional-summary.md |
 | **Resume (generated)** | ✅ From identity | master.yaml, design.yaml, variants/*.yaml |
 | **Assets (generated)** | ✅ From identity | star-stories.md, cover-letters/*.md, linkedin-pack.md, platform-copy.md, github-readme.md, questions-to-ask.md, form-fill-cheatsheet.md, testimonials.md, project-briefs/*.md, interview-prep/technical.md, interview-prep/behavioral.md |
-| **Strategy (needs user input)** | ⚠️ Draft from context | target-roles.md, role-analysis.md (optional), study-plan.md, master-action-tracker.md, digital-presence-plan.md, financial.md, content-plan.md, risk-register.md, networking.md (tiers/targets), role-deep-dives.md |
+| **Strategy (needs user input)** | ⚠️ Draft from context | target-roles.md, role-analysis.md (optional), study-plan.md, master-action-tracker.md, digital-presence-plan.md, financial.md, content-plan.md, risk-register.md, networking.md (tiers/targets) |
 | **Personal (needs user input)** | ⚠️ Draft from text/ | about-me.md, career-narrative.md, life-goals.md, preferences.yaml, reflections.md |
 | **Journal (real-time only)** | ❌ User fills over time | wins.md, learning-log.md, feedback.md, work-log/*.md |
-| **Ops (don't fill)** | ❌ System files | guide.md, authority-map.md, prompts.md, audit-checklist.md, tooling.md, templates/*.md |
+| **Ops (don't fill)** | ❌ System files | guide.md, authority-map.md, prompts.md, audit-checklist.md, tooling.md |
 | **Config** | ⚠️ User fills basics, AI enriches | config.yaml, VISION.md |
 
 ---
@@ -310,10 +310,7 @@ Report:
 - Claims verified vs. unverified
 - Contradictions found
 - Items needing user input
-- Update `ops/session-handoff.md` with session summary
-- **Fill `ops/conversation-context-archive.md`** — this is the one-time founding
-  document. Capture: what phases happened, key user decisions discovered,
-  data gaps resolved, contradictions found, and artifacts created
+- Update `ops/session-handoff.md` with complete session summary (phases executed, key user decisions discovered, data gaps resolved, contradictions found, and artifacts created)
 
 ---
 

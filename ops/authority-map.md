@@ -39,7 +39,6 @@
 | **Career mission** | `VISION.md` | Old plans, brainstorm docs |
 | **Form-fill answers** | `assets/form-fill-cheatsheet.md` | Memory, old applications |
 | **Session context & handoff** | `ops/session-handoff.md` | Old conversation transcripts |
-| **Founding session context** | `ops/conversation-context-archive.md` | Old brainstorm docs, scattered notes |
 | **Sub-project registry** | `VISION.md` (Sub-Projects section) | Scattered project folders |
 
 ---

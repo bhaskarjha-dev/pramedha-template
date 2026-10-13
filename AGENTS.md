@@ -92,7 +92,6 @@ Read `ops/guide.md` — it contains event→file mapping:
 | Speaking, hackathons, events? | `identity/speaking-and-community.yaml` |
 | What actions are pending? | `strategy/master-action-tracker.md` |
 | Previous session context? | `ops/session-handoff.md` |
-| How was this repo created? | `ops/conversation-context-archive.md` |
 | Sub-projects (websites, etc.)? | `VISION.md` (Sub-Projects section) |
 | How to maintain this repo? | `ops/guide.md` |
 | Complete field-by-field schema? | `.pramedha/schema-reference.md` |
