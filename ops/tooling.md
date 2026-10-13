@@ -9,11 +9,11 @@
 
 | Tool | Purpose | Status |
 |------|---------|:------:|
-| **Git** | Version control for all career data | ✅ Required |
-| **RenderCV** | Resume rendering from YAML → PDF | ✅ Required |
+| **Text Editor / IDE** | Primary editor for YAML/MD files | ✅ Required |
+| **Git** | Version control for all career data | 🟢 Recommended |
+| **Python 3.10+ & PyYAML** | Automated cascade assembly & validation | 🟡 Optional Automation |
 | **assemble.py** | Resume cascade engine (master → variants) | ✅ Included |
-| **VS Code / Editor** | Primary editor for YAML/MD files | ✅ Required |
-| **Python 3.10+** | Running assemble.py and validate.py | ✅ Required |
+| **RenderCV** | Resume rendering from YAML → PDF | 🟡 Optional Automation |
 
 ---
 

@@ -54,3 +54,6 @@ internal:
 #     url: ""
 #     description: ""             # One-line summary
 #     platform: ""                # linkedin | github | medium | personal_site
+
+# ─── Metadata & Maintenance ─────────────────────────────────────────────────
+last_updated: ""                  # YYYY-MM-DD — updated during quarterly audit

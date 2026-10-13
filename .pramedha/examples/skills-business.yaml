@@ -1,0 +1,59 @@
+# ============================================================================
+# EXAMPLE: Business, Product & Management Skill Matrix
+# ============================================================================
+# Use this structure if your profession is business, product, finance, or operations.
+# Copy or adapt relevant categories into identity/skills.yaml.
+# ============================================================================
+
+product_management:
+  - name: "Product Strategy & Roadmapping"
+    level: "expert"
+    years: 5
+    evidence: "Led 3 zero-to-one B2B SaaS launches; managed quarterly OKR cycles"
+    verification: "✅ VERIFIED"
+  - name: "User Research & Customer Discovery"
+    level: "advanced"
+    years: 4
+    evidence: "Conducted 120+ customer interviews across enterprise cohorts"
+    verification: "✅ VERIFIED"
+  - name: "A/B Testing & Experimentation"
+    level: "advanced"
+    years: 3
+    evidence: "Ran 40+ growth experiments with Amplitude and LaunchDarkly"
+    verification: "✅ VERIFIED"
+
+strategy_and_finance:
+  - name: "Financial Modeling & Unit Economics"
+    level: "advanced"
+    years: 4
+    evidence: "Built 3-year DCF models and cohort LTV/CAC analyses"
+    verification: "✅ VERIFIED"
+  - name: "Pricing & Packaging"
+    level: "intermediate"
+    years: 2
+    evidence: "Redesigned tier structure increasing ACV by 22%"
+    verification: "⚠️ ESTIMATED"
+
+operations_and_analytics:
+  - name: "SQL & Data Analytics"
+    level: "advanced"
+    years: 4
+    evidence: "Authored self-serve dashboards in Looker & Metabase"
+    verification: "✅ VERIFIED"
+  - name: "Cross-Functional Leadership"
+    level: "expert"
+    years: 6
+    evidence: "Managed squads across engineering, design, and product marketing"
+    verification: "✅ VERIFIED"
+
+tools:
+  - name: "JIRA / Linear"
+    level: "expert"
+    years: 5
+    evidence: "Sprint planning and backlog grooming lead"
+    verification: "✅ VERIFIED"
+  - name: "Mixpanel / Amplitude"
+    level: "advanced"
+    years: 4
+    evidence: "Funnel analysis and retention cohort modeling"
+    verification: "✅ VERIFIED"

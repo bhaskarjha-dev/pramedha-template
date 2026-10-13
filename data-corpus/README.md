@@ -6,18 +6,20 @@
 
 ---
 
-## The 5-Folder System
+## The 7-Folder System
 
 Drop files into the folder that fits. Don't overthink it — wrong folder is
 better than not captured at all.
 
 ```
 data-corpus/
-├── resumes/      ← Every resume/CV version you've ever made
-├── documents/    ← Certificates, letters, official paperwork
-├── exports/      ← Platform data exports (LinkedIn, GitHub, etc.)
-├── text/         ← Brain dumps, notes, plans, descriptions
-└── media/        ← Screenshots, photos, recordings, demos
+├── resumes/      ← Every resume/CV version you've ever made (PDF, Word, LaTeX)
+├── documents/    ← Certificates, degrees, reviews, offer letters, official papers
+├── exports/      ← Generic platform data exports (Naukri, Indeed, Kaggle, etc.)
+├── linkedin/     ← LinkedIn profile archive and data export files
+├── github/       ← GitHub repositories archive and commit metrics
+├── text/         ← Brain dumps, notes, transition plans, raw descriptions
+└── media/        ← Screenshots of metrics, slides, photos, demo recordings
 ```
 
 ---

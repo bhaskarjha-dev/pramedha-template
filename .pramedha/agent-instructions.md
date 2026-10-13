@@ -55,7 +55,7 @@ Read ALL files in `data-corpus/` subdirectories:
 
 ---
 
-### Phase B: Identity Layer (Steps 2-9) — The Source of Truth
+### Phase B: Identity Layer (Steps 2-10) — The Source of Truth
 
 #### Step 2: Fill identity/identity.yaml
 - Copy name/email from config.yaml
@@ -154,7 +154,7 @@ This is the most important file. For each employer:
 
 ---
 
-### Phase D: Assets Layer (Steps 14-20) — Generated From Identity + Experience
+### Phase D: Assets Layer (Steps 14-21) — Generated From Identity + Experience
 
 #### Step 14: Generate assets/star-stories.md
 - Extract 5-8 stories from experience.yaml bullets
@@ -175,7 +175,7 @@ This is the most important file. For each employer:
 - **Mark ⚠️ PRIVATE** — this file goes in .gitignore
 
 #### Step 17: Generate assets/linkedin-pack.md
-- Headline: 120 chars, keyword-rich
+- Headline: max 220 chars, keyword-rich
 - About section: 3 variants (narrative, technical, leadership)
 - Featured section: top 3-5 items from projects.yaml featured
 - Experience descriptions: adapted from experience.yaml bullets
@@ -194,7 +194,7 @@ This is the most important file. For each employer:
 #### Step 20: Generate assets/platform-copy.md
 - Email signature (4-5 lines)
 - GitHub bio (160 char max)
-- LinkedIn headline (120 char max, 2-3 options)
+- LinkedIn headline (220 char max, 2-3 options)
 - Twitter/X bio (160 char max)
 - Speaker bio (1 paragraph, ~100 words)
 - Conference bio (2 paragraphs, ~200 words)

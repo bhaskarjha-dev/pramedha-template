@@ -90,3 +90,14 @@ programming:
 #   - name: ""
 #     level: ""
 #     evidence: ""
+
+# ─── Non-Tech & Cross-Domain Examples ────────────────────────────────────────
+# You are NOT limited to programming categories. See .pramedha/examples/ for
+# ready-to-use skill categories tailored to your profession:
+#   - skills-business.yaml  (strategy, finance, product_management, operations)
+#   - skills-medical.yaml   (clinical_skills, diagnostic_procedures, EMR_systems)
+#   - skills-creative.yaml  (design_tools, creative_direction, motion_and_video)
+#   - skills-academic.yaml  (research_methods, grant_writing, quantitative_analysis)
+
+# ─── Metadata & Maintenance ─────────────────────────────────────────────────
+last_updated: ""                  # YYYY-MM-DD — updated during quarterly audit

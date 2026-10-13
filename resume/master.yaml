@@ -96,3 +96,6 @@ technologies: []
   #   details: "Python, JavaScript, SQL"
   # - label: "Frameworks"
   #   details: "FastAPI, React, LangChain"
+
+# ─── Metadata & Maintenance ─────────────────────────────────────────────────
+last_updated: ""                  # YYYY-MM-DD — updated during quarterly audit

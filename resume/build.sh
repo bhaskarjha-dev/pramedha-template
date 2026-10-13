@@ -11,7 +11,16 @@ echo "=== Resume Cascade Build ==="
 # Step 1: Assemble
 echo ""
 echo "[1/2] Assembling variants..."
-python3 "$SCRIPT_DIR/assemble.py"
+if command -v python3 >/dev/null 2>&1; then
+    python3 "$SCRIPT_DIR/assemble.py"
+elif command -v python >/dev/null 2>&1; then
+    python "$SCRIPT_DIR/assemble.py"
+elif command -v uv >/dev/null 2>&1; then
+    uv run --with pyyaml python "$SCRIPT_DIR/assemble.py"
+else
+    echo "Python not found. Please install Python 3.10+." >&2
+    exit 1
+fi
 
 # Step 2: Render
 echo ""
@@ -19,10 +28,30 @@ echo "[2/2] Rendering PDFs..."
 OUTPUT_DIR="$SCRIPT_DIR/output"
 mkdir -p "$OUTPUT_DIR"
 
-for yaml_file in "$SCRIPT_DIR/generated/"*.yaml; do
+yaml_files=("$SCRIPT_DIR/generated/"*.yaml)
+if [ ! -e "${yaml_files[0]}" ]; then
+    echo "  No generated YAML files found in $SCRIPT_DIR/generated/"
+    echo "  Create a variant file in resume/variants/ first (e.g. copy _template.yaml to A_Role.yaml)."
+    echo ""
+    echo "=== Build Complete ==="
+    exit 0
+fi
+
+if ! command -v rendercv >/dev/null 2>&1; then
+    echo "  RenderCV CLI not found in PATH."
+    echo "  Install with: pip install rendercv"
+    echo "  Generated YAMLs are ready in: $SCRIPT_DIR/generated/"
+    echo ""
+    echo "=== Build Complete ==="
+    exit 0
+fi
+
+cd "$SCRIPT_DIR"
+for yaml_file in "${yaml_files[@]}"; do
+    [ -f "$yaml_file" ] || continue
     name=$(basename "$yaml_file" .yaml)
     echo "  Rendering $name..."
-    if rendercv render "$yaml_file" --output-folder-name "$OUTPUT_DIR" 2>&1; then
+    if rendercv render "$yaml_file" --output-folder-name "output" 2>&1; then
         echo "  ✅ $name"
     else
         echo "  ❌ Failed: $name"

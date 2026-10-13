@@ -16,13 +16,21 @@ user:
   headline: ""                # One-line professional headline
                               # e.g., "Senior Backend Engineer | GenAI Specialist"
 
-# ─── Profession Type ────────────────────────────────────────────────────────
+# ─── Profession & Career Type ────────────────────────────────────────────────
 # This shapes how AI fills your template — which fields to prioritize,
 # what resume format to suggest, which portfolio style to recommend.
 #
-# Options: engineering | creative | medical | business | academic
-#          legal | freelance | executive | other
+# profession_type options: engineering | creative | medical | business | academic
+#                          legal | freelance | executive | other
 profession_type: ""
+
+# career_type options: employed | freelance | portfolio | academic | military | government | student
+# Shapes experience hierarchy (e.g. employers vs clients vs research grants).
+career_type: "employed"
+
+# Target role level (non-sensitive reference for AI positioning):
+# entry | mid | senior | lead | staff | executive
+target_role_level: ""
 
 # ─── Location ────────────────────────────────────────────────────────────────
 location:
@@ -43,12 +51,19 @@ profiles:
   # scholar: ""               # For academics (Google Scholar)
   # orcid: ""                 # For researchers
 
-# ─── Locale & Preferences ───────────────────────────────────────────────────
-locale: "en"                  # Language code (en, hi, de, ja, etc.)
+# ─── Locale, Dates & Internationalization ───────────────────────────────────
+locale: "en"                  # Language code (en, hi, de, ja, fr, etc.)
+                              # All files are UTF-8 encoded. Non-Latin scripts (Devanagari, CJK, Arabic)
+                              # are fully supported. Note: character limits (e.g. LinkedIn 220 chars)
+                              # are enforced in Unicode characters.
 currency: "INR"               # ISO 4217 currency code for salary fields
 date_format: "YYYY-MM"        # How dates appear in YAML files
 
-# ─── Career Context (helps AI give better advice) ───────────────────────────
-# career_stage and notice_period live in personal/preferences.yaml (private).
-# Keep salary target here as a quick reference for resume/variant generation.
-target_salary_range: ""       # e.g., "₹30-50 LPA" or "$150-200K"
+# ─── Metadata & Maintenance ─────────────────────────────────────────────────
+last_updated: ""              # YYYY-MM-DD — updated during quarterly audit
+
+# ─── Career & Financial Context (Privacy Notice) ─────────────────────────────
+# ⚠️ PRIVACY: Specific financial numbers (current salary, target range, floor)
+# and personal constraints live in personal/preferences.yaml (private) and
+# strategy/financial.md (private). Keep sensitive compensation figures there
+# so this config file remains safe if shared.

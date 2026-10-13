@@ -33,7 +33,7 @@
 
 ---
 
-## LinkedIn Headline (120 char max)
+## LinkedIn Headline (220 char max)
 
 <!-- Write 2-3 options. Pick the one that best covers your target roles. -->
 

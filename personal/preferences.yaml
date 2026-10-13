@@ -46,7 +46,8 @@ self_identified_strengths: []
 # These shape how AI calibrates advice. DEEPLY private.
 
 # Where are you in your career journey?
-career_stage: ""                  # early_career | mid_career | senior | career_change | re_entry | sabbatical
+# Valid options: student | early_career | mid_career | senior | executive | career_changer | returning | sabbatical | freelance
+career_stage: ""
 
 # How much risk can you take right now?
 risk_tolerance: ""                # conservative | moderate | aggressive
@@ -54,8 +55,11 @@ risk_tolerance: ""                # conservative | moderate | aggressive
 # How much time can you dedicate to the career transition?
 time_availability: ""             # full_time_search | evenings_weekends | limited | unemployed
 
-# How long can you search without income? ⚠️ NEVER SHARE
-financial_runway_months: 0
+# ─── Financial & Compensation Targets (⚠️ DEEPLY PRIVATE) ───────────
+target_salary_range: ""           # e.g., "₹30-50 LPA" or "$150-200K"
+salary_floor: ""                  # Minimum compensation floor (walk-away number)
+current_salary: ""                # Current or last drawn total compensation
+financial_runway_months: 0        # How long can you search without income? ⚠️ NEVER SHARE
 
 # Location constraints that shape job search
 location_constraints: []
@@ -65,3 +69,6 @@ location_constraints: []
 
 # Notice period at current employer
 notice_period_days: 0             # 0 = immediate, 30, 60, 90
+
+# ─── Metadata & Maintenance ─────────────────────────────────────────────────
+last_updated: ""                  # YYYY-MM-DD

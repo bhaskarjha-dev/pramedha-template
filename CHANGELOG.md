@@ -2,6 +2,35 @@
 
 All notable changes to the Pramedha Career Template.
 
+## [2.1.0] — 2026-10-13
+
+### Major: System-Wide Audit, Resilience & Multi-Profession Generalization
+
+Comprehensive audit of all 67+ repository files resolved 34 findings across code, documentation, schemas, and automation.
+
+### Fixed — Code & Cascade Engine
+- **`resume/assemble.py`** — Implemented automated header merge from `config.yaml` into empty fields in `resume/master.yaml`, fully realizing the single-source-of-truth architecture. Fixed crash when validating empty template files (`_template.yaml`). Added UTF-8 console reconfigure preventing Windows `charmap` crashes on emojis. Filtered out `_` template files from automatic build discovery.
+- **`resume/build.ps1` & `resume/build.sh`** — Made build scripts resilient to Python environments, missing RenderCV installations, and fixed output folder arguments.
+- **`.pramedha/validate.py`** — Added validation for all 10 identity files (`speaking-and-community.yaml`, `volunteering.yaml`, `references.yaml`). Refined fill status logic to accurately differentiate real data from template scaffolding (clean clones report 0% instead of false 58%). Added 90-day file freshness detection (`check_freshness`).
+
+### Fixed — Documentation & Cross-Reference Harmony
+- **`ops/prompts.md`** — Corrected Prompt #1 protocol reference from obsolete "12-step" to the actual 7-phase, 33-step protocol.
+- **`.pramedha/agent-instructions.md`** — Fixed Phase B header from "Steps 2-9" to "Steps 2-10" and Phase D from "Steps 14-20" to "Steps 14-21". Corrected LinkedIn headline limit to 220 characters.
+- **`assets/platform-copy.md`** — Updated LinkedIn headline character limit to modern 220 characters (was 120).
+- **`ops/session-handoff.md`** — Standardized session log order to newest-at-the-top, resolving contradiction between append rule and prepend template instruction.
+- **`.pramedha/manifest.yaml`** — Completed file registry with 17+ previously omitted files across strategy, assets, personal, journal, and ops layers.
+
+### Added — Privacy & Schema Enhancements
+- **Privacy Architecture** — Moved sensitive financial figures (`target_salary_range`, `salary_floor`, `current_salary`) from public `config.yaml` into private `personal/preferences.yaml`.
+- **`career_type` Support** — Added `career_type` (`employed | freelance | portfolio | academic | military | government | student`) in `config.yaml` with non-linear career hierarchy guidance in `identity/experience.yaml`.
+- **Career Gap Handling** — Added `career_breaks: []` schema to `identity/experience.yaml` with verification tagging for sabbaticals, parental leave, caregiving, health, and transitions.
+- **Enum Reconciliations** — Added `conversational` to `language_fluency` and unified `career_stage` options in `.pramedha/schema-reference.md` and `personal/preferences.yaml`.
+- **`last_updated` Timestamp** — Added standard maintenance metadata field across YAML files.
+- **Multi-Profession Examples** — Added 4 domain-specific skill matrix examples in `.pramedha/examples/`: `skills-business.yaml`, `skills-medical.yaml`, `skills-creative.yaml`, and `skills-academic.yaml`.
+- **Evidence Locker Documentation** — Added instructional `README.md` files to all `data-corpus/` subdirectories (`resumes/`, `documents/`, `exports/`, `text/`, `media/`).
+- **`CONTRIBUTING.md`** — Added open-source contributor guide and pull request standards.
+- **Minimal Viable Career System** — Added "Just 3 Files" fast-track path in `GETTING_STARTED.md` to eliminate cognitive barrier for newcomers.
+
 ## [2.0.0] — 2026-10-13
 
 ### Major: Dogfooding-Driven Template Upgrade

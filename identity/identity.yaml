@@ -45,3 +45,6 @@ years_in_current_role: 0
 professional_headline: ""       # e.g., "Senior Backend Engineer specializing in
                                 # distributed systems and GenAI, with 5 years
                                 # building high-scale platforms at Fortune 500s"
+
+# ─── Metadata & Maintenance ─────────────────────────────────────────────────
+last_updated: ""                # YYYY-MM-DD — updated during quarterly audit

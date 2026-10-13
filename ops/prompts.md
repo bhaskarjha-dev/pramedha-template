@@ -40,17 +40,16 @@ CONTEXT: Read these files FIRST:
 
 Then scan ALL files in data-corpus/ (resumes, documents, exports, text, media).
 
-EXECUTE: Follow the 12-step protocol in agent-instructions.md exactly:
-1. Extract structured facts from all raw data
-2. Cross-reference across sources for accuracy
-3. Fill identity/*.yaml with verified, structured data
-4. Tag EVERY claim with ✅/⚠️/❌
-5. Generate resume/master.yaml with keyed bullets
-6. Create resume variants for my target roles
-7. Fill claims-and-evidence.md with contradictions
-8. Fill personal/ and strategy/ where data exists
+EXECUTE: Follow the 7-phase, 33-step protocol in agent-instructions.md exactly:
+- Phase A (Steps 0-1): Scan data-corpus/ and build complete mental model
+- Phase B (Steps 2-10): Fill all 10 identity/ files (verified facts + claims + professional summary)
+- Phase C (Steps 11-13): Generate resume master + variants and validate
+- Phase D (Steps 14-21): Generate outward assets (STAR stories, cover letters, LinkedIn, bios, interview prep)
+- Phase E (Steps 22-28): Draft strategy layer (target roles, study plan, action tracker, digital presence)
+- Phase F (Steps 29-31): Draft personal context (about-me, life-goals, preferences)
+- Phase G (Steps 32-33): Finalize VISION.md and validate entire repository
 
-OUTPUT: Commit after each major file with clear messages.
+OUTPUT: Commit after each phase with clear messages.
 Report: files filled, claims count, contradictions found, gaps remaining.
 ```
 

@@ -39,3 +39,6 @@ mentoring:
   #   mentees_count: 0
   #   impact: ""                   # e.g., "3 mentees placed at FAANG"
   #   verification: ""
+
+# ─── Metadata & Maintenance ─────────────────────────────────────────────────
+last_updated: ""                  # YYYY-MM-DD — updated during quarterly audit

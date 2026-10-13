@@ -79,3 +79,27 @@ experience:
   #         - name: ""
   #           bullets:
   #             - ""
+
+# ─── Career Breaks / Transitions (Optional) ─────────────────────────────────
+# Documenting significant career pauses (parental leave, caregiving, health,
+# sabbatical, full-time study, job search) prevents resume gaps from confusing ATS
+# and provides AI the context to articulate purposeful transition narratives.
+career_breaks: []
+  # - type: "sabbatical"           # sabbatical | caregiving | parental_leave | education | health | relocation | career_transition
+  #   start_date: "2024-01"
+  #   end_date: "2024-06"
+  #   title: "Professional Sabbatical & Independent Study"
+  #   description: "Intensive independent study in GenAI system architecture; completed 2 production open-source tools"
+  #   skills_acquired: ["PyTorch", "vLLM", "RAG Architecture"]
+  #   verification: "✅ VERIFIED — GitHub public repositories"
+
+# ─── Non-Linear / Freelance / Academic Guidance ──────────────────────────────
+# For Freelancers / Agency / Portfolio careers:
+#   Set `company` to your brand or "Independent Consulting / Self-Employed".
+#   Each client engagement is a `project`, with `client`, `deliverables`, and metrics.
+# For Academics / Researchers:
+#   Set `company` to University/Institute, `projects` to research labs/grants,
+#   and `deliverables` to papers/trials/theses.
+
+# ─── Metadata & Maintenance ─────────────────────────────────────────────────
+last_updated: ""                  # YYYY-MM-DD — updated during quarterly audit

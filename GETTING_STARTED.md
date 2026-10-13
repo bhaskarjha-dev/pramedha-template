@@ -25,6 +25,19 @@ git push -u origin main
 
 ---
 
+## ⚡ Fast Track: Minimal Viable Career System (Just 3 Files)
+
+> **Feeling intimidated by 60+ files? You don't need to fill everything!**
+> Most career changers and job seekers only need **3 core files** to get 80% of the value:
+>
+> 1. [config.yaml](file:///d:/dev/pro/pramedha-template/config.yaml) — Who you are (name, contact, profession type)
+> 2. [identity/experience.yaml](file:///d:/dev/pro/pramedha-template/identity/experience.yaml) — What you've done (career facts and measured achievements)
+> 3. [resume/master.yaml](file:///d:/dev/pro/pramedha-template/resume/master.yaml) — Your resume bullet pool
+>
+> Once these 3 files are filled, you already have an uninflated, single-source career engine. You can copy bullets directly into any resume builder, or let Python assemble them automatically. Every other file (strategy, assets, journal) can be adopted gradually when you need it.
+
+---
+
 ## Step 1: Fill `config.yaml` (3 min)
 
 Open `config.yaml` and fill in your basic identity:

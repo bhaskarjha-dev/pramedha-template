@@ -170,7 +170,68 @@ def resolve_project(master_projects: dict, project_ref, variant_name: str) -> di
     return entry
 
 
-def assemble_variant(master: dict, design: dict, variant: dict) -> dict:
+def merge_header_from_config(header: dict, config: dict) -> dict:
+    """
+    Merge contact info and profiles from config.yaml into empty master header fields.
+    Master values always take precedence if already non-empty.
+    """
+    if not config:
+        return header
+
+    user = config.get('user', {}) or {}
+    loc = config.get('location', {}) or {}
+    profiles = config.get('profiles', {}) or {}
+
+    # Name
+    if not header.get('name') and user.get('name'):
+        header['name'] = user['name']
+
+    # Email
+    if not header.get('email') and user.get('email'):
+        header['email'] = user['email']
+
+    # Phone
+    if not header.get('phone') and user.get('phone'):
+        header['phone'] = user['phone']
+
+    # Website / portfolio
+    if not header.get('website'):
+        website = user.get('website') or profiles.get('portfolio') or ''
+        if website:
+            header['website'] = website
+
+    # Location (e.g. "Bangalore, Karnataka, IN" or "Bangalore, IN")
+    if not header.get('location'):
+        loc_parts = [p for p in [loc.get('city'), loc.get('region'), loc.get('country_code')] if p]
+        if loc_parts:
+            header['location'] = ", ".join(loc_parts)
+
+    # Social networks (RenderCV format: list of dicts with network and username)
+    social_networks = header.get('social_networks') or []
+    if not social_networks and profiles:
+        new_networks = []
+        if profiles.get('linkedin'):
+            url = str(profiles['linkedin']).strip()
+            if url:
+                username = url.rstrip('/').split('/')[-1] if '/' in url else url
+                new_networks.append({'network': 'LinkedIn', 'username': username})
+        if profiles.get('github'):
+            url = str(profiles['github']).strip()
+            if url:
+                username = url.rstrip('/').split('/')[-1] if '/' in url else url
+                new_networks.append({'network': 'GitHub', 'username': username})
+        if profiles.get('twitter'):
+            url = str(profiles['twitter']).strip()
+            if url:
+                username = url.rstrip('/').split('/')[-1] if '/' in url else url
+                new_networks.append({'network': 'Twitter', 'username': username})
+        if new_networks:
+            header['social_networks'] = new_networks
+
+    return header
+
+
+def assemble_variant(master: dict, design: dict, variant: dict, config: dict = None) -> dict:
     """
     Assemble a complete RenderCV YAML from master data + variant overlay.
     Returns the full dict ready to be dumped as YAML.
@@ -178,18 +239,23 @@ def assemble_variant(master: dict, design: dict, variant: dict) -> dict:
     variant_name = variant.get('variant_name', 'unknown')
 
     # --- Header ---
-    header = copy.deepcopy(master['header'])
+    raw_header = master.get('header', {}) or {}
+    header = copy.deepcopy(raw_header)
+    if config:
+        header = merge_header_from_config(header, config)
 
     # --- Sections ---
     sections = {}
 
     # Summary
-    sections['summary'] = [variant['summary']]
+    if 'summary' in variant and variant['summary']:
+        sections['summary'] = [variant['summary']]
 
     # Experience
     experience_entries = []
-    master_exp = master['experience']
-    for exp_key, bullet_refs in variant['experience'].items():
+    master_exp = master.get('experience', {}) or {}
+    variant_exp = variant.get('experience', {}) or {}
+    for exp_key, bullet_refs in variant_exp.items():
         if exp_key not in master_exp:
             available = list(master_exp.keys())
             raise AssemblyError(
@@ -199,7 +265,7 @@ def assemble_variant(master: dict, design: dict, variant: dict) -> dict:
 
         exp_data = master_exp[exp_key]
         highlights = []
-        for ref in bullet_refs:
+        for ref in (bullet_refs or []):
             text = resolve_bullet(exp_data, exp_key, ref, variant_name)
             highlights.append(text)
 
@@ -215,47 +281,59 @@ def assemble_variant(master: dict, design: dict, variant: dict) -> dict:
         else:
             entry['end_date'] = end_date
 
-        if 'location' in exp_data:
+        if 'location' in exp_data and exp_data['location']:
             entry['location'] = exp_data['location']
 
         entry['highlights'] = highlights
         experience_entries.append(entry)
 
-    sections['experience'] = experience_entries
+    if experience_entries:
+        sections['experience'] = experience_entries
 
     # Projects
     project_entries = []
-    for proj_ref in variant['projects']:
-        entry = resolve_project(master['projects'], proj_ref, variant_name)
+    variant_projects = variant.get('projects', []) or []
+    master_projects = master.get('projects', {}) or {}
+    for proj_ref in variant_projects:
+        entry = resolve_project(master_projects, proj_ref, variant_name)
         project_entries.append(entry)
-    sections['projects'] = project_entries
+    if project_entries:
+        sections['projects'] = project_entries
 
     # Technologies (verbatim from variant)
-    sections['technologies'] = variant['technologies']
+    if 'technologies' in variant and variant['technologies']:
+        sections['technologies'] = variant['technologies']
 
     # Education (from master, shared)
-    sections['education'] = copy.deepcopy(master['education'])
+    if 'education' in master and master['education']:
+        sections['education'] = copy.deepcopy(master['education'])
 
     # Achievements (resolve keys)
     achievement_texts = []
-    master_achievements = master['achievements']
-    for ach_key in variant['achievements']:
+    master_achievements = master.get('achievements', {}) or {}
+    for ach_key in (variant.get('achievements', []) or []):
         if ach_key not in master_achievements:
             available = list(master_achievements.keys())
             raise AssemblyError(
                 f"[{variant_name}] Achievement key '{ach_key}' not found in master.\n"
                 f"  Available: {available}"
             )
-        achievement_texts.append(master_achievements[ach_key]['text'])
-    sections['achievements'] = achievement_texts
+        ach_data = master_achievements[ach_key]
+        if isinstance(ach_data, dict) and 'text' in ach_data:
+            achievement_texts.append(ach_data['text'])
+        else:
+            achievement_texts.append(str(ach_data))
+    if achievement_texts:
+        sections['achievements'] = achievement_texts
 
     # --- Assemble final structure ---
     cv_data = copy.deepcopy(header)
     cv_data['sections'] = sections
 
+    design_data = design.get('design', {}) if design else {}
     result = {
         'cv': cv_data,
-        'design': copy.deepcopy(design['design']),
+        'design': copy.deepcopy(design_data),
     }
 
     return result
@@ -268,55 +346,67 @@ def assemble_variant(master: dict, design: dict, variant: dict) -> dict:
 def validate_variant(master: dict, variant: dict) -> list[str]:
     """Validate a variant overlay against master. Returns list of error messages."""
     errors = []
+    if not variant:
+        return ["Variant file is empty"]
     variant_name = variant.get('variant_name', 'unknown')
 
     # Check experience keys and bullets
-    for exp_key, bullet_refs in variant.get('experience', {}).items():
-        if exp_key not in master.get('experience', {}):
+    variant_exp = variant.get('experience') or {}
+    master_exp = master.get('experience') or {}
+    for exp_key, bullet_refs in variant_exp.items():
+        if exp_key not in master_exp:
             errors.append(f"[{variant_name}] Experience '{exp_key}' not in master")
             continue
-        exp_data = master['experience'][exp_key]
-        for ref in bullet_refs:
+        exp_data = master_exp[exp_key]
+        for ref in (bullet_refs or []):
             try:
                 resolve_bullet(exp_data, exp_key, ref, variant_name)
             except AssemblyError as e:
                 errors.append(str(e))
 
     # Check project keys
-    for proj_ref in variant.get('projects', []):
+    for proj_ref in (variant.get('projects') or []):
         try:
-            resolve_project(master.get('projects', {}), proj_ref, variant_name)
+            resolve_project(master.get('projects') or {}, proj_ref, variant_name)
         except AssemblyError as e:
             errors.append(str(e))
 
     # Check achievement keys
-    for ach_key in variant.get('achievements', []):
-        if ach_key not in master.get('achievements', {}):
+    master_achievements = master.get('achievements') or {}
+    for ach_key in (variant.get('achievements') or []):
+        if ach_key not in master_achievements:
             errors.append(f"[{variant_name}] Achievement '{ach_key}' not in master")
 
     return errors
 
 
 # ============================================================================
-# CLI
+# CLI Driver
 # ============================================================================
 
 def main():
+    # Ensure UTF-8 output on Windows consoles
+    if hasattr(sys.stdout, 'reconfigure'):
+        sys.stdout.reconfigure(encoding='utf-8')
+    if hasattr(sys.stderr, 'reconfigure'):
+        sys.stderr.reconfigure(encoding='utf-8')
+
     parser = argparse.ArgumentParser(description='Resume Cascade Assembler')
     parser.add_argument('--variant', '-v', help='Build only this variant (matches filename prefix, e.g. "A")')
     parser.add_argument('--jd', help='Build from a JD-specific overlay file')
     parser.add_argument('--validate', action='store_true', help='Validate only, no output')
     parser.add_argument('--diff', action='store_true', help='Show what would change vs existing generated files')
+    parser.add_argument('--no-autofill', action='store_true', help='Disable auto-filling header from config.yaml')
     args = parser.parse_args()
 
-    # Resolve paths relative to this script
-    script_dir = Path(__file__).parent
+    # Paths relative to this script
+    script_dir = Path(__file__).resolve().parent
     master_path = script_dir / 'master.yaml'
     design_path = script_dir / 'design.yaml'
     variants_dir = script_dir / 'variants'
     generated_dir = script_dir / 'generated'
 
-    # Load master and design
+    # Validate prerequisites
     if not master_path.exists():
         print(f"ERROR: {master_path} not found", file=sys.stderr)
         sys.exit(1)
@@ -324,8 +414,29 @@ def main():
         print(f"ERROR: {design_path} not found", file=sys.stderr)
         sys.exit(1)
 
-    master = load_yaml(master_path)
-    design = load_yaml(design_path)
+    master = load_yaml(master_path) or {}
+    design = load_yaml(design_path) or {}
+
+    # Read config.yaml for header auto-fill and filenames
+    config_path = script_dir.parent / 'config.yaml'
+    config_data = {}
+    default_name = 'Resume'
+    if config_path.exists():
+        config_data = load_yaml(config_path) or {}
+        user_name = ((config_data.get('user', {}) or {}).get('name', '')) or ''
+        if user_name.strip():
+            default_name = user_name.strip().replace(' ', '_')
+
+    if args.no_autofill:
+        config_for_assembly = None
+    else:
+        config_for_assembly = config_data
+
+    # Check if master.yaml is currently only the template placeholder
+    master_exp = master.get('experience') or {}
+    if list(master_exp.keys()) == ['_example_role_']:
+        print("ℹ️  Note: resume/master.yaml currently contains the '_example_role_' placeholder.")
+        print("   Remember to add your real experience to master.yaml before generating final resumes.\n")
 
     # Determine which overlays to process
     if args.jd:
@@ -340,28 +451,33 @@ def main():
         if not variants_dir.exists():
             print(f"ERROR: {variants_dir} directory not found", file=sys.stderr)
             sys.exit(1)
-        overlay_files = sorted(variants_dir.glob('*.yaml'))
+        all_variants = sorted(variants_dir.glob('*.yaml'))
         if args.variant:
-            overlay_files = [f for f in overlay_files if f.stem.upper().startswith(args.variant.upper())]
+            overlay_files = [f for f in all_variants if f.stem.upper().startswith(args.variant.upper())]
             if not overlay_files:
                 print(f"ERROR: No variant matching '{args.variant}' found in {variants_dir}", file=sys.stderr)
                 sys.exit(1)
-
-    # Read user name from config.yaml once (for default output filenames)
-    config_path = script_dir.parent / 'config.yaml'
-    default_name = 'Resume'
-    if config_path.exists():
-        config_data = load_yaml(config_path)
-        user_name = ((config_data or {}).get('user', {}) or {}).get('name', '')
-        if user_name:
-            default_name = user_name.replace(' ', '_')
+        else:
+            # Exclude template scaffolding files starting with '_'
+            overlay_files = [f for f in all_variants if not f.name.startswith('_')]
+            if not overlay_files:
+                print(
+                    "ℹ️  No active variants found in resume/variants/ (found _template.yaml).\n"
+                    "   To create your first variant, copy resume/variants/_template.yaml:\n"
+                    "     cp resume/variants/_template.yaml resume/variants/A_RoleName.yaml\n"
+                    "   Then edit A_RoleName.yaml with your bullet selections and run assemble.py again."
+                )
+                if args.validate:
+                    print("✅ master.yaml and design.yaml are valid.")
+                    return
+                return
 
     # Process each overlay
     total_errors = 0
     built = 0
 
     for overlay_path in overlay_files:
-        variant = load_yaml(overlay_path)
+        variant = load_yaml(overlay_path) or {}
         variant_name = variant.get('variant_name', overlay_path.stem)
 
         # Validate
@@ -379,7 +495,7 @@ def main():
 
         # Assemble
         try:
-            result = assemble_variant(master, design, variant)
+            result = assemble_variant(master, design, variant, config=config_for_assembly)
         except AssemblyError as e:
             print(f"\n❌ {variant_name} — Assembly error:\n   {e}")
             total_errors += 1

@@ -86,9 +86,11 @@ Fill at your own pace. Each layer adds value independently.
 ```
 pramedha-template/
 │
-├── VISION.md                  ← READ FIRST: career mission & north star
+├── GETTING_STARTED.md         ← READ FIRST: 30-minute setup walkthrough (Fast Track: 3 files)
+├── README.md                  ← System overview & architecture documentation
+├── VISION.md                  ← Career mission & north star
 ├── AGENTS.md                  ← AI agent instructions (universal standard)
-├── GETTING_STARTED.md         ← 30-minute setup walkthrough
+├── CONTRIBUTING.md            ← Open-source contribution guidelines
 ├── config.yaml                ← Your identity + preferences
 │
 ├── data-corpus/               ← Phase 0: Dump raw career data
@@ -238,9 +240,9 @@ They are informational only — removing them has no effect on standalone usage.
 
 ### If you MUST use a public repo
 
-Uncomment the private file exclusions in `.gitignore`:
+Uncomment the private file exclusions in `.gitignore` and tell Git to stop tracking them:
 ```bash
-# In .gitignore, remove the # from these lines:
+# 1. In .gitignore, remove the # from these lines:
 personal/
 data-corpus/documents/
 strategy/financial.md
@@ -248,6 +250,9 @@ strategy/networking.md
 identity/references.yaml
 assets/form-fill-cheatsheet.md
 journal/feedback.md
+
+# 2. Tell Git to stop tracking already-committed private scaffolding files:
+git rm -r --cached personal/ strategy/financial.md strategy/networking.md identity/references.yaml assets/form-fill-cheatsheet.md journal/feedback.md
 ```
 
 ---

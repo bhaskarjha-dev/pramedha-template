@@ -1,0 +1,52 @@
+# ============================================================================
+# EXAMPLE: Creative, Design & Media Skill Matrix
+# ============================================================================
+# Use this structure if your profession is UX/UI design, graphic design, art direction, or media.
+# Copy or adapt relevant categories into identity/skills.yaml.
+# ============================================================================
+
+product_and_ux_design:
+  - name: "Design Systems & Component Libraries"
+    level: "expert"
+    years: 5
+    evidence: "Architected multi-brand Figma token system used by 40+ engineers"
+    verification: "✅ VERIFIED"
+  - name: "Wireframing & Interactive Prototyping"
+    level: "expert"
+    years: 6
+    evidence: "High-fidelity micro-interactions and usability test rigs"
+    verification: "✅ VERIFIED"
+  - name: "Usability Testing & Heuristic Evaluation"
+    level: "advanced"
+    years: 4
+    evidence: "Moderated 80+ user sessions; documented accessibility WCAG AA audits"
+    verification: "✅ VERIFIED"
+
+creative_direction_and_branding:
+  - name: "Brand Identity & Visual Guidelines"
+    level: "advanced"
+    years: 4
+    evidence: "Led rebranding for Series B fintech platform"
+    verification: "✅ VERIFIED"
+  - name: "Typography & Layout"
+    level: "expert"
+    years: 6
+    evidence: "Editorial design and marketing campaign assets"
+    verification: "✅ VERIFIED"
+
+design_tools:
+  - name: "Figma"
+    level: "expert"
+    years: 5
+    evidence: "Plugins, variables, auto-layout mastery; public community templates"
+    verification: "✅ VERIFIED"
+  - name: "Adobe Creative Cloud (Illustrator, Photoshop)"
+    level: "advanced"
+    years: 6
+    evidence: "Vector illustration and asset production"
+    verification: "✅ VERIFIED"
+  - name: "After Effects / Lottie"
+    level: "intermediate"
+    years: 2
+    evidence: "In-app micro-animations and loading states"
+    verification: "✅ VERIFIED"

@@ -1,7 +1,7 @@
 # VISION — Career Mission & North Star
 
-> **Read this FIRST.** This is the "why" behind this repository.
-> Every other file is the "how."
+> **Your Career Mission & North Star.** This is the "why" behind this repository.
+> Every other file is the "how." Follow [GETTING_STARTED.md](file:///d:/dev/pro/pramedha-template/GETTING_STARTED.md) for initial setup.
 
 ---
 

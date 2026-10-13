@@ -1,0 +1,59 @@
+# ============================================================================
+# EXAMPLE: Clinical, Medical & Healthcare Skill Matrix
+# ============================================================================
+# Use this structure if your profession is medical, healthcare, clinical research, or nursing.
+# Copy or adapt relevant categories into identity/skills.yaml.
+# ============================================================================
+
+clinical_care:
+  - name: "Inpatient Patient Management"
+    level: "expert"
+    years: 6
+    evidence: "Attending lead for 28-bed acute medical ward"
+    verification: "✅ VERIFIED"
+  - name: "Emergency Triage & Resuscitation"
+    level: "advanced"
+    years: 5
+    evidence: "ACLS/BLS certified; managed trauma intake"
+    verification: "✅ VERIFIED"
+  - name: "Differential Diagnosis"
+    level: "expert"
+    years: 6
+    evidence: "Clinical case reviews and morbidity rounds lead"
+    verification: "✅ VERIFIED"
+
+procedures_and_protocols:
+  - name: "Central Venous Catheterization"
+    level: "advanced"
+    years: 4
+    evidence: "150+ ultrasound-guided procedures logged"
+    verification: "✅ VERIFIED"
+  - name: "Infection Control Protocols"
+    level: "advanced"
+    years: 5
+    evidence: "Hospital hygiene committee member; reduced CAUTI rate by 18%"
+    verification: "✅ VERIFIED"
+
+health_tech_and_emr:
+  - name: "Epic Systems (EMR)"
+    level: "expert"
+    years: 5
+    evidence: "Super-user certification; led department order-set optimization"
+    verification: "✅ VERIFIED"
+  - name: "Cerner / Oracle Health"
+    level: "intermediate"
+    years: 2
+    evidence: "Used during fellowship residency"
+    verification: "✅ VERIFIED"
+
+research_and_compliance:
+  - name: "Clinical Trial Protocol Adherence (GCP)"
+    level: "advanced"
+    years: 3
+    evidence: "Sub-investigator on 2 Phase III cardiology trials"
+    verification: "✅ VERIFIED"
+  - name: "HIPAA & Patient Data Privacy"
+    level: "expert"
+    years: 6
+    evidence: "Annual institutional compliance completion"
+    verification: "✅ VERIFIED"

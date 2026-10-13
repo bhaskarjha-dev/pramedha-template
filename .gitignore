@@ -3,11 +3,12 @@ resume/generated/
 resume/output/
 
 # ═══════════════════════════════════════════════════════════
-# PRIVATE DATA — Excluded AFTER you fill the template.
+# PRIVATE DATA — Exclude if you MUST push to a public repository
 #
-# ⚠️ These lines are COMMENTED OUT in the template so that
-# empty scaffolding files get committed. UNCOMMENT these
-# lines after you clone and start filling with real data.
+# ⚠️ If you use a PUBLIC repo (not recommended), uncomment the lines
+# below AND run this command to stop tracking them in Git:
+#
+#   git rm -r --cached personal/ strategy/financial.md strategy/networking.md identity/references.yaml assets/form-fill-cheatsheet.md journal/feedback.md
 # ═══════════════════════════════════════════════════════════
 # personal/
 # data-corpus/documents/

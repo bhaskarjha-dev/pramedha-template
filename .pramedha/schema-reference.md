@@ -13,12 +13,14 @@
 | Field | Valid Values |
 |-------|-------------|
 | `profession_type` | `engineering`, `creative`, `medical`, `business`, `academic`, `legal`, `freelance`, `executive`, `other` |
+| `career_type` | `employed`, `freelance`, `portfolio`, `academic`, `military`, `government`, `student` |
 | `skill_level` | `beginner`, `intermediate`, `advanced`, `expert` |
 | `employment_type` | `full_time`, `part_time`, `contract`, `internship`, `freelance`, `self_employed`, `volunteer` |
 | `location_type` | `onsite`, `remote`, `hybrid` |
-| `language_fluency` | `native`, `fluent`, `professional`, `elementary` |
+| `language_fluency` | `native`, `fluent`, `professional`, `conversational`, `elementary` |
 | `claim_status` | `claimed`, `evidenced`, `verified`, `contradicted`, `disputed` |
-| `career_stage` | `student`, `early_career`, `mid_career`, `senior`, `executive`, `career_changer`, `returning`, `freelance` |
+| `career_stage` | `student`, `early_career`, `mid_career`, `senior`, `executive`, `career_changer`, `returning`, `sabbatical`, `freelance` |
+| `career_break_type` | `sabbatical`, `caregiving`, `parental_leave`, `education`, `health`, `relocation`, `career_transition` |
 | `work_authorization` | `citizen`, `permanent_resident`, `work_visa`, `student_visa`, `need_sponsorship`, `other` |
 
 ---
@@ -51,6 +53,11 @@
 | `employment_type` | `employment_type` | EmploymentType |
 | `projects[].deliverables[].bullets[]` | `bullets[].text` | string |
 | `projects[].deliverables[].skills[]` | *(feeds skills.yaml)* | string[] |
+| `career_breaks[].type` | `career_breaks[].type` | CareerBreakType |
+| `career_breaks[].start_date` | `career_breaks[].dates.start` | date (YYYY-MM) |
+| `career_breaks[].end_date` | `career_breaks[].dates.end` | date (YYYY-MM) |
+| `career_breaks[].description` | `career_breaks[].description` | string |
+| `last_updated` | `meta.last_updated` | date (YYYY-MM-DD) |
 
 > [!IMPORTANT]
 > **Schema Mismatch — Intentional.**
