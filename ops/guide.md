@@ -18,6 +18,7 @@ When an AI assistant works on this repo, these rules apply:
 6. **Ask when uncertain** — never fabricate data
 7. **Commit with clear messages** — describe what changed and why
 8. **Update `ops/session-handoff.md`** at the end of each session
+9. **Fill `ops/conversation-context-archive.md`** at the end of the initial template population session — this is a one-time write capturing founding context
 
 ### DON'T:
 1. **Never fabricate claims or metrics** — leave empty if unknown

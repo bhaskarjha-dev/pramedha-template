@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to the Career Operating System Template.
+All notable changes to the Pramedha Career Template.
 
 ## [2.0.0] — 2026-10-13
 
@@ -32,14 +32,13 @@ improvements — no user-specific content.
 - `data-corpus/linkedin/README.md` + `data-corpus/github/README.md` — Pre-created subdirectories for common platform exports, reducing friction during initial data dump
 - `VISION.md` Sub-Projects section — Universal pattern for tracking portfolio websites, GitHub profiles, and other spin-off projects spawned by the career system
 
-### Changed — Standalone Independence
-- **Removed Pramedha tool dependency** — Template is now fully standalone. No `pramedha import/export` commands referenced. All `PramedhaProfile` schema references reframed as optional integration documentation
-- **`README.md`** — "Pramedha Compatibility" section → "Integration (Optional)" section
-- **`.pramedha/agent-instructions.md`** — "Pramedha Import Compatibility" → "Schema Mapping (Optional Integration)"
-- **`.pramedha/schema-reference.md`** — Header rewritten to be standalone-first
-- **`.pramedha/manifest.yaml`** — Removed `pramedha_compatible` and `min_pramedha_version` fields; renamed template to "Career Operating System Template"; version bumped to 2.0.0; added all new files to registry
-- **`AGENTS.md`** — Title changed from "Pramedha Career Template" to "Career Operating System"
-- **`CHANGELOG.md`** — Title updated to match standalone naming
+### Changed — Standalone-First Architecture
+- **Template is now fully standalone** — Works as a complete career operating system without any external tools, while remaining fully compatible with the Pramedha platform
+- **`README.md`** — "Pramedha Compatibility" → "Pramedha Integration (Optional)" — reframed as standalone-first with optional Pramedha integration
+- **`.pramedha/agent-instructions.md`** — Integration section reframed as optional, standalone usage is the default path
+- **`.pramedha/schema-reference.md`** — Header rewritten to serve standalone users first, `Maps to:` comments documented as informational
+- **`.pramedha/manifest.yaml`** — Added `standalone: true` flag; version bumped to 2.0.0; added all new files to registry
+- **All `Maps to:` comments** — Retained throughout template files for schema documentation; explicitly noted as having no functional dependency
 
 ### Template Stats
 - Files: 58 → 67 (+9 new files total: 6 from Akanksha + 3 from Bhavya)

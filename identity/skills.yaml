@@ -14,8 +14,8 @@
 #   Programming, Frameworks, AI/ML, Cloud, Databases, DevOps, Tools,
 #   Design, Communication, Leadership, Domain Knowledge
 #
-# For Pramedha import, skills are normalized to canonical IDs:
-#   canonical_id: "pramedha:python"  (auto-generated on import)
+# If using the Pramedha platform, skills are normalized to canonical IDs:
+#   canonical_id: "pramedha:python"  (auto-generated on Pramedha import)
 # ============================================================================
 
 # ─── Example Category (delete and replace with your own) ─────────────────

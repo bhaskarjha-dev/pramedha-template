@@ -1,5 +1,5 @@
 # ============================================================================
-# Career Template Manifest — Machine-Readable Metadata
+# Pramedha Career Template Manifest — Machine-Readable Metadata
 # ============================================================================
 # This file enables tools and AI assistants to:
 #   - Auto-detect career repos (look for .pramedha/manifest.yaml)
@@ -12,9 +12,11 @@
 # ============================================================================
 
 template:
-  name: "Career Operating System Template"
+  name: "Pramedha Career Template"
   version: "2.0.0"
-  schema_version: "1.0.0"               # Internal schema version
+  schema_version: "1.0.0"
+  standalone: true                        # Works without any external tools
+  pramedha_compatible: true               # Also works with the Pramedha platform
 
 # File registry — which files are required, optional, or generated
 files:

@@ -2,7 +2,9 @@
 
 > **Your career data — portable, version-controlled, AI-readable, and yours.**
 
-A structured career repository that works standalone (generate resumes immediately) or as the data layer for [Pramedha](https://github.com/bhaskarjha-dev/pramedha-template) — the AI-first career platform.
+A structured career repository that works as a **complete career operating system** out of the box.
+Fill the YAML + Markdown files with any AI assistant or text editor — no external tools required.
+Optionally compatible with [Pramedha](https://github.com/bhaskarjha-dev/pramedha-template) for AI-powered career intelligence.
 
 ---
 
@@ -16,7 +18,6 @@ A structured career repository that works standalone (generate resumes immediate
 | `strategy/job-search/tracker.md` | Track 50+ applications with follow-up reminders |
 | `assets/form-fill-cheatsheet.md` | Fill any job application form in 2 minutes flat |
 | `journal/` | Have a brag document ready for performance reviews and promotions |
-| Import into Pramedha | Get AI matching, portfolio generation, and career intelligence |
 
 ---
 
@@ -190,19 +191,23 @@ It contains the complete protocol for extracting, structuring, and verifying car
 
 ---
 
-## Integration (Optional)
+## Pramedha Integration (Optional)
 
 This template is **fully standalone** — it works as a complete career operating system
 without any external tools. Just fill the YAML/Markdown files with any AI assistant
 or text editor.
 
-If you happen to use tools that understand the PramedhaProfile schema, the mapping is:
+If you also use the [Pramedha](https://github.com/bhaskarjha-dev/pramedha-template)
+platform, this template's schema is designed for seamless integration:
 
 ```
-identity/*.yaml     →  professional.*
-personal/*          →  personal.*
-claims-and-evidence →  meta.claims_registry
+identity/*.yaml     →  PramedhaProfile.professional
+personal/*          →  PramedhaProfile.personal
+claims-and-evidence →  PramedhaProfile.meta.claims_registry
 ```
+
+The `Maps to:` comments throughout the template files document this mapping.
+They are informational only — removing them has no effect on standalone usage.
 
 ---
 

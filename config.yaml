@@ -4,7 +4,7 @@
 # Fill this FIRST. Everything else builds on this.
 #
 # This file tells AI assistants and the resume cascade engine who you are.
-# Pramedha import reads this to initialize your profile.
+# If using the Pramedha platform, this file initializes your profile.
 # ============================================================================
 
 # ─── Your Identity ───────────────────────────────────────────────────────────

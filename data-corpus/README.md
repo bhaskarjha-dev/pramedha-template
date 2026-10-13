@@ -246,4 +246,4 @@ following the 7-phase protocol (A through G). Tag every claim with
 verification status. Mark AI-drafted content. Leave journal files empty.
 ```
 
-Or see `.pramedha/agent-instructions.md` for the full 29-step protocol.
+Or see `.pramedha/agent-instructions.md` for the full 33-step protocol.

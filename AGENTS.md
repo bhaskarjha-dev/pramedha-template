@@ -1,4 +1,4 @@
-# Career Operating System — Agent Instructions
+# Pramedha Career Template — Agent Instructions
 
 > **You are an AI assistant working with a structured career repository.**
 > Read this file completely before modifying anything.
@@ -53,7 +53,7 @@ data-corpus/         ← Raw career evidence (resumes, certs, exports, brain dum
 
 ## What To Do When Asked to Fill the Template
 
-Read `.pramedha/agent-instructions.md` — it contains the complete **29-step, 7-phase protocol**:
+Read `.pramedha/agent-instructions.md` — it contains the complete **33-step, 7-phase protocol**:
 
 | Phase | Steps | What Happens |
 |:-----:|:-----:|-------------|

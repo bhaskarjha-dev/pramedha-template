@@ -1,9 +1,10 @@
-# Schema Reference — Field Map
+# Schema Reference — PramedhaProfile Field Map
 
 > This is the canonical field-by-field reference for every template file.
 > Use it to understand what each field means, what values are valid, and how
-> files relate to each other. The `Maps to:` paths shown below are for
-> documentation and optional tool integration — this template works fully standalone.
+> files relate to each other. This template works fully standalone — the
+> `Maps to:` paths shown below document the PramedhaProfile schema mapping
+> for optional integration with the Pramedha platform.
 
 ---
 

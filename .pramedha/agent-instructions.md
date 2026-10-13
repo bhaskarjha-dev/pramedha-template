@@ -299,6 +299,9 @@ Report:
 - Contradictions found
 - Items needing user input
 - Update `ops/session-handoff.md` with session summary
+- **Fill `ops/conversation-context-archive.md`** — this is the one-time founding
+  document. Capture: what phases happened, key user decisions discovered,
+  data gaps resolved, contradictions found, and artifacts created
 
 ---
 
@@ -376,16 +379,17 @@ python resume/assemble.py --validate   # Check cascade references
 
 ---
 
-## Schema Mapping (Optional Integration)
+## Pramedha Integration (Optional)
 
 This template is **fully standalone**. No external tools are required.
-If integrating with tools that use the PramedhaProfile schema, the mapping is:
+If also using the Pramedha platform, the schema mapping is:
 
 ```
-identity/*.yaml     →  professional.*
-personal/*          →  personal.*
-claims-and-evidence →  meta.claims_registry
+identity/*.yaml     →  PramedhaProfile.professional
+personal/*          →  PramedhaProfile.personal
+claims-and-evidence →  PramedhaProfile.meta.claims_registry
 ```
 
-The `Maps to:` comments in individual template files reference this schema
-for documentation purposes only — they have no functional dependency.
+The `Maps to:` comments in individual template files document this mapping
+for reference. They are informational only — removing them has no effect
+on standalone usage.
