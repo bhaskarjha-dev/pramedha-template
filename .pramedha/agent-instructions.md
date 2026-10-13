@@ -26,8 +26,8 @@ Every file in this template falls into one of these categories:
 |----------|:-:|-------|
 | **Identity (truth)** | ✅ From data-corpus | experience.yaml, skills.yaml, credentials.yaml, projects.yaml, identity.yaml, volunteering.yaml, speaking-and-community.yaml, references.yaml, claims-and-evidence.md, professional-summary.md |
 | **Resume (generated)** | ✅ From identity | master.yaml, design.yaml, variants/*.yaml |
-| **Assets (generated)** | ✅ From identity | star-stories.md, cover-letters/*.md, linkedin-pack.md, platform-copy.md, github-readme.md, questions-to-ask.md, form-fill-cheatsheet.md, testimonials.md, project-briefs/*.md, interview-prep/technical.md |
-| **Strategy (needs user input)** | ⚠️ Draft from context | target-roles.md, role-analysis.md (optional), study-plan.md, master-action-tracker.md, digital-presence-plan.md, financial.md, content-plan.md, risk-register.md, networking.md, role-deep-dives.md |
+| **Assets (generated)** | ✅ From identity | star-stories.md, cover-letters/*.md, linkedin-pack.md, platform-copy.md, github-readme.md, questions-to-ask.md, form-fill-cheatsheet.md, testimonials.md, project-briefs/*.md, interview-prep/technical.md, interview-prep/behavioral.md |
+| **Strategy (needs user input)** | ⚠️ Draft from context | target-roles.md, role-analysis.md (optional), study-plan.md, master-action-tracker.md, digital-presence-plan.md, financial.md, content-plan.md, risk-register.md, networking.md (tiers/targets), role-deep-dives.md |
 | **Personal (needs user input)** | ⚠️ Draft from text/ | about-me.md, career-narrative.md, life-goals.md, preferences.yaml, reflections.md |
 | **Journal (real-time only)** | ❌ User fills over time | wins.md, learning-log.md, feedback.md, work-log/*.md |
 | **Ops (don't fill)** | ❌ System files | guide.md, authority-map.md, prompts.md, audit-checklist.md, tooling.md, templates/*.md |
@@ -211,11 +211,9 @@ This is the most important file. For each employer:
 - Short bio (50 words)
 - Derive all from professional-summary.md + target-roles.md positioning
 
-#### Step 21: Generate assets/interview-prep/technical.md
-- Extract core technical areas from skills.yaml (advanced/expert level)
-- List likely interview topics per target role
-- Add system design topics if applicable
-- Cross-reference with study-plan.md for gap awareness
+#### Step 21: Generate assets/interview-prep/ (technical.md & behavioral.md)
+- **technical.md**: Extract core technical competencies from skills.yaml (advanced/expert level); list likely interview topics per target role and add system design topics if applicable. Cross-reference with study-plan.md for gap awareness.
+- **behavioral.md**: Map STAR stories from star-stories.md to common behavioral questions, leadership principles (e.g. Amazon LP, ownership, conflict resolution), and situational frameworks. Ensure each target role has at least 3 matching stories.
 
 ---
 
@@ -331,7 +329,7 @@ These are system files, templates, or real-time documents:
 | personal/reflections.md | Real-time — rejection learning as it happens |
 | strategy/job-search/tracker.md | Real-time — applications as sent |
 | strategy/offer-comparison.md | Real-time — offers as received |
-| strategy/networking.md | Real-time — contacts as met |
+| strategy/networking.md | Real-time contacts — AI initializes target circles/strategy; user logs individual contacts as met |
 | ops/templates/* | Entry templates — already done |
 | .pramedha/* | System config — already done |
 | resume/assemble.py | Code — already written |

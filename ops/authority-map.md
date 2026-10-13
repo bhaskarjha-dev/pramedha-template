@@ -9,7 +9,7 @@
 
 | Topic | ✅ Authoritative Source | ❌ NOT a Source |
 |-------|------------------------|----------------|
-| **Name, email, phone, profiles** | `config.yaml` | identity.yaml, old resumes |
+| **Name, email, phone, profiles** | `identity/identity.yaml` (fallback: `config.yaml`) | Old resumes, LinkedIn |
 | **Demographics, languages, visa** | `identity/identity.yaml` | Old resumes, LinkedIn |
 | **Work experience** | `identity/experience.yaml` | Old resume bullets |
 | **Skills** | `identity/skills.yaml` | Inflated old resumes |

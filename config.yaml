@@ -56,7 +56,7 @@ locale: "en"                  # Language code (en, hi, de, ja, fr, etc.)
                               # All files are UTF-8 encoded. Non-Latin scripts (Devanagari, CJK, Arabic)
                               # are fully supported. Note: character limits (e.g. LinkedIn 220 chars)
                               # are enforced in Unicode characters.
-currency: "INR"               # ISO 4217 currency code for salary fields
+currency: "USD"               # ISO 4217 currency code (USD, EUR, GBP, INR, CAD, AUD, etc.)
 date_format: "YYYY-MM"        # How dates appear in YAML files
 
 # ─── Metadata & Maintenance ─────────────────────────────────────────────────

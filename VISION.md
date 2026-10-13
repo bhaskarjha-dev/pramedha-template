@@ -1,7 +1,7 @@
 # VISION — Career Mission & North Star
 
 > **Your Career Mission & North Star.** This is the "why" behind this repository.
-> Every other file is the "how." Follow [GETTING_STARTED.md](file:///d:/dev/pro/pramedha-template/GETTING_STARTED.md) for initial setup.
+> Every other file is the "how." Follow [GETTING_STARTED.md](GETTING_STARTED.md) for initial setup.
 
 ---
 
@@ -81,7 +81,7 @@ If facts change, the identity layer updates first, then everything downstream re
 
 | Sub-Project | Path | Purpose | Status |
 |-------------|------|---------|:------:|
-| <!-- Example: Portfolio website --> | <!-- bhavyajha.com/ --> | <!-- Career portfolio --> | <!-- ✅ LIVE --> |
+| <!-- Example: Portfolio website --> | <!-- yourname.com/ --> | <!-- Career portfolio --> | <!-- ✅ LIVE --> |
 | <!-- Example: GitHub Profile README --> | <!-- github-profile/ --> | <!-- Public GitHub profile --> | <!-- ✅ LIVE --> |
 
 > **Tip:** Sub-projects often have their own git repos but are conceptually

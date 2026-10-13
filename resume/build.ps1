@@ -37,10 +37,20 @@ if (-not $yamlFiles -or $yamlFiles.Count -eq 0) {
     exit 0
 }
 
+# Ensure UTF-8 console output for RenderCV rich logging
+$env:PYTHONIOENCODING = "utf-8"
+
 # Check if rendercv is available
-$rendercvAvailable = Get-Command rendercv -ErrorAction SilentlyContinue
-if (-not $rendercvAvailable) {
-    Write-Host "  RenderCV CLI not found in PATH." -ForegroundColor Yellow
+$rendercvCmd = if (Get-Command rendercv -ErrorAction SilentlyContinue) {
+    "rendercv"
+} else {
+    # Check if python -m rendercv works
+    $testRc = & $pythonCmd -m rendercv --version 2>&1
+    if ($LASTEXITCODE -eq 0) { "$pythonCmd -m rendercv" } else { $null }
+}
+
+if (-not $rendercvCmd) {
+    Write-Host "  RenderCV CLI not found." -ForegroundColor Yellow
     Write-Host "  Install with: pip install rendercv" -ForegroundColor Yellow
     Write-Host "  Generated YAMLs are ready in: $generatedDir" -ForegroundColor Cyan
     exit 0
@@ -51,7 +61,11 @@ try {
     foreach ($file in $yamlFiles) {
         $name = $file.BaseName
         Write-Host "  Rendering $name..." -ForegroundColor Gray
-        rendercv render $file.FullName --output-folder-name "output" 2>&1
+        if ($rendercvCmd -eq "rendercv") {
+            rendercv render $file.FullName -o $outputDir 2>&1
+        } else {
+            & $pythonCmd -m rendercv render $file.FullName -o $outputDir 2>&1
+        }
         if ($LASTEXITCODE -ne 0) {
             Write-Host "  ❌ Failed: $name" -ForegroundColor Red
         } else {

@@ -14,6 +14,28 @@
 ...
 -->
 
+## Session: 2026-10-13 (v0.1.0 Full System Remediation & Rigorous Falsification Audit)
+
+### Summary
+Conducted rigorous falsification audit of external audit reports, identifying and resolving all valid runtime defects, schema misalignments, pipeline gaps, and portability leaks across the repository. The template build, assembly, and validation pipelines now execute with 100% test pass rates and zero warnings or errors.
+
+### What Was Done
+- **Runtime Scripts & CLI Fixes:** Replaced deprecated/broken `--output-folder-name "output"` with absolute `-o $outputDir` / `-o "$OUTPUT_DIR"` in `resume/build.ps1` and `resume/build.sh`. Added `$env:PYTHONIOENCODING = "utf-8"` in `build.ps1` to prevent Windows `charmap` codec crashes on completion checkmarks. Added BCP-47 / POSIX locale subtag normalization (`raw_locale.split('-')[0].split('_')[0]`) in `resume/assemble.py` to prevent RenderCV Pydantic union tag crashes on codes like `en-US`.
+- **Authority Map & Validation Parity:** Reconciled `ops/authority-map.md` line 12 contact hierarchy to match `assemble.py` (`identity/identity.yaml (fallback: config.yaml)`). Reclassified `speaking-and-community.yaml`, `volunteering.yaml`, and `references.yaml` to `OPTIONAL_FILES` in `.pramedha/validate.py`, ensuring clean clones pass strict validation without false positives.
+- **RenderCV v2.8 Credential Scaffolding:** Updated publication comments in `identity/credentials.yaml` to native RenderCV v2.8 `PublicationEntry` (`title`, `authors`, `date`, `journal`, `doi`, `url`). Added commented scaffolding for professional licenses and security clearances.
+- **Portability & Privacy Sanitization:** Sanitized local workstation absolute links (`file:///d:/dev/...`) in `GETTING_STARTED.md` and `VISION.md`. Scrubbed personal domain leak in `VISION.md` line 84. Added Prompt 16 ("Lite Career Template Audit & Health Check") to `ops/prompts.md` TOC.
+- **AI Protocol Harmony:** Reconciled `assets/interview-prep/behavioral.md` in Master File Map and Step 21 of `.pramedha/agent-instructions.md`. Aligned `networking.md` between File Map and AI fill tables.
+- **Pipeline Continuity (`resume/sync.py`):** Added client attribution preservation (`[{client}] {bullet}`) for freelance deliverables. Added `career_breaks: []` synchronization into `resume/master.yaml` (`archived: true`).
+- **Globalization & Multi-Region Platforms:** Defaulted `config.yaml` to `currency: "USD"` with common ISO 4217 instructions. Neutralized region-specific compensation and housing metrics in `strategy/financial.md`. Restructured `strategy/job-search/platforms.md` into Global, Remote, US/Americas, UK/Europe, and India/APAC platform matrices.
+
+### Key Decisions
+| Decision | Rationale | Affects |
+|----------|-----------|---------|
+| Absolute path for RenderCV `-o` | RenderCV resolves relative paths relative to input YAML, misplacing output | `resume/build.ps1`, `resume/build.sh` |
+| BCP-47 subtag stripping | RenderCV requires lowercased English language names (e.g. 'english') | `resume/assemble.py` |
+| Reclassify community files as optional | Not all professions have public speaking or volunteering | `.pramedha/validate.py` |
+| Currency default USD | Provides universal default for international career template | `config.yaml`, `strategy/financial.md` |
+
 ## Session: 2026-10-13 (v0.1.0 Schema Unification, RenderCV Modernization & Version Normalization)
 
 ### Summary

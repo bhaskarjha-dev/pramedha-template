@@ -51,7 +51,7 @@ for yaml_file in "${yaml_files[@]}"; do
     [ -f "$yaml_file" ] || continue
     name=$(basename "$yaml_file" .yaml)
     echo "  Rendering $name..."
-    if rendercv render "$yaml_file" --output-folder-name "output" 2>&1; then
+    if rendercv render "$yaml_file" -o "$OUTPUT_DIR" 2>&1; then
         echo "  ✅ $name"
     else
         echo "  ❌ Failed: $name"

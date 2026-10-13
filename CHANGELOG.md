@@ -28,9 +28,16 @@ Complete modernization across the entire template: unified identity and resume s
 - **Date Chronology Checks** — Detects anachronisms, negative durations (`start_date > end_date`), and invalid date formats across experience and career breaks.
 - **Identity-to-Master Parity** — Checks that filled employers in `identity/experience.yaml` have corresponding representation in `resume/master.yaml`.
 - **Cross-File Technology Consistency** — Flags unlisted technologies used in deliverables or projects that are missing from `identity/skills.yaml`.
-- **Required Files Registry** — Added `resume/sync.py` to validator required files.
+- **Authority Reconciliation & Optional Files** — Reclassified `speaking-and-community.yaml`, `volunteering.yaml`, and `references.yaml` to optional files, ensuring fresh clones pass strict validation without requiring non-universal community files.
 
-### Fixed — Polish & Links
+### Fixed — Build Pipeline, Runtime Scripts & Resilience
+- **Build Scripts Output Resolution & Windows Console Encoding** — Replaced `--output-folder-name "output"` with `-o $outputDir` / `-o "$OUTPUT_DIR"` in `resume/build.ps1` and `resume/build.sh`, fixing RenderCV output folder resolution. Added `$env:PYTHONIOENCODING = "utf-8"` in `build.ps1` to prevent Windows `charmap` codec crashes on completion checkmarks (`\u2713`).
+- **Locale Subtag Normalization** — Added BCP-47 / POSIX subtag stripping in `resume/assemble.py` (`raw_locale.split('-')[0].split('_')[0]`), cleanly mapping `en-US`, `en_GB`, etc., to `english` without triggering Pydantic validation errors.
+- **RenderCV PublicationEntry & Credential Scaffolds** — Updated publication scaffolding in `identity/credentials.yaml` to native RenderCV v2.8 schema (`title`, `authors`, `date`, `journal`, `doi`, `url`), and added scaffolding for professional licenses and security clearances.
+- **Portability & Privacy Sanitization** — Sanitized local workstation absolute links (`file:///d:/dev/...`) in `GETTING_STARTED.md` and `VISION.md`; scrubbed personal domain leak in `VISION.md`.
+- **AI Protocol Harmony** — Reconciled `interview-prep/behavioral.md` and `networking.md` in `.pramedha/agent-instructions.md`; linked Prompt 16 in `ops/prompts.md` TOC.
+- **Client Attribution & Career Breaks in Sync Pipeline** — Preserved freelance client attributions in bullet extraction; added career break synchronization into `resume/master.yaml` (`archived: true`).
+- **Internationalization & Multi-Region Platforms** — Defaulted `config.yaml` to `currency: "USD"` with ISO 4217 instructions; neutralized region-specific compensation and housing metrics in `strategy/financial.md`; restructured `strategy/job-search/platforms.md` into Global, Remote, US/Americas, UK/Europe, and India/APAC platform matrices.
 - **Relative Markdown Links** — Fixed broken cross-folder relative links in `strategy/master-action-tracker.md`.
 - **`CONTRIBUTING.md`** — Added an 8-point schema change checklist ensuring cross-repository synchronization for future contributions.
 - **Line Ending Normalization** — Added `* text=auto` in `.gitattributes`.

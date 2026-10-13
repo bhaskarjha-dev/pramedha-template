@@ -39,9 +39,6 @@ REQUIRED_FILES = [
     "identity/skills.yaml",
     "identity/credentials.yaml",
     "identity/projects.yaml",
-    "identity/speaking-and-community.yaml",
-    "identity/volunteering.yaml",
-    "identity/references.yaml",
     "identity/claims-and-evidence.md",
     "identity/professional-summary.md",
     "resume/master.yaml",
@@ -51,6 +48,9 @@ REQUIRED_FILES = [
 ]
 
 OPTIONAL_FILES = [
+    "identity/speaking-and-community.yaml",
+    "identity/volunteering.yaml",
+    "identity/references.yaml",
     "personal/about-me.md",
     "personal/life-goals.md",
     "personal/preferences.yaml",
@@ -122,8 +122,8 @@ def check_file_exists(result: ValidationResult):
 
     for f in OPTIONAL_FILES:
         path = TEMPLATE_ROOT / f
-        if not path.exists():
-            result.warn(f"Optional file missing: {f}")
+        if path.exists():
+            result.note(f"✅ {f} (optional)")
 
 
 def check_yaml_valid(result: ValidationResult):

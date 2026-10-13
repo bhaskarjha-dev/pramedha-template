@@ -207,6 +207,7 @@ def sync_experience(id_data: dict, master_data: dict, force: bool = False):
         for p in projects:
             if not isinstance(p, dict):
                 continue
+            client = str(p.get('client') or '').strip()
             deliverables = p.get('deliverables', []) or []
             for d in deliverables:
                 if not isinstance(d, dict):
@@ -217,22 +218,54 @@ def sync_experience(id_data: dict, master_data: dict, force: bool = False):
                     if not b_text:
                         continue
 
+                    # If project has a specific client attribute, preserve attribution in default bullet
+                    if client and not b_text.lower().startswith(f"[{client.lower()}]"):
+                        final_text = f"[{client}] {b_text}"
+                    else:
+                        final_text = b_text
+
                     # Check if text already exists under any phrasing
                     already_present = False
                     for b_data in role_bullets.values():
-                        if isinstance(b_data, str) and b_data == b_text:
+                        if isinstance(b_data, str) and (b_data == final_text or b_data == b_text):
                             already_present = True
                             break
-                        elif isinstance(b_data, dict) and b_text in b_data.values():
+                        elif isinstance(b_data, dict) and (final_text in b_data.values() or b_text in b_data.values()):
                             already_present = True
                             break
 
                     if not already_present:
                         b_key = generate_bullet_key(b_text, existing_bullet_keys, bullet_idx)
                         existing_bullet_keys.add(b_key)
-                        role_bullets[b_key] = {'default': b_text}
+                        role_bullets[b_key] = {'default': final_text}
                         stats['added_bullets'] += 1
                         bullet_idx += 1
+
+    # Sync career breaks as archived roles (available for variants to select)
+    career_breaks = id_data.get('career_breaks', []) or []
+    for b in career_breaks:
+        if not isinstance(b, dict):
+            continue
+        b_title = str(b.get('title') or '').strip()
+        b_start = str(b.get('start_date') or '').strip()
+        if not b_title and not b_start:
+            continue
+
+        break_key = f"career_break_{generate_slug(b_title, 20)}"
+        if break_key not in master_exp:
+            desc = str(b.get('description') or '').strip()
+            bullets = {'summary': {'default': desc}} if desc else {'summary': {'default': b_title}}
+            master_exp[break_key] = {
+                'company': b_title,
+                'position': 'Career Transition / Sabbatical',
+                'start_date': b_start,
+                'end_date': str(b.get('end_date') or 'present').strip(),
+                'location': '',
+                'archived': True,
+                'bullets': bullets
+            }
+            stats['added_roles'] += 1
+            stats['added_bullets'] += len(bullets)
 
     master_data['experience'] = master_exp
     return stats

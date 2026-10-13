@@ -12,9 +12,9 @@
 | Base salary | | | |
 | Bonus | | | Target % |
 | Equity/RSU | | | Vesting schedule |
-| Benefits value | | | Insurance, PF, etc. |
-| Other (LTA, food, etc.) | | | |
-| **Total CTC** | | | |
+| Benefits value | | | Insurance, Retirement / 401(k) / PF, etc. |
+| Allowances & Perks | | | Stipends, commute, meals, wellness |
+| **Total Comp / CTC** | | | Base + Bonus + Equity + Benefits |
 | **Take-home** | | | After tax |
 
 - **Notice period:** 
@@ -47,7 +47,7 @@
 
 | Factor | Current City | Target City A | Target City B |
 |--------|:------------:|:-------------:|:-------------:|
-| Average rent (2BHK) | | | |
+| Average rent (1–2 Bed / 2BHK) | | | |
 | Tax rate (effective) | | | |
 | Cost of living index | | | |
 | Commute cost | | | |
@@ -58,12 +58,12 @@
 
 | Role | YoE Band | P25 | P50 (Median) | P75 | Source |
 |------|:--------:|:---:|:------------:|:---:|--------|
-| | | | | | Levels.fyi / AmbitionBox |
+| | | | | | Levels.fyi / Glassdoor / AmbitionBox |
 
 ---
 
 ## Negotiation Rules
-1. Never disclose current CTC to recruiters
+1. Never disclose current compensation / CTC to recruiters
 2. State expectations as a range, not a single number
 3. Research market rates before any negotiation
 4. Factor in: base, bonus, equity, benefits, WFH, learning budget

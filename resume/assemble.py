@@ -414,7 +414,12 @@ def assemble_variant(master: dict, design: dict, variant: dict, config: dict = N
         sections['publications'] = copy.deepcopy(master['publications'])
 
     # --- Assemble final structure ---
-    cv_data = copy.deepcopy(header)
+    cv_data = {}
+    for k, v in header.items():
+        if v not in ("", None, []):
+            cv_data[k] = copy.deepcopy(v)
+    if 'name' not in cv_data:
+        cv_data['name'] = header.get('name') or "Your Name"
     cv_data['sections'] = sections
 
     design_data = design.get('design', {}) if design else {}
@@ -426,7 +431,8 @@ def assemble_variant(master: dict, design: dict, variant: dict, config: dict = N
     # Locale passthrough (config.yaml locale / variant locale)
     raw_locale = str(variant.get('locale') or (config.get('locale') if config else '') or '').strip().lower()
     if raw_locale:
-        lang_name = LOCALE_MAP.get(raw_locale, raw_locale)
+        base_locale = raw_locale.split('-')[0].split('_')[0].strip()
+        lang_name = LOCALE_MAP.get(base_locale, LOCALE_MAP.get(raw_locale, raw_locale))
         result['locale'] = {'language': lang_name}
 
     # Settings block (RenderCV v2.8)
@@ -592,7 +598,7 @@ def main():
 
     for overlay_path in overlay_files:
         variant = load_yaml(overlay_path) or {}
-        variant_name = variant.get('variant_name', overlay_path.stem)
+        variant_name = (variant.get('variant_name') or '').strip() or overlay_path.stem
 
         # Validate
         errors = validate_variant(master, variant)
@@ -616,7 +622,9 @@ def main():
             continue
 
         # Output filename: from variant or auto-generated from config.yaml name
-        output_filename = variant.get('output_filename', f'{default_name}_{variant_name}_CV')
+        output_filename = (variant.get('output_filename') or '').strip()
+        if not output_filename:
+            output_filename = f'{default_name}_{variant_name}_CV' if default_name else f'{variant_name}_CV'
         output_path = generated_dir / f'{output_filename}.yaml'
 
         if args.diff and output_path.exists():

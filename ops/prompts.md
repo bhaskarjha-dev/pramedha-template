@@ -25,6 +25,7 @@
 13. [Skills Matrix Refresh](#13-skills-matrix-refresh)
 14. [Portfolio Website Content](#14-portfolio-website-content)
 15. [Offer Comparison Analysis](#15-offer-comparison-analysis)
+16. [Lite Career Template Audit & Health Check](#16-lite-career-template-audit--health-check)
 
 ---
 
