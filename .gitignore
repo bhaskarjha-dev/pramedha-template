@@ -3,6 +3,47 @@ resume/generated/
 resume/output/
 
 # ═══════════════════════════════════════════════════════════
+# RAW EVIDENCE PROTECTION — Protect personal documents from accidental git commit
+# Preserves template structure (README.md and .gitkeep) while ignoring dumped evidence
+# ═══════════════════════════════════════════════════════════
+data-corpus/inbox/*
+!data-corpus/inbox/.gitkeep
+!data-corpus/inbox/README.md
+
+data-corpus/resumes/*
+!data-corpus/resumes/.gitkeep
+!data-corpus/resumes/README.md
+
+data-corpus/documents/*
+!data-corpus/documents/.gitkeep
+!data-corpus/documents/README.md
+
+data-corpus/exports/*
+!data-corpus/exports/.gitkeep
+!data-corpus/exports/README.md
+
+data-corpus/linkedin/*
+!data-corpus/linkedin/.gitkeep
+!data-corpus/linkedin/README.md
+
+data-corpus/github/*
+!data-corpus/github/.gitkeep
+!data-corpus/github/README.md
+
+data-corpus/media/*
+!data-corpus/media/.gitkeep
+!data-corpus/media/README.md
+
+# Evidence archives and document formats
+data-corpus/**/*.pdf
+data-corpus/**/*.docx
+data-corpus/**/*.doc
+data-corpus/**/*.zip
+data-corpus/**/*.tar.gz
+data-corpus/**/*.csv
+data-corpus/**/*.xlsx
+
+# ═══════════════════════════════════════════════════════════
 # PRIVATE DATA — Exclude if you MUST push to a public repository
 #
 # ⚠️ If you use a PUBLIC repo (not recommended), uncomment the lines
@@ -11,7 +52,6 @@ resume/output/
 #   git rm -r --cached personal/ strategy/financial.md strategy/networking.md identity/references.yaml assets/form-fill-cheatsheet.md journal/feedback.md
 # ═══════════════════════════════════════════════════════════
 # personal/
-# data-corpus/documents/
 # strategy/financial.md
 # strategy/networking.md
 # identity/references.yaml
@@ -42,6 +82,7 @@ node_modules/
 *.key
 *.pem
 
-# Temp folder
+# Temp & backup files
 tmp/
 temp/
+*.bak

@@ -532,7 +532,8 @@ def check_identity_master_parity(result: ValidationResult):
             proj_data = yaml.safe_load(f) or {}
 
         id_projects = []
-        for p in (proj_data.get('projects', []) or []):
+        all_projs = (proj_data.get('public', []) or []) + (proj_data.get('internal', []) or []) + (proj_data.get('projects', []) or [])
+        for p in all_projs:
             if isinstance(p, dict):
                 pname = (p.get('name') or '').strip()
                 if pname:
@@ -682,7 +683,7 @@ def compute_fill_status(result: ValidationResult):
             bool((d or {}).get('name', '').strip())
             or bool((d or {}).get('total_years_experience', 0) > 0)
             or any(isinstance(l, dict) and bool(l.get('language', '').strip()) for l in ((d or {}).get('languages') or []))
-            or bool(str((d or {}).get('citizenship', '')).strip())
+            or bool(str((d or {}).get('nationality', '') or (d or {}).get('citizenship', '')).strip())
             or bool(((d or {}).get('work_authorization') or {}).get('status', '').strip() if isinstance((d or {}).get('work_authorization'), dict) else str((d or {}).get('work_authorization', '')).strip())
         )),
         ("identity/experience.yaml", "experience.yaml", lambda d: any(

@@ -6,6 +6,7 @@ $ErrorActionPreference = "Stop"
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 $OutputEncoding = [System.Text.Encoding]::UTF8
 $env:PYTHONIOENCODING = "utf-8"
+$env:PYTHONUTF8 = "1"
 $scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Definition
 
 Write-Host "`n=== Resume Cascade Build ===" -ForegroundColor Cyan

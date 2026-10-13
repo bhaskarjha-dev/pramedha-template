@@ -1,34 +1,47 @@
 # ============================================================================
-# EXAMPLE — Filled identity.yaml + experience snippet
+# EXAMPLE — Filled identity.yaml
 # ============================================================================
 # This shows what a properly filled identity file looks like.
-# Use this as a reference when filling your own.
+# Canonical schema matching identity/identity.yaml.
 # ============================================================================
 
 # --- identity.yaml example ---
 name: "Alex Chen"
-
-contact:
-  phone: "+1-555-123-4567"                              # ✅ VERIFIED
-  email: "alex.chen@example.com"                         # ✅ VERIFIED
+email: "alex.chen@example.com"                                 # ✅ VERIFIED
+phone: "+1-555-123-4567"                                      # ✅ VERIFIED
+website: "https://alexchen.dev"                               # ✅ VERIFIED
 
 location:
-  current_city: "San Francisco, CA, USA"                 # ✅ VERIFIED
-  willing_to_relocate: true
-  preferred_cities:
-    - "San Francisco"
-    - "Seattle"
-    - "Remote"
+  city: "San Francisco"                                       # ✅ VERIFIED
+  region: "CA"
+  country_code: "US"
 
-online_presence:
-  linkedin: "https://linkedin.com/in/alexchen"           # ✅ VERIFIED
-  github: "https://github.com/alexchen"                   # ✅ VERIFIED
-  website: "https://alexchen.dev"                          # ✅ VERIFIED
+profiles:
+  linkedin: "https://linkedin.com/in/alexchen"                # ✅ VERIFIED
+  github: "https://github.com/alexchen"                       # ✅ VERIFIED
+  twitter: "https://x.com/alexchen_dev"
+
+pronouns: "they/them"
+date_of_birth: "1994-06-15"
+nationality: "US Citizen"                                     # ✅ VERIFIED
+
+work_authorization:
+  status: "citizen"                                           # ✅ VERIFIED
+  countries:
+    - "US"
+  visa_details: "US Citizen by birth"
+  verification: "✅ VERIFIED — passport on file"
 
 languages:
   - language: "English"
-    level: "native"
+    level: "native"                                           # ✅ VERIFIED
   - language: "Mandarin"
-    level: "fluent"
+    level: "fluent"                                           # ✅ VERIFIED
 
-nationality: "US Citizen"                                  # ✅ VERIFIED
+total_years_experience: 7
+years_in_current_role: 3
+professional_headline: >
+  Senior Backend & AI Systems Engineer with 7 years of experience building
+  distributed microservices, event streaming architectures, and production GenAI pipelines.
+
+last_updated: "2026-10-13"

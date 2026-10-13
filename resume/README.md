@@ -34,7 +34,11 @@ py resume/assemble.py               # Build all variant YAMLs to generated/
 
 # 5. Render PDFs via RenderCV (uses built-in Typst; no LaTeX required!):
 pip install rendercv
-rendercv render generated/Your_Name_Variant_CV.yaml
+# Recommended: run the automated build script (handles output directory and encoding)
+.\build.ps1        # Windows
+./build.sh         # Linux/Mac
+# Or manually:
+rendercv render generated/Your_Name_Variant_CV.yaml -o ../output
 ```
 
 ---

@@ -158,7 +158,7 @@ Images, recordings, and design files. These feed into portfolio and project brie
 | Certificate scans or photos | 🟡 |
 | Award or recognition photos | 🟢 |
 
-### 8. The Hidden Interview → `text/`
+### 9. The Hidden Interview → `text/`
 
 > ⭐ **This is the most missed source.** The answers below contain context
 > that NO document captures — your motivations, thinking process, and self-awareness.
@@ -180,7 +180,7 @@ Images, recordings, and design files. These feed into portfolio and project brie
 | What are you actively learning right now and why? | 🟡 |
 | What's your preferred work environment and collaboration style? | 🟡 |
 
-### 9. Domain-Specific Sources → varies
+### 10. Domain-Specific Sources → varies
 
 If your field has specialized platforms, add those too:
 
@@ -219,7 +219,7 @@ If your field has specialized platforms, add those too:
 Before telling AI to fill, check:
 
 - [ ] At least 1 resume version in `resumes/`
-- [ ] LinkedIn export in `exports/`
+- [ ] LinkedIn export in `linkedin/` (or `exports/`)
 - [ ] All certificates you can find in `documents/`
 - [ ] `text/hidden-interview.md` answered (even partially)
 - [ ] At least 3 impact numbers captured somewhere in `text/`
@@ -257,4 +257,4 @@ following the 7-phase protocol (A through G). Tag every claim with
 verification status. Mark AI-drafted content. Leave journal files empty.
 ```
 
-Or see `.pramedha/agent-instructions.md` for the full 33-step protocol.
+Or see `.pramedha/agent-instructions.md` for the full 34-step protocol (Steps 0–33).

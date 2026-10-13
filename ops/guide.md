@@ -12,7 +12,7 @@
 When an AI assistant operates on this repository, these rules apply without exception:
 
 ### DO:
-1. **Read `.pramedha/agent-instructions.md` first** — it defines the master 33-step fill protocol.
+1. **Read `.pramedha/agent-instructions.md` first** — it defines the master 34-step fill protocol (Steps 0–33).
 2. **Consult the Minimum Context Router in `AGENTS.md`** — load only the minimum 2–4 files required for your specific task.
 3. **Check `ops/session-handoff.md`** for prior session decisions and ongoing context.
 4. **Check `ops/authority-map.md` before editing** — always know which file is authoritative for what data.

@@ -761,8 +761,16 @@ def main():
     if args.dry_run:
         print("🔍 Dry run complete. Master file unchanged.")
     else:
+        # Create a backup before writing
+        bak_path = master_path.with_suffix('.yaml.bak')
+        try:
+            import shutil
+            shutil.copy2(master_path, bak_path)
+        except Exception:
+            pass
+
         dump_yaml(master_data, master_path)
-        print("✅ resume/master.yaml successfully updated.")
+        print("✅ resume/master.yaml successfully updated (backup saved to master.yaml.bak).")
 
 
 if __name__ == '__main__':

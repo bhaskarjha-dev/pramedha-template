@@ -73,7 +73,7 @@ data-corpus/         ← Raw career evidence (resumes, certs, exports, brain dum
 
 ## What To Do When Asked to Fill the Template
 
-Read `.pramedha/agent-instructions.md` — it contains the complete **33-step, 7-phase protocol**:
+Read `.pramedha/agent-instructions.md` — it contains the complete **34-step, 7-phase protocol (Steps 0–33)**:
 
 | Phase | Steps | What Happens |
 |:-----:|:-----:|-------------|

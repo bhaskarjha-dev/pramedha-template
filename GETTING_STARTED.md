@@ -159,8 +159,9 @@ cp resume/variants/_template.yaml resume/variants/my-role.yaml
 # 3. Assemble and render PDF:
 py resume/assemble.py --validate    # Verify all references
 py resume/assemble.py               # Assembles to resume/generated/
-rendercv render resume/generated/my-role.yaml
-# (On Windows PowerShell if encoding errors occur: $env:PYTHONIOENCODING = "utf-8")
+rendercv render resume/generated/my-role.yaml -o ../output
+# (Or simply run .\resume\build.ps1 on Windows / ./resume/build.sh on Linux/Mac)
+# (On Windows PowerShell if encoding errors occur: $env:PYTHONUTF8 = "1")
 # Your PDF is compiled in resume/output/ in <1s via Typst (no LaTeX needed!)
 ```
 
