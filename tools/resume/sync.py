@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Identity to Master Resume Synchronizer — Syncs verified facts from identity/ to resume/master.yaml.
+Identity to Master Resume Synchronizer — Syncs verified facts from identity/ to tools/resume/master.yaml.
 
 Reads:
   - identity/experience.yaml             → master.yaml experience pool
@@ -857,7 +857,7 @@ def main():
             pass
 
         dump_yaml(master_data, master_path)
-        print("✅ resume/master.yaml successfully updated (backup saved to master.yaml.bak).")
+        print("✅ tools/resume/master.yaml successfully updated (backup saved to master.yaml.bak).")
 
 
 if __name__ == '__main__':
