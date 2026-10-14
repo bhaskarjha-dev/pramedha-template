@@ -1,6 +1,11 @@
-# Generated files (auto-built by assemble.py + RenderCV)
-resume/generated/
-resume/output/
+# Generated files (auto-built by tools/resume/assemble.py + RenderCV)
+tools/resume/generated/
+tools/resume/output/
+
+# External tools (user-installed, not tracked)
+tools/external/*
+!tools/external/.gitkeep
+!tools/external/README.md
 
 # ═══════════════════════════════════════════════════════════
 # RAW EVIDENCE PROTECTION — Protect personal documents from accidental git commit
@@ -49,13 +54,13 @@ data-corpus/**/*.xlsx
 # ⚠️ If you use a PUBLIC repo (not recommended), uncomment the lines
 # below AND run this command to stop tracking them in Git:
 #
-#   git rm -r --cached personal/ strategy/financial.md strategy/networking.md identity/references.yaml assets/form-fill-cheatsheet.md journal/feedback.md
+#   git rm -r --cached personal/ strategy/financial.md strategy/networking.md identity/references.yaml personal/form-fill-cheatsheet.md journal/feedback.md
 # ═══════════════════════════════════════════════════════════
 # personal/
 # strategy/financial.md
 # strategy/networking.md
 # identity/references.yaml
-# assets/form-fill-cheatsheet.md
+# personal/form-fill-cheatsheet.md
 # journal/feedback.md
 
 # OS files
