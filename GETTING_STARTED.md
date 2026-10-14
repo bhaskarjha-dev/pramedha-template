@@ -1,4 +1,4 @@
-﻿# Getting Started — Your First 30 Minutes
+# Getting Started — Your First 30 Minutes
 
 > **You just got this template. Here's exactly what to do, step by step.**
 > Don't try to fill everything at once. This guide gets you a working career system in 30 minutes.
@@ -209,6 +209,24 @@ Fill these at your own pace. Each layer adds value independently:
 - [ ] `journal/wins.md` — Log every achievement as it happens
 - [ ] `journal/work-log/` — Weekly work log
 - [ ] `journal/learning-log.md` — Track courses and skills development
+
+---
+
+## Step 10: External Tools (Optional)
+
+Want to use AI-powered job search, scraping, or matching tools?
+
+1. Browse available tools: `tools/external/README.md`
+2. Clone or install any tool into `tools/external/`
+3. Point your AI assistant at both your data AND the tool
+4. The AI reads your YAML and feeds it to the tool
+
+Example with career-ops:
+```bash
+cd tools/external/
+git clone https://github.com/career-ops-hq/career-ops
+# Then ask your AI: "Use career-ops to evaluate this JD against my profile"
+```
 
 ---
 

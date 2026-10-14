@@ -27,6 +27,7 @@ ops/                 ← Maintenance guide, authority map, session handoff, prom
 .pramedha/           ← AI fill protocol, schema reference, examples, validator
 data-corpus/         ← Raw career evidence (resumes, certs, exports, brain dumps)
 tools/resume/        ← Optional: bullet pool → assemble.py → variants → RenderCV → PDF
+tools/external/      ← Mount point for third-party career tools (gitignored)
 ```
 
 ---
@@ -46,6 +47,7 @@ tools/resume/        ← Optional: bullet pool → assemble.py → variants → 
 | **Target Role & Pivot Evaluation** | `strategy/target-roles.md`, `identity/skills.yaml` | ~2,200 tokens |
 | **Offer Evaluation & Comp Negotiation** | `strategy/financial.md`, `strategy/offer-comparison.md`, `personal/preferences.yaml` | ~2,000 tokens |
 | **Log New Win or Shipped Feature** | `journal/wins.md`, `identity/experience.yaml`, `identity/claims-and-evidence.md` | ~2,600 tokens |
+| **Use External Career Tool** | `tools/external/README.md`, `identity/experience.yaml`, `identity/skills.yaml`, `strategy/target-roles.md` | ~3,000 tokens |
 | **Quarterly Audit & System Health** | `ops/guide.md`, `ops/authority-map.md`, `config.yaml` | ~2,000 tokens |
 
 ---

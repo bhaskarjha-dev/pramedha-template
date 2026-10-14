@@ -62,7 +62,7 @@ Download the ZIP from the releases page → extract → `git init` in the folder
 # Dump raw career data into data-corpus/
 # Let AI fill the rest (see .pramedha/agent-instructions.md)
 # Generate resumes:
-cd resume && python assemble.py && rendercv render generated/*.yaml
+cd tools/resume && python assemble.py && rendercv render generated/*.yaml
 ```
 
 ---
@@ -78,6 +78,33 @@ Fill at your own pace. Each layer adds value independently.
 | **2** | `stories/` + `strategy/` | Interview prep + job search execution |
 | **3** | `personal/` + `journal/` | Full career knowledge base |
 | **→** | Import into Pramedha | AI matching, portfolio, career intelligence |
+
+---
+
+## How It Fits Together
+
+```
+┌─────────────────────────────────────────────┐
+│         Pramedha Platform (optional)        │
+│  AI intake • JD matching • career guidance  │
+│  MCP server • A2A protocol • plugin SDK     │
+└──────────────────┬──────────────────────────┘
+                   │ import ↕ export
+┌──────────────────▼──────────────────────────┐
+│       This Template (standalone)            │
+│  identity/ • stories/ • strategy/ • journal/│
+│  YAML + Markdown — your career data         │
+└──────────────────┬──────────────────────────┘
+                   │ AI agents read directly
+┌──────────────────▼──────────────────────────┐
+│        External Tools (optional)            │
+│  career-ops • JobSpy • job-ops • any tool   │
+│  Mount in tools/external/ (gitignored)      │
+└─────────────────────────────────────────────┘
+```
+
+**This template is the portable format** of the [Pramedha Career OS](https://github.com/bhaskarjha-dev/pramedha).
+Use it standalone with any AI assistant, or import into Pramedha for intelligent automation.
 
 ---
 
@@ -158,7 +185,9 @@ pramedha-template/
 │   └── examples/                 Example filled data
 │
 └── tools/                     ← Optional tooling (decoupled from data)
-    └── resume/                   Resume cascade engine
+    ├── external/              ← Mount point for third-party career tools (gitignored)
+    │   └── README.md             Directory guide & recommended tools
+    └── resume/                ← Resume cascade engine
         ├── master.yaml           Bullet pool (keyed phrasings)
         ├── design.yaml           Visual theme
         ├── sync.py               Identity-to-master bridge synchronizer

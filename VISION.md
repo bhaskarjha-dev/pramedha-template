@@ -90,7 +90,28 @@ If facts change, the identity layer updates first, then everything downstream re
 
 ---
 
-## Future Scope
+## Ecosystem & Future Scope
+
+### The Data Gravity Thesis
+
+In a world of abundant AI career tools, the scarce resource is not the tool —
+it's **accurate, verified, structured personal data**. This template is the
+canonical data layer. Tools orbit around it.
+
+### The Three Layers
+
+1. **This Template** — Your career data in portable YAML/Markdown.
+   Works standalone with any AI assistant. Zero dependencies.
+
+2. **External Tools** (`tools/external/`) — Clone any career tool.
+   career-ops for job search, JobSpy for scraping, anything you want.
+   AI agents bridge between your data and the tool.
+
+3. **Pramedha Platform** (optional) — Full Career OS with AI intake,
+   7-dimension JD matching, resume tailoring, career graph intelligence,
+   MCP server, and plugin SDK. Import this template with one command.
+
+### Lifecycle
 
 This repository doesn't die after the job search. It becomes:
 
@@ -98,8 +119,8 @@ This repository doesn't die after the job search. It becomes:
 2. **Promotion engine** — Generate materials for internal moves or next job
 3. **Knowledge base** — Reference for interview prep, salary negotiation
 4. **Portfolio data source** — Portfolio website reads from identity/*.yaml
-5. **Maintenance system** — Weekly/monthly rituals prevent career drift
-6. **Content engine** — Technical articles, LinkedIn posts, thought leadership
+5. **External tool substrate** — Any new career tool reads from your data
+6. **Pramedha import source** — `pramedha import --format template` when ready
 
 ---
 
