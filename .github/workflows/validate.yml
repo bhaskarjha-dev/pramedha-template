@@ -35,7 +35,7 @@ jobs:
         run: python .pramedha/validate.py
 
       - name: Validate Resume Bullet References
-        run: python resume/assemble.py --validate
+        run: python tools/resume/assemble.py --validate
 
       - name: Validate Resume Sync Pipeline (Dry Run)
-        run: python resume/sync.py --dry-run
+        run: python tools/resume/sync.py --dry-run

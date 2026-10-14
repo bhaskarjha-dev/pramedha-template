@@ -212,7 +212,7 @@ Fill these at your own pace. Each layer adds value independently:
 
 ---
 
-## Step 10: External Tools (Optional)
+## Step 6: External Tools (Optional)
 
 Want to use AI-powered job search, scraping, or matching tools?
 

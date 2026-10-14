@@ -24,7 +24,7 @@ Before submitting changes, please keep our core tenets in mind:
 - Search existing issues to ensure your bug or feature request isn't already documented.
 - When filing a bug, include:
   - Your OS (Windows, macOS, Linux) and Python version (`python --version`)
-  - The exact command you ran (e.g. `python resume/assemble.py --validate`)
+  - The exact command you ran (e.g. `python tools/resume/assemble.py --validate`)
   - Full traceback or error message
   - Which template version you cloned (see `.pramedha/CHANGELOG.md` or `.pramedha/manifest.yaml`)
 

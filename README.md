@@ -4,7 +4,7 @@
 
 A structured career repository that serves as the **permanent canonical source of truth** about your career.
 Fill the YAML + Markdown files with any AI assistant or text editor — no external tools required.
-Optionally compatible with [Pramedha](https://github.com/bhaskarjha-dev/pramedha-template) for AI-powered career intelligence.
+Optionally compatible with [Pramedha](https://github.com/bhaskarjha-dev/pramedha) for AI-powered career intelligence.
 
 ---
 
@@ -226,7 +226,7 @@ This template is **fully standalone** — it works as a complete career operatin
 without any external tools. Just fill the YAML/Markdown files with any AI assistant
 or text editor.
 
-If you also use the [Pramedha](https://github.com/bhaskarjha-dev/pramedha-template)
+If you also use the [Pramedha](https://github.com/bhaskarjha-dev/pramedha)
 platform, this template's schema is designed for seamless integration:
 
 ```
