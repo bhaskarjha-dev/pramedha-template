@@ -700,7 +700,14 @@ def main():
     if args.jd:
         jd_path = Path(args.jd)
         if not jd_path.is_absolute():
-            jd_path = script_dir / jd_path
+            if jd_path.exists():
+                jd_path = jd_path.resolve()
+            elif (script_dir / jd_path).exists():
+                jd_path = (script_dir / jd_path).resolve()
+            elif (repo_root / jd_path).exists():
+                jd_path = (repo_root / jd_path).resolve()
+            else:
+                jd_path = (script_dir / jd_path).resolve()
         if not jd_path.exists():
             print(f"ERROR: JD overlay {jd_path} not found", file=sys.stderr)
             sys.exit(1)
@@ -761,6 +768,8 @@ def main():
 
         # Output filename: from variant or auto-generated from config.yaml name
         output_filename = (variant.get('output_filename') or '').strip()
+        if output_filename.endswith('.yaml') or output_filename.endswith('.yml'):
+            output_filename = Path(output_filename).stem
         if not output_filename:
             output_filename = f'{default_name}_{variant_name}_CV' if default_name else f'{variant_name}_CV'
         output_path = generated_dir / f'{output_filename}.yaml'

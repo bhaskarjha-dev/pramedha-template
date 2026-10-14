@@ -20,7 +20,7 @@
 # ============================================================================
 
 # ─── Header ──────────────────────────────────────────────────────────────
-# NOTE: assemble.py reads name/contact from identity/identity.yaml automatically (fallback: ../config.yaml).
+# NOTE: assemble.py reads name/contact from identity/identity.yaml automatically (fallback: config.yaml).
 # Only override here if you want DIFFERENT info on resume vs identity/config.
 header:
   name: ""                    # Leave empty to use identity.yaml / config.yaml
