@@ -1,66 +1,30 @@
+# ═══════════════════════════════════════════════════════════
+# Pramedha Career Template — Git Ignore Configuration
+# ═══════════════════════════════════════════════════════════
+
 # Generated files (auto-built by tools/resume/assemble.py + RenderCV)
 tools/resume/generated/*
 !tools/resume/generated/.gitkeep
 tools/resume/output/*
 !tools/resume/output/.gitkeep
 
-# External tools (user-installed, not tracked)
+# External tools sandbox (user-installed tools/clones, not tracked)
 tools/external/*
 !tools/external/.gitkeep
 !tools/external/README.md
 
-# ═══════════════════════════════════════════════════════════
-# RAW EVIDENCE PROTECTION — Protect personal documents from accidental git commit
-# Preserves template structure (README.md and .gitkeep) while ignoring dumped evidence
-# ═══════════════════════════════════════════════════════════
-data-corpus/inbox/*
-!data-corpus/inbox/.gitkeep
-!data-corpus/inbox/README.md
-
-data-corpus/resumes/*
-!data-corpus/resumes/.gitkeep
-!data-corpus/resumes/README.md
-
-data-corpus/documents/*
-!data-corpus/documents/.gitkeep
-!data-corpus/documents/README.md
-
-data-corpus/exports/*
-!data-corpus/exports/.gitkeep
-!data-corpus/exports/README.md
-
-data-corpus/linkedin/*
-!data-corpus/linkedin/.gitkeep
-!data-corpus/linkedin/README.md
-
-data-corpus/github/*
-!data-corpus/github/.gitkeep
-!data-corpus/github/README.md
-
-data-corpus/media/*
-!data-corpus/media/.gitkeep
-!data-corpus/media/README.md
-
-data-corpus/text/*
-!data-corpus/text/.gitkeep
-!data-corpus/text/README.md
-
-# Evidence archives and document formats
-data-corpus/**/*.pdf
-data-corpus/**/*.docx
-data-corpus/**/*.doc
-data-corpus/**/*.zip
-data-corpus/**/*.tar.gz
-data-corpus/**/*.csv
-data-corpus/**/*.xlsx
+# Heavy video files in data-corpus (host on YouTube/Loom/Drive or use Git LFS)
+data-corpus/media/*.mp4
+data-corpus/media/*.mov
+data-corpus/media/*.avi
+data-corpus/media/*.mkv
 
 # ═══════════════════════════════════════════════════════════
-# PRIVATE DATA — Exclude if you MUST push to a public repository
+# PUBLIC REPOSITORY SAFETY OVERRIDE (Optional)
 #
-# ⚠️ If you use a PUBLIC repo (not recommended), uncomment the lines
-# below AND run this command to stop tracking them in Git:
-#
-#   git rm -r --cached personal/ strategy/financial.md strategy/networking.md identity/references.yaml personal/form-fill-cheatsheet.md journal/feedback.md
+# ⚠️ This repository is designed to be PRIVATE.
+# If you must host this on a PUBLIC repository, uncomment the lines below
+# to exclude personal/confidential files from version control:
 # ═══════════════════════════════════════════════════════════
 # personal/
 # strategy/financial.md
@@ -68,32 +32,114 @@ data-corpus/**/*.xlsx
 # identity/references.yaml
 # personal/form-fill-cheatsheet.md
 # journal/feedback.md
+# data-corpus/
 
-# OS files
-.DS_Store
-Thumbs.db
-desktop.ini
-
-# Python
-__pycache__/
-*.pyc
-.venv/
+# ═══════════════════════════════════════════════════════════
+# SECRETS & CREDENTIALS (NEVER commit, even to private repos)
+# ═══════════════════════════════════════════════════════════
 .env
+.env.*
+!.env.example
+*.key
+*.pem
+*.p12
+*.pfx
+*.keystore
+id_rsa*
+id_ed25519*
+credentials.json
+client_secret*.json
+token.json
 
-# Node (if using Pramedha web)
+# ═══════════════════════════════════════════════════════════
+# PYTHON
+# ═══════════════════════════════════════════════════════════
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual Environments
+.venv/
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# Testing & Linting Caches
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# ═══════════════════════════════════════════════════════════
+# NODE / WEB TOOLING
+# ═══════════════════════════════════════════════════════════
 node_modules/
+.npm
+.next/
+.turbo/
+.nuxt/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
 
-# IDE
-.vscode/
+# ═══════════════════════════════════════════════════════════
+# OPERATING SYSTEM
+# ═══════════════════════════════════════════════════════════
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+ehthumbs_vista.db
+[Tt]humbs.db
+[Tt]humbs.db:encryptable
+desktop.ini
+$RECYCLE.BIN/
+
+# ═══════════════════════════════════════════════════════════
+# IDEs & EDITORS
+# ═══════════════════════════════════════════════════════════
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/extensions.json
 .idea/
 *.swp
 *.swo
+*.sublime-workspace
+*.sublime-project
+.cursor/
+.claude/
 
-# Sensitive (never commit)
-*.key
-*.pem
-
-# Temp & backup files
+# ═══════════════════════════════════════════════════════════
+# TEMPORARY & BACKUP FILES
+# ═══════════════════════════════════════════════════════════
 tmp/
 temp/
 *.bak
+*.tmp
+*.orig
+*~
