@@ -5,27 +5,28 @@
 
 ## What This Repository Is
 
-A **career operating system** stored as YAML + Markdown files. It has 3 layers:
+A **personal career knowledge base** stored as YAML + Markdown files. It has 4 layers:
 
 1. **Identity** (`identity/`) — Verified career facts. THE source of truth.
-2. **Strategy** (`strategy/`) + **Assets** (`assets/`) — Plans and materials derived from identity.
-3. **Personal** (`personal/`) + **Journal** (`journal/`) — Private context, never shared externally.
+2. **Stories** (`stories/`) — Authored narratives for interviews (STAR stories, testimonials, prep).
+3. **Strategy** (`strategy/`) — Strategic decisions (target roles, financials, job tracking).
+4. **Personal** (`personal/`) + **Journal** (`journal/`) — Private context, never shared externally.
 
-Plus: **Resume** (`resume/`) — A cascade engine that generates role-specific PDFs from identity.
+Plus: **Tools** (`tools/resume/`) — Optional resume cascade engine (decoupled from data).
 
 ## Architecture at a Glance
 
 ```
 config.yaml          ← User's name, email, profession type
 identity/*.yaml      ← Career facts (experience, skills, credentials, projects, speaking)
-resume/master.yaml   ← Bullet pool → assemble.py → variants → RenderCV → PDF
-strategy/            ← Target roles, study plan, action tracker, digital presence, financial
-assets/              ← STAR stories, cover letters, outreach copy, LinkedIn pack, interview prep
+stories/             ← Authored STAR stories, testimonials, interview prep
+strategy/            ← Target roles, study plan, financial, job tracking, networking
 personal/            ← Private: life goals, preferences, reflections (⚠️ NEVER on resumes)
 journal/             ← Ongoing: wins, learning log, work log, feedback
 ops/                 ← Maintenance guide, authority map, session handoff, prompts
 .pramedha/           ← AI fill protocol, schema reference, examples, validator
 data-corpus/         ← Raw career evidence (resumes, certs, exports, brain dumps)
+tools/resume/        ← Optional: bullet pool → assemble.py → variants → RenderCV → PDF
 ```
 
 ---
@@ -37,15 +38,14 @@ data-corpus/         ← Raw career evidence (resumes, certs, exports, brain dum
 
 | Objective / Task | 🎯 Minimum Files to Read & Edit | Context Budget |
 |------------------|---------------------------------|:--------------:|
-| **Tailor Resume for a Job Posting** | `resume/master.yaml`, `identity/experience.yaml`, `identity/skills.yaml`, `resume/variants/<target>.yaml` (or copy `_template.yaml`) | ~2,500 tokens |
-| **Prepare for Behavioral Interview** | `assets/star-stories.md`, `assets/interview-prep/behavioral.md` | ~2,800 tokens |
-| **Prepare for Technical / Domain Interview** | `identity/skills.yaml`, `assets/interview-prep/technical.md`, `identity/projects.yaml` | ~3,200 tokens |
-| **Rapid ATS Application Form Fill** | `assets/form-fill-cheatsheet.md`, `strategy/job-tracker.md`, `assets/cover-letters/standard.md` | ~2,100 tokens |
-| **Cold Outreach / Referral Request** | `assets/outreach-messages.md`, `identity/professional-summary.md` | ~1,500 tokens |
-| **Friday 5-Minute Weekly Review** | `strategy/weekly-tracker.md`, `journal/wins.md`, `journal/work-log/_template.md` | ~1,400 tokens |
+| **Tailor Resume for a Job Posting** | `tools/resume/master.yaml`, `identity/experience.yaml`, `identity/skills.yaml`, `tools/resume/variants/<target>.yaml` (or copy `_template.yaml`) | ~2,500 tokens |
+| **Prepare for Behavioral Interview** | `stories/star-stories.md`, `stories/interview-prep/behavioral.md` | ~2,800 tokens |
+| **Prepare for Technical / Domain Interview** | `identity/skills.yaml`, `stories/interview-prep/technical.md`, `identity/projects.yaml` | ~3,200 tokens |
+| **Rapid ATS Application Form Fill** | `personal/form-fill-cheatsheet.md`, `strategy/job-tracker.md` | ~1,800 tokens |
+| **Cold Outreach / Referral Request** | `identity/professional-summary.md`, `strategy/networking.md` | ~1,500 tokens |
 | **Target Role & Pivot Evaluation** | `strategy/target-roles.md`, `identity/skills.yaml` | ~2,200 tokens |
 | **Offer Evaluation & Comp Negotiation** | `strategy/financial.md`, `strategy/offer-comparison.md`, `personal/preferences.yaml` | ~2,000 tokens |
-| **Log New Win or Shipped Feature** | `journal/wins.md`, `identity/experience.yaml`, `resume/master.yaml`, `identity/claims-and-evidence.md` | ~2,600 tokens |
+| **Log New Win or Shipped Feature** | `journal/wins.md`, `identity/experience.yaml`, `identity/claims-and-evidence.md` | ~2,600 tokens |
 | **Quarterly Audit & System Health** | `ops/guide.md`, `ops/authority-map.md`, `config.yaml` | ~2,000 tokens |
 
 ---
@@ -79,11 +79,11 @@ Read `.pramedha/agent-instructions.md` — it contains the complete **34-step, 7
 |:-----:|:-----:|-------------|
 | A | 0-1 | Read config.yaml + scan data-corpus/ |
 | B | 2-10 | Fill identity/ (10 files — career facts + speaking + claims) |
-| C | 11-13 | Generate resume master + variants |
-| D | 14-21 | Generate assets (STAR stories, cover letters, LinkedIn, platform copy) |
-| E | 22-28 | Draft strategy (target roles, action tracker, digital presence, study plan) |
-| F | 29-31 | Draft personal (about-me, life-goals, preferences) |
-| G | 32-33 | Finalize VISION.md + validate |
+| C | 11-13 | Generate resume master + variants (in tools/resume/) |
+| D | 14-18 | Generate stories (STAR stories, testimonials, interview prep) |
+| E | 19-24 | Draft strategy (target roles, study plan, financial) |
+| F | 25-27 | Draft personal (about-me, life-goals, preferences) |
+| G | 28-29 | Finalize VISION.md + validate |
 
 ## What To Do When Asked to Update/Maintain
 
@@ -91,13 +91,13 @@ Read `ops/guide.md` — it contains event→file mapping:
 
 | Event | Files to Update |
 |-------|----------------|
-| New job/role | experience.yaml → skills.yaml → master.yaml → claims → professional-summary |
-| New certification | credentials.yaml → claims → study-plan → master.yaml |
-| New project | projects.yaml → experience.yaml → master.yaml → claims |
-| Job application | strategy/job-tracker.md → (optional) resume/jd/[company].yaml |
-| Interview scheduled | strategy/company-research/[company].md → interview-prep → star-stories review |
-| Achievement/win | journal/wins.md → experience.yaml → master.yaml → claims |
-| Speaking / hackathon | speaking-and-community.yaml → claims → professional-summary → platform-copy |
+| New job/role | experience.yaml → skills.yaml → tools/resume/master.yaml → claims → professional-summary |
+| New certification | credentials.yaml → claims → study-plan → tools/resume/master.yaml |
+| New project | projects.yaml → experience.yaml → tools/resume/master.yaml → claims |
+| Job application | strategy/job-tracker.md → (optional) tools/resume/jd/[company].yaml |
+| Interview scheduled | strategy/company-research/[company].md → stories/interview-prep → stories/star-stories review |
+| Achievement/win | journal/wins.md → experience.yaml → tools/resume/master.yaml → claims |
+| Speaking / hackathon | speaking-and-community.yaml → claims → professional-summary |
 | New raw data in data-corpus | Extract facts → identity/*.yaml → claims-and-evidence.md → downstream |
 
 ## Key Files for Quick Context
@@ -110,7 +110,7 @@ Read `ops/guide.md` — it contains event→file mapping:
 | What roles are they targeting? | `strategy/target-roles.md` |
 | What's verified vs estimated? | `identity/claims-and-evidence.md` |
 | Speaking, hackathons, events? | `identity/speaking-and-community.yaml` |
-| What actions are pending? | `strategy/master-action-tracker.md` |
+| What claim debt is pending? | `identity/claims-and-evidence.md` (Claim Debt Queue section) |
 | Previous session context? | `ops/session-handoff.md` |
 | Sub-projects (websites, etc.)? | `VISION.md` (Sub-Projects section) |
 | How to maintain this repo? | `ops/guide.md` |

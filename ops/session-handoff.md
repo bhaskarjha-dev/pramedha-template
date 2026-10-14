@@ -37,13 +37,13 @@ Brief 2-3 sentence overview of what was accomplished in this session.
 | Salary floor set to $185K base | Calculated from runway and target market benchmarks | strategy/financial.md, personal/preferences.yaml |
 
 ### Artifacts Generated & Updated
-- Created: resume/variants/A_Staff_Backend.yaml
-- Updated: assets/star-stories.md (added Story #4 on database migration)
-- Rendered: resume/output/A_Staff_Backend.pdf
+- Created: tools/resume/variants/A_Staff_Backend.yaml
+- Updated: stories/star-stories.md (added Story #4 on database migration)
+- Rendered: tools/resume/output/A_Staff_Backend.pdf
 
 ### Next Session Priorities
-- [ ] Tailor cover letter for Target Company X using assets/cover-letters/referral.md
-- [ ] Prepare for technical interview using assets/interview-prep/technical.md
-- [ ] Review claim debt items in strategy/master-action-tracker.md
+- [ ] Tailor cover letter for Target Company X (generate from identity/professional-summary.md)
+- [ ] Prepare for technical interview using stories/interview-prep/technical.md
+- [ ] Review claim debt items in identity/claims-and-evidence.md
 
 ===================================================================== -->

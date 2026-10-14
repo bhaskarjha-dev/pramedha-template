@@ -1,4 +1,4 @@
-# Getting Started — Your First 30 Minutes
+﻿# Getting Started — Your First 30 Minutes
 
 > **You just got this template. Here's exactly what to do, step by step.**
 > Don't try to fill everything at once. This guide gets you a working career system in 30 minutes.
@@ -32,7 +32,7 @@ git push -u origin main
 >
 > 1. [config.yaml](config.yaml) — Who you are (name, contact, profession type)
 > 2. [identity/experience.yaml](identity/experience.yaml) — What you've done (career facts and measured achievements)
-> 3. [resume/master.yaml](resume/master.yaml) — Your resume bullet pool
+> 3. [tools/resume/master.yaml](tools/resume/master.yaml) — Your resume bullet pool
 >
 > Once these 3 files are filled, you already have an uninflated, single-source career engine. You can copy bullets directly into any resume builder, or let Python assemble them automatically. Every other file (strategy, assets, journal) can be adopted gradually when you need it.
 >
@@ -43,7 +43,7 @@ git push -u origin main
 > - Map out your transition story in [personal/career-narrative.md](personal/career-narrative.md) before applying.
 >
 > 🚀 **Applying to Jobs Right Away?**
-> Keep [assets/form-fill-cheatsheet.md](assets/form-fill-cheatsheet.md) open in a side window. It centralizes your standard URLs, address formats, visa details, and recurring application question answers so you can breeze through lengthy ATS forms (Workday, Greenhouse, Lever) without repetitive typing.
+> Keep [personal/form-fill-cheatsheet.md](personal/form-fill-cheatsheet.md) open in a side window. It centralizes your standard URLs, address formats, visa details, and recurring application question answers so you can breeze through lengthy ATS forms (Workday, Greenhouse, Lever) without repetitive typing.
 
 ---
 
@@ -146,27 +146,27 @@ After `identity/` is filled:
 
 ```bash
 # Option A (Windows PowerShell 1-Click):
-.\resume\build.ps1
+.\tools\resume\build.ps1
 
 # Option B (Manual CLI in any terminal):
 # 1. Sync verified career facts into master resume bullet pool:
-py resume/sync.py
+py tools/resume/sync.py
 
 # 2. Create a tailored variant overlay (copy template):
-cp resume/variants/_template.yaml resume/variants/my-role.yaml
+cp tools/resume/variants/_template.yaml tools/resume/variants/my-role.yaml
 # Edit my-role.yaml to select which bullets to include
 
 # 3. Assemble and render PDF:
-py resume/assemble.py --validate    # Verify all references
-py resume/assemble.py               # Assembles to resume/generated/
-rendercv render resume/generated/my-role.yaml -o ../output
-# (Or simply run .\resume\build.ps1 on Windows / ./resume/build.sh on Linux/Mac)
+py tools/resume/assemble.py --validate    # Verify all references
+py tools/resume/assemble.py               # Assembles to tools/resume/generated/
+rendercv render tools/resume/generated/my-role.yaml -o ../output
+# (Or simply run .\tools\resume\build.ps1 on Windows / ./tools/resume/build.sh on Linux/Mac)
 # (On Windows PowerShell if encoding errors occur: $env:PYTHONUTF8 = "1")
-# Your PDF is compiled in resume/output/ in <1s via Typst (no LaTeX needed!)
+# Your PDF is compiled in tools/resume/output/ in <1s via Typst (no LaTeX needed!)
 ```
 
 > 💡 **Modern Workflows & Web Preview:**
-> - **Web App:** Prefer a browser GUI? Upload your assembled YAML from `resume/generated/` to [rendercv.com](https://rendercv.com) for instant live rendering and visual adjustments.
+> - **Web App:** Prefer a browser GUI? Upload your assembled YAML from `tools/resume/generated/` to [rendercv.com](https://rendercv.com) for instant live rendering and visual adjustments.
 > - **AI Agent Skill:** Using Claude Code, Cursor, or AGY agents? Run `npx skills add rendercv/rendercv-skill` so your AI has official AST-verified schema knowledge.
 > - **No Python?** The `identity/` data and markdown assets are completely standalone and work with any resume builder.
 
@@ -196,9 +196,9 @@ Fill these at your own pace. Each layer adds value independently:
 - [ ] `strategy/financial.md` — What's your salary target?
 
 ### Week 2: Assets
-- [ ] `assets/star-stories.md` — Write 3-5 STAR stories for interviews
-- [ ] `assets/cover-letters/standard.md` — Customize the cover letter template
-- [ ] `assets/form-fill-cheatsheet.md` — Pre-fill common application fields
+- [ ] `stories/star-stories.md` — Write 3-5 STAR stories for interviews
+- [ ] `stories/interview-prep/behavioral.md` — Customize the cover letter template
+- [ ] `personal/form-fill-cheatsheet.md` — Pre-fill common application fields
 
 ### Week 3: Personal (Private)
 - [ ] `personal/about-me.md` — Your life story and values

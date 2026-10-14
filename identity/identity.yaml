@@ -8,7 +8,7 @@
 # - Contact info (name, email, phone, location, profiles) can be defined here
 #   or in config.yaml.
 # - Priority: master.yaml > identity/identity.yaml > config.yaml
-#   If contact fields are omitted here, resume/assemble.py automatically falls
+#   If contact fields are omitted here, tools/resume/assemble.py automatically falls
 #   back to config.yaml.
 #
 # Verification Legend:

@@ -2,7 +2,7 @@
 
 > **Your career data — portable, version-controlled, AI-readable, and yours.**
 
-A structured career repository that works as a **complete career operating system** out of the box.
+A structured career repository that serves as the **permanent canonical source of truth** about your career.
 Fill the YAML + Markdown files with any AI assistant or text editor — no external tools required.
 Optionally compatible with [Pramedha](https://github.com/bhaskarjha-dev/pramedha-template) for AI-powered career intelligence.
 
@@ -13,10 +13,10 @@ Optionally compatible with [Pramedha](https://github.com/bhaskarjha-dev/pramedha
 | After Filling... | You Can... |
 |-----------------|-----------|
 | `config.yaml` + `identity/` | Generate a tailored resume in 30 seconds for any role |
-| `assets/star-stories.md` | Walk into any behavioral interview prepared with 8 stories |
+| `stories/star-stories.md` | Walk into any behavioral interview prepared with 8 stories |
 | `strategy/target-roles.md` | Know exactly which roles to apply to and why |
 | `strategy/job-tracker.md` | Track 50+ applications with follow-up reminders |
-| `assets/form-fill-cheatsheet.md` | Fill any job application form in 2 minutes flat |
+| `personal/form-fill-cheatsheet.md` | Fill any job application form in 2 minutes flat |
 | `journal/` | Have a brag document ready for performance reviews and promotions |
 
 ---
@@ -75,8 +75,8 @@ Fill at your own pace. Each layer adds value independently.
 |:-----:|---------------|--------------|
 | **0** | `config.yaml` (name + email) | Repo initialized |
 | **1** | `identity/` (experience + skills) | Working resume via cascade engine |
-| **2** | `strategy/` + `assets/` | Job search execution system |
-| **3** | `personal/` + `journal/` | Full career operating system |
+| **2** | `stories/` + `strategy/` | Interview prep + job search execution |
+| **3** | `personal/` + `journal/` | Full career knowledge base |
 | **→** | Import into Pramedha | AI matching, portfolio, career intelligence |
 
 ---
@@ -115,48 +115,27 @@ pramedha-template/
 │   ├── claims-and-evidence.md    Verification registry
 │   └── professional-summary.md   Elevator pitches (5 variants)
 │
-├── resume/                    ← Resume cascade system
-│   ├── master.yaml               Bullet pool (keyed phrasings)
-│   ├── design.yaml               Visual theme
-│   ├── sync.py                   Identity-to-master bridge synchronizer
-│   ├── assemble.py               Cascade engine
-│   ├── variants/                 Role-specific overlays
-│   ├── jd/                       Per-job-description overlays
-│   └── output/                   Generated PDFs
+├── stories/                   ← Authored narratives for interviews
+│   ├── star-stories.md           8 STAR behavioral stories
+│   ├── testimonials.md           Social proof & endorsements
+│   └── interview-prep/           Technical + behavioral prep
 │
 ├── strategy/                  ← Phase 2: Career strategy
 │   ├── target-roles.md           Role evaluation framework & 8-parameter scoring
-│   ├── master-action-tracker.md  Consolidated multi-stream priority board
-│   ├── weekly-tracker.md         Weekly goals & check-in
-│   ├── digital-presence-plan.md  Platform audit + content engine
 │   ├── study-plan.md             Learning roadmap & sprints
 │   ├── financial.md              Compensation, runway & negotiation (⚠️ private)
 │   ├── networking.md             Professional network CRM (⚠️ private)
 │   ├── job-tracker.md            Application pipeline tracker
-│   ├── job-platforms.md          Regional & global job channels
-│   ├── risk-register.md          Career risk assessment
 │   ├── offer-comparison.md       Multi-offer comparison
 │   └── company-research/         Per-company research dossiers
-│
-├── assets/                    ← Phase 2: Application materials
-│   ├── star-stories.md           8 STAR behavioral stories
-│   ├── outreach-messages.md      Cold, referral & follow-up copy
-│   ├── questions-to-ask.md       Prepared interviewer questions
-│   ├── form-fill-cheatsheet.md   Copy-paste job application answers (⚠️)
-│   ├── testimonials.md           Social proof & endorsements
-│   ├── linkedin-pack.md          LinkedIn profile optimization
-│   ├── platform-copy.md          Bios, abstracts & pitches
-│   ├── github-readme.md          GitHub profile README
-│   ├── cover-letters/            3 named frameworks (standard, referral, cold)
-│   ├── interview-prep/           Technical + behavioral prep
-│   └── project-briefs/           Detailed project write-ups
 │
 ├── personal/                  ← Phase 3: Private (never shared)
 │   ├── about-me.md               Life story, values, strengths
 │   ├── career-narrative.md       "Walk me through your career" script
 │   ├── life-goals.md             Goals, non-negotiables, dream role
 │   ├── reflections.md            Rejection learning & decision patterns
-│   └── preferences.yaml          Work prefs, deal-breakers, life context
+│   ├── preferences.yaml          Work prefs, deal-breakers, life context
+│   └── form-fill-cheatsheet.md   Copy-paste job application answers (⚠️)
 │
 ├── journal/                   ← Phase 3: Chronological logs
 │   ├── wins.md                   Achievement log (brag document)
@@ -170,13 +149,23 @@ pramedha-template/
 │   ├── prompts.md                AI operation prompts
 │   └── session-handoff.md        Cross-session context log
 │
-└── .pramedha/                 ← Pramedha ecosystem
-    ├── CHANGELOG.md              Template version history & release notes
-    ├── agent-instructions.md     How ANY AI fills this template
-    ├── schema-reference.md       Field-by-field schema docs
-    ├── import-guide.md           Import into Pramedha platform
-    ├── validate.py               Template integrity validator
-    └── examples/                 Example filled data
+├── .pramedha/                 ← Pramedha ecosystem
+│   ├── CHANGELOG.md              Template version history & release notes
+│   ├── agent-instructions.md     How ANY AI fills this template
+│   ├── schema-reference.md       Field-by-field schema docs
+│   ├── import-guide.md           Import into Pramedha platform
+│   ├── validate.py               Template integrity validator
+│   └── examples/                 Example filled data
+│
+└── tools/                     ← Optional tooling (decoupled from data)
+    └── resume/                   Resume cascade engine
+        ├── master.yaml           Bullet pool (keyed phrasings)
+        ├── design.yaml           Visual theme
+        ├── sync.py               Identity-to-master bridge synchronizer
+        ├── assemble.py           Cascade engine
+        ├── variants/             Role-specific overlays
+        ├── jd/                   Per-job-description overlays
+        └── output/               Generated PDFs
 ```
 
 ---
@@ -243,9 +232,9 @@ They are informational only — removing them has no effect on standalone usage.
 | `data-corpus/` | Raw evidence — certs, offer letters, IDs | ❌ **Never public** |
 | `strategy/financial.md` | Current salary, targets | ❌ **Never public** |
 | `strategy/networking.md` | Contact details, relationship notes | ❌ **Never public** |
-| `assets/form-fill-cheatsheet.md` | DOB, address, phone, references | ❌ **Never public** |
+| `personal/form-fill-cheatsheet.md` | DOB, address, phone, references | ❌ **Never public** |
 | `journal/feedback.md` | Performance review data | ❌ **Never public** |
-| `resume/output/` | Generated PDFs | ⚠️ Depends on content |
+| `tools/resume/output/` | Generated PDFs | ⚠️ Depends on content |
 
 ### If you MUST use a public repo
 
@@ -257,11 +246,11 @@ data-corpus/documents/
 strategy/financial.md
 strategy/networking.md
 identity/references.yaml
-assets/form-fill-cheatsheet.md
+personal/form-fill-cheatsheet.md
 journal/feedback.md
 
 # 2. Tell Git to stop tracking already-committed private scaffolding files:
-git rm -r --cached personal/ strategy/financial.md strategy/networking.md identity/references.yaml assets/form-fill-cheatsheet.md journal/feedback.md
+git rm -r --cached personal/ strategy/financial.md strategy/networking.md identity/references.yaml journal/feedback.md
 ```
 
 ---
@@ -324,7 +313,7 @@ git merge upstream/main --allow-unrelated-histories -X ours
 git diff HEAD~1 --stat
 
 # 5. Check for template improvements you might want to adopt manually
-git diff upstream/main -- .pramedha/ ops/ resume/assemble.py
+git diff upstream/main -- .pramedha/ ops/ tools/resume/assemble.py
 ```
 
 ### Why two strategies?
@@ -338,8 +327,8 @@ git diff upstream/main -- .pramedha/ ops/ resume/assemble.py
 
 | Template Change | Your Filled Repo | Result |
 |----------------|-----------------|--------|
-| New file added (e.g., `assets/new-template.md`) | Doesn't exist | ✅ Auto-merges |
-| Bug fix in `resume/assemble.py` | You didn't edit it | ✅ Auto-merges |
+| New file added (e.g., `stories/new-prep.md`) | Doesn't exist | ✅ Auto-merges |
+| Bug fix in `tools/resume/assemble.py` | You didn't edit it | ✅ Auto-merges |
 | Updated `ops/guide.md` | You didn't edit it | ✅ Auto-merges |
 | New fields in `identity/skills.yaml` | You filled it with your data | ⚠️ `-X ours` keeps YOUR version |
 | Updated `.pramedha/agent-instructions.md` | You didn't edit it | ✅ Auto-merges |

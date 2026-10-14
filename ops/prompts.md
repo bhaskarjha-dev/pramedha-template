@@ -1,4 +1,4 @@
-# Prompt Library — Copy-Paste Commands for AI Sessions
+﻿# Prompt Library — Copy-Paste Commands for AI Sessions
 
 > **Purpose:** Each prompt below is a self-contained instruction you paste into a NEW AI session.
 > The AI reads the repo files referenced in the prompt and executes the task.
@@ -67,17 +67,17 @@ CONTEXT: Read these files FIRST before doing anything:
 - ops/authority-map.md (what's truth for what)
 - README.md (architecture overview)
 
-Then read ALL files in identity/ and resume/.
+Then read ALL files in identity/ and tools/resume/.
 
 EXECUTE: Audit these 10 areas systematically:
 1. CONTACT CONSISTENCY — Does identity.yaml match config.yaml match master.yaml header?
 2. EXPERIENCE FRESHNESS — Is experience.yaml up to date? Missing recent work?
 3. SKILLS ACCURACY — Do skills.yaml levels match evidence in experience.yaml?
 4. CLAIMS INTEGRITY — Pick 5 random bullets from master.yaml. Are they in claims register?
-5. RESUME CASCADE — Run: python resume/assemble.py --validate
+5. RESUME CASCADE — Run: python tools/resume/assemble.py --validate
 6. VERIFICATION COVERAGE — What % of facts have ✅ tags? What % are ⚠️ or ❌?
 7. CROSS-FILE CONSISTENCY — Do dates, titles, company names match across files?
-8. PRIVACY CHECK — Is any personal/ data leaking into identity/ or resume/?
+8. PRIVACY CHECK — Is any personal/ data leaking into identity/ or tools/resume/?
 9. COMPLETENESS — What important fields are empty? What's the fill rate?
 10. STRATEGY ALIGNMENT — Do resume variants match target roles in strategy/?
 
@@ -107,7 +107,7 @@ EXECUTE:
 2. Tag all claims with verification status
 3. If this was a work project, add relevant bullets to experience.yaml
 4. Update identity/skills.yaml if new technologies were used
-5. Add to resume/master.yaml as a keyed project entry
+5. Add to tools/resume/master.yaml as a keyed project entry
 6. Note any new claims in identity/claims-and-evidence.md
 
 OUTPUT: Show exact changes made to each file. Commit with clear message.
@@ -126,7 +126,7 @@ WHAT HAPPENED:
 CONTEXT: Read these files first:
 - identity/experience.yaml (current experience)
 - identity/claims-and-evidence.md (claims register)
-- resume/master.yaml (bullet pool)
+- tools/resume/master.yaml (bullet pool)
 - ops/authority-map.md (source rules)
 
 EXECUTE:
@@ -134,7 +134,7 @@ EXECUTE:
 2. Write 2-3 bullet variations (default, short, technical)
 3. Tag metrics as [measured] or [estimated]
 4. Tag verification status (✅/⚠️/❌)
-5. Add keyed bullets to resume/master.yaml
+5. Add keyed bullets to tools/resume/master.yaml
 6. Register claims in claims-and-evidence.md
 7. Log the achievement in journal/wins.md
 
@@ -157,8 +157,8 @@ EXECUTE the weekly ritual:
 2. Check: Any wins to capture in journal/wins.md?
 3. Check: Any applications sent? Update strategy/job-tracker.md
 4. Check: Any new skills learned? Update identity/skills.yaml
-5. Update strategy/weekly-tracker.md with top goals and review strategy/master-action-tracker.md
-6. Run: python resume/assemble.py --validate (cascade health check)
+5. Update strategy/job-tracker.md with top goals and review identity/claims-and-evidence.md
+6. Run: python tools/resume/assemble.py --validate (cascade health check)
 7. Quick scan: Anything in data-corpus/ not yet extracted to identity/?
 8. Check git status — any uncommitted changes?
 
@@ -177,20 +177,20 @@ JOB POSTING:
 [Paste the full job description here]
 
 CONTEXT: Read these files:
-- resume/master.yaml (all available bullets)
-- resume/design.yaml (theme config)
+- tools/resume/master.yaml (all available bullets)
+- tools/resume/design.yaml (theme config)
 - identity/experience.yaml (full work history)
 - identity/skills.yaml (skill levels)
-- resume/jd/_template.yaml (JD overlay structure)
+- tools/resume/jd/_template.yaml (JD overlay structure)
 
 EXECUTE:
 1. Analyze the JD: extract required skills, experience, keywords
 2. Match against my skills and experience
-3. Create a JD-specific overlay in resume/jd/[company]_[role].yaml
+3. Create a JD-specific overlay in tools/resume/jd/[company]_[role].yaml
 4. Select the most relevant bullets from master.yaml
 5. Write a tailored summary for this specific role
 6. Choose technologies section matching JD requirements
-7. Run: python resume/assemble.py --jd jd/[company]_[role].yaml
+7. Run: python tools/resume/assemble.py --jd jd/[company]_[role].yaml
 
 OUTPUT:
 - The JD overlay file (ready to assemble)
@@ -209,18 +209,18 @@ TASK: Create a new resume variant for a target role category.
 TARGET ROLE: [e.g., "GenAI Engineer", "Backend Lead", "ML Engineer"]
 
 CONTEXT: Read:
-- resume/master.yaml (all bullets)
-- resume/variants/_template.yaml (variant structure)
+- tools/resume/master.yaml (all bullets)
+- tools/resume/variants/_template.yaml (variant structure)
 - strategy/target-roles.md (role evaluation)
 - identity/skills.yaml (current skills)
 
 EXECUTE:
 1. Analyze what skills/experience matter most for this role
 2. Select the strongest matching bullets from master.yaml
-3. Create resume/variants/[role_name].yaml
+3. Create tools/resume/variants/[role_name].yaml
 4. Write a role-specific summary
 5. Choose technologies section optimized for ATS
-6. Run: python resume/assemble.py --variant [name]
+6. Run: python tools/resume/assemble.py --variant [name]
 7. Review the generated YAML for quality
 
 OUTPUT: The variant file + analysis of how well my profile matches this role.
@@ -240,8 +240,8 @@ INTERVIEW STAGE: [Phone screen / Technical / System design / Behavioral / Final]
 CONTEXT: Read:
 - identity/experience.yaml (my full work history)
 - identity/skills.yaml (my skill levels)
-- assets/star-stories.md (behavioral stories)
-- assets/questions-to-ask.md (questions for interviewer)
+- stories/star-stories.md (behavioral stories)
+- stories/star-stories.md (questions for interviewer)
 - strategy/target-roles.md (target role requirements and alignment)
 
 EXECUTE:
@@ -263,7 +263,7 @@ OUTPUT: Interview prep document I can review 30 min before the call.
 TASK: Improve the quality of my resume bullets.
 
 CONTEXT: Read:
-- resume/master.yaml (current bullets)
+- tools/resume/master.yaml (current bullets)
 - identity/experience.yaml (source facts)
 - identity/claims-and-evidence.md (what's safe to claim)
 
@@ -293,7 +293,7 @@ CONTEXT: Read:
 - identity/experience.yaml (work history)
 - identity/skills.yaml (skill matrix)
 - identity/professional-summary.md (summary variants)
-- assets/linkedin-pack.md (LinkedIn-specific content)
+- identity/professional-summary.md (LinkedIn-specific content)
 
 EXECUTE:
 1. Generate optimized headline (max 220 chars)
@@ -301,7 +301,7 @@ EXECUTE:
 3. Map experience entries to platform format
 4. Generate skills list ordered by relevance to target roles
 5. Suggest Featured section items
-6. Check for consistency with resume/master.yaml
+6. Check for consistency with tools/resume/master.yaml
 
 OUTPUT: Ready-to-paste content for each profile section.
 ```
@@ -342,7 +342,7 @@ TASK: Audit the integrity of my claims register.
 CONTEXT: Read:
 - identity/claims-and-evidence.md (claims register)
 - identity/experience.yaml (all experience bullets)
-- resume/master.yaml (resume-facing bullets)
+- tools/resume/master.yaml (resume-facing bullets)
 - data-corpus/ (available evidence)
 
 EXECUTE:
@@ -378,7 +378,7 @@ EXECUTE:
 3. Add any new skills with proper evidence references
 4. Remove any skills no longer relevant (or mark as deprecated)
 5. Ensure every skill has evidence linking to a project or course
-6. Update resume/master.yaml technologies sections if needed
+6. Update tools/resume/master.yaml technologies sections if needed
 
 OUTPUT: Diff of changes to skills.yaml + justification for each change.
 ```
@@ -394,7 +394,7 @@ CONTEXT: Read:
 - identity/professional-summary.md (summary variants)
 - identity/projects.yaml (portfolio projects)
 - identity/experience.yaml (work highlights)
-- assets/github-readme.md (GitHub profile)
+- identity/professional-summary.md (GitHub profile)
 
 EXECUTE:
 1. Write homepage hero section (name, headline, 1-liner)
@@ -450,18 +450,18 @@ EXECUTE:
 1. Run the validator:
    py .pramedha/validate.py
 2. Verify resume cascade consistency:
-   py resume/assemble.py --validate
+   py tools/resume/assemble.py --validate
 3. Preview identity-to-master synchronization:
-   py resume/sync.py --dry-run
+   py tools/resume/sync.py --dry-run
 4. Audit for anti-inflation:
-   - Check if any claims in resume/master.yaml lack verification tags in identity/claims-and-evidence.md
+   - Check if any claims in tools/resume/master.yaml lack verification tags in identity/claims-and-evidence.md
    - Check for unevidenced skill level promotions in identity/skills.yaml
 5. Check file freshness:
    - Identify any YAML files whose last_updated exceeds 90 days
 6. Generate a compact scorecard:
    - Fill percentage and coverage gaps
    - Broken references or missing files
-   - High-priority action items for strategy/master-action-tracker.md
+   - High-priority action items for identity/claims-and-evidence.md
 
 OUTPUT: Compact health report with immediate corrective steps.
 ```
@@ -479,17 +479,17 @@ EVENT DETAILS:
 CONTEXT: Read these files first:
 - identity/speaking-and-community.yaml (speaking, hackathons, and community activities)
 - identity/claims-and-evidence.md (claims register)
-- resume/master.yaml (bullet & achievement pool)
-- assets/platform-copy.md (social proof & bio copy)
+- tools/resume/master.yaml (bullet & achievement pool)
+- identity/professional-summary.md (social proof & bio copy)
 - ops/authority-map.md (source authority rules)
 
 EXECUTE:
 1. Add entry to identity/speaking-and-community.yaml (under `speaking:` or `hackathons:`) with full metadata
 2. Tag verification status (✅/⚠️/❌) with evidence path in data-corpus/
-3. If this was a hackathon win or major keynote, sync or add entry to resume/master.yaml (`achievements` pool)
+3. If this was a hackathon win or major keynote, sync or add entry to tools/resume/master.yaml (`achievements` pool)
 4. Log the achievement in journal/wins.md
-5. Update identity/professional-summary.md or assets/platform-copy.md if this strengthens thought leadership
-6. Run: py resume/sync.py --section ach --dry-run (verify synchronization)
+5. Update identity/professional-summary.md or identity/professional-summary.md if this strengthens thought leadership
+6. Run: py tools/resume/sync.py --section ach --dry-run (verify synchronization)
 
 OUTPUT: Show exact changes across all files. Commit with message: "feat(community): add [event name]"
 ```

@@ -30,15 +30,18 @@ This repository is the **command center** for that transition. It is not a resum
 
 ---
 
-## The Three-Layer Architecture
+## The Four-Layer Architecture
 
 ```
 IDENTITY (who I am)    → identity/*.yaml — verified facts, never inflated
-STRATEGY (what to do)  → strategy/*.md   — plans, targets, timelines
-ASSETS   (what to use) → assets/*.md     — copy-paste materials for applications
+STORIES  (what I say)  → stories/*.md    — authored narratives for interviews
+STRATEGY (what to do)  → strategy/*.md   — plans, targets, decisions
+PERSONAL (who I am)    → personal/*.md   — private context, never shared
 ```
 
-Everything flows from identity → strategy → assets.
+Plus: `tools/resume/` — optional cascade engine for deterministic PDF generation.
+
+Everything flows from identity → stories/strategy → tools.
 If facts change, the identity layer updates first, then everything downstream regenerates.
 
 ---
@@ -49,9 +52,9 @@ If facts change, the identity layer updates first, then everything downstream re
 |-------|:------:|----------------|
 | Phase A: Foundation | ⬜ | Identity config + raw evidence in `data-corpus/` |
 | Phase B: Identity Layer | ⬜ | Fact database: experience, skills, credentials, projects, claims |
-| Phase C: Resume Pipeline | ⬜ | master.yaml bullet pool + role-specific variants → RenderCV PDF |
-| Phase D: Assets Generation | ⬜ | STAR stories, cover letters, LinkedIn pack, platform copy |
-| Phase E: Strategy Layer | ⬜ | Target roles, study plan, master action tracker, digital presence |
+| Phase C: Resume Pipeline | ⬜ | tools/resume/ master.yaml bullet pool + role-specific variants → RenderCV PDF |
+| Phase D: Stories & Narratives | ⬜ | STAR stories, testimonials, interview prep |
+| Phase E: Strategy Layer | ⬜ | Target roles, study plan, job tracking, financial |
 | Phase F: Personal Context | ⬜ | About me, career narrative, preferences, reflections |
 | Phase G: Governance & Vision | ⬜ | VISION.md, validation, maintenance rituals |
 
@@ -59,17 +62,14 @@ If facts change, the identity layer updates first, then everything downstream re
 
 ## What's Next
 
-> **All action items are tracked in a single file:**
-> 📋 **[Master Action Tracker](strategy/master-action-tracker.md)**
+> **Action items are tracked in the Claim Debt Queue within:**
+> 📋 **[Claims & Evidence Registry](identity/claims-and-evidence.md)**
 >
-> That file is the dashboard — organized by stream:
+> That file tracks:
 > - 🔴 **Claim Debt** — evidence needed for resume claims
-> - 🟠 **Portfolio** — projects to build/polish
-> - 🔵 **Digital Presence** — website, profiles, content
-> - 🟢 **Skill Building** — learning gaps to close
-> - 🟡 **Job Search** — applications, interviews, networking
+> - 🟢 **Career Contingency** — emergency preparedness checklists
 >
-> Weekly picks from the tracker go into [weekly-tracker.md](strategy/weekly-tracker.md).
+> Active job search tasks are tracked in [job-tracker.md](strategy/job-tracker.md).
 
 ---
 
@@ -111,10 +111,10 @@ This repository doesn't die after the job search. It becomes:
 3. Dump data into data-corpus/              → Raw career evidence
 4. Read .pramedha/agent-instructions.md     → AI fill protocol (7 phases)
 5. Fill identity/ & audit claims            → Structured facts + claims verification
-6. Build resume master & variants           → resume/master.yaml + variants
-7. Generate assets/                         → STAR stories, cover letters, platform copy
+6. Build resume master & variants           → tools/resume/master.yaml + variants
+7. Generate stories/                        → STAR stories, testimonials, interview prep
 8. Draft strategy/ & personal/              → Target roles, trackers, career vision
-9. Validate & render PDFs                   → py .pramedha/validate.py & resume/build
+9. Validate & render PDFs                   → py .pramedha/validate.py & tools/resume/build
 ```
 
 ---
@@ -122,7 +122,7 @@ This repository doesn't die after the job search. It becomes:
 ## Key Rules (Non-Negotiable)
 
 1. **`identity/*.yaml` is the source of truth.** Resumes are outputs, not inputs.
-2. **`resume/master.yaml` is the resume truth.** Never edit `generated/*.yaml` directly.
+2. **`tools/resume/master.yaml` is the resume truth.** Never edit `generated/*.yaml` directly.
 3. **Every claim must pass the claims register** before it goes on a resume.
 4. **Never disclose current salary** to recruiters. State target range only.
 5. **This repo is 100% self-contained.** No external dependencies for the data.

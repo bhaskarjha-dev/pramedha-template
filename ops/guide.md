@@ -73,19 +73,19 @@ resume/variants/*.yaml ───────────┘
 
 | Career Event | Step 1 (Log) | Step 2 (Structured Truth) | Step 3 (Verify & Claims) | Step 4 (Downstream Assets) |
 |--------------|--------------|--------------------------|--------------------------|----------------------------|
-| **New job / promotion** | `journal/work-log/` | `identity/experience.yaml` | `identity/claims-and-evidence.md` | `resume/master.yaml` → rebuild variants |
-| **New certification / degree** | `journal/learning-log.md` | `identity/credentials.yaml` | `identity/claims-and-evidence.md` | `resume/master.yaml` |
+| **New job / promotion** | `journal/work-log/` | `identity/experience.yaml` | `identity/claims-and-evidence.md` | `tools/resume/master.yaml` → rebuild variants |
+| **New certification / degree** | `journal/learning-log.md` | `identity/credentials.yaml` | `identity/claims-and-evidence.md` | `tools/resume/master.yaml` |
 | **Acquired new skill** | `journal/learning-log.md` | `identity/skills.yaml` | — | `strategy/study-plan.md` |
 | **Won award / recognition** | `journal/wins.md` | `identity/credentials.yaml` | `identity/claims-and-evidence.md` | `identity/professional-summary.md` |
 | **Received feedback** | `journal/feedback.md` | — | — | — |
 | **Applied to a job** | — | — | — | `strategy/job-tracker.md` |
-| **Shipped project / open source**| `journal/work-log/` | `identity/projects.yaml` | `identity/claims-and-evidence.md` | `resume/master.yaml` |
+| **Shipped project / open source**| `journal/work-log/` | `identity/projects.yaml` | `identity/claims-and-evidence.md` | `tools/resume/master.yaml` |
 | **Received job offer** | — | — | — | `strategy/offer-comparison.md` |
 | **Claim verified with proof** | — | — | Upgrade tier in `claims-and-evidence.md` | Can promote to primary resume |
 | **Claim disputed / weakened** | — | — | Downgrade tier in `claims-and-evidence.md` | Remove from active resume variants |
-| **Contact info changed** | — | `identity/identity.yaml` & `config.yaml` | — | `assets/platform-copy.md` |
-| **Spoke at conference / event** | `journal/wins.md` | `identity/speaking-and-community.yaml` | `identity/claims-and-evidence.md` | `assets/platform-copy.md` |
-| **New evidence in data-corpus** | — | Extract into `identity/*.yaml` | `identity/claims-and-evidence.md` | Downstream assets |
+| **Contact info changed** | — | `identity/identity.yaml` & `config.yaml` | — | — |
+| **Spoke at conference / event** | `journal/wins.md` | `identity/speaking-and-community.yaml` | `identity/claims-and-evidence.md` | `identity/professional-summary.md` |
+| **New evidence in data-corpus** | — | Extract into `identity/*.yaml` | `identity/claims-and-evidence.md` | — |
 
 ---
 
@@ -109,8 +109,7 @@ resume/variants/*.yaml ───────────┘
 - [ ] Record wins and milestones in `journal/wins.md`
 - [ ] Update `strategy/job-tracker.md` if actively interviewing or applying
 - [ ] Log any significant performance feedback in `journal/feedback.md`
-- [ ] Review `strategy/master-action-tracker.md` and check off completed action items
-- [ ] Update `strategy/weekly-tracker.md` with priority goals for the coming week
+- [ ] Review Claim Debt Queue in `identity/claims-and-evidence.md` and check off resolved items
 
 ### Monthly (15 minutes)
 - [ ] Review and update `identity/skills.yaml` with newly acquired technologies
@@ -122,11 +121,11 @@ resume/variants/*.yaml ───────────┘
 ### Quarterly (30 minutes)
 - [ ] Audit `identity/experience.yaml` — ensure recent quarters are fully documented
 - [ ] Review `strategy/target-roles.md` — re-score candidate roles if market shifted
-- [ ] Run resume cascade validation: `python resume/assemble.py --validate`
-- [ ] Check for orphaned resume bullets: `python resume/assemble.py --orphans`
+- [ ] Run resume cascade validation: `python tools/resume/assemble.py --validate`
+- [ ] Check for orphaned resume bullets: `python tools/resume/assemble.py --orphans`
 - [ ] Check for new credentials in `identity/credentials.yaml`
 - [ ] Refresh references in `identity/references.yaml` — ensure 3+ contacts are warm
-- [ ] Review `strategy/risk-register.md` — update contingencies
+- [ ] Review Career Contingency Checklists in `identity/claims-and-evidence.md`
 - [ ] Execute the 10-Area Audit Checklist below
 
 ---
@@ -138,7 +137,7 @@ resume/variants/*.yaml ───────────┘
 
 ### 1. Contact Consistency
 - [ ] `identity/identity.yaml` contact details match `config.yaml`
-- [ ] `resume/master.yaml` header matches `identity/identity.yaml`
+- [ ] `tools/resume/master.yaml` header matches `identity/identity.yaml`
 - [ ] Public platform profiles (LinkedIn, GitHub) match `identity/identity.yaml`
 - [ ] All portfolio and social links are live and return HTTP 200
 
@@ -161,10 +160,10 @@ resume/variants/*.yaml ───────────┘
 - [ ] Evidence references point to valid documents in `data-corpus/`
 
 ### 5. Resume Cascade Health
-- [ ] `python resume/assemble.py --validate` passes with 0 errors
+- [ ] `python tools/resume/assemble.py --validate` passes with 0 errors
 - [ ] All variants build without schema warnings
-- [ ] `python resume/assemble.py --orphans` identifies no unused orphan bullets
-- [ ] Generated files in `resume/generated/` reflect current master pool
+- [ ] `python tools/resume/assemble.py --orphans` identifies no unused orphan bullets
+- [ ] Generated files in `tools/resume/generated/` reflect current master pool
 
 ### 6. Verification Coverage
 - [ ] > 80% of career claims carry ✅ VERIFIED tags
@@ -179,7 +178,7 @@ resume/variants/*.yaml ───────────┘
 - [ ] Compensation expectations in `strategy/financial.md` match current market bands
 
 ### 8. Privacy & Boundary Check
-- [ ] No content from `personal/` leaks into `identity/` or `resume/`
+- [ ] No content from `personal/` leaks into `identity/` or `tools/resume/`
 - [ ] No private compensation figures appear in public-facing files
 - [ ] Sensitive files in `data-corpus/` are listed in `.gitignore`
 - [ ] If repository is hosted publicly, no PII (phone, address, DOB) is committed
@@ -193,7 +192,7 @@ resume/variants/*.yaml ───────────┘
 ### 10. Repository & Git Health
 - [ ] No uncommitted working tree changes sitting unpushed for > 1 week
 - [ ] Commit messages follow descriptive conventional commit standards
-- [ ] Build artifacts (`resume/output/*.pdf`) are untracked in `.gitignore`
+- [ ] Build artifacts (`tools/resume/output/*.pdf`) are untracked in `.gitignore`
 - [ ] No large binary files (> 10MB) bloat the Git history
 
 ### Audit Health Scoring

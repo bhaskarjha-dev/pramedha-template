@@ -18,27 +18,19 @@
 | **Speaking, hackathons, events, communities** | `identity/speaking-and-community.yaml` | LinkedIn posts, event photos |
 | **Volunteering / OSS** | `identity/volunteering.yaml` | Informal mentions |
 | **References** | `identity/references.yaml` | Old reference lists |
-| **Claims verification** | `identity/claims-and-evidence.md` | Resume bullets themselves |
+| **Claims verification & debt** | `identity/claims-and-evidence.md` | Resume bullets themselves |
 | **Professional summary** | `identity/professional-summary.md` | Old LinkedIn about |
-| **Behavioral STAR story bank** | `assets/star-stories.md` | Memory, improvised interview answers |
-| **Interview prep & talk tracks** | `assets/interview-prep/behavioral.md`, `technical.md` | Ad-hoc prep sheets, generic online lists |
-| **Cover letters (standard, referral, cold)** | `assets/cover-letters/*.md` | Old customized cover letters |
-| **Social proof & endorsements** | `assets/testimonials.md` | Scattered recommendation letters |
-| **Platform bios & short copy** | `assets/platform-copy.md` | Scattered bios, old resume headers |
-| **Outreach & referral messages** | `assets/outreach-messages.md` | Ad-hoc email/message drafts |
-| **Resume bullets** | `resume/master.yaml` | Generated files, old YAMLs |
-| **Resume design** | `resume/design.yaml` | Design blocks in variants |
-| **Variant selection** | `resume/variants/*.yaml` | Manually curated files |
-| **Generated YAMLs** | `resume/generated/*.yaml` | Auto-generated — DO NOT EDIT |
+| **Behavioral STAR story bank** | `stories/star-stories.md` | Memory, improvised interview answers |
+| **Interview prep & talk tracks** | `stories/interview-prep/behavioral.md`, `technical.md` | Ad-hoc prep sheets, generic online lists |
+| **Social proof & endorsements** | `stories/testimonials.md` | Scattered recommendation letters |
+| **Resume bullets & phrasings** | `tools/resume/master.yaml` | Generated files, old YAMLs |
+| **Resume design** | `tools/resume/design.yaml` | Design blocks in variants |
+| **Variant selection** | `tools/resume/variants/*.yaml` | Manually curated files |
+| **Generated YAMLs** | `tools/resume/generated/*.yaml` | Auto-generated — DO NOT EDIT |
 | **Target roles, scoring & evaluation**| `strategy/target-roles.md` | Old role wish lists |
 | **Application pipeline & tracker** | `strategy/job-tracker.md` | Scattered spreadsheets |
-| **Job platforms & application channels**| `strategy/job-platforms.md` | Bookmarks, notes |
 | **Compensation targets & runway** | `strategy/financial.md` | Guesses, recruiter-anchored numbers |
 | **Offer evaluation & decision matrix** | `strategy/offer-comparison.md` | Mental math, impulsive decisions |
-| **Career risks & mitigation plans** | `strategy/risk-register.md` | Untracked transition anxieties |
-| **Pending tasks & actions** | `strategy/master-action-tracker.md` | Scattered TODO lists |
-| **This week's focus** | `strategy/weekly-tracker.md` | Old weekly plans |
-| **Digital presence & content strategy**| `strategy/digital-presence-plan.md` | Scattered platform notes |
 | **Learning roadmap & study sprints** | `strategy/study-plan.md` | Scattered study notes |
 | **Network & contacts** | `strategy/networking.md` | Scattered address books |
 | **Work preferences & life context** | `personal/preferences.yaml` | Assumptions |
@@ -46,12 +38,12 @@
 | **Long-term life & personal vision** | `personal/life-goals.md` | Short-term task lists |
 | **Career narrative & pivots** | `personal/career-narrative.md` | Scattered cover letters |
 | **Private reflections & notes** | `personal/reflections.md` | Scattered journals |
+| **Form-fill answers** | `personal/form-fill-cheatsheet.md` | Memory, old applications |
 | **Shipped wins & achievements log** | `journal/wins.md` | Memory during annual reviews |
 | **Course & learning log** | `journal/learning-log.md` | Forgotten course history |
 | **Performance reviews & feedback** | `journal/feedback.md` | Scattered 1:1 notes |
 | **Weekly work logs** | `journal/work-log/*.md` | Vague timesheets |
 | **Career mission** | `VISION.md` | Old plans, brainstorm docs |
-| **Form-fill answers** | `assets/form-fill-cheatsheet.md` | Memory, old applications |
 | **Session context & handoff** | `ops/session-handoff.md` | Old conversation transcripts |
 | **Operations, maintenance & audit** | `ops/guide.md` | Ad-hoc maintenance notes |
 | **Sub-project registry** | `VISION.md` (Sub-Projects section) | Scattered project folders |
@@ -77,9 +69,9 @@
 data-corpus/ (raw evidence)
      ↓ AI extraction
 identity/ (structured truth)
-     ↓ cascade engine
-resume/master.yaml (bullet pool)
-     × resume/variants/ (overlays)
-     = resume/generated/ (assembled)
-     → resume/output/ (PDFs)
+     ↓ cascade engine (tools/resume/)
+tools/resume/master.yaml (bullet pool)
+     × tools/resume/variants/ (overlays)
+     = tools/resume/generated/ (assembled)
+     → tools/resume/output/ (PDFs)
 ```

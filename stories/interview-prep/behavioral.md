@@ -1,7 +1,7 @@
 # Behavioral Interview Preparation
 
 > **Purpose:** Frameworks, common questions, and story mapping for behavioral interviews.
-> Derives concrete examples from `assets/star-stories.md` and verified claims in `identity/claims-and-evidence.md`.
+> Derives concrete examples from `stories/star-stories.md` and verified claims in `identity/claims-and-evidence.md`.
 
 ---
 

@@ -23,14 +23,14 @@ master.yaml          →  ALL your bullets, keyed by role + phrasing
 
 ```bash
 # 1. Sync verified facts from identity/ (optional, fast-tracks master.yaml population)
-py resume/sync.py
+py tools/resume/sync.py
 
 # 2. Enrich master.yaml with phrasing variants (default, short, technical, leadership)
 # 3. Create variants in variants/ for target roles (copy variants/_template.yaml)
 
 # 4. Assemble:
-py resume/assemble.py --validate    # Verify all references
-py resume/assemble.py               # Build all variant YAMLs to generated/
+py tools/resume/assemble.py --validate    # Verify all references
+py tools/resume/assemble.py               # Build all variant YAMLs to generated/
 
 # 5. Render PDFs via RenderCV (uses built-in Typst; no LaTeX required!):
 pip install rendercv
@@ -59,7 +59,7 @@ rendercv render generated/Your_Name_Variant_CV.yaml -o ../output
 
 ## Themes & Visual Design (RenderCV v2.8)
 
-RenderCV v2.8 renders directly via **Typst**, compiling in <1 second with zero TeX dependencies. Configure your theme in `resume/design.yaml`:
+RenderCV v2.8 renders directly via **Typst**, compiling in <1 second with zero TeX dependencies. Configure your theme in `tools/resume/design.yaml`:
 
 | Theme | Best For | Description |
 |-------|----------|-------------|
@@ -95,7 +95,7 @@ npx skills add rendercv/rendercv-skill
 This arms AI assistants with full AST-verified knowledge of RenderCV's schema and constraints.
 
 ### 3. Web App Workflow (`rendercv.com`)
-RenderCV offers a companion browser app at [rendercv.com](https://rendercv.com) with live WebAssembly rendering, visual form editing, and GitHub repository synchronization. You can copy any generated YAML file from `resume/generated/` into the web app for instant browser previews.
+RenderCV offers a companion browser app at [rendercv.com](https://rendercv.com) with live WebAssembly rendering, visual form editing, and GitHub repository synchronization. You can copy any generated YAML file from `tools/resume/generated/` into the web app for instant browser previews.
 
 ---
 

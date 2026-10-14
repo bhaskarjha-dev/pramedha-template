@@ -3,7 +3,7 @@
 > **Purpose:** Track every job application from initial discovery through screening, interviews, offer, and decision.
 >
 > **Cadence:** Review and update at least once weekly during active job search.
-> **Outreach Copy:** See [assets/outreach-messages.md](../assets/outreach-messages.md) for follow-up and thank-you templates.
+> **Outreach Copy:** Generate follow-up and thank-you messages on demand from `identity/professional-summary.md`.
 
 ---
 
@@ -28,9 +28,9 @@
 
 | Trigger | Action | Recommended Template |
 |---------|--------|----------------------|
-| **Day 7 after application** | Send polite inquiry to recruiter or connection | [outreach-messages.md](../assets/outreach-messages.md#3-post-application-follow-ups) |
-| **Within 24h post-interview** | Send personalized thank-you note | [outreach-messages.md](../assets/outreach-messages.md#4-post-interview-thank-you-notes-within-24-hours) |
-| **Day 14 (No response)** | Send second gentle status check; if silent, mark ⏸️ | [outreach-messages.md](../assets/outreach-messages.md#3-post-application-follow-ups) |
+| **Day 7 after application** | Send polite inquiry to recruiter or connection | Generate from `identity/professional-summary.md` |
+| **Within 24h post-interview** | Send personalized thank-you note | Generate from `identity/professional-summary.md` |
+| **Day 14 (No response)** | Send second gentle status check; if silent, mark ⏸️ | Generate follow-up |
 | **Post-rejection** | Send graceful acknowledgment; ask for feedback | "Thank you for the update. If possible, I'd value any quick feedback..." |
 
 ---

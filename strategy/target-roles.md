@@ -97,8 +97,8 @@ Rate each role 1–5 on these 8 dimensions (Max 40 points):
 
 | Variant | Target Roles | Key Emphasis | Variant Config |
 |:-------:|-------------|-------------|----------------|
-| A | *Roles 1, 2* | *Core engineering + architecture* | `resume/variants/variant-a.yaml` |
-| B | *Roles 3, 4* | *Applied ML / domain specialization* | `resume/variants/variant-b.yaml` |
+| A | *Roles 1, 2* | *Core engineering + architecture* | `tools/resume/variants/variant-a.yaml` |
+| B | *Roles 3, 4* | *Applied ML / domain specialization* | `tools/resume/variants/variant-b.yaml` |
 
 ---
 
@@ -118,4 +118,4 @@ Rate each role 1–5 on these 8 dimensions (Max 40 points):
 | **Salary range (your YoE)** | (Research-backed range for target market) |
 | **Target companies** | **Dream:** [Co A] · **Target:** [Co B, Co C] · **Safety:** [Co D] |
 | **ATS keywords** | (Keywords from job descriptions to include on resume/LinkedIn) |
-| **Resume variant** | (Maps to `resume/variants/*.yaml`) |
+| **Resume variant** | (Maps to `tools/resume/variants/*.yaml`) |

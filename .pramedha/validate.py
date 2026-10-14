@@ -43,11 +43,11 @@ REQUIRED_FILES = [
     "identity/projects.yaml",
     "identity/claims-and-evidence.md",
     "identity/professional-summary.md",
-    "resume/master.yaml",
-    "resume/design.yaml",
-    "resume/assemble.py",
-    "resume/sync.py",
-    "resume/_yaml_utils.py",
+    "tools/resume/master.yaml",
+    "tools/resume/design.yaml",
+    "tools/resume/assemble.py",
+    "tools/resume/sync.py",
+    "tools/resume/_yaml_utils.py",
 ]
 
 OPTIONAL_FILES = [
@@ -59,30 +59,17 @@ OPTIONAL_FILES = [
     "personal/preferences.yaml",
     "personal/career-narrative.md",
     "personal/reflections.md",
+    "personal/form-fill-cheatsheet.md",
+    "stories/star-stories.md",
+    "stories/testimonials.md",
+    "stories/interview-prep/behavioral.md",
+    "stories/interview-prep/technical.md",
     "strategy/target-roles.md",
-    "strategy/master-action-tracker.md",
-    "strategy/weekly-tracker.md",
-    "strategy/digital-presence-plan.md",
     "strategy/study-plan.md",
     "strategy/financial.md",
     "strategy/job-tracker.md",
-    "strategy/job-platforms.md",
     "strategy/networking.md",
     "strategy/offer-comparison.md",
-    "strategy/risk-register.md",
-    "assets/star-stories.md",
-    "assets/outreach-messages.md",
-    "assets/linkedin-pack.md",
-    "assets/platform-copy.md",
-    "assets/form-fill-cheatsheet.md",
-    "assets/questions-to-ask.md",
-    "assets/testimonials.md",
-    "assets/github-readme.md",
-    "assets/interview-prep/behavioral.md",
-    "assets/interview-prep/technical.md",
-    "assets/cover-letters/standard.md",
-    "assets/cover-letters/referral.md",
-    "assets/cover-letters/cold-outreach.md",
     "journal/wins.md",
     "journal/learning-log.md",
     "journal/feedback.md",
@@ -103,8 +90,8 @@ YAML_FILES_TO_VALIDATE = [
     "identity/volunteering.yaml",
     "identity/references.yaml",
     "personal/preferences.yaml",
-    "resume/master.yaml",
-    "resume/design.yaml",
+    "tools/resume/master.yaml",
+    "tools/resume/design.yaml",
 ]
 
 
@@ -286,18 +273,18 @@ def check_verification_tags(result: ValidationResult):
 
 def check_cascade_consistency(result: ValidationResult):
     """Check that resume cascade files are consistent."""
-    master_path = TEMPLATE_ROOT / "resume" / "master.yaml"
-    design_path = TEMPLATE_ROOT / "resume" / "design.yaml"
+    master_path = TEMPLATE_ROOT / "tools" / "resume" / "master.yaml"
+    design_path = TEMPLATE_ROOT / "tools" / "resume" / "design.yaml"
 
     if not master_path.exists():
-        result.error("resume/master.yaml missing — cascade engine won't work")
+        result.error("tools/resume/master.yaml missing — cascade engine won't work")
         return
     if not design_path.exists():
-        result.error("resume/design.yaml missing — cascade engine won't work")
+        result.error("tools/resume/design.yaml missing — cascade engine won't work")
         return
 
     # Check for variants
-    variants_dir = TEMPLATE_ROOT / "resume" / "variants"
+    variants_dir = TEMPLATE_ROOT / "tools" / "resume" / "variants"
     if variants_dir.exists():
         variants = list(variants_dir.glob('*.yaml'))
         real_variants = [v for v in variants if not v.name.startswith('_')]

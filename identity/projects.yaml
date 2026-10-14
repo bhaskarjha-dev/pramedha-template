@@ -13,8 +13,8 @@
 #   - Technologies list feeds skill auto-detection
 #
 # Resume Cascade Mapping:
-#   - Projects sync to resume/master.yaml under `projects:` (via resume/sync.py or manual edit)
-#   - In resume/master.yaml, each project has a snake_case key:
+#   - Projects sync to tools/resume/master.yaml under `projects:` (via tools/resume/sync.py or manual edit)
+#   - In tools/resume/master.yaml, each project has a snake_case key:
 #       name: matches project name
 #       date: start_date – end_date (or year)
 #       location: repo or live_url

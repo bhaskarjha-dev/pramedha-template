@@ -10,10 +10,10 @@ Reads:
   - identity/skills.yaml                 → master.yaml technologies
 
 Usage:
-    py resume/sync.py                 # Sync all sections (safe merge, preserves existing)
-    py resume/sync.py --dry-run       # Preview changes without modifying master.yaml
-    py resume/sync.py --section exp   # Sync specific section (exp, proj, edu, pubs, skills, ach, all)
-    py resume/sync.py --force         # Overwrite existing keys with identity values
+    py tools/resume/sync.py                 # Sync all sections (safe merge, preserves existing)
+    py tools/resume/sync.py --dry-run       # Preview changes without modifying master.yaml
+    py tools/resume/sync.py --section exp   # Sync specific section (exp, proj, edu, pubs, skills, ach, all)
+    py tools/resume/sync.py --force         # Overwrite existing keys with identity values
 """
 
 import argparse
@@ -679,7 +679,7 @@ def main():
 
     # Paths
     script_dir = Path(__file__).resolve().parent
-    repo_root = script_dir.parent
+    repo_root = script_dir.parent.parent  # tools/resume/ → repo root
     master_path = script_dir / 'master.yaml'
     exp_path = repo_root / 'identity' / 'experience.yaml'
     proj_path = repo_root / 'identity' / 'projects.yaml'

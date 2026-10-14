@@ -658,8 +658,9 @@ def main():
         return
 
     # Read identity/identity.yaml and config.yaml for header auto-fill and filenames
-    identity_path = script_dir.parent / 'identity' / 'identity.yaml'
-    config_path = script_dir.parent / 'config.yaml'
+    repo_root = script_dir.parent.parent  # tools/resume/ → repo root
+    identity_path = repo_root / 'identity' / 'identity.yaml'
+    config_path = repo_root / 'config.yaml'
     identity_data = {}
     config_data = {}
     default_name = 'Resume'
