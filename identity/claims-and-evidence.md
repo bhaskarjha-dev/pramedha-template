@@ -19,7 +19,7 @@
 
 > These tags annotate the *evidence type* behind each claim.
 > Claims tagged `[estimated]` or `[to-verify]` automatically become items
-> in `strategy/master-action-tracker.md` → 🔴 CLAIM DEBT stream.
+> in the **Claim Debt Queue** section below.
 
 | Tag | Meaning | Action Required |
 |-----|---------|----------------|
@@ -68,3 +68,63 @@ When facts conflict, trust sources in this order:
 | Field | Source A | Value A | Source B | Value B | Resolution |
 |-------|---------|---------|---------|---------|------------|
 | *Example: start date at Company X* | *resume.pdf* | *Jan 2023* | *LinkedIn* | *Feb 2023* | *Checked offer letter: Jan 16, 2023* |
+
+---
+
+## Claim Debt Queue
+
+> Claims tagged `[estimated]` or `[to-verify]` in the register above need evidence.
+> Track the evidence-building work here. Check off items as they are substantiated.
+
+### Priority 1: Build Projects to Prove Claims
+
+<!-- Fill one row per claim that needs a project as evidence -->
+
+| # | Claim to Prove | Evidence to Create | Effort | Status |
+|:-:|----------------|-------------------|:------:|:------:|
+| C1 | *Example: "Built ML pipeline processing 1M records"* | *Build demo pipeline with monitoring dashboard* | *3 days* | ⬜ |
+
+### Priority 2: Collect Internal Evidence (No Coding Needed)
+
+<!-- Claims that just need screenshots, documents, or testimonials -->
+
+| # | Claim to Prove | Evidence to Provide | Effort | Status |
+|:-:|----------------|-------------------|:------:|:------:|
+| C2 | *Example: "Led team of 5 developers"* | *Org chart screenshot, Jira team page, or email* | *15 min* | ⬜ |
+
+### After Resolving Claim Debt
+
+1. Add evidence file to `data-corpus/documents/`
+2. Update tag in `identity/experience.yaml`: change `[estimated]`/`[to-verify]` → `[measured]`
+3. Update tier in Claims Register above: change 🟡 → 🟢
+4. Regenerate resume variants (if applicable)
+
+---
+
+## Career Contingency Checklists
+
+> Review quarterly. These are your emergency preparedness checks.
+
+### If laid off tomorrow:
+
+- [ ] **Financial runway:** ___ months of expenses covered
+- [ ] **Resume ready:** Yes / No (last updated: YYYY-MM)
+- [ ] **Network activated:** 3+ people I could call today
+- [ ] **Emergency references:** Listed in `identity/references.yaml`
+- [ ] **Portfolio up to date:** `identity/` and resume data current
+- [ ] **Job search channels:** Know where to look (tracker set up)
+
+### If current role becomes unbearable:
+
+- [ ] Documented specific issues (for reference in exit interview)
+- [ ] Internal transfer options explored
+- [ ] External market salary validated
+- [ ] Notice period and financial runway confirmed
+- [ ] At least 2 target companies researched
+
+### If industry shifts dramatically:
+
+- [ ] Adjacent industries identified
+- [ ] Transferable skills documented
+- [ ] Reskilling timeline estimated
+- [ ] Financial buffer for transition period
