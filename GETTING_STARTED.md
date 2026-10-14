@@ -145,23 +145,25 @@ pip install pyyaml rendercv
 After `identity/` is filled:
 
 ```bash
-# Option A (Windows PowerShell 1-Click):
-.\tools\resume\build.ps1
+# Option A (Recommended — 1-Click Automated Build):
+.\tools\resume\build.ps1                 # Windows PowerShell (handles UTF-8 & Typst rendering)
+./tools/resume/build.sh                  # macOS / Linux
 
-# Option B (Manual CLI in any terminal):
+# Option B (Manual CLI step-by-step):
 # 1. Sync verified career facts into master resume bullet pool:
 py tools/resume/sync.py
 
 # 2. Create a tailored variant overlay (copy template):
 cp tools/resume/variants/_template.yaml tools/resume/variants/my-role.yaml
-# Edit my-role.yaml to select which bullets to include
+# Edit my-role.yaml to select which bullets to include (defaults output to my-role_CV.yaml)
 
 # 3. Assemble and render PDF:
 py tools/resume/assemble.py --validate    # Verify all references
-py tools/resume/assemble.py               # Assembles to tools/resume/generated/
+py tools/resume/assemble.py               # Assembles to tools/resume/generated/my-role_CV.yaml
+
+# 4. Render PDF via RenderCV (ensure UTF-8 mode on Windows):
+# On Windows PowerShell: $env:PYTHONUTF8 = "1"
 rendercv render tools/resume/generated/my-role_CV.yaml -o tools/resume/output/my-role
-# (Or simply run .\tools\resume\build.ps1 on Windows / ./tools/resume/build.sh on Linux/Mac)
-# (On Windows PowerShell if encoding errors occur: $env:PYTHONUTF8 = "1")
 # Your PDF is compiled in tools/resume/output/ in <1s via Typst (no LaTeX needed!)
 ```
 

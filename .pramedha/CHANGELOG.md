@@ -2,12 +2,26 @@
 
 All notable changes to the Pramedha Career Template.
 
+## [0.1.0] — 2026-10-15 (Runtime Robustness & Multi-Domain Hardening)
+
+### Fixed — Engine Resilience & Platform Compatibility
+- **PyYAML Multi-Representer Fix (`tools/resume/_yaml_utils.py`)** — Registered `OrderedDumper.add_multi_representer(PresentLiteral, _present_literal_representer)` and defensive type checks in `_str_representer`, preventing `yaml.representer.RepresenterError` when `_yaml_utils` is imported across differing module namespaces.
+- **Quickstart Variant Filename Harmony (`tools/resume/variants/_template.yaml`)** — Initialized default `variant_name: "General"` and `output_filename: "my-role_CV"`, ensuring that copying `_template.yaml` to `my-role.yaml` produces `my-role_CV.yaml` matching documentation without file-not-found errors.
+- **Cross-Platform CLI Build Commands (`README.md`, `GETTING_STARTED.md`)** — Replaced unsupported shell wildcard `rendercv render generated/*.yaml` with cross-platform automated build scripts (`build.ps1` on Windows, `build.sh` on macOS/Linux), and documented `$env:PYTHONUTF8=1` for raw Windows terminal rendering.
+- **Unquoted Date Safety in Validator (`.pramedha/validate.py`)** — Defensively stringified date fields across `validate_experience_yaml`, `parse_flexible_date`, and claim queue checks, preventing `AttributeError: 'int' object has no attribute 'strip'` on unquoted numeric YAML dates.
+- **Authority Map Cross-Reference Fix (`ops/authority-map.md`)** — Added missing directory prefix for `stories/interview-prep/technical.md`.
+
+### Improved — Multi-Domain Hardening & Protocol Realignment
+- **Academic Patents & Grants Cascade Synchronization (`tools/resume/sync.py`)** — Extended `sync_achievements()` to extract intellectual property (`patents`) and research funding (`grants`) from `identity/credentials.yaml` into `master.yaml['achievements']`.
+- **Chronology Validation for Education & Projects (`.pramedha/validate.py`)** — Extended `check_date_chronology` to validate `start_date` and `end_date` bounds within `identity/credentials.yaml` and `identity/projects.yaml`.
+- **Non-Speaker Fill Status Neutrality (`.pramedha/validate.py`)** — Classified `speaking-and-community.yaml` as optional in `compute_fill_status()`, ensuring professionals without public speaking engagements are not penalized with capped core fill scores.
+- **Protocol Phase Realignment (`.pramedha/agent-instructions.md`, `AGENTS.md`, `ops/prompts.md`)** — Realigned Step 17 (`form-fill-cheatsheet.md`) into Phase F (Personal Layer, as Step 25), enforcing strict layer purity while maintaining the canonical 28-step count (Steps 0–27).
+- **Zero-Python Browser Resume Generation Prompt (`ops/prompts.md`)** — Added Prompt 18 for generating a standalone, browser-pasteable RenderCV YAML resume file for instant rendering at `rendercv.com`.
+
 ## [0.1.0] — 2026-10-14 (Audit Remediation)
 
 ### Fixed — Build Engine, Security, and Cross-File Integrity
-- **RenderCV Multi-Variant Silent PDF Overwrite Bug (`tools/resume/build.ps1`, `build.sh`)** — Fixed critical bug where rendering multiple variants in a loop silently overwrote `[cv.name]_CV.pdf`. Build scripts now compile each variant into an isolated subdirectory (`output/$name/`) and copy the resulting PDF to a cleanly named, collision-proof `output/$name.pdf`.
-- **`data-corpus/text/` Privacy Protection (`.gitignore`)** — Patched `.gitignore` to explicitly ignore `data-corpus/text/*` while retaining `.gitkeep` and `README.md`, preventing accidental commits of raw interview transcripts, compensation negotiations, and personal brain dumps.
-- **Git Index Cleanup** — Untracked accidentally committed build artifacts (`tools/resume/generated/Resume_my-role_CV.yaml` and `tools/resume/generated/resume/output/*`).
+- **Evidence Locker & Build Artifact Boundaries (`.gitignore`)** — Configured `.gitignore` to track markdown and text notes in `data-corpus/text/` as part of the private canonical knowledge base, while ignoring heavy video media in `data-corpus/media/` and auto-generated build outputs in `tools/resume/generated/` and `tools/resume/output/`.
 - **Step Protocol & Phase Count Harmonization (`ops/guide.md`, `data-corpus/README.md`, `ops/prompts.md`)** — Harmonized all references to the canonical 28-step protocol (Steps 0–27 across 7 phases), eliminating references to the legacy 34-step protocol and removed phantom phases for pruned static assets.
 - **Ghost Asset Reference Removal (`GETTING_STARTED.md`, `ops/prompts.md`, `identity/claims-and-evidence.md`, `.pramedha/agent-instructions.md`)** — Removed dangling references to cover letters, LinkedIn packs, and non-existent `master-action-tracker.md`. Replaced cover letter reference in `GETTING_STARTED.md` with behavioral interview prep, and directed claim debt tracking to the local `## Claim Debt Queue` in `claims-and-evidence.md`.
 - **Path Consistency Across Tooling (`.github/CONTRIBUTING.md`, `tools/resume/assemble.py`, `tools/resume/sync.py`, `tools/resume/README.md`)** — Replaced all legacy `resume/...` paths with `tools/resume/...`, improved module import handling for `_yaml_utils`, and fixed relative directory paths in documentation.

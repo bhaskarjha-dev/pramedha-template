@@ -18,6 +18,8 @@ def _dict_representer(dumper, data):
 
 
 def _str_representer(dumper, data):
+    if type(data).__name__ == 'PresentLiteral':
+        return dumper.represent_scalar('tag:yaml.org,2002:str', str(data), style='')
     if '\n' in data:
         return dumper.represent_scalar('tag:yaml.org,2002:str', data, style='|')
     if len(data) > 80:
@@ -37,6 +39,7 @@ def _present_literal_representer(dumper, data):
 OrderedDumper.add_representer(dict, _dict_representer)
 OrderedDumper.add_representer(str, _str_representer)
 OrderedDumper.add_representer(PresentLiteral, _present_literal_representer)
+OrderedDumper.add_multi_representer(PresentLiteral, _present_literal_representer)
 
 
 def load_yaml(path: Path) -> dict:

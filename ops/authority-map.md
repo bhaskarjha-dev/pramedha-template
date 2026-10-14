@@ -21,7 +21,7 @@
 | **Claims verification & debt** | `identity/claims-and-evidence.md` | Resume bullets themselves |
 | **Professional summary** | `identity/professional-summary.md` | Old LinkedIn about |
 | **Behavioral STAR story bank** | `stories/star-stories.md` | Memory, improvised interview answers |
-| **Interview prep & talk tracks** | `stories/interview-prep/behavioral.md`, `technical.md` | Ad-hoc prep sheets, generic online lists |
+| **Interview prep & talk tracks** | `stories/interview-prep/behavioral.md`, `stories/interview-prep/technical.md` | Ad-hoc prep sheets, generic online lists |
 | **Social proof & endorsements** | `stories/testimonials.md` | Scattered recommendation letters |
 | **Resume bullets & phrasings** | `tools/resume/master.yaml` | Generated files, old YAMLs |
 | **Resume design** | `tools/resume/design.yaml` | Design blocks in variants |

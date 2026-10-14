@@ -27,6 +27,7 @@
 15. [Offer Comparison Analysis](#15-offer-comparison-analysis)
 16. [Lite Career Template Audit & Health Check](#16-lite-career-template-audit--health-check)
 17. [Add Speaking Engagement / Hackathon Win](#17-add-speaking-engagement--hackathon-win)
+18. [Zero-Python Web Resume Generation (for rendercv.com)](#18-zero-python-web-resume-generation-for-rendercvcom)
 
 ---
 
@@ -46,9 +47,9 @@ EXECUTE: Follow the 7-phase protocol in .pramedha/agent-instructions.md exactly:
 - Phase A (Steps 0-1): Scan data-corpus/ and build complete mental model
 - Phase B (Steps 2-10): Fill all 10 identity/ files (verified facts + claims + professional summary)
 - Phase C (Steps 11-13): Generate resume master + variants and validate
-- Phase D (Steps 14-17): Generate stories (STAR stories, testimonials, interview prep)
-- Phase E (Steps 18-22): Draft strategy layer (target roles, study plan, financial, tracking, networking)
-- Phase F (Steps 23-25): Draft personal context (about-me, life-goals, preferences)
+- Phase D (Steps 14-16): Generate stories (STAR stories, testimonials, interview prep)
+- Phase E (Steps 17-21): Draft strategy layer (target roles, study plan, financial, tracking, networking)
+- Phase F (Steps 22-25): Draft personal context (career-narrative, about-me, life-goals, preferences, cheatsheet)
 - Phase G (Steps 26-27): Finalize VISION.md and validate entire repository
 
 OUTPUT: Commit after each phase with clear messages.
@@ -491,4 +492,30 @@ EXECUTE:
 6. Run: py tools/resume/sync.py --section ach --dry-run (verify synchronization)
 
 OUTPUT: Show exact changes across all files. Commit with message: "feat(community): add [event name]"
+```
+
+---
+
+## 18. Zero-Python Web Resume Generation (for rendercv.com)
+
+```
+TASK: Generate a single, standalone RenderCV YAML resume file ready to paste into the browser at rendercv.com (no local Python or build scripts required).
+
+TARGET VARIANT: [Specify target role or variant name, e.g., Senior Backend Engineer]
+
+CONTEXT: Read these files:
+- tools/resume/master.yaml (contact info, bullets, education, projects, skills)
+- tools/resume/design.yaml (theme, margins, typography)
+- tools/resume/variants/[variant_name].yaml (bullet selections and variant summary)
+
+EXECUTE:
+1. Merge master.yaml content with the variant's bullet selections and design.yaml settings.
+2. Assemble into a single valid RenderCV v2.8 YAML structure containing:
+   - Header (# yaml-language-server: $schema=https://raw.githubusercontent.com/rendercv/rendercv/refs/tags/v2.8/schema.json)
+   - cv: (name, location, email, phone, website, social_networks)
+   - sections: (summary, experience, education, projects, skills/technologies, achievements)
+   - design: (theme, font, colors, margins)
+3. Output the complete YAML document in a single copyable code block.
+
+USAGE: Copy the generated YAML and paste it directly into https://rendercv.com for instant visual PDF rendering and download.
 ```

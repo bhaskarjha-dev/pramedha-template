@@ -223,9 +223,9 @@ def check_experience(result: ValidationResult):
             result.error(f"experience.yaml: Entry {i} is not a dict")
             continue
 
-        company = (entry.get('company') or entry.get('organization') or entry.get('client') or entry.get('institution') or entry.get('employer') or entry.get('practice') or '').strip()
-        position = (entry.get('position') or entry.get('title') or entry.get('role') or '').strip()
-        start = (entry.get('start_date') or '').strip()
+        company = str(entry.get('company') or entry.get('organization') or entry.get('client') or entry.get('institution') or entry.get('employer') or entry.get('practice') or '').strip()
+        position = str(entry.get('position') or entry.get('title') or entry.get('role') or '').strip()
+        start = str(entry.get('start_date') or '').strip()
 
         # If it's a completely blank scaffolding entry, don't spam individual field warnings
         if not company and not position and not start:
@@ -317,11 +317,13 @@ VALID_ROLE_LEVELS = {
 }
 
 
-def parse_flexible_date(date_str: str):
+def parse_flexible_date(date_str):
     """Parse YYYY-MM or YYYY string into a comparable tuple (year, month). Returns None if unparseable."""
-    if not date_str or not isinstance(date_str, str):
+    if date_str is None or date_str == '':
         return None
-    s = date_str.strip().lower()
+    s = str(date_str).strip().lower()
+    if not s or s == '0':
+        return None
     if s in ('present', 'current', 'now'):
         return (9999, 12)
     m = re.match(r'^(\d{4})(?:-(\d{2}))?$', s)
@@ -438,7 +440,7 @@ def check_date_chronology(result: ValidationResult):
     for i, entry in enumerate(experience):
         if not isinstance(entry, dict):
             continue
-        company = entry.get('company', '').strip()
+        company = str(entry.get('company') or '').strip()
         start = str(entry.get('start_date') or '').strip()
         end = str(entry.get('end_date') or '').strip()
 
@@ -461,7 +463,7 @@ def check_date_chronology(result: ValidationResult):
     for i, b in enumerate(breaks):
         if not isinstance(b, dict):
             continue
-        title = b.get('title', '').strip()
+        title = str(b.get('title') or '').strip()
         start = str(b.get('start_date') or '').strip()
         end = str(b.get('end_date') or '').strip()
 
@@ -472,6 +474,51 @@ def check_date_chronology(result: ValidationResult):
         p_end = parse_flexible_date(end)
         if p_start and p_end and p_start > p_end:
             result.warn(f"experience.yaml: Career break {i} ('{title}') has start_date '{start}' after end_date '{end}'")
+
+    # Education in credentials.yaml
+    creds_path = TEMPLATE_ROOT / "identity" / "credentials.yaml"
+    if creds_path.exists():
+        with open(creds_path, 'r', encoding='utf-8') as f:
+            creds_data = yaml.safe_load(f) or {}
+        for i, edu in enumerate(creds_data.get('education', []) or []):
+            if not isinstance(edu, dict):
+                continue
+            inst = str(edu.get('institution') or edu.get('degree') or 'unnamed').strip()
+            start = str(edu.get('start_date') or '').strip()
+            end = str(edu.get('end_date') or edu.get('year') or '').strip()
+            if not start and not end:
+                continue
+            p_start = parse_flexible_date(start)
+            p_end = parse_flexible_date(end)
+            if start and p_start is None:
+                result.warn(f"credentials.yaml: Education {i} ('{inst}') has invalid start_date '{start}' (expected YYYY-MM or YYYY)")
+            if end and p_end is None:
+                result.warn(f"credentials.yaml: Education {i} ('{inst}') has invalid end_date '{end}' (expected YYYY-MM or YYYY)")
+            if p_start and p_end and p_start > p_end:
+                result.warn(f"credentials.yaml: Education {i} ('{inst}') has start_date '{start}' after end_date '{end}'")
+
+    # Projects in projects.yaml
+    proj_path = TEMPLATE_ROOT / "identity" / "projects.yaml"
+    if proj_path.exists():
+        with open(proj_path, 'r', encoding='utf-8') as f:
+            proj_data = yaml.safe_load(f) or {}
+        all_projs = (proj_data.get('public', []) or []) + (proj_data.get('internal', []) or [])
+        for i, p in enumerate(all_projs):
+            if not isinstance(p, dict):
+                continue
+            pname = str(p.get('name') or 'unnamed').strip()
+            start = str(p.get('start_date') or '').strip()
+            end = str(p.get('end_date') or '').strip()
+            if not start and not end:
+                continue
+            p_start = parse_flexible_date(start)
+            p_end = parse_flexible_date(end)
+            if start and p_start is None:
+                result.warn(f"projects.yaml: Project {i} ('{pname}') has invalid start_date '{start}' (expected YYYY-MM)")
+            if end and p_end is None:
+                result.warn(f"projects.yaml: Project {i} ('{pname}') has invalid end_date '{end}' (expected YYYY-MM or 'present')")
+            if p_start and p_end and p_start > p_end:
+                result.warn(f"projects.yaml: Project {i} ('{pname}') has start_date '{start}' after end_date '{end}'")
 
 
 def check_identity_master_parity(result: ValidationResult):
@@ -702,31 +749,41 @@ def compute_fill_status(result: ValidationResult):
             isinstance(s, dict) and bool((s.get('title') or '').strip()) for s in ((d or {}).get('speaking') or [])
         ) or any(
             isinstance(h, dict) and bool((h.get('name') or '').strip()) for h in ((d or {}).get('hackathons') or [])
-        )),
+        ), True),
         ("tools/resume/master.yaml", "master.yaml", lambda d: any(
             k != '_example_role_' and isinstance(v, dict) for k, v in ((d or {}).get('experience') or {}).items()
-        )),
+        ), False),
         ("personal/preferences.yaml", "preferences.yaml", lambda d: bool(
             str((d or {}).get('career_stage') or '').strip() or str((d or {}).get('career_anchor') or '').strip() or (d or {}).get('work_values')
-        )),
+        ), False),
     ]
 
-    for filepath, label, check_fn in checks:
-        total += 1
+    for item in checks:
+        filepath, label, check_fn = item[0], item[1], item[2]
+        is_optional = item[3] if len(item) > 3 else False
         path = TEMPLATE_ROOT / filepath
+        is_filled = False
         if path.exists():
             try:
                 with open(path, 'r', encoding='utf-8') as f:
                     data = yaml.safe_load(f)
                 if check_fn(data):
-                    filled += 1
-                    status_lines.append(f"  ✅ {label}")
-                else:
-                    status_lines.append(f"  ⬜ {label} (empty)")
+                    is_filled = True
             except Exception:
                 status_lines.append(f"  ❌ {label} (parse error)")
+                total += 1
+                continue
+
+        if is_filled:
+            filled += 1
+            total += 1
+            opt_tag = " (optional)" if is_optional else ""
+            status_lines.append(f"  ✅ {label}{opt_tag}")
+        elif is_optional:
+            status_lines.append(f"  ⚪ {label} (optional — skipped)")
         else:
-            status_lines.append(f"  ⬜ {label} (not created)")
+            total += 1
+            status_lines.append(f"  ⬜ {label} ({'empty' if path.exists() else 'not created'})")
 
     # Check markdown files for real user data beyond template scaffolding
     def check_claims(text: str) -> bool:
@@ -785,7 +842,7 @@ def compute_fill_status(result: ValidationResult):
             status_lines.append(f"  ⬜ {label} (not created)")
 
     pct = int(100 * filled / total) if total > 0 else 0
-    result.note(f"\n📊 Core System Fill Status: {filled}/{total} ({pct}%) [13 Core Identity & Cascade Files]")
+    result.note(f"\n📊 Core System Fill Status: {filled}/{total} ({pct}%) [Core Identity & Cascade Files]")
     for line in status_lines:
         result.note(line)
 

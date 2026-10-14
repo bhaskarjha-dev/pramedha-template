@@ -166,7 +166,7 @@ This is the most important file. For each employer:
 
 ---
 
-### Phase D: Stories & Interview Prep (Steps 14-17) — Authored Narratives
+### Phase D: Stories & Interview Prep (Steps 14-16) — Authored Narratives
 
 #### Step 14: Generate stories/star-stories.md
 - Extract 5-8 stories from experience.yaml bullets
@@ -182,21 +182,15 @@ This is the most important file. For each employer:
 - **behavioral.md**: Map STAR stories from star-stories.md to common behavioral questions, leadership principles (e.g. Amazon LP, ownership, conflict resolution), and situational frameworks. Ensure each target role has at least 3 matching stories.
 - **technical.md**: Extract core technical competencies from skills.yaml (advanced/expert level); list likely interview topics per target role and add system design topics if applicable. Cross-reference with study-plan.md for gap awareness.
 
-#### Step 17: Fill personal/form-fill-cheatsheet.md
-- Extract from config.yaml + identity.yaml: name, email, phone, DOB, address
-- Fill education, references, work authorization sections
-- Pre-fill common application questions with suggested answers
-- **Mark ⚠️ PRIVATE** — this file is excluded in .gitignore
-
 ---
 
-### Phase E: Strategy Layer (Steps 18-22) — Needs User Input, AI Drafts
+### Phase E: Strategy Layer (Steps 17-21) — Needs User Input, AI Drafts
 
 > ⚠️ These files require user preferences/goals. If `data-corpus/text/` contains
 > career plans, brain dumps, or goals — use them. Otherwise, draft what you can
 > and mark sections needing user input with `<!-- USER INPUT NEEDED -->`.
 
-#### Step 18: Draft strategy/target-roles.md
+#### Step 17: Draft strategy/target-roles.md
 - Document honest baseline in Part 1 (grounded in verified skills.yaml and experience.yaml)
 - Evaluate roles against skills using the 8-parameter framework (P1–P8, max 40 points)
 - Define Tier A (32-40), Tier B (24-31), Tier C (16-23)
@@ -205,48 +199,54 @@ This is the most important file. For each employer:
 - Complete detailed role deep-dives for Tier A & B targets with ATS keywords
 - Mark as draft: `<!-- AI-SUGGESTED — Review and confirm -->`
 
-#### Step 19: Draft strategy/study-plan.md
+#### Step 18: Draft strategy/study-plan.md
 - Identify gaps between current skills.yaml and target role requirements
 - Suggest learning resources and sprint timeline
 - Mark as draft
 
-#### Step 20: Draft strategy/financial.md
+#### Step 19: Draft strategy/financial.md
 - If salary data exists in text/ or config.yaml: structure it
 - Otherwise: leave fields empty (salary is sensitive)
 - Never fabricate salary information
 
-#### Step 21: Draft strategy/job-tracker.md and strategy/networking.md
+#### Step 20: Draft strategy/job-tracker.md and strategy/networking.md
 - **strategy/job-tracker.md**: Populate initial target companies and pipeline stages.
 - **strategy/networking.md**: Initialize target contact circles (Tier 1 Advocates, Tier 2 Domain Peers, Tier 3 Aspirations), outreach cadence, and strategic event targets. (User logs individual real-time contacts as conversations occur).
 - Mark as draft: `<!-- AI-SUGGESTED — Review and confirm -->`
 
-#### Step 22: Draft strategy/offer-comparison.md
+#### Step 21: Draft strategy/offer-comparison.md
 - Initialize multi-offer comparison framework and decision weights.
 - Mark as draft: `<!-- AI-SUGGESTED — Review and confirm -->`
 
 ---
 
-### Phase F: Personal Layer (Steps 23-25) — Private, User Input Preferred
+### Phase F: Personal Layer (Steps 22-25) — Private, User Input Preferred
 
 > ⚠️ Fill ONLY from `data-corpus/text/` freeform data. Never infer personal
 > information. If no personal context exists, leave these empty.
 
-#### Step 23: Draft personal/career-narrative.md, then personal/about-me.md
+#### Step 22: Draft personal/career-narrative.md, then personal/about-me.md
 - **First, Draft `personal/career-narrative.md`:**
   - Write "walk me through your career" transition arcs in 3 lengths (30s elevator pitch, 2min interview standard, 5min deep dive).
   - Ground every transition strictly in verified facts from `identity/experience.yaml`.
 - **Second, Draft `personal/about-me.md`:**
   - Use the career narrative as grounding to articulate life context, personal values, and intellectual motivations (extracted only from `data-corpus/text/` evidence).
 
-#### Step 24: Draft personal/life-goals.md
+#### Step 23: Draft personal/life-goals.md
 - If career goals exist in text/: structure into short/medium/long term
 - Fill non-negotiables and dream role if context available
 - Otherwise: leave empty for user
 
-#### Step 25: Draft personal/preferences.yaml
+#### Step 24: Draft personal/preferences.yaml
 - Extract work preferences from freeform text (if available)
 - Fill career_stage, risk_tolerance, time_availability if inferrable
 - Otherwise: leave empty
+
+#### Step 25: Fill personal/form-fill-cheatsheet.md
+- Extract from config.yaml + identity.yaml: name, email, phone, DOB, address
+- Fill education, references, work authorization sections
+- Pre-fill common application questions with suggested answers
+- **Mark ⚠️ PRIVATE** — this file is excluded in .gitignore
 
 ---
 

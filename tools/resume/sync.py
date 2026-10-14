@@ -735,6 +735,92 @@ def sync_achievements(creds_data: dict, community_data: dict, master_data: dict,
             master_ach[ach_key] = {'text': text}
             stats['updated'] += 1
 
+    # 6. Patents from credentials.yaml (Intellectual Property / Research)
+    for item in (creds_data.get('patents', []) or []):
+        if not isinstance(item, dict):
+            continue
+        title = (item.get('title') or '').strip()
+        if not title:
+            stats['skipped'] += 1
+            continue
+        pat_num = str(item.get('patent_number') or item.get('number') or '').strip()
+        filing_date = str(item.get('filing_date') or item.get('date') or '').strip()
+        status = (item.get('status') or '').strip()
+
+        parts = [f"Patent: {title}"]
+        meta = []
+        if pat_num:
+            meta.append(f"#{pat_num}")
+        if status:
+            meta.append(status)
+        if filing_date:
+            meta.append(filing_date)
+        if meta:
+            parts.append(f"({' — '.join(meta)})")
+        text = " ".join(parts)
+
+        ach_key = None
+        for k, v in master_ach.items():
+            if isinstance(v, dict) and v.get('text', '').lower() == text.lower():
+                ach_key = k
+                break
+            elif isinstance(v, str) and v.lower() == text.lower():
+                ach_key = k
+                break
+
+        if not ach_key:
+            ach_key = generate_achievement_key(title, existing_keys, prefix="patent")
+            existing_keys.add(ach_key)
+            master_ach[ach_key] = {'text': text}
+            stats['added'] += 1
+        elif force:
+            master_ach[ach_key] = {'text': text}
+            stats['updated'] += 1
+
+    # 7. Research Grants from credentials.yaml (Academic / Medical / Scientific)
+    for item in (creds_data.get('grants', []) or []):
+        if not isinstance(item, dict):
+            continue
+        title = (item.get('title') or '').strip()
+        if not title:
+            stats['skipped'] += 1
+            continue
+        funder = str(item.get('funder') or item.get('agency') or '').strip()
+        amount = str(item.get('amount') or '').strip()
+        year = str(item.get('year') or '').strip()
+        if year == '0':
+            year = ''
+
+        parts = [f"Research Grant: {title}"]
+        meta = []
+        if funder:
+            meta.append(funder)
+        if amount:
+            meta.append(amount)
+        if year:
+            meta.append(year)
+        if meta:
+            parts.append(f"({' — '.join(meta)})")
+        text = " ".join(parts)
+
+        ach_key = None
+        for k, v in master_ach.items():
+            if isinstance(v, dict) and v.get('text', '').lower() == text.lower():
+                ach_key = k
+                break
+            elif isinstance(v, str) and v.lower() == text.lower():
+                ach_key = k
+                break
+
+        if not ach_key:
+            ach_key = generate_achievement_key(title, existing_keys, prefix="grant")
+            existing_keys.add(ach_key)
+            master_ach[ach_key] = {'text': text}
+            stats['added'] += 1
+        elif force:
+            master_ach[ach_key] = {'text': text}
+            stats['updated'] += 1
+
     master_data['achievements'] = master_ach
     return stats
 

@@ -62,7 +62,8 @@ Download the ZIP from the releases page → extract → `git init` in the folder
 # Dump raw career data into data-corpus/
 # Let AI fill the rest (see .pramedha/agent-instructions.md)
 # Generate resumes:
-cd tools/resume && python assemble.py && rendercv render generated/*.yaml
+.\tools\resume\build.ps1        # Windows PowerShell (handles UTF-8 & Typst rendering)
+./tools/resume/build.sh         # Linux / macOS
 ```
 
 ---

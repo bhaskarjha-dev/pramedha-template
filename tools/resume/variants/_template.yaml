@@ -7,8 +7,8 @@
 # It does NOT contain bullet text — only references to master.yaml keys.
 # ============================================================================
 
-variant_name: ""              # e.g., "GenAI Engineer", "Backend Lead"
-output_filename: ""           # e.g., "Your_Name_GenAI_CV" (no extension)
+variant_name: "General"              # e.g., "Senior Backend Engineer", "GenAI Specialist"
+output_filename: "my-role_CV"         # Output YAML filename in generated/ (without extension). If blank, defaults to {User_Name}_{variant}_CV
 
 # ─── Summary (specific to this variant) ──────────────────────────────────
 summary: >

@@ -82,9 +82,9 @@ Read `.pramedha/agent-instructions.md` — it contains the complete **28-step, 7
 | A | 0-1 | Read config.yaml + scan data-corpus/ |
 | B | 2-10 | Fill identity/ (10 files — career facts + speaking + claims) |
 | C | 11-13 | Generate resume master + variants (in tools/resume/) |
-| D | 14-17 | Generate stories (STAR stories, testimonials, interview prep) |
-| E | 18-22 | Draft strategy (target roles, study plan, financial, tracking) |
-| F | 23-25 | Draft personal (about-me, life-goals, preferences) |
+| D | 14-16 | Generate stories (STAR stories, testimonials, interview prep) |
+| E | 17-21 | Draft strategy (target roles, study plan, financial, tracking) |
+| F | 22-25 | Draft personal (career-narrative, about-me, life-goals, preferences, cheatsheet) |
 | G | 26-27 | Finalize VISION.md + validate |
 
 ## What To Do When Asked to Update/Maintain
