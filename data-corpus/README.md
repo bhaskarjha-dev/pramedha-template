@@ -239,7 +239,7 @@ Before telling AI to fill, check:
 4. Fills `identity/*.yaml` with structured, verified data
 5. Tags each fact with verification status (✅/⚠️/❌)
 6. Notes contradictions (different dates in resume vs LinkedIn)
-7. Generates assets (STAR stories, cover letters, LinkedIn pack) from extracted facts
+7. Generates interview prep, STAR stories, and summary variants from extracted facts
 
 **Your raw data stays here as evidence.** It's never deleted.
 The `identity/` folder becomes the structured, authoritative extraction.
@@ -257,4 +257,4 @@ following the 7-phase protocol (A through G). Tag every claim with
 verification status. Mark AI-drafted content. Leave journal files empty.
 ```
 
-Or see `.pramedha/agent-instructions.md` for the full 34-step protocol (Steps 0–33).
+Or see `.pramedha/agent-instructions.md` for the full 28-step protocol (Steps 0–27).

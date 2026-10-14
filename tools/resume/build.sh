@@ -31,7 +31,7 @@ mkdir -p "$OUTPUT_DIR"
 yaml_files=("$SCRIPT_DIR/generated/"*.yaml)
 if [ ! -e "${yaml_files[0]}" ]; then
     echo "  No generated YAML files found in $SCRIPT_DIR/generated/"
-    echo "  Create a variant file in resume/variants/ first (e.g. copy _template.yaml to A_Role.yaml)."
+    echo "  Create a variant file in tools/resume/variants/ first (e.g. copy _template.yaml to A_Role.yaml)."
     echo ""
     echo "=== Build Complete ==="
     exit 0
@@ -51,8 +51,16 @@ for yaml_file in "${yaml_files[@]}"; do
     [ -f "$yaml_file" ] || continue
     name=$(basename "$yaml_file" .yaml)
     echo "  Rendering $name..."
-    if rendercv render "$yaml_file" -o "$OUTPUT_DIR" 2>&1; then
-        echo "  ✅ $name"
+    variant_out="$OUTPUT_DIR/$name"
+    mkdir -p "$variant_out"
+    if rendercv render "$yaml_file" -o "$variant_out" 2>&1; then
+        pdf_file=$(find "$variant_out" -maxdepth 1 -name "*.pdf" | head -n 1)
+        if [ -n "$pdf_file" ]; then
+            cp "$pdf_file" "$OUTPUT_DIR/$name.pdf"
+            echo "  ✅ $name -> output/$name.pdf"
+        else
+            echo "  ✅ $name"
+        fi
     else
         echo "  ❌ Failed: $name"
     fi

@@ -38,9 +38,12 @@ except ImportError:
 # ============================================================================
 
 try:
-    from resume._yaml_utils import OrderedDumper, dump_yaml, load_yaml
+    from tools.resume._yaml_utils import OrderedDumper, dump_yaml, load_yaml
 except ImportError:
-    from _yaml_utils import OrderedDumper, dump_yaml, load_yaml
+    try:
+        from _yaml_utils import OrderedDumper, dump_yaml, load_yaml
+    except ImportError:
+        from resume._yaml_utils import OrderedDumper, dump_yaml, load_yaml
 
 
 # ============================================================================
@@ -143,8 +146,8 @@ def sync_experience(id_data: dict, master_data: dict, force: bool = False):
         if not isinstance(entry, dict):
             continue
 
-        company = entry.get('company', '').strip()
-        position = (entry.get('position') or entry.get('title') or '').strip()
+        company = (entry.get('company') or entry.get('client') or entry.get('organization') or entry.get('institution') or entry.get('employer') or entry.get('practice') or '').strip()
+        position = (entry.get('position') or entry.get('title') or entry.get('role') or '').strip()
         start_date = entry.get('start_date', '').strip()
         end_date = entry.get('end_date', 'present')
         location = entry.get('location', '').strip()
@@ -648,6 +651,90 @@ def sync_achievements(creds_data: dict, community_data: dict, master_data: dict,
             master_ach[ach_key] = {'text': text}
             stats['updated'] += 1
 
+    # 4. Professional Licenses from credentials.yaml (Medical / Legal / Engineering)
+    for item in (creds_data.get('licenses', []) or []):
+        if not isinstance(item, dict):
+            continue
+        name = (item.get('name') or '').strip()
+        if not name:
+            stats['skipped'] += 1
+            continue
+        jurisdiction = (item.get('jurisdiction') or '').strip()
+        lic_num = (item.get('license_number') or '').strip()
+        status = (item.get('status') or '').strip()
+
+        parts = [name]
+        meta = []
+        if jurisdiction:
+            meta.append(jurisdiction)
+        if lic_num:
+            meta.append(f"License #{lic_num}")
+        if status:
+            meta.append(status)
+        if meta:
+            parts.append(f"({' — '.join(meta)})")
+        text = " ".join(parts)
+
+        ach_key = None
+        for k, v in master_ach.items():
+            if isinstance(v, dict) and v.get('text', '').lower() == text.lower():
+                ach_key = k
+                break
+            elif isinstance(v, str) and v.lower() == text.lower():
+                ach_key = k
+                break
+
+        if not ach_key:
+            ach_key = generate_achievement_key(name, existing_keys, prefix="license")
+            existing_keys.add(ach_key)
+            master_ach[ach_key] = {'text': text}
+            stats['added'] += 1
+        elif force:
+            master_ach[ach_key] = {'text': text}
+            stats['updated'] += 1
+
+    # 5. Security Clearances from credentials.yaml (Defense / Government / Aerospace)
+    for item in (creds_data.get('clearances', []) or []):
+        if not isinstance(item, dict):
+            continue
+        level = (item.get('level') or '').strip()
+        if not level:
+            stats['skipped'] += 1
+            continue
+        agency = (item.get('agency') or '').strip()
+        status = (item.get('status') or '').strip()
+        poly = (item.get('polygraph') or '').strip()
+
+        parts = [f"{level} Security Clearance"]
+        meta = []
+        if agency:
+            meta.append(agency)
+        if status:
+            meta.append(status)
+        if poly:
+            meta.append(f"Polygraph: {poly}")
+        if meta:
+            parts.append(f"({' — '.join(meta)})")
+        text = " ".join(parts)
+
+        ach_key = None
+        for k, v in master_ach.items():
+            if isinstance(v, dict) and v.get('text', '').lower() == text.lower():
+                ach_key = k
+                break
+            elif isinstance(v, str) and v.lower() == text.lower():
+                ach_key = k
+                break
+
+        if not ach_key:
+            ach_key = generate_achievement_key(level, existing_keys, prefix="clearance")
+            existing_keys.add(ach_key)
+            master_ach[ach_key] = {'text': text}
+            stats['added'] += 1
+        elif force:
+            master_ach[ach_key] = {'text': text}
+            stats['updated'] += 1
+
     master_data['achievements'] = master_ach
     return stats
 
@@ -658,11 +745,11 @@ def sync_achievements(creds_data: dict, community_data: dict, master_data: dict,
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Sync verified facts from identity/ to resume/master.yaml bullet pool."
+        description="Sync verified facts from identity/ to tools/resume/master.yaml bullet pool."
     )
     parser.add_argument(
         '--dry-run', action='store_true',
-        help="Preview changes without modifying resume/master.yaml"
+        help="Preview changes without modifying tools/resume/master.yaml"
     )
     parser.add_argument(
         '--section',

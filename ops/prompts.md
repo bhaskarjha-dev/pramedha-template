@@ -1,4 +1,4 @@
-﻿# Prompt Library — Copy-Paste Commands for AI Sessions
+# Prompt Library — Copy-Paste Commands for AI Sessions
 
 > **Purpose:** Each prompt below is a self-contained instruction you paste into a NEW AI session.
 > The AI reads the repo files referenced in the prompt and executes the task.
@@ -46,10 +46,10 @@ EXECUTE: Follow the 7-phase protocol in .pramedha/agent-instructions.md exactly:
 - Phase A (Steps 0-1): Scan data-corpus/ and build complete mental model
 - Phase B (Steps 2-10): Fill all 10 identity/ files (verified facts + claims + professional summary)
 - Phase C (Steps 11-13): Generate resume master + variants and validate
-- Phase D (Steps 14-21): Generate outward assets (STAR stories, cover letters, LinkedIn, bios, interview prep)
-- Phase E (Steps 22-28): Draft strategy layer (target roles, study plan, action tracker, digital presence)
-- Phase F (Steps 29-31): Draft personal context (about-me, life-goals, preferences)
-- Phase G (Steps 32-33): Finalize VISION.md and validate entire repository
+- Phase D (Steps 14-17): Generate stories (STAR stories, testimonials, interview prep)
+- Phase E (Steps 18-22): Draft strategy layer (target roles, study plan, financial, tracking, networking)
+- Phase F (Steps 23-25): Draft personal context (about-me, life-goals, preferences)
+- Phase G (Steps 26-27): Finalize VISION.md and validate entire repository
 
 OUTPUT: Commit after each phase with clear messages.
 Report: files filled, claims count, contradictions found, gaps remaining.
@@ -241,7 +241,7 @@ CONTEXT: Read:
 - identity/experience.yaml (my full work history)
 - identity/skills.yaml (my skill levels)
 - stories/star-stories.md (behavioral stories)
-- stories/star-stories.md (questions for interviewer)
+- stories/interview-prep/behavioral.md (questions for interviewer & talking points)
 - strategy/target-roles.md (target role requirements and alignment)
 
 EXECUTE:
@@ -292,8 +292,7 @@ CONTEXT: Read:
 - identity/identity.yaml (contact info)
 - identity/experience.yaml (work history)
 - identity/skills.yaml (skill matrix)
-- identity/professional-summary.md (summary variants)
-- identity/professional-summary.md (LinkedIn-specific content)
+- identity/professional-summary.md (summary variants and platform copy)
 
 EXECUTE:
 1. Generate optimized headline (max 220 chars)
@@ -394,7 +393,7 @@ CONTEXT: Read:
 - identity/professional-summary.md (summary variants)
 - identity/projects.yaml (portfolio projects)
 - identity/experience.yaml (work highlights)
-- identity/professional-summary.md (GitHub profile)
+- identity/identity.yaml (social profiles & links)
 
 EXECUTE:
 1. Write homepage hero section (name, headline, 1-liner)
@@ -488,7 +487,7 @@ EXECUTE:
 2. Tag verification status (✅/⚠️/❌) with evidence path in data-corpus/
 3. If this was a hackathon win or major keynote, sync or add entry to tools/resume/master.yaml (`achievements` pool)
 4. Log the achievement in journal/wins.md
-5. Update identity/professional-summary.md or identity/professional-summary.md if this strengthens thought leadership
+5. Update identity/professional-summary.md if this strengthens thought leadership
 6. Run: py tools/resume/sync.py --section ach --dry-run (verify synchronization)
 
 OUTPUT: Show exact changes across all files. Commit with message: "feat(community): add [event name]"

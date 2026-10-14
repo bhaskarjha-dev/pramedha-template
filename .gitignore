@@ -1,6 +1,8 @@
 # Generated files (auto-built by tools/resume/assemble.py + RenderCV)
-tools/resume/generated/
-tools/resume/output/
+tools/resume/generated/*
+!tools/resume/generated/.gitkeep
+tools/resume/output/*
+!tools/resume/output/.gitkeep
 
 # External tools (user-installed, not tracked)
 tools/external/*
@@ -38,6 +40,10 @@ data-corpus/github/*
 data-corpus/media/*
 !data-corpus/media/.gitkeep
 !data-corpus/media/README.md
+
+data-corpus/text/*
+!data-corpus/text/.gitkeep
+!data-corpus/text/README.md
 
 # Evidence archives and document formats
 data-corpus/**/*.pdf

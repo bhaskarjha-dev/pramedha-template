@@ -30,9 +30,12 @@ import yaml
 # ============================================================================
 
 try:
-    from resume._yaml_utils import OrderedDumper, PresentLiteral, dump_yaml as _base_dump_yaml, load_yaml
+    from tools.resume._yaml_utils import OrderedDumper, PresentLiteral, dump_yaml as _base_dump_yaml, load_yaml
 except ImportError:
-    from _yaml_utils import OrderedDumper, PresentLiteral, dump_yaml as _base_dump_yaml, load_yaml
+    try:
+        from _yaml_utils import OrderedDumper, PresentLiteral, dump_yaml as _base_dump_yaml, load_yaml
+    except ImportError:
+        from resume._yaml_utils import OrderedDumper, PresentLiteral, dump_yaml as _base_dump_yaml, load_yaml
 
 RENDERCV_SCHEMA_HEADER = (
     "# yaml-language-server: $schema=https://raw.githubusercontent.com/rendercv/rendercv/refs/tags/v2.8/schema.json\n\n"
@@ -508,8 +511,8 @@ def validate_variant(master: dict, variant: dict) -> list[str]:
 def check_orphans(master: dict, overlay_paths: list[Path]) -> bool:
     """Analyze master.yaml for entries never referenced in any variant or JD overlay."""
     if not overlay_paths:
-        print("ℹ️  No active variants found in resume/variants/ or resume/jd/ to check against.")
-        print("   Create a variant (e.g. resume/variants/A_Role.yaml) first.")
+        print("ℹ️  No active variants found in tools/resume/variants/ or tools/resume/jd/ to check against.")
+        print("   Create a variant (e.g. tools/resume/variants/A_Role.yaml) first.")
         return True
 
     referenced_roles = set()

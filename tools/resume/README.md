@@ -38,7 +38,7 @@ pip install rendercv
 .\build.ps1        # Windows
 ./build.sh         # Linux/Mac
 # Or manually:
-rendercv render generated/Your_Name_Variant_CV.yaml -o ../output
+rendercv render generated/Your_Name_Variant_CV.yaml -o output
 ```
 
 ---
@@ -104,7 +104,7 @@ RenderCV offers a companion browser app at [rendercv.com](https://rendercv.com) 
 ```yaml
 # master.yaml — Keyed bullet pool
 header:
-  name: "Your Name"           # Auto-filled from ../identity/identity.yaml or ../config.yaml
+  name: "Your Name"           # Auto-filled from ../../identity/identity.yaml or ../../config.yaml
   # ... contact info
 
 experience:

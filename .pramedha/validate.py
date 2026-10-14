@@ -223,8 +223,8 @@ def check_experience(result: ValidationResult):
             result.error(f"experience.yaml: Entry {i} is not a dict")
             continue
 
-        company = (entry.get('company') or '').strip()
-        position = (entry.get('position') or entry.get('title') or '').strip()
+        company = (entry.get('company') or entry.get('organization') or entry.get('client') or entry.get('institution') or entry.get('employer') or entry.get('practice') or '').strip()
+        position = (entry.get('position') or entry.get('title') or entry.get('role') or '').strip()
         start = (entry.get('start_date') or '').strip()
 
         # If it's a completely blank scaffolding entry, don't spam individual field warnings
@@ -232,9 +232,9 @@ def check_experience(result: ValidationResult):
             continue
 
         if not company:
-            result.warn(f"experience.yaml: Entry {i} missing company")
+            result.warn(f"experience.yaml: Entry {i} missing company / client / organization")
         if not position:
-            result.warn(f"experience.yaml: Entry {i} missing position")
+            result.warn(f"experience.yaml: Entry {i} missing position / title / role")
         if not start:
             result.warn(f"experience.yaml: Entry {i} missing start_date")
 
@@ -674,7 +674,7 @@ def compute_fill_status(result: ValidationResult):
             or bool(((d or {}).get('work_authorization') or {}).get('status', '').strip() if isinstance((d or {}).get('work_authorization'), dict) else str((d or {}).get('work_authorization', '')).strip())
         )),
         ("identity/experience.yaml", "experience.yaml", lambda d: any(
-            isinstance(e, dict) and bool((e.get('company') or '').strip()) for e in ((d or {}).get('experience') or [])
+            isinstance(e, dict) and bool((e.get('company') or e.get('organization') or e.get('client') or e.get('institution') or e.get('employer') or e.get('practice') or '').strip()) for e in ((d or {}).get('experience') or [])
         )),
         ("identity/skills.yaml", "skills.yaml", lambda d: d is not None and any(
             isinstance(v, list) and any(isinstance(s, dict) and bool((s.get('name') or '').strip()) for s in v)
@@ -684,6 +684,14 @@ def compute_fill_status(result: ValidationResult):
             isinstance(e, dict) and bool((e.get('degree') or '').strip()) for e in ((d or {}).get('education') or [])
         ) or any(
             isinstance(c, dict) and bool((c.get('name') or '').strip()) for c in ((d or {}).get('certifications') or [])
+        ) or any(
+            isinstance(l, dict) and bool((l.get('name') or '').strip()) for l in ((d or {}).get('licenses') or [])
+        ) or any(
+            isinstance(cl, dict) and bool((cl.get('level') or '').strip()) for cl in ((d or {}).get('clearances') or [])
+        ) or any(
+            isinstance(p, dict) and bool((p.get('title') or '').strip()) for p in ((d or {}).get('publications') or [])
+        ) or any(
+            isinstance(a, dict) and bool((a.get('title') or a.get('name') or '').strip()) for a in ((d or {}).get('awards') or [])
         )),
         ("identity/projects.yaml", "projects.yaml", lambda d: any(
             isinstance(p, dict) and bool((p.get('name') or '').strip()) for p in ((d or {}).get('public') or [])

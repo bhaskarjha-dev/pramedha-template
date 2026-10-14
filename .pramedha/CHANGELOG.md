@@ -2,6 +2,23 @@
 
 All notable changes to the Pramedha Career Template.
 
+## [0.1.0] — 2026-10-14 (Audit Remediation)
+
+### Fixed — Build Engine, Security, and Cross-File Integrity
+- **RenderCV Multi-Variant Silent PDF Overwrite Bug (`tools/resume/build.ps1`, `build.sh`)** — Fixed critical bug where rendering multiple variants in a loop silently overwrote `[cv.name]_CV.pdf`. Build scripts now compile each variant into an isolated subdirectory (`output/$name/`) and copy the resulting PDF to a cleanly named, collision-proof `output/$name.pdf`.
+- **`data-corpus/text/` Privacy Protection (`.gitignore`)** — Patched `.gitignore` to explicitly ignore `data-corpus/text/*` while retaining `.gitkeep` and `README.md`, preventing accidental commits of raw interview transcripts, compensation negotiations, and personal brain dumps.
+- **Git Index Cleanup** — Untracked accidentally committed build artifacts (`tools/resume/generated/Resume_my-role_CV.yaml` and `tools/resume/generated/resume/output/*`).
+- **Step Protocol & Phase Count Harmonization (`ops/guide.md`, `data-corpus/README.md`, `ops/prompts.md`)** — Harmonized all references to the canonical 28-step protocol (Steps 0–27 across 7 phases), eliminating references to the legacy 34-step protocol and removed phantom phases for pruned static assets.
+- **Ghost Asset Reference Removal (`GETTING_STARTED.md`, `ops/prompts.md`, `identity/claims-and-evidence.md`, `.pramedha/agent-instructions.md`)** — Removed dangling references to cover letters, LinkedIn packs, and non-existent `master-action-tracker.md`. Replaced cover letter reference in `GETTING_STARTED.md` with behavioral interview prep, and directed claim debt tracking to the local `## Claim Debt Queue` in `claims-and-evidence.md`.
+- **Path Consistency Across Tooling (`.github/CONTRIBUTING.md`, `tools/resume/assemble.py`, `tools/resume/sync.py`, `tools/resume/README.md`)** — Replaced all legacy `resume/...` paths with `tools/resume/...`, improved module import handling for `_yaml_utils`, and fixed relative directory paths in documentation.
+
+### Improved — Universal Profession & Multi-Persona Architecture
+- **Professional Licenses & Security Clearances in Resume Cascade (`tools/resume/sync.py`, `master.yaml`)** — Extended `sync.py` to extract professional licenses (Medical Board, State Bar, PE) and security clearances (Top Secret / SCI, Polygraphs) from `identity/credentials.yaml` into `master.yaml['achievements']` with prefix `license_` and `clearance_`.
+- **Universal Experience Aliases (`tools/resume/sync.py`, `.pramedha/validate.py`)** — Added support for freelance client engagements, medical hospital practices, research institutes, and military commands by accepting `company`, `client`, `organization`, `institution`, `practice`, and `employer` aliases in both the synchronizer and validator.
+- **Comprehensive Credentials Fill Validation (`.pramedha/validate.py`)** — Enhanced `compute_fill_status()` to recognize licenses, security clearances, academic publications, and awards as valid credentials, ensuring non-tech and licensed professionals receive honest fill scoring.
+- **Core Professional Identity Generalization (`strategy/target-roles.md`)** — Generalized `### Core Technical Identity` to `### Core Professional Identity & Capabilities` with diverse examples across software architecture, clinical research leadership, and corporate compliance.
+- **Layer Purity & Crisis Readiness Checklists (`identity/claims-and-evidence.md`, `strategy/job-tracker.md`)** — Relocated the emergency layoff and crisis contingency checklist from `identity/claims-and-evidence.md` to `strategy/job-tracker.md` (Section 6), preserving the `identity/` layer as strictly verified, objective facts.
+
 ## [0.1.0] — 2026-10-13
 
 ### Major: Architectural Streamlining, Minimum Context Router & Directory Flattening

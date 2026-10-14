@@ -36,13 +36,14 @@ New-Item -ItemType Directory -Force -Path $outputDir | Out-Null
 $yamlFiles = Get-ChildItem "$generatedDir\*.yaml" -ErrorAction SilentlyContinue
 if (-not $yamlFiles -or $yamlFiles.Count -eq 0) {
     Write-Host "  No generated YAML files found in $generatedDir." -ForegroundColor Gray
-    Write-Host "  Create a variant file in resume/variants/ first (e.g. copy _template.yaml to A_Role.yaml)." -ForegroundColor Gray
+    Write-Host "  Create a variant file in tools/resume/variants/ first (e.g. copy _template.yaml to A_Role.yaml)." -ForegroundColor Gray
     Write-Host "`n=== Build Complete ===" -ForegroundColor Cyan
     exit 0
 }
 
 # Ensure UTF-8 console output for RenderCV rich logging
 $env:PYTHONIOENCODING = "utf-8"
+$env:PYTHONUTF8 = "1"
 
 # Check if rendercv is available
 $rendercvCmd = if (Get-Command rendercv -ErrorAction SilentlyContinue) {
@@ -65,15 +66,24 @@ try {
     foreach ($file in $yamlFiles) {
         $name = $file.BaseName
         Write-Host "  Rendering $name..." -ForegroundColor Gray
+        $variantOutputDir = Join-Path $outputDir $name
+        New-Item -ItemType Directory -Force -Path $variantOutputDir | Out-Null
+
         if ($rendercvCmd -eq "rendercv") {
-            rendercv render $file.FullName -o $outputDir 2>&1
+            rendercv render $file.FullName -o $variantOutputDir 2>&1
         } else {
-            & $pythonCmd -m rendercv render $file.FullName -o $outputDir 2>&1
+            & $pythonCmd -m rendercv render $file.FullName -o $variantOutputDir 2>&1
         }
         if ($LASTEXITCODE -ne 0) {
             Write-Host "  ❌ Failed: $name" -ForegroundColor Red
         } else {
-            Write-Host "  ✅ $name" -ForegroundColor Green
+            $generatedPdf = Get-ChildItem "$variantOutputDir\*.pdf" -ErrorAction SilentlyContinue | Select-Object -First 1
+            if ($generatedPdf) {
+                Copy-Item -Path $generatedPdf.FullName -Destination "$outputDir\$name.pdf" -Force
+                Write-Host "  ✅ $name -> output\$name.pdf" -ForegroundColor Green
+            } else {
+                Write-Host "  ✅ $name" -ForegroundColor Green
+            }
         }
     }
 } finally {

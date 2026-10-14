@@ -14,11 +14,12 @@
 > aspire to, not what's on your resume without evidence, but what's verified.
 > Ground this in `identity/skills.yaml` and `identity/experience.yaml`.
 
-### Core Technical Identity
+### Core Professional Identity & Capabilities
 
 | Dimension | Level (⭐1-5) | Evidence |
 |-----------|:------------:|---------:|
-| *Example: Python engineering* | *⭐⭐⭐⭐ Advanced (5 yrs)* | *Primary language across all employers* |
+| *Example (Tech): Python backend architecture* | *⭐⭐⭐⭐ Advanced (5 yrs)* | *Primary language across all production systems* |
+| *Example (Non-Tech/Executive): Clinical Trial Compliance / Corporate M&A* | *⭐⭐⭐⭐⭐ Expert (8 yrs)* | *Led 14 audits across US/EU; zero critical findings* |
 | | | |
 | | | |
 

@@ -118,7 +118,7 @@ This is the most important file. For each employer:
 - Review ALL claims in experience.yaml, skills.yaml, and credentials.yaml
 - Assign safety tiers: 🟢 SAFE, 🟡 USE CAREFULLY, 🔴 DO NOT USE
 - Assign measurement tags: `[measured]`, `[estimated]`, `[to-verify]`
-- Items tagged `[estimated]` or `[to-verify]` will become Claim Debt in master-action-tracker
+- Items tagged `[estimated]` or `[to-verify]` will become Claim Debt in identity/claims-and-evidence.md
 - Log any contradictions found between sources
 
 #### Step 10: Fill identity/professional-summary.md

@@ -68,3 +68,33 @@
 | Company | Role | Final Stage Reached | What Worked Well | What To Improve / Study |
 |---------|------|:-------------------:|------------------|-------------------------|
 | | | | | |
+
+---
+
+## 6. Career Contingency & Crisis Readiness Checklists
+
+> Review quarterly. These are your emergency preparedness checks for layoffs, sudden market shifts, and career crises.
+
+### If laid off tomorrow:
+
+- [ ] **Financial runway:** ___ months of expenses covered (grounded in `strategy/financial.md`)
+- [ ] **Resume ready:** Yes / No (last updated: YYYY-MM in `tools/resume/master.yaml`)
+- [ ] **Network activated:** 3+ people I could call today (grounded in `strategy/networking.md`)
+- [ ] **Emergency references:** Listed in `identity/references.yaml`
+- [ ] **Portfolio up to date:** `identity/` and resume data current
+- [ ] **Job search channels:** Know where to look (pipeline table set up above)
+
+### If current role becomes unbearable:
+
+- [ ] Documented specific issues (for reference in exit interview)
+- [ ] Internal transfer options explored
+- [ ] External market salary validated (grounded in `strategy/financial.md`)
+- [ ] Notice period and financial runway confirmed
+- [ ] At least 2 target companies researched
+
+### If industry shifts dramatically:
+
+- [ ] Adjacent industries identified (grounded in `strategy/target-roles.md`)
+- [ ] Transferable skills documented (grounded in `identity/skills.yaml`)
+- [ ] Reskilling timeline estimated (grounded in `strategy/study-plan.md`)
+- [ ] Financial buffer for transition period confirmed

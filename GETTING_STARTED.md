@@ -119,7 +119,7 @@ following the 7-phase protocol (A through G). For each file:
 The AI will fill **~40 files automatically**:
 - ✅ All identity/ YAML files (from your raw data)
 - ✅ Resume master + variants (from identity)
-- ✅ STAR stories, cover letters, LinkedIn pack (from experience)
+- ✅ STAR stories, interview prep, and professional summary variants
 - ⚠️ Strategy files (drafted, needs your review)
 - ❌ Journal files (you fill these over time)
 
@@ -159,7 +159,7 @@ cp tools/resume/variants/_template.yaml tools/resume/variants/my-role.yaml
 # 3. Assemble and render PDF:
 py tools/resume/assemble.py --validate    # Verify all references
 py tools/resume/assemble.py               # Assembles to tools/resume/generated/
-rendercv render tools/resume/generated/my-role.yaml -o ../output
+rendercv render tools/resume/generated/my-role_CV.yaml -o tools/resume/output/my-role
 # (Or simply run .\tools\resume\build.ps1 on Windows / ./tools/resume/build.sh on Linux/Mac)
 # (On Windows PowerShell if encoding errors occur: $env:PYTHONUTF8 = "1")
 # Your PDF is compiled in tools/resume/output/ in <1s via Typst (no LaTeX needed!)
@@ -195,9 +195,9 @@ Fill these at your own pace. Each layer adds value independently:
 - [ ] `strategy/study-plan.md` — What skills gaps need filling?
 - [ ] `strategy/financial.md` — What's your salary target?
 
-### Week 2: Assets
+### Week 2: Stories & Preparation
 - [ ] `stories/star-stories.md` — Write 3-5 STAR stories for interviews
-- [ ] `stories/interview-prep/behavioral.md` — Customize the cover letter template
+- [ ] `stories/interview-prep/behavioral.md` — Tailor behavioral talking points
 - [ ] `personal/form-fill-cheatsheet.md` — Pre-fill common application fields
 
 ### Week 3: Personal (Private)

@@ -105,6 +105,10 @@ achievements: {}
   #   text: "Won XYZ Hackathon — built AI solution in 48 hours"
   # certification:
   #   text: "AWS Solutions Architect certified"
+  # license_bar:
+  #   text: "State Bar Admission (California, Active, License #12345)"
+  # clearance_ts_sci:
+  #   text: "Top Secret / SCI Security Clearance (DoD, Active)"
 
 # ─── Technologies (shared across variants) ───────────────────────────────
 technologies: []

@@ -51,7 +51,7 @@ When facts conflict, trust sources in this order:
 <!-- Fill this as you verify claims. Format:
 | Claim | Source | Tier | Evidence | Tag | Notes |
      Tag values: [measured], [estimated], or [to-verify]
-     Claims with [estimated] or [to-verify] feed into master-action-tracker.md
+     Claims with [estimated] or [to-verify] feed into the Claim Debt Queue below
 -->
 
 | Claim | Source | Tier | Evidence | Tag | Notes |
@@ -101,30 +101,5 @@ When facts conflict, trust sources in this order:
 
 ---
 
-## Career Contingency Checklists
-
-> Review quarterly. These are your emergency preparedness checks.
-
-### If laid off tomorrow:
-
-- [ ] **Financial runway:** ___ months of expenses covered
-- [ ] **Resume ready:** Yes / No (last updated: YYYY-MM)
-- [ ] **Network activated:** 3+ people I could call today
-- [ ] **Emergency references:** Listed in `identity/references.yaml`
-- [ ] **Portfolio up to date:** `identity/` and resume data current
-- [ ] **Job search channels:** Know where to look (tracker set up)
-
-### If current role becomes unbearable:
-
-- [ ] Documented specific issues (for reference in exit interview)
-- [ ] Internal transfer options explored
-- [ ] External market salary validated
-- [ ] Notice period and financial runway confirmed
-- [ ] At least 2 target companies researched
-
-### If industry shifts dramatically:
-
-- [ ] Adjacent industries identified
-- [ ] Transferable skills documented
-- [ ] Reskilling timeline estimated
-- [ ] Financial buffer for transition period
+> 💡 **Emergency Career Contingency & Crisis Checklists:**
+> Layoff preparedness and financial runway checklists are maintained in `strategy/job-tracker.md` (Section 6) and `strategy/financial.md`.
