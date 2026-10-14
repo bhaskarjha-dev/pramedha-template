@@ -475,8 +475,8 @@ def check_date_chronology(result: ValidationResult):
 
 
 def check_identity_master_parity(result: ValidationResult):
-    """Check parity between identity/ files and resume/master.yaml (experience, projects, education)."""
-    master_path = TEMPLATE_ROOT / "resume" / "master.yaml"
+    """Check parity between identity/ files and tools/resume/master.yaml (experience, projects, education)."""
+    master_path = TEMPLATE_ROOT / "tools" / "resume" / "master.yaml"
     if not master_path.exists():
         return
 
@@ -508,8 +508,8 @@ def check_identity_master_parity(result: ValidationResult):
             for comp in id_companies:
                 if comp.lower() not in master_companies:
                     result.warn(
-                        f"Parity: Employer '{comp}' in experience.yaml is not in resume/master.yaml. "
-                        f"Run 'py resume/sync.py' to synchronize."
+                        f"Parity: Employer '{comp}' in experience.yaml is not in tools/resume/master.yaml. "
+                        f"Run 'py tools/resume/sync.py' to synchronize."
                     )
 
     # 2. Projects Parity
@@ -539,8 +539,8 @@ def check_identity_master_parity(result: ValidationResult):
             for pname in id_projects:
                 if pname.lower() not in master_project_names:
                     result.warn(
-                        f"Parity: Project '{pname}' in projects.yaml is not in resume/master.yaml. "
-                        f"Run 'py resume/sync.py' to synchronize."
+                        f"Parity: Project '{pname}' in projects.yaml is not in tools/resume/master.yaml. "
+                        f"Run 'py tools/resume/sync.py' to synchronize."
                     )
 
     # 3. Education Parity
@@ -568,8 +568,8 @@ def check_identity_master_parity(result: ValidationResult):
             for inst in id_institutions:
                 if inst.lower() not in master_insts:
                     result.warn(
-                        f"Parity: Education institution '{inst}' in credentials.yaml is not in resume/master.yaml. "
-                        f"Run 'py resume/sync.py' to synchronize."
+                        f"Parity: Education institution '{inst}' in credentials.yaml is not in tools/resume/master.yaml. "
+                        f"Run 'py tools/resume/sync.py' to synchronize."
                     )
 
 
@@ -695,7 +695,7 @@ def compute_fill_status(result: ValidationResult):
         ) or any(
             isinstance(h, dict) and bool((h.get('name') or '').strip()) for h in ((d or {}).get('hackathons') or [])
         )),
-        ("resume/master.yaml", "master.yaml", lambda d: any(
+        ("tools/resume/master.yaml", "master.yaml", lambda d: any(
             k != '_example_role_' and isinstance(v, dict) for k, v in ((d or {}).get('experience') or {}).items()
         )),
         ("personal/preferences.yaml", "preferences.yaml", lambda d: bool(

@@ -75,17 +75,17 @@ tools/external/      ← Mount point for third-party career tools (gitignored)
 
 ## What To Do When Asked to Fill the Template
 
-Read `.pramedha/agent-instructions.md` — it contains the complete **34-step, 7-phase protocol (Steps 0–33)**:
+Read `.pramedha/agent-instructions.md` — it contains the complete **28-step, 7-phase protocol (Steps 0–27)**:
 
 | Phase | Steps | What Happens |
 |:-----:|:-----:|-------------|
 | A | 0-1 | Read config.yaml + scan data-corpus/ |
 | B | 2-10 | Fill identity/ (10 files — career facts + speaking + claims) |
 | C | 11-13 | Generate resume master + variants (in tools/resume/) |
-| D | 14-18 | Generate stories (STAR stories, testimonials, interview prep) |
-| E | 19-24 | Draft strategy (target roles, study plan, financial) |
-| F | 25-27 | Draft personal (about-me, life-goals, preferences) |
-| G | 28-29 | Finalize VISION.md + validate |
+| D | 14-17 | Generate stories (STAR stories, testimonials, interview prep) |
+| E | 18-22 | Draft strategy (target roles, study plan, financial, tracking) |
+| F | 23-25 | Draft personal (about-me, life-goals, preferences) |
+| G | 26-27 | Finalize VISION.md + validate |
 
 ## What To Do When Asked to Update/Maintain
 

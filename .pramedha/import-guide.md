@@ -43,7 +43,7 @@ pramedha import --from ./ --layers professional,personal
 | `identity/claims-and-evidence.md` | `meta.claims_registry[]` | Parsed from markdown table |
 | `personal/preferences.yaml` | `personal.work_preferences` | Deal-breakers, values |
 | `personal/life-goals.md` | `personal.career_goals` | Parsed from markdown |
-| `resume/master.yaml` | *(used for artifact generation)* | Bullet phrasings preserved |
+| `tools/resume/master.yaml` | *(used for artifact generation)* | Bullet phrasings preserved |
 
 ---
 
@@ -53,7 +53,7 @@ These files are useful in the Git repo but don't import into Pramedha's database
 
 - `data-corpus/` — Raw evidence (Pramedha has its own intake pipeline)
 - `strategy/` — Pramedha has its own tracker and strategy features
-- `assets/` — Pramedha generates these from your profile
+- `stories/` — Pramedha generates interview assets from your profile
 - `journal/` — Pramedha has its own journal system
 - `ops/` — Template maintenance (not needed in platform)
 
