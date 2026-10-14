@@ -2,6 +2,8 @@
 # IDENTITY — Core Personal, Contact & Extended Demographic Information
 # ============================================================================
 # Maps to: PramedhaProfile.professional.identity
+# Schema: pramedha.models.ProfessionalIdentity
+# Docs: .pramedha/schema-reference.md#config-identity
 #
 # SOURCE OF TRUTH & AUTHORITY:
 # - This file defines your core identity, demographics, and work authorization.

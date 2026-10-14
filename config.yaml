@@ -9,6 +9,12 @@
 
 schema_version: "0.1.0"
 
+# ─── Pramedha Format Specification ──────────────────────────────────────────
+pramedha_format:
+  version: "1.0.0"
+  compatible_with: "pramedha >= 0.1.0"
+  description: "Pramedha portable career format — YAML/Markdown flat files"
+
 # ─── Your Identity ───────────────────────────────────────────────────────────
 user:
   name: ""                    # Full name (as it appears on resume)

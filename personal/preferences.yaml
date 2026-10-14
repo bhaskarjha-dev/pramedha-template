@@ -2,6 +2,8 @@
 # WORK PREFERENCES — What You Want in Your Next Role
 # ============================================================================
 # Maps to: PramedhaProfile.personal.work_preferences
+# Schema: pramedha.models.WorkPreferences, pramedha.models.LifeContext
+# Docs: .pramedha/schema-reference.md#personal
 #
 # ⚠️ PRIVATE — Used by Pramedha for matching and career guidance.
 # Never appears on resumes or shared externally.

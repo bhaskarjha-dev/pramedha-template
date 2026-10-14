@@ -1,6 +1,10 @@
 # ============================================================================
 # SPEAKING & COMMUNITY — Public Speaking, Tech Talks, Community Engagement
 # ============================================================================
+# Maps to: PramedhaProfile.professional.featured[] / organizations[] (template extension)
+# Schema: pramedha.models.SpeakingEntry[] (template extension)
+# Docs: .pramedha/schema-reference.md#speaking-and-community
+#
 # This file captures ALL public-facing activities that demonstrate thought
 # leadership, community involvement, and industry presence.
 #

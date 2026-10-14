@@ -2,6 +2,8 @@
 # PROJECTS — Portfolio Projects
 # ============================================================================
 # Maps to: PramedhaProfile.professional.projects[]
+# Schema: pramedha.models.ProjectEntry[]
+# Docs: .pramedha/schema-reference.md#projects
 #
 # Include both public (GitHub, live demos) and internal/professional projects.
 # Each project should demonstrate skills relevant to your target roles.

@@ -1,7 +1,9 @@
 # ============================================================================
 # VOLUNTEERING — Community Work, Open Source & Pro Bono
 # ============================================================================
-# Maps to: PramedhaProfile.professional.volunteering[]
+# Maps to: PramedhaProfile.professional.volunteer[]
+# Schema: pramedha.models.VolunteerEntry[]
+# Docs: .pramedha/schema-reference.md#volunteering
 #
 # Includes: open source contributions, community leadership, mentoring,
 # NGO work, hackathon organizing, teaching, pro bono consulting.

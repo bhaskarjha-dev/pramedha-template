@@ -2,6 +2,8 @@
 # SKILLS — Categorized Skill Matrix
 # ============================================================================
 # Maps to: PramedhaProfile.professional.skills[]
+# Schema: pramedha.models.SkillCategory[], pramedha.models.Skill[]
+# Docs: .pramedha/schema-reference.md#skills
 #
 # Group skills by category. Each skill has:
 #   name       — Canonical name (e.g., "Python", not "python" or "Python 3.x")

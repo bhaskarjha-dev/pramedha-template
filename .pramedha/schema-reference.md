@@ -26,6 +26,7 @@
 
 ---
 
+<a id="config-identity"></a>
 ## config.yaml & identity/identity.yaml → PramedhaProfile.professional.identity
 
 | Config / Identity Field | Pramedha Field | Type | Source Priority |
@@ -45,6 +46,7 @@
 
 ---
 
+<a id="experience"></a>
 ## identity/experience.yaml → PramedhaProfile.professional.experience[]
 
 | Template Field | Pramedha Field | Type |
@@ -81,8 +83,8 @@
 
 The bridge between raw identity facts and RenderCV resume generation operates as follows:
 
-| Identity Source | `resume/master.yaml` Section | RenderCV Entry Type & Fields |
-|-----------------|-----------------------------|------------------------------|
+| Identity Source | `tools/resume/master.yaml` Section | RenderCV Entry Type & Fields |
+|-----------------|-----------------------------------|------------------------------|
 | `identity/identity.yaml` & `config.yaml` | `header:` (`name`, `email`, `phone`, `website`, `location`, `social_networks`) | Top-level `cv` header: `name`, `email`, `phone`, `website`, `location`, `social_networks` |
 | `identity/experience.yaml` | `experience:`<br>`[role_key]:`<br>&nbsp;&nbsp;`company`<br>&nbsp;&nbsp;`position`<br>&nbsp;&nbsp;`start_date`, `end_date`<br>&nbsp;&nbsp;`location`<br>&nbsp;&nbsp;`bullets: [key]: {phrasings}` | `ExperienceEntry`:<br>• `company`<br>• `position`<br>• `start_date`, `end_date`<br>• `location`<br>• `highlights: [...]` (selected from variant) |
 | `identity/projects.yaml` | `projects:`<br>`[proj_key]:`<br>&nbsp;&nbsp;`name`<br>&nbsp;&nbsp;`date`<br>&nbsp;&nbsp;`location` (URL/repo)<br>&nbsp;&nbsp;`bullets: {phrasings}` | `NormalEntry`:<br>• `name`<br>• `date`<br>• `location`<br>• `highlights: [...]` |
@@ -92,6 +94,7 @@ The bridge between raw identity facts and RenderCV resume generation operates as
 
 ---
 
+<a id="skills"></a>
 ## identity/skills.yaml → PramedhaProfile.professional.skills[]
 
 | Template Field | Pramedha Field | Type |
@@ -104,20 +107,74 @@ The bridge between raw identity facts and RenderCV resume generation operates as
 
 ---
 
+<a id="credentials"></a>
 ## identity/credentials.yaml → Multiple Pramedha Arrays
 
-| Template Section | Pramedha Field |
-|-----------------|---------------|
-| `education[]` | `professional.education[]` |
-| `certifications[]` | `professional.certifications[]` |
-| `awards[]` | `professional.awards[]` |
-| `test_scores[]` | `professional.test_scores[]` |
-| `publications[]` | `professional.publications[]` |
-| `patents[]` | `professional.patents[]` |
-| `grants[]` | `professional.grants[]` |
+| Template Section | Pramedha Field | Pramedha Model |
+|-----------------|---------------|----------------|
+| `education[]` | `professional.education[]` | `EducationEntry` |
+| `certifications[]` | `professional.certifications[]` | `CertificationEntry` |
+| `awards[]` | `professional.awards[]` | `AwardEntry` |
+| `test_scores[]` | `professional.test_scores[]` | `TestScoreEntry` |
+| `publications[]` | `professional.publications[]` | `PublicationEntry` |
+| `patents[]` | `professional.patents[]` | `PatentEntry` |
+| `grants[]` | `professional.grants[]` | `GrantEntry` |
 
 ---
 
+<a id="projects"></a>
+## identity/projects.yaml → PramedhaProfile.professional.projects[]
+
+| Template Field | Pramedha Field | Type |
+|---------------|---------------|------|
+| `public[].name` / `internal[].name` | `projects[].name` | string |
+| `tagline` | `projects[].description` | string |
+| `tech[]` | `projects[].technologies` / `tech_stack` | string[] |
+| `live_url` / `repo` | `projects[].url` / `repo_url` | string |
+| `start_date`, `end_date` | `projects[].dates` | DateRange |
+| `role` | `projects[].role` | string |
+| `highlights[]` | `projects[].highlights` | string[] |
+| `impact_metrics` | `projects[].metrics` | string |
+| `featured[]` | `professional.featured[]` | `FeaturedItem` |
+
+---
+
+<a id="speaking-and-community"></a>
+## identity/speaking-and-community.yaml → Thought Leadership & Community
+
+| Template Section | Pramedha Field / Equivalent | Description |
+|-----------------|-----------------------------|-------------|
+| `speaking[]` | `professional.featured[]` or extension | Talks, presentations, panel sessions |
+| `hackathons[]` | `professional.projects[]` or `awards[]` | Competitions and hackathon builds |
+| `community[]` | `professional.organizations[]` | Meetups, organizations, community leadership |
+| `content_metrics` | `meta.metrics` | Social audience and readership reach |
+
+---
+
+<a id="volunteering"></a>
+## identity/volunteering.yaml → PramedhaProfile.professional.volunteer[]
+
+| Template Section | Pramedha Field | Pramedha Model |
+|-----------------|---------------|----------------|
+| `volunteering[]` | `professional.volunteer[]` | `VolunteerEntry` |
+| `open_source[]` | `professional.projects[]` (with open-source tag) | `ProjectEntry` |
+| `mentoring[]` | `professional.volunteer[]` / `experience[]` | `VolunteerEntry` |
+
+---
+
+<a id="references"></a>
+## identity/references.yaml → PramedhaProfile.professional.references[]
+
+| Template Field | Pramedha Field | Type |
+|---------------|---------------|------|
+| `name` | `professional.references[].name` | string |
+| `relationship` | `professional.references[].relationship` | string |
+| `title` + `company` | `professional.references[].reference` | string |
+| `email` / `phone` | `professional.references[].contact` | string |
+
+---
+
+<a id="personal"></a>
 ## personal/ → PramedhaProfile.personal
 
 | Template File | Pramedha Field |
@@ -126,6 +183,9 @@ The bridge between raw identity facts and RenderCV resume generation operates as
 | `preferences.yaml → work_values` | `personal.work_preferences.work_values` |
 | `preferences.yaml → deal_breakers` | `personal.work_preferences.deal_breakers` |
 | `preferences.yaml → strengths` | `personal.work_preferences.self_identified_strengths` |
+| `preferences.yaml → remote_preference` | `personal.work_preferences.remote_preference` |
+| `preferences.yaml → career_stage` | `personal.life_context.career_stage` |
+| `preferences.yaml → risk_tolerance` | `personal.life_context.risk_tolerance` |
 | `life-goals.md → short_term` | `personal.career_goals.short_term` |
 | `life-goals.md → medium_term` | `personal.career_goals.medium_term` |
 | `life-goals.md → long_term` | `personal.career_goals.long_term` |
@@ -133,6 +193,7 @@ The bridge between raw identity facts and RenderCV resume generation operates as
 
 ---
 
+<a id="claims-and-meta"></a>
 ## claims-and-evidence.md → PramedhaProfile.meta
 
 | Template Concept | Pramedha Field |
@@ -142,3 +203,28 @@ The bridge between raw identity facts and RenderCV resume generation operates as
 | ✅ VERIFIED tag | `claim_status: "verified"` |
 | ⚠️ ESTIMATED tag | `claim_status: "claimed"` |
 | ❌ UNVERIFIED tag | `claim_status: "disputed"` |
+
+---
+
+<a id="pramedha-compatibility"></a>
+## Pramedha Compatibility & Contract Reference
+
+### The "Pramedha Portable Format" Principle
+
+`pramedha-template` is designed to be the canonical **file-based, portable representation** of a career profile.
+- **Standalone:** Zero external dependencies, pure Git + YAML + Markdown. Any LLM (Claude, ChatGPT, Copilot, Antigravity) can read and modify it directly.
+- **Platform-Compatible:** When imported into the Pramedha Career OS platform, this flat-file structure maps cleanly into the unified `PramedhaProfile` Pydantic models.
+
+### Field Coverage Summary
+
+| Area | Template Support | Platform Support | Notes |
+|------|:----------------:|:----------------:|-------|
+| Professional Facts | ✅ Full | ✅ Full | Exact 1:1 mapping |
+| Work Experience | ✅ Hierarchical | ✅ Flat | Template's employer→project→deliverable flattens to `ExperienceEntry` |
+| Skills Matrix | ✅ Categorized | ✅ Taxonomized | Platform maps names to Lightcast/ESCO canonical IDs |
+| Credentials & Education | ✅ Full | ✅ Full | Split into education, certs, awards |
+| Private Preferences | ✅ Private YAML | ✅ Personal Layer | Strictly guarded, never serialized to outward assets |
+| Claims & Verification | ✅ Markdown Ledger | ✅ Meta Layer | Trust scores and verification tags align |
+| External Tools Integration | ✅ `tools/external/` | ✅ MCP & SDK | Template mounts tools; platform provides native APIs |
+| Vector Embeddings | ❌ (File-based) | ✅ Qdrant/pgvector | Computed during platform intake |
+| Knowledge Graph | ❌ (File-based) | ✅ NetworkX/Neo4j | Inferred during platform graph queries |

@@ -2,6 +2,8 @@
 # EXPERIENCE — Employment History & Project Details
 # ============================================================================
 # Maps to: PramedhaProfile.professional.experience[]
+# Schema: pramedha.models.ExperienceEntry[]
+# Docs: .pramedha/schema-reference.md#experience
 #
 # Structure: employer → projects → deliverables → bullets
 # Each bullet should be a single, measurable achievement.
