@@ -3,6 +3,10 @@
 # ============================================================================
 # Fill this FIRST. Everything else builds on this.
 #
+# This file follows the Pramedha portable career format.
+# Fill it manually, with any AI assistant, or import from Pramedha platform.
+# Schema: .pramedha/schema-reference.md#config-identity
+#
 # This file tells AI assistants and the resume cascade engine who you are.
 # If using the Pramedha platform, this file initializes your profile.
 # ============================================================================

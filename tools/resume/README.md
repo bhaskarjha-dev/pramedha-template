@@ -156,3 +156,11 @@ technologies:
   - label: "GenAI"
     details: "RAG, LLM APIs, Vector DBs, vLLM"
 ```
+
+---
+
+## Other Tools
+
+Looking for job search, scraping, or matching tools?
+See `tools/external/README.md` for mounting third-party tools.
+

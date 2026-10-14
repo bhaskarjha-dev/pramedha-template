@@ -690,7 +690,7 @@ def main():
     # Check if master.yaml is currently only the template placeholder
     master_exp = master.get('experience') or {}
     if list(master_exp.keys()) == ['_example_role_']:
-        print("ℹ️  Note: resume/master.yaml currently contains the '_example_role_' placeholder.")
+        print("ℹ️  Note: tools/resume/master.yaml currently contains the '_example_role_' placeholder.")
         print("   Remember to add your real experience to master.yaml before generating final resumes.\n")
 
     # Determine which overlays to process
@@ -717,9 +717,9 @@ def main():
             overlay_files = [f for f in all_variants if not f.name.startswith('_')]
             if not overlay_files:
                 print(
-                    "ℹ️  No active variants found in resume/variants/ (found _template.yaml).\n"
-                    "   To create your first variant, copy resume/variants/_template.yaml:\n"
-                    "     cp resume/variants/_template.yaml resume/variants/A_RoleName.yaml\n"
+                    "ℹ️  No active variants found in tools/resume/variants/ (found _template.yaml).\n"
+                    "   To create your first variant, copy tools/resume/variants/_template.yaml:\n"
+                    "     cp tools/resume/variants/_template.yaml tools/resume/variants/A_RoleName.yaml\n"
                     "   Then edit A_RoleName.yaml with your bullet selections and run assemble.py again."
                 )
                 if args.validate:

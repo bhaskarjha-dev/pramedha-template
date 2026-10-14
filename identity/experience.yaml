@@ -65,21 +65,35 @@ experience:
       #         - ""
 
   # ────────────────────────────────────────────────────────────────────────
-  # EMPLOYER 2
+  # EMPLOYER 2 (Realistic Example — uncomment and adapt)
   # ────────────────────────────────────────────────────────────────────────
-  # - company: ""
-  #   position: ""
-  #   start_date: ""
-  #   end_date: ""
-  #   location: ""
-  #   industry: ""
-  #   team_size: 0
+  # - company: "Acme Cloud Corp"
+  #   position: "Senior Backend Engineer"
+  #   role_subtitle: "Distributed Systems Lead"
+  #   start_date: "2022-01"
+  #   end_date: "2024-03"
+  #   location: "San Francisco, CA"
+  #   employment_type: "full_time"
+  #   industry: "Cloud Infrastructure"
+  #   team_size: 8
+  #   reporting_to: "VP of Engineering"
+  #   verification: "✅ VERIFIED — offer letter on file"
   #   projects:
-  #     - name: ""
+  #     - name: "Global Event Processing Pipeline"
+  #       client: "Internal Infrastructure"
+  #       period: "Jan 2023 – Mar 2024"
+  #       verification: "✅ VERIFIED — production metrics dashboard"
   #       deliverables:
-  #         - name: ""
+  #         - name: "Kafka Ingestion Service"
+  #           period: "2023-01 to 2023-09"
+  #           verification: "✅ VERIFIED — architecture RFC #42"
+  #           description: >
+  #             Designed and deployed a distributed Kafka event ingestion service
+  #             handling real-time analytics for 12 enterprise services.
   #           bullets:
-  #             - ""
+  #             - "Architected event-driven streaming pipeline processing 250M events/day with 99.99% uptime [measured]"
+  #             - "Optimized consumer lag from 4.2s to 120ms by restructuring partition keys and thread pools [measured]"
+  #           skills: ["Python", "FastAPI", "Apache Kafka", "Docker", "PostgreSQL"]
 
 # ─── Career Breaks / Transitions (Optional) ─────────────────────────────────
 # Documenting significant career pauses (parental leave, caregiving, health,

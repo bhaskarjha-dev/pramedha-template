@@ -25,6 +25,25 @@
 
 # ─── Public Projects (open source, personal, visible) ────────────────────
 public:
+  # Realistic Example (uncomment and adapt):
+  # - name: "DocQuery AI"
+  #   tagline: "Local document search agent using RAG and vector embeddings"
+  #   status: "active"
+  #   role: "Creator & Maintainer"
+  #   team_size: 1
+  #   start_date: "2024-02"
+  #   end_date: "present"
+  #   repo: "https://github.com/example/docquery-ai"
+  #   live_url: "https://docquery-demo.com"
+  #   tech: ["Python", "FastAPI", "Qdrant", "Ollama", "Docker"]
+  #   highlights:
+  #     - "Built hybrid semantic search engine over 50,000 documents with sub-200ms query latency [measured]"
+  #     - "Accumulated 1,200 GitHub stars and 4,000 monthly active users [measured]"
+  #   impact_metrics: "1.2k stars, 4k MAU, sub-200ms latency"
+  #   license: "MIT"
+  #   verification: "✅ VERIFIED — public GitHub repo & live URL"
+  #   relevance: ["Senior Backend Engineer", "AI/ML Engineer"]
+
   # - name: ""
   #   tagline: ""               # One-line description
   #   status: ""                # active | completed | archived | paused
