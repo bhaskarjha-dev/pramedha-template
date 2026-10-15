@@ -128,14 +128,11 @@ This repository doesn't die after the job search. It becomes:
 
 ```
 1. Read VISION.md (this file)               → Understand the mission
-2. Fill config.yaml                         → Your identity + profession
-3. Dump data into data-corpus/              → Raw career evidence
-4. Read .pramedha/agent-instructions.md     → AI fill protocol (7 phases)
-5. Fill identity/ & audit claims            → Structured facts + claims verification
-6. Build resume master & variants           → tools/resume/master.yaml + variants
-7. Generate stories/                        → STAR stories, testimonials, interview prep
-8. Draft strategy/ & personal/              → Target roles, trackers, career vision
-9. Validate & render PDFs                   → py .pramedha/validate.py & tools/resume/build
+2. Dump data into data-corpus/              → Raw career evidence (the ONLY manual step)
+3. Let AI fill everything                   → AI extracts config, identity, resume, stories, strategy
+4. Review & write your mission              → Correct errors, add private context, write VISION
+5. Build resume master & variants           → tools/resume/master.yaml + variants
+6. Validate & render PDFs                   → py .pramedha/validate.py & tools/resume/build
 ```
 
 ---

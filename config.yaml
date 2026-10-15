@@ -1,13 +1,14 @@
 # ============================================================================
 # PRAMEDHA TEMPLATE — User Configuration
 # ============================================================================
-# Fill this FIRST. Everything else builds on this.
+# This file is AUTO-FILLED by AI from your data-corpus/ evidence.
+# You can also fill it manually or correct what AI extracted.
 #
 # This file follows the Pramedha portable career format.
-# Fill it manually, with any AI assistant, or import from Pramedha platform.
+# AI extracts name, email, phone, headline, and profession from your
+# resume headers and LinkedIn exports in data-corpus/.
 # Schema: .pramedha/schema-reference.md#config-identity
 #
-# This file tells AI assistants and the resume cascade engine who you are.
 # If using the Pramedha platform, this file initializes your profile.
 # ============================================================================
 

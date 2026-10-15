@@ -58,9 +58,9 @@ Download the ZIP from the releases page → extract → `git init` in the folder
 ### Then:
 
 ```bash
-# Fill config.yaml with your name + basics
-# Dump raw career data into data-corpus/
-# Let AI fill the rest (see .pramedha/agent-instructions.md)
+# Dump raw career data into data-corpus/ (resumes, certs, LinkedIn export)
+# Let AI fill everything: "Read .pramedha/agent-instructions.md and fill from data-corpus"
+# Review what AI filled, add private context, write VISION.md
 # Generate resumes:
 .\tools\resume\build.ps1        # Windows PowerShell (handles UTF-8 & Typst rendering)
 ./tools/resume/build.sh         # Linux / macOS

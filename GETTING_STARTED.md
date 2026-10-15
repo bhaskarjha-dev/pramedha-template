@@ -28,13 +28,14 @@ git push -u origin main
 ## ⚡ Fast Track: Minimal Viable Career System (Just 3 Files)
 
 > **Feeling intimidated by 60+ files? You don't need to fill everything!**
-> Most career changers and job seekers only need **3 core files** to get 80% of the value:
+> Just **dump your career evidence into `data-corpus/`** and let AI fill the rest.
+> The 3 files that matter most are auto-populated by AI from your evidence:
 >
-> 1. [config.yaml](config.yaml) — Who you are (name, contact, profession type)
-> 2. [identity/experience.yaml](identity/experience.yaml) — What you've done (career facts and measured achievements)
-> 3. [tools/resume/master.yaml](tools/resume/master.yaml) — Your resume bullet pool
+> 1. [config.yaml](config.yaml) — Who you are (extracted from resume header)
+> 2. [identity/experience.yaml](identity/experience.yaml) — What you've done (extracted from resumes + LinkedIn)
+> 3. [tools/resume/master.yaml](tools/resume/master.yaml) — Your resume bullet pool (synced from identity)
 >
-> Once these 3 files are filled, you already have an uninflated, single-source career engine. You can copy bullets directly into any resume builder, or let Python assemble them automatically. Every other file (strategy, assets, journal) can be adopted gradually when you need it.
+> Once these 3 files are filled, you already have an uninflated, single-source career engine. You can copy bullets directly into any resume builder, or let Python assemble them automatically. Every other file (strategy, stories, journal) can be adopted gradually when you need it.
 >
 > 💡 **Pivoting or Career Changer?**
 > If you're switching domains (e.g., non-tech → tech, clinical → healthtech, military/law → corporate):
@@ -47,42 +48,7 @@ git push -u origin main
 
 ---
 
-## Step 1: Fill `config.yaml` (3 min)
-
-Open `config.yaml` and fill in your basic identity:
-
-```yaml
-user:
-  name: "Your Full Name"
-  email: "you@example.com"
-  phone: "+1-555-0100"
-  headline: "Software Engineer | Your Specialization"
-
-profession_type: "engineering"    # or: creative, medical, business, academic, legal
-
-location:
-  city: "San Francisco"           # or your city
-  country_code: "US"              # ISO code (US, IN, GB, DE, etc.)
-```
-
-> **Don't overthink it.** You can change everything later. Just get the basics in.
-
----
-
-## Step 2: Write Your Mission in `VISION.md` (2 min)
-
-Open `VISION.md` and replace the `[brackets]` with your actual information:
-
-```markdown
-**Priya Sharma** is a Software Engineer at Infosys transitioning to
-a Senior Backend Engineer role within 6 months.
-```
-
-> This is YOUR north star. Be specific about what you want and by when.
-
----
-
-## Step 3: Dump Raw Career Data (5 min)
+## Step 1: Dump Raw Career Data (5 min)
 
 Drop everything career-related into `data-corpus/`:
 
@@ -100,38 +66,61 @@ Drop everything career-related into `data-corpus/`:
 
 **Don't have certificates?** That's fine. Drop whatever you have. Even a phone photo of a certificate counts.
 
+> 💡 **This is the only manual step.** Everything else is extracted by AI from what you dump here.
+
 ---
 
-## Step 4: Let AI Fill Everything (15 min)
+## Step 2: Let AI Fill Everything (15 min)
 
-Copy this prompt into your AI assistant (ChatGPT, Gemini, Claude, etc.):
+Copy this prompt into your AI assistant (Claude, Gemini, ChatGPT, Antigravity, Cursor, etc.):
 
 ```
 Read the file .pramedha/agent-instructions.md in my career repository.
 Then scan all files in data-corpus/ and fill ALL template files
 following the 7-phase protocol (A through G). For each file:
-- Auto-fill from data-corpus evidence
+- Auto-fill from data-corpus evidence (including config.yaml)
 - Tag every claim with verification status (✅/⚠️/❌)
 - Mark anything you drafted without evidence as <!-- AI-DRAFTED -->
 - Leave empty what needs real-time user input (journal/, reflections)
 ```
 
 The AI will fill **~40 files automatically**:
-- ✅ All identity/ YAML files (from your raw data)
-- ✅ Resume master + variants (from identity)
+- ✅ `config.yaml` — extracted from your resume header + LinkedIn
+- ✅ All `identity/` YAML files — from your raw data
+- ✅ Resume master + variants — from identity
 - ✅ STAR stories, interview prep, and professional summary variants
-- ⚠️ Strategy files (drafted, needs your review)
-- ❌ Journal files (you fill these over time)
+- ⚠️ Strategy files — drafted, needs your review
+- ❌ Journal files — you fill these over time
 
 > 💡 **Phased Execution Tip (Avoid Context Limits):** If your AI chat interface has token output constraints, ask it to fill in two stages:
-> 1. **Stage 1:** Execute **Phase A & B** (scan `data-corpus/` → generate `identity/*.yaml` and `claims-and-evidence.md`). Review the facts.
+> 1. **Stage 1:** Execute **Phase A & B** (scan `data-corpus/` → fill `config.yaml` + generate `identity/*.yaml` and `claims-and-evidence.md`). Review the facts.
 > 2. **Stage 2:** Execute **Phase C through G** (generate resume variants, STAR stories, strategy, and platform copy from the verified identity).
 >
-> **No AI assistant?** Fill the identity files manually. Start with `identity/experience.yaml` — it's the most important file.
+> **No AI assistant?** Fill the identity files manually. Start with `config.yaml`, then `identity/experience.yaml` — the most important file.
 
 ---
 
-## Step 5: Generate Your First Resume (5 min)
+## Step 3: Review & Write Your Mission (10 min)
+
+After AI fills everything, review what it extracted:
+
+1. **Check `config.yaml`** — Is your name, email, profession type correct?
+2. **Check `identity/experience.yaml`** — Are dates, titles, and bullets accurate?
+3. **Check `identity/claims-and-evidence.md`** — Do verification tags (✅/⚠️/❌) look right?
+4. **Add private context** the AI couldn't know — salary targets in `strategy/financial.md`, deal-breakers in `personal/preferences.yaml`
+
+Then write your career mission in `VISION.md`:
+
+```markdown
+**Priya Sharma** is a Software Engineer at Infosys transitioning to
+a Senior Backend Engineer role within 6 months.
+```
+
+> This is YOUR north star. Be specific about what you want and by when.
+
+---
+
+## Step 4: Generate Your First Resume (5 min)
 
 ### Prerequisites
 
@@ -180,10 +169,10 @@ After 30 minutes, you have:
 
 | ✅ What's Done | What It Gets You |
 |---------------|-----------------|
-| `config.yaml` filled | Your identity is defined |
-| `VISION.md` written | Your career mission is clear |
 | `data-corpus/` loaded | Raw evidence is stored permanently |
+| `config.yaml` auto-filled | Your identity is defined (extracted by AI) |
 | `identity/` filled | A verified career fact database |
+| `VISION.md` written | Your career mission is clear |
 | First resume generated | A tailored, ATS-ready PDF |
 
 ---
@@ -214,7 +203,7 @@ Fill these at your own pace. Each layer adds value independently:
 
 ---
 
-## Step 6: External Tools (Optional)
+## Step 5: External Tools (Optional)
 
 Want to use AI-powered job search, scraping, or matching tools?
 

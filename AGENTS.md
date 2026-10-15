@@ -79,7 +79,7 @@ Read `.pramedha/agent-instructions.md` — it contains the complete **28-step, 7
 
 | Phase | Steps | What Happens |
 |:-----:|:-----:|-------------|
-| A | 0-1 | Read config.yaml + scan data-corpus/ |
+| A | 0-1 | Scan data-corpus/ → fill config.yaml from evidence |
 | B | 2-10 | Fill identity/ (10 files — career facts + speaking + claims) |
 | C | 11-13 | Generate resume master + variants (in tools/resume/) |
 | D | 14-16 | Generate stories (STAR stories, testimonials, interview prep) |

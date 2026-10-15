@@ -37,31 +37,41 @@ Every file in this template falls into one of these categories:
 
 ## Step-by-Step Protocol
 
-### Phase A: Foundation (Steps 0-1) — Read Everything First
+### Phase A: Foundation (Steps 0-1) — Evidence First, Then Config
 
-#### Step 0: Read config.yaml
-Start here. Get the user's name, profession type, and preferences.
-This shapes everything that follows.
-
-#### Step 1: Scan data-corpus/
-Read ALL files in `data-corpus/` subdirectories:
-- `resumes/` — Extract work history, skills, education, projects
+#### Step 0: Scan data-corpus/
+**Start here — NOT config.yaml.** Read ALL files in `data-corpus/` subdirectories:
+- `resumes/` — Extract work history, skills, education, projects, AND contact info (name, email, phone, location, headline)
 - `documents/` — Extract certifications, awards, scores with verification
 - `exports/` — Parse generic data exports for additional background
-- `linkedin/` — Extract full profile text, endorsements, and network data
+- `linkedin/` — Extract full profile text, endorsements, network data, AND contact info
 - `github/` — Extract repository history, commit volumes, tech stacks
 - `text/` — Extract career context, goals, preferences from freeform text
 - `media/` — Note what visual evidence exists (reference in verification tags)
 
 **Build a mental model of the person's complete career before writing anything.**
 
+#### Step 1: Fill config.yaml from extracted evidence
+Extract and populate `config.yaml` from the evidence scanned in Step 0:
+- `user.name` — from resume header or LinkedIn profile
+- `user.email` — from resume contact line
+- `user.phone` — from resume contact line
+- `user.headline` — from resume title or LinkedIn headline
+- `profession_type` — infer from job titles (e.g., "Software Engineer" → `engineering`)
+- `location` — from resume header or LinkedIn
+- `profiles` — LinkedIn, GitHub, portfolio URLs from resume or exports
+
+> **If the user pre-filled config.yaml**, their values take precedence over extracted data.
+> If config.yaml is empty (common case), fill it entirely from data-corpus evidence.
+
 ---
 
 ### Phase B: Identity Layer (Steps 2-10) — The Source of Truth
 
 #### Step 2: Fill identity/identity.yaml
-- Copy name/email from config.yaml
+- Extract name, email, phone from data-corpus evidence (cross-reference resume + LinkedIn)
 - Fill location, online presence, languages from extracted data
+- If config.yaml was filled in Step 1, ensure consistency between both files
 - Tag every field with verification status
 
 #### Step 3: Fill identity/experience.yaml
