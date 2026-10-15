@@ -13,6 +13,9 @@ Usage:
 
 import argparse
 import copy
+import os
+import shutil
+import subprocess
 import sys
 from pathlib import Path
 
@@ -89,8 +92,11 @@ def resolve_bullet(master_exp: dict, exp_key: str, bullet_ref, variant_name: str
       - ["bullet_key", "phrasing"] → uses specified phrasing
     """
     if isinstance(bullet_ref, str):
-        bullet_key = bullet_ref
-        phrasing = "default"
+        if '.' in bullet_ref and bullet_ref not in master_exp.get('bullets', {}):
+            bullet_key, phrasing = bullet_ref.split('.', 1)
+        else:
+            bullet_key = bullet_ref
+            phrasing = "default"
     elif isinstance(bullet_ref, list):
         bullet_key = bullet_ref[0]
         phrasing = bullet_ref[1] if len(bullet_ref) > 1 else "default"
@@ -240,6 +246,17 @@ def merge_header(header: dict, config: dict = None, identity: dict = None) -> di
         if name:
             header['name'] = name
 
+    # Headline
+    if not header.get('headline'):
+        headline = (
+            identity.get('professional_headline')
+            or identity.get('headline')
+            or cfg_user.get('headline')
+            or ''
+        )
+        if headline:
+            header['headline'] = str(headline).strip()
+
     # Email
     if not header.get('email'):
         email = (
@@ -286,27 +303,57 @@ def merge_header(header: dict, config: dict = None, identity: dict = None) -> di
                 if loc_parts:
                     header['location'] = ", ".join(loc_parts)
 
-    # Social networks (RenderCV format: list of dicts with network and username)
+    # Social network mappings for RenderCV v2.8
+    # RenderCV strictly allows: 'LinkedIn', 'GitHub', 'GitLab', 'IMDB', 'Instagram',
+    # 'ORCID', 'Mastodon', 'StackOverflow', 'ResearchGate', 'YouTube', 'Google Scholar',
+    # 'Telegram', 'WhatsApp', 'Leetcode', 'X', 'Bluesky', 'Reddit'
+    NETWORK_MAPPINGS = {
+        'linkedin': 'LinkedIn',
+        'github': 'GitHub',
+        'gitlab': 'GitLab',
+        'twitter': 'X',
+        'x': 'X',
+        'bluesky': 'Bluesky',
+        'mastodon': 'Mastodon',
+        'stackoverflow': 'StackOverflow',
+        'leetcode': 'Leetcode',
+        'researchgate': 'ResearchGate',
+        'orcid': 'ORCID',
+        'google_scholar': 'Google Scholar',
+        'googlescholar': 'Google Scholar',
+        'youtube': 'YouTube',
+        'instagram': 'Instagram',
+        'reddit': 'Reddit',
+        'telegram': 'Telegram',
+        'whatsapp': 'WhatsApp',
+        'imdb': 'IMDB',
+    }
+
     social_networks = header.get('social_networks') or []
-    if not social_networks:
+    if social_networks:
+        normalized_nets = []
+        for net in social_networks:
+            if isinstance(net, dict):
+                n_dict = copy.deepcopy(net)
+                raw_net = str(n_dict.get('network', '')).strip().lower()
+                if raw_net in ('twitter', 'x'):
+                    n_dict['network'] = 'X'
+                elif raw_net in NETWORK_MAPPINGS:
+                    n_dict['network'] = NETWORK_MAPPINGS[raw_net]
+                normalized_nets.append(n_dict)
+            else:
+                normalized_nets.append(net)
+        header['social_networks'] = normalized_nets
+    else:
         profiles = id_profiles if id_profiles else cfg_profiles
-        if profiles:
+        if profiles and isinstance(profiles, dict):
             new_networks = []
-            if profiles.get('linkedin'):
-                url = str(profiles['linkedin']).strip()
-                if url:
-                    username = url.rstrip('/').split('/')[-1] if '/' in url else url
-                    new_networks.append({'network': 'LinkedIn', 'username': username})
-            if profiles.get('github'):
-                url = str(profiles['github']).strip()
-                if url:
-                    username = url.rstrip('/').split('/')[-1] if '/' in url else url
-                    new_networks.append({'network': 'GitHub', 'username': username})
-            if profiles.get('twitter'):
-                url = str(profiles['twitter']).strip()
-                if url:
-                    username = url.rstrip('/').split('/')[-1] if '/' in url else url
-                    new_networks.append({'network': 'Twitter', 'username': username})
+            for prof_key, net_name in NETWORK_MAPPINGS.items():
+                if prof_key in profiles and profiles[prof_key]:
+                    url = str(profiles[prof_key]).strip()
+                    if url:
+                        username = url.rstrip('/').split('/')[-1] if '/' in url else url
+                        new_networks.append({'network': net_name, 'username': username})
             if new_networks:
                 header['social_networks'] = new_networks
 
@@ -328,6 +375,8 @@ def assemble_variant(master: dict, design: dict, variant: dict, config: dict = N
     raw_header = master.get('header', {}) or {}
     header = copy.deepcopy(raw_header)
     header = merge_header(header, config=config, identity=identity)
+    if variant.get('headline'):
+        header['headline'] = str(variant['headline']).strip()
 
     # --- Sections ---
     sections = {}
@@ -354,20 +403,47 @@ def assemble_variant(master: dict, design: dict, variant: dict, config: dict = N
             text = resolve_bullet(exp_data, exp_key, ref, variant_name)
             highlights.append(text)
 
+        company = (
+            exp_data.get('company')
+            or exp_data.get('organization')
+            or exp_data.get('client')
+            or exp_data.get('institution')
+            or exp_data.get('practice')
+            or exp_data.get('employer')
+        )
+        if not company:
+            raise AssemblyError(
+                f"[{variant_name}] Experience entry '{exp_key}' missing required 'company'/'organization' field."
+            )
+        position = (
+            exp_data.get('position')
+            or exp_data.get('role')
+            or exp_data.get('title')
+        )
+        if not position:
+            raise AssemblyError(
+                f"[{variant_name}] Experience entry '{exp_key}' missing required 'position'/'role' field."
+            )
+        start_date = exp_data.get('start_date')
+        if not start_date:
+            raise AssemblyError(
+                f"[{variant_name}] Experience entry '{exp_key}' missing required 'start_date' field."
+            )
+
         entry = {
-            'company': exp_data['company'],
-            'position': exp_data['position'],
-            'start_date': exp_data['start_date'],
+            'company': str(company),
+            'position': str(position),
+            'start_date': str(start_date) if hasattr(start_date, 'isoformat') else start_date,
         }
 
         end_date = exp_data.get('end_date', 'present')
-        if end_date == 'present':
+        if end_date == 'present' or end_date is None:
             entry['end_date'] = PresentLiteral('present')
         else:
-            entry['end_date'] = end_date
+            entry['end_date'] = str(end_date) if hasattr(end_date, 'isoformat') else end_date
 
         if 'location' in exp_data and exp_data['location']:
-            entry['location'] = exp_data['location']
+            entry['location'] = str(exp_data['location'])
 
         entry['highlights'] = highlights
         experience_entries.append(entry)
@@ -434,9 +510,14 @@ def assemble_variant(master: dict, design: dict, variant: dict, config: dict = N
             ordered_sections[sec] = val
 
     # --- Assemble final structure ---
+    # RenderCV v2.8 strictly limits Cv fields to avoid extra_forbidden validation errors
+    ALLOWED_CV_FIELDS = {
+        'name', 'headline', 'location', 'email', 'phone', 'website',
+        'social_networks', 'custom_connections', 'photo'
+    }
     cv_data = {}
     for k, v in header.items():
-        if v not in ("", None, []):
+        if k in ALLOWED_CV_FIELDS and v not in ("", None, []):
             cv_data[k] = copy.deepcopy(v)
     if 'name' not in cv_data:
         cv_data['name'] = header.get('name') or "Your Name"
@@ -529,7 +610,8 @@ def check_orphans(master: dict, overlay_paths: list[Path]) -> bool:
                 referenced_bullets[exp_key] = set()
             for ref in (bullet_refs or []):
                 if isinstance(ref, str):
-                    referenced_bullets[exp_key].add(ref)
+                    b_key = ref.split('.', 1)[0] if ('.' in ref and ref not in (master.get('experience', {}).get(exp_key, {}).get('bullets', {}) or {})) else ref
+                    referenced_bullets[exp_key].add(b_key)
                 elif isinstance(ref, list) and ref:
                     referenced_bullets[exp_key].add(ref[0])
 
@@ -626,6 +708,7 @@ def main():
     parser = argparse.ArgumentParser(description='Resume Cascade Assembler')
     parser.add_argument('--variant', '-v', help='Build only this variant (matches filename prefix, e.g. "A")')
     parser.add_argument('--jd', help='Build from a JD-specific overlay file')
+    parser.add_argument('--render', '-r', action='store_true', help='Immediately render assembled YAML files to PDF with RenderCV')
     parser.add_argument('--validate', action='store_true', help='Validate only, no output')
     parser.add_argument('--diff', action='store_true', help='Show what would change vs existing generated files')
     parser.add_argument('--orphans', action='store_true', help='Detect and report unreferenced master.yaml bullets, roles, projects, and achievements')
@@ -806,6 +889,62 @@ def main():
             sys.exit(1)
         else:
             print(f"Built {built} variant(s) successfully → generated/")
+
+        if args.render and built > 0:
+            print(f"\n🎨 Rendering {built} variant(s) to PDF via RenderCV...")
+            output_base_dir = (script_dir / 'output').resolve()
+            output_base_dir.mkdir(parents=True, exist_ok=True)
+            render_env = os.environ.copy()
+            render_env["PYTHONUTF8"] = "1"
+            render_env["PYTHONIOENCODING"] = "utf-8"
+
+            # Check if rendercv CLI or python -m rendercv is available
+            rc_cmd = None
+            if shutil.which("rendercv"):
+                rc_cmd = ["rendercv"]
+            else:
+                test_proc = subprocess.run(
+                    [sys.executable, "-m", "rendercv", "--version"],
+                    capture_output=True, env=render_env
+                )
+                if test_proc.returncode == 0:
+                    rc_cmd = [sys.executable, "-m", "rendercv"]
+
+            if not rc_cmd:
+                print("  ⚠️  RenderCV CLI not found. Install with: pip install rendercv")
+            else:
+                render_errors = 0
+                for overlay_path in overlay_files:
+                    variant = load_yaml(overlay_path) or {}
+                    variant_name = (variant.get('variant_name') or '').strip() or overlay_path.stem
+                    output_filename = (variant.get('output_filename') or '').strip()
+                    if output_filename.endswith('.yaml') or output_filename.endswith('.yml'):
+                        output_filename = Path(output_filename).stem
+                    if not output_filename:
+                        output_filename = f'{default_name}_{variant_name}_CV' if default_name else f'{variant_name}_CV'
+                    gen_yaml = (generated_dir / f'{output_filename}.yaml').resolve()
+                    if not gen_yaml.exists():
+                        continue
+
+                    var_out_dir = (output_base_dir / variant_name).resolve()
+                    var_out_dir.mkdir(parents=True, exist_ok=True)
+
+                    full_cmd = rc_cmd + ["render", str(gen_yaml), "-o", str(var_out_dir)]
+                    res = subprocess.run(full_cmd, capture_output=True, text=True, encoding='utf-8', env=render_env)
+                    if res.returncode == 0:
+                        pdf_files = list(var_out_dir.glob("*.pdf"))
+                        if pdf_files:
+                            target_pdf = output_base_dir / f"{variant_name}.pdf"
+                            shutil.copy2(pdf_files[0], target_pdf)
+                            print(f"  ✅ Rendered: {variant_name} → tools/resume/output/{variant_name}.pdf")
+                        else:
+                            print(f"  ✅ Rendered: {variant_name} (in tools/resume/output/{variant_name}/)")
+                    else:
+                        render_errors += 1
+                        err_out = (res.stderr or res.stdout or "").strip()
+                        print(f"  ❌ RenderCV failed for {variant_name}:\n{err_out}")
+                if render_errors:
+                    sys.exit(1)
 
 
 if __name__ == '__main__':

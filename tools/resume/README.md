@@ -14,7 +14,7 @@ RenderCV-compatible YAML files. Render to PDF.
 master.yaml          →  ALL your bullets, keyed by role + phrasing
   × variants/*.yaml  →  Thin overlays selecting bullets per target role
   = generated/*.yaml →  Complete RenderCV YAML files (auto-generated)
-  → output/*.pdf     →  Final PDFs via `rendercv render`
+  → output/*.pdf     →  Final PDFs via `assemble.py --render` or build script
 ```
 
 ---
@@ -28,17 +28,13 @@ py tools/resume/sync.py
 # 2. Enrich master.yaml with phrasing variants (default, short, technical, leadership)
 # 3. Create variants in variants/ for target roles (copy variants/_template.yaml)
 
-# 4. Assemble:
+# 4. Assemble & Render (1-Step!):
 py tools/resume/assemble.py --validate    # Verify all references
-py tools/resume/assemble.py               # Build all variant YAMLs to generated/
+py tools/resume/assemble.py --render      # Assembles all variants and renders PDFs to output/
 
-# 5. Render PDFs via RenderCV (uses built-in Typst; no LaTeX required!):
-pip install rendercv
-# Recommended: run the automated build script (handles output directory and encoding)
+# Or run the platform build scripts:
 .\build.ps1        # Windows
 ./build.sh         # Linux/Mac
-# Or manually:
-rendercv render generated/Your_Name_Variant_CV.yaml -o output
 ```
 
 ---

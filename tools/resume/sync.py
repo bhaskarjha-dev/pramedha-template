@@ -146,11 +146,11 @@ def sync_experience(id_data: dict, master_data: dict, force: bool = False):
         if not isinstance(entry, dict):
             continue
 
-        company = (entry.get('company') or entry.get('client') or entry.get('organization') or entry.get('institution') or entry.get('employer') or entry.get('practice') or '').strip()
-        position = (entry.get('position') or entry.get('title') or entry.get('role') or '').strip()
-        start_date = entry.get('start_date', '').strip()
-        end_date = entry.get('end_date', 'present')
-        location = entry.get('location', '').strip()
+        company = str(entry.get('company') or entry.get('client') or entry.get('organization') or entry.get('institution') or entry.get('employer') or entry.get('practice') or '').strip()
+        position = str(entry.get('position') or entry.get('title') or entry.get('role') or '').strip()
+        start_date = str(entry.get('start_date') or '').strip()
+        end_date = str(entry.get('end_date') or 'present').strip()
+        location = str(entry.get('location') or '').strip()
 
         # Skip empty template scaffolding
         if not company and not position and not start_date:
@@ -288,17 +288,17 @@ def sync_projects(id_data: dict, master_data: dict, force: bool = False):
             all_projects.append(p)
 
     for p in all_projects:
-        name = p.get('name', '').strip()
+        name = str(p.get('name') or '').strip()
         if not name:
             stats['skipped'] += 1
             continue
 
-        repo = p.get('repo', '').strip()
-        live_url = p.get('live_url', '').strip()
-        location = repo or live_url or p.get('context', '').strip()
+        repo = str(p.get('repo') or '').strip()
+        live_url = str(p.get('live_url') or '').strip()
+        location = repo or live_url or str(p.get('context') or '').strip()
 
-        start = p.get('start_date', '').strip()
-        end = p.get('end_date', '').strip()
+        start = str(p.get('start_date') or '').strip()
+        end = str(p.get('end_date') or '').strip()
         if start and end:
             date_str = f"{start} – {end}"
         elif start:

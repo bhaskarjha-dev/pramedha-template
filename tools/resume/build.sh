@@ -37,7 +37,16 @@ if [ ! -e "${yaml_files[0]}" ]; then
     exit 0
 fi
 
-if ! command -v rendercv >/dev/null 2>&1; then
+RENDERCV_CMD=""
+if command -v rendercv >/dev/null 2>&1; then
+    RENDERCV_CMD="rendercv"
+elif command -v python3 >/dev/null 2>&1 && python3 -m rendercv --version >/dev/null 2>&1; then
+    RENDERCV_CMD="python3 -m rendercv"
+elif command -v python >/dev/null 2>&1 && python -m rendercv --version >/dev/null 2>&1; then
+    RENDERCV_CMD="python -m rendercv"
+elif command -v uv >/dev/null 2>&1 && uv run python -m rendercv --version >/dev/null 2>&1; then
+    RENDERCV_CMD="uv run python -m rendercv"
+else
     echo "  RenderCV CLI not found in PATH."
     echo "  Install with: pip install rendercv"
     echo "  Generated YAMLs are ready in: $SCRIPT_DIR/generated/"
@@ -53,7 +62,7 @@ for yaml_file in "${yaml_files[@]}"; do
     echo "  Rendering $name..."
     variant_out="$OUTPUT_DIR/$name"
     mkdir -p "$variant_out"
-    if rendercv render "$yaml_file" -o "$variant_out" 2>&1; then
+    if $RENDERCV_CMD render "$yaml_file" -o "$variant_out" 2>&1; then
         pdf_file=$(find "$variant_out" -maxdepth 1 -name "*.pdf" | head -n 1)
         if [ -n "$pdf_file" ]; then
             cp "$pdf_file" "$OUTPUT_DIR/$name.pdf"

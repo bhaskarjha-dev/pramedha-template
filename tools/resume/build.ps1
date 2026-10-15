@@ -12,15 +12,24 @@ $scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Definition
 Write-Host "`n=== Resume Cascade Build ===" -ForegroundColor Cyan
 
 # Check Python availability
-$pythonCmd = if (Get-Command py -ErrorAction SilentlyContinue) { "py" } elseif (Get-Command python -ErrorAction SilentlyContinue) { "python" } elseif (Get-Command uv -ErrorAction SilentlyContinue) { "uv run python" } else { "python" }
+$pythonExe = if (Get-Command py -ErrorAction SilentlyContinue) { "py" } elseif (Get-Command python -ErrorAction SilentlyContinue) { "python" } else { "python" }
+$useUv = $false
+if (-not (Get-Command py -ErrorAction SilentlyContinue) -and -not (Get-Command python -ErrorAction SilentlyContinue) -and (Get-Command uv -ErrorAction SilentlyContinue)) {
+    $useUv = $true
+}
+
+$runPy = {
+    param([string[]]$cmdArgs)
+    if ($useUv) {
+        & uv run python @cmdArgs
+    } else {
+        & $pythonExe @cmdArgs
+    }
+}
 
 # Step 1: Assemble all variants
 Write-Host "`n[1/2] Assembling variants..." -ForegroundColor Yellow
-if ($pythonCmd -eq "uv run python") {
-    uv run --with pyyaml python "$scriptDir\assemble.py"
-} else {
-    & $pythonCmd "$scriptDir\assemble.py"
-}
+& $runPy @("$scriptDir\assemble.py")
 
 if ($LASTEXITCODE -ne 0) {
     Write-Host "Assembly failed!" -ForegroundColor Red
@@ -46,15 +55,15 @@ $env:PYTHONIOENCODING = "utf-8"
 $env:PYTHONUTF8 = "1"
 
 # Check if rendercv is available
-$rendercvCmd = if (Get-Command rendercv -ErrorAction SilentlyContinue) {
-    "rendercv"
+$rendercvMode = if (Get-Command rendercv -ErrorAction SilentlyContinue) {
+    "cli"
 } else {
     # Check if python -m rendercv works
-    $testRc = & $pythonCmd -m rendercv --version 2>&1
-    if ($LASTEXITCODE -eq 0) { "$pythonCmd -m rendercv" } else { $null }
+    $testRc = & $runPy @("-m", "rendercv", "--version") 2>&1
+    if ($LASTEXITCODE -eq 0) { "module" } else { $null }
 }
 
-if (-not $rendercvCmd) {
+if (-not $rendercvMode) {
     Write-Host "  RenderCV CLI not found." -ForegroundColor Yellow
     Write-Host "  Install with: pip install rendercv" -ForegroundColor Yellow
     Write-Host "  Generated YAMLs are ready in: $generatedDir" -ForegroundColor Cyan
@@ -69,10 +78,10 @@ try {
         $variantOutputDir = Join-Path $outputDir $name
         New-Item -ItemType Directory -Force -Path $variantOutputDir | Out-Null
 
-        if ($rendercvCmd -eq "rendercv") {
+        if ($rendercvMode -eq "cli") {
             rendercv render $file.FullName -o $variantOutputDir 2>&1
         } else {
-            & $pythonCmd -m rendercv render $file.FullName -o $variantOutputDir 2>&1
+            & $runPy @("-m", "rendercv", "render", $file.FullName, "-o", $variantOutputDir) 2>&1
         }
         if ($LASTEXITCODE -ne 0) {
             Write-Host "  ❌ Failed: $name" -ForegroundColor Red

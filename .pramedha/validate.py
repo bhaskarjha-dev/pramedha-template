@@ -520,9 +520,31 @@ def check_date_chronology(result: ValidationResult):
             if p_start and p_end and p_start > p_end:
                 result.warn(f"projects.yaml: Project {i} ('{pname}') has start_date '{start}' after end_date '{end}'")
 
+    # Volunteering in volunteering.yaml
+    vol_path = TEMPLATE_ROOT / "identity" / "volunteering.yaml"
+    if vol_path.exists():
+        with open(vol_path, 'r', encoding='utf-8') as f:
+            vol_data = yaml.safe_load(f) or {}
+        for i, v in enumerate(vol_data.get('volunteering', []) or []):
+            if not isinstance(v, dict):
+                continue
+            org = str(v.get('organization') or v.get('role') or 'unnamed').strip()
+            start = str(v.get('start_date') or '').strip()
+            end = str(v.get('end_date') or '').strip()
+            if not start and not end:
+                continue
+            p_start = parse_flexible_date(start)
+            p_end = parse_flexible_date(end)
+            if start and p_start is None:
+                result.warn(f"volunteering.yaml: Entry {i} ('{org}') has invalid start_date '{start}' (expected YYYY-MM)")
+            if end and p_end is None:
+                result.warn(f"volunteering.yaml: Entry {i} ('{org}') has invalid end_date '{end}' (expected YYYY-MM or 'present')")
+            if p_start and p_end and p_start > p_end:
+                result.warn(f"volunteering.yaml: Entry {i} ('{org}') has start_date '{start}' after end_date '{end}'")
+
 
 def check_identity_master_parity(result: ValidationResult):
-    """Check parity between identity/ files and tools/resume/master.yaml (experience, projects, education)."""
+    """Check parity between identity/ files and tools/resume/master.yaml (experience, projects, education, publications)."""
     master_path = TEMPLATE_ROOT / "tools" / "resume" / "master.yaml"
     if not master_path.exists():
         return
@@ -539,7 +561,7 @@ def check_identity_master_parity(result: ValidationResult):
         id_companies = []
         for e in (exp_data.get('experience', []) or []):
             if isinstance(e, dict):
-                comp = (e.get('company') or '').strip()
+                comp = str(e.get('company') or e.get('organization') or e.get('client') or e.get('institution') or e.get('employer') or e.get('practice') or '').strip()
                 if comp:
                     id_companies.append(comp)
 
@@ -548,7 +570,7 @@ def check_identity_master_parity(result: ValidationResult):
             master_companies = set()
             for k, v in master_exp.items():
                 if k != '_example_role_' and isinstance(v, dict):
-                    comp = (v.get('company') or '').strip()
+                    comp = str(v.get('company') or v.get('organization') or v.get('client') or '').strip()
                     if comp:
                         master_companies.add(comp.lower())
 
@@ -590,7 +612,7 @@ def check_identity_master_parity(result: ValidationResult):
                         f"Run 'py tools/resume/sync.py' to synchronize."
                     )
 
-    # 3. Education Parity
+    # 3. Education & Publications Parity
     creds_path = TEMPLATE_ROOT / "identity" / "credentials.yaml"
     if creds_path.exists():
         with open(creds_path, 'r', encoding='utf-8') as f:
@@ -616,6 +638,30 @@ def check_identity_master_parity(result: ValidationResult):
                 if inst.lower() not in master_insts:
                     result.warn(
                         f"Parity: Education institution '{inst}' in credentials.yaml is not in tools/resume/master.yaml. "
+                        f"Run 'py tools/resume/sync.py' to synchronize."
+                    )
+
+        # 4. Publications Parity
+        id_pubs = []
+        for p in (creds_data.get('publications', []) or []):
+            if isinstance(p, dict):
+                pub_title = str(p.get('title') or p.get('name') or '').strip()
+                if pub_title:
+                    id_pubs.append(pub_title)
+
+        if id_pubs:
+            master_pubs = master_data.get('publications', []) or []
+            master_pub_titles = set()
+            for p in master_pubs:
+                if isinstance(p, dict):
+                    t = str(p.get('title') or p.get('name') or '').strip().lower()
+                    if t:
+                        master_pub_titles.add(t)
+
+            for pub_title in id_pubs:
+                if pub_title.lower() not in master_pub_titles:
+                    result.warn(
+                        f"Parity: Publication '{pub_title}' in credentials.yaml is not in tools/resume/master.yaml. "
                         f"Run 'py tools/resume/sync.py' to synchronize."
                     )
 
@@ -814,8 +860,12 @@ def compute_fill_status(result: ValidationResult):
     def check_roles(text: str) -> bool:
         for line in text.splitlines():
             s = line.strip()
-            if s.startswith('### Role') and '[' not in s:
+            if s.startswith('### Role') and not s.startswith('### Role: [') and 'Role Name' not in s and '[' not in s:
                 return True
+            if s.startswith('|') and not s.startswith(('| #', '|:-', '|:--')):
+                parts = [p.strip() for p in s.split('|')[1:-1]]
+                if len(parts) >= 11 and parts[0].isdigit() and not parts[1].startswith('*Example') and parts[1] != '':
+                    return True
         return False
 
     md_checks = [

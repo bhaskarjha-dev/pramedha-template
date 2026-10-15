@@ -62,14 +62,10 @@ If facts change, the identity layer updates first, then everything downstream re
 
 ## What's Next
 
-> **Action items are tracked in the Claim Debt Queue within:**
-> 📋 **[Claims & Evidence Registry](identity/claims-and-evidence.md)**
->
-> That file tracks:
-> - 🔴 **Claim Debt** — evidence needed for resume claims
-> - 🟢 **Career Contingency** — emergency preparedness checklists
->
-> Active job search tasks are tracked in [job-tracker.md](strategy/job-tracker.md).
+> **Action items are tracked in:**
+> - 🔴 **Claim Debt Queue** in 📋 [Claims & Evidence Registry](identity/claims-and-evidence.md) — evidence needed for resume claims
+> - 🟢 **Career Contingency & Crisis Readiness** in [job-tracker.md](strategy/job-tracker.md) (Section 6)
+> - 💼 **Active Applications & Pipeline** in [job-tracker.md](strategy/job-tracker.md)
 
 ---
 

@@ -125,7 +125,7 @@ tools/resume/variants/*.yaml ───────────┘
 - [ ] Check for orphaned resume bullets: `python tools/resume/assemble.py --orphans`
 - [ ] Check for new credentials in `identity/credentials.yaml`
 - [ ] Refresh references in `identity/references.yaml` — ensure 3+ contacts are warm
-- [ ] Review Career Contingency Checklists in `identity/claims-and-evidence.md`
+- [ ] Review Career Contingency & Crisis Checklists in `strategy/job-tracker.md` (Section 6)
 - [ ] Execute the 10-Area Audit Checklist below
 
 ---

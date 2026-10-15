@@ -146,13 +146,13 @@ py tools/resume/sync.py
 cp tools/resume/variants/_template.yaml tools/resume/variants/my-role.yaml
 # Edit my-role.yaml to select which bullets to include (defaults output to my-role_CV.yaml)
 
-# 3. Assemble and render PDF:
+# 3. Assemble and render PDF (1-step!):
 py tools/resume/assemble.py --validate    # Verify all references
-py tools/resume/assemble.py               # Assembles to tools/resume/generated/my-role_CV.yaml
+py tools/resume/assemble.py --render      # Assembles and renders directly to tools/resume/output/*.pdf
 
-# 4. Render PDF via RenderCV (ensure UTF-8 mode on Windows):
-# On Windows PowerShell: $env:PYTHONUTF8 = "1"
-rendercv render tools/resume/generated/my-role_CV.yaml -o tools/resume/output/my-role
+# Or run the platform build script:
+# Windows: .\tools\resume\build.ps1
+# Mac/Linux: ./tools/resume/build.sh
 # Your PDF is compiled in tools/resume/output/ in <1s via Typst (no LaTeX needed!)
 ```
 
