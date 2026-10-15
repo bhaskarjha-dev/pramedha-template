@@ -32,6 +32,47 @@ tools/external/      ← Mount point for third-party career tools (gitignored)
 
 ---
 
+## ⚡ State Detection (MANDATORY FIRST STEP)
+
+> **Before doing ANYTHING, determine the repo's current state.**
+> Do NOT assume this is a fresh template. Do NOT re-scan data-corpus if identity/ is already filled.
+
+### Step 1: Check Fill Status
+Run: `py .pramedha/validate.py --status`
+
+This outputs the fill percentage and per-file status. Use it to determine your mode:
+
+| Fill Status | Mode | What To Do |
+|:-----------:|------|-----------|
+| **0%** | 🆕 First-time setup | Read `.pramedha/agent-instructions.md` → execute Phase A–G |
+| **1–70%** | 🔄 In-progress fill | Read `.pramedha/agent-instructions.md` → "Partial Fill Protocol" section → fill only empty files |
+| **71–100%** | ✅ Active career mode | Route by user's specific request (see Context Router below) |
+
+### Step 2: Check Prior Session Context
+Read: `ops/session-handoff.md`
+
+If it contains session entries, the user has worked with AI before. **Respect prior decisions** and pick up where the last session left off. Check the "Next Session Priorities" section.
+
+### Step 3: Route the User's Request
+- **Specific task** (e.g., "tailor resume", "prep for interview") → Use Context Router below
+- **Open-ended** (e.g., "what next?", "help me", "continue") → Use the State-Aware Recommendations below
+
+### State-Aware Recommendations (for open-ended queries)
+
+When the user asks "what next?" or gives a vague request, recommend based on current state:
+
+| Current State | Recommend |
+|:--------------|:----------|
+| config.yaml empty, data-corpus/ has files | "I'll extract everything from your data-corpus evidence — starting now." |
+| config.yaml empty, data-corpus/ empty | "Drop your career files (resumes, certs, LinkedIn export) into data-corpus/ and I'll fill everything." |
+| identity/ filled, stories/ empty | "Your career facts are set. Let's generate STAR stories and interview prep." |
+| identity/ + stories/ filled, strategy/ empty | "Core profile is complete. Let's draft your target roles and job search strategy." |
+| identity/ + stories/ + strategy/ filled, resume not built | "Everything's ready — let's build your first resume variant." |
+| Fully filled, job-tracker has active applications | "You have active applications. Let's check status, prep for interviews, or tailor a new variant." |
+| Fully filled, no active applications | "Your system is ready. You can: tailor a resume for a JD, prep for an interview, log a win, or start job searching." |
+
+---
+
 ## 🎯 Minimum Context Router (Load ONLY What You Need)
 
 > To preserve LLM context window quality, prevent hallucinations, and eliminate token waste,
@@ -39,6 +80,8 @@ tools/external/      ← Mount point for third-party career tools (gitignored)
 
 | Objective / Task | 🎯 Minimum Files to Read & Edit | Context Budget |
 |------------------|---------------------------------|:--------------:|
+| **"What next?" / "Help me" / "Continue"** | `py .pramedha/validate.py --status`, `ops/session-handoff.md`, `strategy/job-tracker.md` | ~1,500 tokens |
+| **First-time fill from data-corpus** | `.pramedha/agent-instructions.md` (full protocol) | ~4,000 tokens |
 | **Tailor Resume for a Job Posting** | `tools/resume/master.yaml`, `identity/experience.yaml`, `identity/skills.yaml`, `tools/resume/variants/<target>.yaml` (or copy `_template.yaml`) | ~2,500 tokens |
 | **Prepare for Behavioral Interview** | `stories/star-stories.md`, `stories/interview-prep/behavioral.md` | ~2,800 tokens |
 | **Prepare for Technical / Domain Interview** | `identity/skills.yaml`, `stories/interview-prep/technical.md`, `identity/projects.yaml` | ~3,200 tokens |
@@ -54,14 +97,15 @@ tools/external/      ← Mount point for third-party career tools (gitignored)
 
 ## Critical Rules
 
-1. **`ops/authority-map.md`** is the source-of-truth reference. When in doubt about which file owns a piece of data, check there.
-2. **Never fabricate data.** If evidence doesn't exist, leave the field empty.
-3. **Every claim gets a verification tag:** ✅ (verified), ⚠️ (estimated), ❌ (unverified).
-4. **`personal/` content NEVER appears on resumes or public assets.** (It guides private interview coaching, transition narratives, and role evaluation, but is never copied verbatim into outward materials).
+1. **Run `py .pramedha/validate.py --status` FIRST** at the start of each session to determine fill state. Don't assume the template is fresh.
+2. **`ops/authority-map.md`** is the source-of-truth reference. When in doubt about which file owns a piece of data, check there.
+3. **Never fabricate data.** If evidence doesn't exist, leave the field empty.
+4. **Every claim gets a verification tag:** ✅ (verified), ⚠️ (estimated), ❌ (unverified).
+5. **`personal/` content NEVER appears on resumes or public assets.** (It guides private interview coaching, transition narratives, and role evaluation, but is never copied verbatim into outward materials).
    - `identity/references.yaml` is strictly confidential — only extract individual contact details when specifically required by a formal application or background check.
-5. **`identity/` is the single source.** All outward materials (resume, LinkedIn, cover letters) derive from identity — never the reverse.
-6. **Anti-inflation:** Don't upgrade skill levels, metrics, or titles without evidence. See `ops/guide.md` for the 6 anti-inflation rules.
-7. **Check `ops/session-handoff.md`** at the start of each session for prior context.
+6. **`identity/` is the single source.** All outward materials (resume, LinkedIn, cover letters) derive from identity — never the reverse.
+7. **Anti-inflation:** Don't upgrade skill levels, metrics, or titles without evidence. See `ops/guide.md` for the 6 anti-inflation rules.
+8. **Check `ops/session-handoff.md`** at the start of each session for prior context and pending priorities.
 
 ## Key Decisions Already Made (Do NOT Re-litigate)
 

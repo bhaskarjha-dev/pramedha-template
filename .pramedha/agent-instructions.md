@@ -37,6 +37,11 @@ Every file in this template falls into one of these categories:
 
 ## Step-by-Step Protocol
 
+> **⚡ BEFORE starting any phase:** Run `py .pramedha/validate.py --status` to check fill percentage.
+> - If files are already filled, **skip those phases**. Don't overwrite existing data.
+> - If `identity/` is already populated, **do NOT re-scan data-corpus/** unless the user explicitly asks or has added new files.
+> - See "Partial Fill Protocol" section at the bottom for how to handle already-filled templates.
+
 ### Phase A: Foundation (Steps 0-1) — Evidence First, Then Config
 
 #### Step 0: Scan data-corpus/
