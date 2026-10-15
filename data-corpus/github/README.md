@@ -2,7 +2,7 @@
 
 Drop your GitHub data here.
 
-**How to get it:** GitHub → Settings → Archives → Export account data
+**How to get it:** GitHub → Settings → Account → Export account data
 
 Also useful:
 - Screenshots of your contribution graph
