@@ -14,6 +14,7 @@ Usage:
 import argparse
 import copy
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -83,7 +84,29 @@ class AssemblyError(Exception):
     pass
 
 
-def resolve_bullet(master_exp: dict, exp_key: str, bullet_ref, variant_name: str) -> str:
+def clean_bullet_tags(text: str) -> str:
+    """
+    Strip internal verification tags ([measured], [estimated], [to-verify], [unverified], etc.)
+    and internal verification emoji (✅, ⚠️, ❌) so outward-facing resumes remain clean and professional.
+    """
+    if not text:
+        return ""
+    # Strip bracketed verification tags, including optional notes e.g. [estimated: 10%]
+    cleaned = re.sub(
+        r'\s*\[(measured|estimated|to-verify|unverified|partially-verified)(?::[^\]]*)?\]',
+        '',
+        str(text),
+        flags=re.IGNORECASE
+    )
+    # Strip any stray leading verification emoji if pasted from notes
+    cleaned = re.sub(r'^[✅⚠️❌]\s*', '', cleaned)
+    # Clean up double spaces or spaces before punctuation
+    cleaned = re.sub(r'\s+([,.;])', r'\1', cleaned)
+    cleaned = re.sub(r'  +', ' ', cleaned)
+    return cleaned.strip()
+
+
+def resolve_bullet(master_exp: dict, exp_key: str, bullet_ref, variant_name: str, keep_tags: bool = False) -> str:
     """
     Resolve a bullet reference to its text.
     bullet_ref can be:
@@ -113,19 +136,20 @@ def resolve_bullet(master_exp: dict, exp_key: str, bullet_ref, variant_name: str
 
     bullet_data = bullets[bullet_key]
     if isinstance(bullet_data, str):
-        return bullet_data
-
-    if phrasing not in bullet_data:
+        raw_text = bullet_data
+    elif phrasing not in bullet_data:
         available = list(bullet_data.keys())
         raise AssemblyError(
             f"[{variant_name}] Phrasing '{phrasing}' not found for bullet '{bullet_key}' in '{exp_key}'.\n"
             f"  Available phrasings: {available}"
         )
+    else:
+        raw_text = bullet_data[phrasing]
 
-    return bullet_data[phrasing]
+    return raw_text if keep_tags else clean_bullet_tags(raw_text)
 
 
-def resolve_project(master_projects: dict, project_ref, variant_name: str) -> dict:
+def resolve_project(master_projects: dict, project_ref, variant_name: str, keep_tags: bool = False) -> dict:
     """
     Resolve a project reference to a RenderCV project entry.
     project_ref can be:
@@ -177,13 +201,15 @@ def resolve_project(master_projects: dict, project_ref, variant_name: str) -> di
 
     highlights = []
     if isinstance(bullet_data, str):
-        highlights.append(bullet_data)
+        highlights.append(bullet_data if keep_tags else clean_bullet_tags(bullet_data))
     elif isinstance(bullet_data, list):
-        highlights.extend(bullet_data)
+        for b in bullet_data:
+            highlights.append(b if keep_tags else clean_bullet_tags(b))
     elif isinstance(bullet_data, dict):
         for phrasing in phrasings:
             if phrasing in bullet_data:
-                highlights.append(bullet_data[phrasing])
+                b = bullet_data[phrasing]
+                highlights.append(b if keep_tags else clean_bullet_tags(b))
             else:
                 available = list(bullet_data.keys())
                 raise AssemblyError(
@@ -340,6 +366,10 @@ def merge_header(header: dict, config: dict = None, identity: dict = None) -> di
                     n_dict['network'] = 'X'
                 elif raw_net in NETWORK_MAPPINGS:
                     n_dict['network'] = NETWORK_MAPPINGS[raw_net]
+                if 'username' in n_dict and isinstance(n_dict['username'], str):
+                    u = n_dict['username'].strip()
+                    clean_u = u.split('?')[0].split('#')[0].rstrip('/')
+                    n_dict['username'] = clean_u.split('/')[-1] if '/' in clean_u else clean_u
                 normalized_nets.append(n_dict)
             else:
                 normalized_nets.append(net)
@@ -352,7 +382,12 @@ def merge_header(header: dict, config: dict = None, identity: dict = None) -> di
                 if prof_key in profiles and profiles[prof_key]:
                     url = str(profiles[prof_key]).strip()
                     if url:
-                        username = url.rstrip('/').split('/')[-1] if '/' in url else url
+                        clean_url = url.split('?')[0].split('#')[0].rstrip('/')
+                        if 'scholar.google' in url.lower():
+                            m_user = re.search(r'[?&]user=([^&]+)', url)
+                            username = m_user.group(1) if m_user else (clean_url.split('/')[-1] if '/' in clean_url else clean_url)
+                        else:
+                            username = clean_url.split('/')[-1] if '/' in clean_url else clean_url
                         new_networks.append({'network': net_name, 'username': username})
             if new_networks:
                 header['social_networks'] = new_networks
@@ -364,7 +399,7 @@ def merge_header(header: dict, config: dict = None, identity: dict = None) -> di
 merge_header_from_config = merge_header
 
 
-def assemble_variant(master: dict, design: dict, variant: dict, config: dict = None, identity: dict = None) -> dict:
+def assemble_variant(master: dict, design: dict, variant: dict, config: dict = None, identity: dict = None, keep_tags: bool = False) -> dict:
     """
     Assemble a complete RenderCV YAML from master data + variant overlay.
     Returns the full dict ready to be dumped as YAML.
@@ -383,7 +418,10 @@ def assemble_variant(master: dict, design: dict, variant: dict, config: dict = N
 
     # Summary
     if 'summary' in variant and variant['summary']:
-        sections['summary'] = [variant['summary']]
+        s_text = variant['summary']
+        if not keep_tags and isinstance(s_text, str):
+            s_text = clean_bullet_tags(s_text)
+        sections['summary'] = [s_text]
 
     # Experience
     experience_entries = []
@@ -400,7 +438,7 @@ def assemble_variant(master: dict, design: dict, variant: dict, config: dict = N
         exp_data = master_exp[exp_key]
         highlights = []
         for ref in (bullet_refs or []):
-            text = resolve_bullet(exp_data, exp_key, ref, variant_name)
+            text = resolve_bullet(exp_data, exp_key, ref, variant_name, keep_tags=keep_tags)
             highlights.append(text)
 
         company = (
@@ -456,7 +494,7 @@ def assemble_variant(master: dict, design: dict, variant: dict, config: dict = N
     variant_projects = variant.get('projects', []) or []
     master_projects = master.get('projects', {}) or {}
     for proj_ref in variant_projects:
-        entry = resolve_project(master_projects, proj_ref, variant_name)
+        entry = resolve_project(master_projects, proj_ref, variant_name, keep_tags=keep_tags)
         project_entries.append(entry)
     if project_entries:
         sections['projects'] = project_entries
@@ -483,9 +521,10 @@ def assemble_variant(master: dict, design: dict, variant: dict, config: dict = N
             )
         ach_data = master_achievements[ach_key]
         if isinstance(ach_data, dict) and 'text' in ach_data:
-            achievement_texts.append(ach_data['text'])
+            t = ach_data['text']
         else:
-            achievement_texts.append(str(ach_data))
+            t = str(ach_data)
+        achievement_texts.append(t if keep_tags else clean_bullet_tags(t))
     if achievement_texts:
         sections['achievements'] = achievement_texts
 
@@ -523,10 +562,18 @@ def assemble_variant(master: dict, design: dict, variant: dict, config: dict = N
         cv_data['name'] = header.get('name') or "Your Name"
     cv_data['sections'] = ordered_sections
 
-    design_data = design.get('design', {}) if design else {}
+    design_data = copy.deepcopy(design.get('design', {}) if design else {})
+    if 'design' in variant and isinstance(variant['design'], dict):
+        variant_design = copy.deepcopy(variant['design'])
+        for k, v in variant_design.items():
+            if isinstance(v, dict) and isinstance(design_data.get(k), dict):
+                design_data[k].update(v)
+            else:
+                design_data[k] = v
+
     result = {
         'cv': cv_data,
-        'design': copy.deepcopy(design_data),
+        'design': design_data,
     }
 
     # Locale passthrough (config.yaml locale / variant locale)
@@ -709,6 +756,7 @@ def main():
     parser.add_argument('--variant', '-v', help='Build only this variant (matches filename prefix, e.g. "A")')
     parser.add_argument('--jd', help='Build from a JD-specific overlay file')
     parser.add_argument('--render', '-r', action='store_true', help='Immediately render assembled YAML files to PDF with RenderCV')
+    parser.add_argument('--keep-tags', action='store_true', help='Keep verification tags ([measured], [estimated]) in output')
     parser.add_argument('--validate', action='store_true', help='Validate only, no output')
     parser.add_argument('--diff', action='store_true', help='Show what would change vs existing generated files')
     parser.add_argument('--orphans', action='store_true', help='Detect and report unreferenced master.yaml bullets, roles, projects, and achievements')
@@ -843,7 +891,12 @@ def main():
 
         # Assemble
         try:
-            result = assemble_variant(master, design, variant, config=config_for_assembly, identity=identity_for_assembly)
+            result = assemble_variant(
+                master, design, variant,
+                config=config_for_assembly,
+                identity=identity_for_assembly,
+                keep_tags=args.keep_tags
+            )
         except AssemblyError as e:
             print(f"\n❌ {variant_name} — Assembly error:\n   {e}")
             total_errors += 1
@@ -898,17 +951,16 @@ def main():
             render_env["PYTHONUTF8"] = "1"
             render_env["PYTHONIOENCODING"] = "utf-8"
 
-            # Check if rendercv CLI or python -m rendercv is available
+            # Check if rendercv is available via current python interpreter or CLI
             rc_cmd = None
-            if shutil.which("rendercv"):
+            test_proc = subprocess.run(
+                [sys.executable, "-m", "rendercv", "--version"],
+                capture_output=True, env=render_env
+            )
+            if test_proc.returncode == 0:
+                rc_cmd = [sys.executable, "-m", "rendercv"]
+            elif shutil.which("rendercv"):
                 rc_cmd = ["rendercv"]
-            else:
-                test_proc = subprocess.run(
-                    [sys.executable, "-m", "rendercv", "--version"],
-                    capture_output=True, env=render_env
-                )
-                if test_proc.returncode == 0:
-                    rc_cmd = [sys.executable, "-m", "rendercv"]
 
             if not rc_cmd:
                 print("  ⚠️  RenderCV CLI not found. Install with: pip install rendercv")
@@ -926,7 +978,7 @@ def main():
                     if not gen_yaml.exists():
                         continue
 
-                    var_out_dir = (output_base_dir / variant_name).resolve()
+                    var_out_dir = (output_base_dir / output_filename).resolve()
                     var_out_dir.mkdir(parents=True, exist_ok=True)
 
                     full_cmd = rc_cmd + ["render", str(gen_yaml), "-o", str(var_out_dir)]
@@ -934,11 +986,11 @@ def main():
                     if res.returncode == 0:
                         pdf_files = list(var_out_dir.glob("*.pdf"))
                         if pdf_files:
-                            target_pdf = output_base_dir / f"{variant_name}.pdf"
+                            target_pdf = output_base_dir / f"{output_filename}.pdf"
                             shutil.copy2(pdf_files[0], target_pdf)
-                            print(f"  ✅ Rendered: {variant_name} → tools/resume/output/{variant_name}.pdf")
+                            print(f"  ✅ Rendered: {variant_name} → tools/resume/output/{output_filename}.pdf")
                         else:
-                            print(f"  ✅ Rendered: {variant_name} (in tools/resume/output/{variant_name}/)")
+                            print(f"  ✅ Rendered: {variant_name} (in tools/resume/output/{output_filename}/)")
                     else:
                         render_errors += 1
                         err_out = (res.stderr or res.stdout or "").strip()

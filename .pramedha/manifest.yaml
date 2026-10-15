@@ -47,6 +47,12 @@ files:
       category: "resume"
     - path: "tools/resume/_yaml_utils.py"
       category: "resume"
+    - path: "tools/resume/build.ps1"
+      category: "resume"
+    - path: "tools/resume/build.sh"
+      category: "resume"
+    - path: ".pramedha/manifest.yaml"
+      category: "system"
 
   optional:
     - path: "identity/volunteering.yaml"

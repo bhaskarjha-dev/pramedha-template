@@ -24,8 +24,8 @@
 | **Interview prep & talk tracks** | `stories/interview-prep/behavioral.md`, `stories/interview-prep/technical.md` | Ad-hoc prep sheets, generic online lists |
 | **Social proof & endorsements** | `stories/testimonials.md` | Scattered recommendation letters |
 | **Resume bullets & phrasings** | `tools/resume/master.yaml` | Generated files, old YAMLs |
-| **Resume design** | `tools/resume/design.yaml` | Design blocks in variants |
-| **Variant selection** | `tools/resume/variants/*.yaml` | Manually curated files |
+| **Resume design (base)** | `tools/resume/design.yaml` | Ad-hoc edits in generated files |
+| **Variant selection & design overrides** | `tools/resume/variants/*.yaml` | Manually curated files |
 | **Generated YAMLs** | `tools/resume/generated/*.yaml` | Auto-generated — DO NOT EDIT |
 | **Target roles, scoring & evaluation**| `strategy/target-roles.md` | Old role wish lists |
 | **Application pipeline & tracker** | `strategy/job-tracker.md` | Scattered spreadsheets |

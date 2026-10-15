@@ -315,19 +315,29 @@ def sync_projects(id_data: dict, master_data: dict, force: bool = False):
                 proj_key = k
                 break
 
+        highlights = p.get('highlights', []) or []
+
         if not proj_key:
             proj_key = generate_project_key(name, existing_keys)
             existing_keys.add(proj_key)
-            highlights = p.get('highlights', []) or []
             bullets_dict = {}
+            existing_bkeys = set()
             if highlights:
                 first_bullet = str(highlights[0]).strip()
                 if first_bullet:
                     bullets_dict['default'] = first_bullet
+                    existing_bkeys.add('default')
                 if len(highlights) > 1:
                     tech_bullet = str(highlights[1]).strip()
                     if tech_bullet:
                         bullets_dict['technical'] = tech_bullet
+                        existing_bkeys.add('technical')
+                for i in range(2, len(highlights)):
+                    h_text = str(highlights[i]).strip()
+                    if h_text:
+                        b_k = generate_bullet_key(h_text, existing_bkeys, i + 1)
+                        existing_bkeys.add(b_k)
+                        bullets_dict[b_k] = h_text
             else:
                 tagline = p.get('tagline', '').strip()
                 if tagline:
@@ -341,11 +351,43 @@ def sync_projects(id_data: dict, master_data: dict, force: bool = False):
             }
             stats['added'] += 1
         elif force:
-            if date_str:
+            updated_any = False
+            if date_str and master_proj[proj_key].get('date') != date_str:
                 master_proj[proj_key]['date'] = date_str
-            if location:
+                updated_any = True
+            if location and master_proj[proj_key].get('location') != location:
                 master_proj[proj_key]['location'] = location
-            stats['updated'] += 1
+                updated_any = True
+
+            role_b = master_proj[proj_key].setdefault('bullets', {})
+            if isinstance(role_b, dict) and highlights:
+                existing_texts = set()
+                for b_val in role_b.values():
+                    if isinstance(b_val, str):
+                        existing_texts.add(b_val.strip())
+                    elif isinstance(b_val, dict):
+                        for sub_v in b_val.values():
+                            if isinstance(sub_v, str):
+                                existing_texts.add(sub_v.strip())
+
+                for i, h in enumerate(highlights):
+                    h_text = str(h).strip()
+                    if not h_text:
+                        continue
+                    if i == 0 and 'default' not in role_b:
+                        role_b['default'] = h_text
+                        updated_any = True
+                    elif i == 1 and 'technical' not in role_b:
+                        role_b['technical'] = h_text
+                        updated_any = True
+                    elif h_text not in existing_texts:
+                        b_k = generate_bullet_key(h_text, set(role_b.keys()), i + 1)
+                        role_b[b_k] = h_text
+                        existing_texts.add(h_text)
+                        updated_any = True
+
+            if updated_any:
+                stats['updated'] += 1
 
     master_data['projects'] = master_proj
     return stats
@@ -354,13 +396,14 @@ def sync_projects(id_data: dict, master_data: dict, force: bool = False):
 def sync_education(id_data: dict, master_data: dict, force: bool = False):
     """
     Sync education from identity/credentials.yaml into master.yaml['education'].
+    Includes degree, institution, area, dates, score, honors, and coursework.
     """
     edu_list = id_data.get('education', []) or []
     master_edu = master_data.get('education', []) or []
     if not isinstance(master_edu, list):
         master_edu = []
 
-    stats = {'added': 0, 'skipped': 0}
+    stats = {'added': 0, 'updated': 0, 'skipped': 0}
 
     for item in edu_list:
         if not isinstance(item, dict):
@@ -368,33 +411,37 @@ def sync_education(id_data: dict, master_data: dict, force: bool = False):
         institution = item.get('institution', '').strip()
         degree = item.get('degree', '').strip()
         field = item.get('field', '').strip()
-        year = str(item.get('year', '')).strip()
 
         if not institution and not degree:
             stats['skipped'] += 1
             continue
 
         # Check if already present
-        exists = any(
-            isinstance(e, dict) and
-            e.get('institution', '').lower() == institution.lower() and
-            e.get('degree', '').lower() == degree.lower()
-            for e in master_edu
-        )
+        existing_idx = None
+        for idx, e in enumerate(master_edu):
+            if isinstance(e, dict) and (
+                e.get('institution', '').lower() == institution.lower() and
+                e.get('degree', '').lower() == degree.lower()
+            ):
+                existing_idx = idx
+                break
 
-        if not exists:
-            highlights = []
-            score = item.get('score', '').strip() if item.get('score') else ''
-            if score:
-                highlights.append(f"Score: {score}")
-            for honor in (item.get('honors', []) or []):
-                h_str = str(honor).strip()
-                if h_str:
-                    highlights.append(h_str)
+        highlights = []
+        score = item.get('score', '').strip() if item.get('score') else ''
+        if score:
+            highlights.append(f"Score: {score}")
+        for honor in (item.get('honors', []) or []):
+            h_str = str(honor).strip()
+            if h_str:
+                highlights.append(h_str)
+        courses = [str(c).strip() for c in (item.get('courses', []) or []) if str(c).strip()]
+        if courses:
+            highlights.append(f"Coursework: {', '.join(courses)}")
 
-            start_date = str(item.get('start_date') or '').strip()
-            end_date = str(item.get('end_date') or item.get('year') or '').strip()
+        start_date = str(item.get('start_date') or '').strip()
+        end_date = str(item.get('end_date') or item.get('year') or '').strip()
 
+        if existing_idx is None:
             entry = {
                 'institution': institution,
                 'area': field,
@@ -409,6 +456,23 @@ def sync_education(id_data: dict, master_data: dict, force: bool = False):
 
             master_edu.append(entry)
             stats['added'] += 1
+        elif force:
+            entry = master_edu[existing_idx]
+            updated_any = False
+            if field and entry.get('area') != field:
+                entry['area'] = field
+                updated_any = True
+            if start_date and entry.get('start_date') != start_date:
+                entry['start_date'] = start_date
+                updated_any = True
+            if end_date and entry.get('end_date') != end_date:
+                entry['end_date'] = end_date
+                updated_any = True
+            if highlights and entry.get('highlights') != highlights:
+                entry['highlights'] = highlights
+                updated_any = True
+            if updated_any:
+                stats['updated'] += 1
 
     master_data['education'] = master_edu
     return stats
@@ -423,7 +487,7 @@ def sync_publications(id_data: dict, master_data: dict, force: bool = False):
     if not isinstance(master_pubs, list):
         master_pubs = []
 
-    stats = {'added': 0, 'skipped': 0}
+    stats = {'added': 0, 'updated': 0, 'skipped': 0}
 
     for item in pubs_list:
         if not isinstance(item, dict):
@@ -433,25 +497,52 @@ def sync_publications(id_data: dict, master_data: dict, force: bool = False):
             stats['skipped'] += 1
             continue
 
-        exists = any(
-            isinstance(p, dict) and p.get('title', '').lower() == title.lower()
-            for p in master_pubs
-        )
+        existing_idx = None
+        for idx, p in enumerate(master_pubs):
+            if isinstance(p, dict) and p.get('title', '').lower() == title.lower():
+                existing_idx = idx
+                break
 
-        if not exists:
+        authors = [str(a).strip() for a in (item.get('authors', []) or []) if str(a).strip()]
+        date_str = str(item.get('year') or item.get('date') or '').strip()
+        journal_str = (item.get('publisher') or item.get('journal') or '').strip()
+        url_str = str(item.get('url') or '').strip()
+        doi_str = str(item.get('doi') or '').strip()
+
+        if existing_idx is None:
             entry = {
                 'title': title,
-                'authors': [str(a).strip() for a in (item.get('authors', []) or []) if str(a).strip()],
-                'date': str(item.get('year') or item.get('date') or '').strip(),
-                'journal': (item.get('publisher') or item.get('journal') or '').strip(),
+                'authors': authors,
+                'date': date_str,
+                'journal': journal_str,
             }
-            if item.get('url'):
-                entry['url'] = str(item['url']).strip()
-            if item.get('doi'):
-                entry['doi'] = str(item['doi']).strip()
+            if url_str:
+                entry['url'] = url_str
+            if doi_str:
+                entry['doi'] = doi_str
 
             master_pubs.append(entry)
             stats['added'] += 1
+        elif force:
+            entry = master_pubs[existing_idx]
+            updated_any = False
+            if authors and entry.get('authors') != authors:
+                entry['authors'] = authors
+                updated_any = True
+            if date_str and entry.get('date') != date_str:
+                entry['date'] = date_str
+                updated_any = True
+            if journal_str and entry.get('journal') != journal_str:
+                entry['journal'] = journal_str
+                updated_any = True
+            if url_str and entry.get('url') != url_str:
+                entry['url'] = url_str
+                updated_any = True
+            if doi_str and entry.get('doi') != doi_str:
+                entry['doi'] = doi_str
+                updated_any = True
+            if updated_any:
+                stats['updated'] += 1
 
     master_data['publications'] = master_pubs
     return stats
@@ -825,6 +916,21 @@ def sync_achievements(creds_data: dict, community_data: dict, master_data: dict,
     return stats
 
 
+def extract_master_header(master_path: Path) -> str:
+    """Extract top comment and blank lines before the first YAML key from master.yaml."""
+    if not master_path.exists():
+        return ""
+    lines = []
+    with open(master_path, 'r', encoding='utf-8') as f:
+        for line in f:
+            stripped = line.strip()
+            if stripped.startswith('#') or not stripped:
+                lines.append(line)
+            else:
+                break
+    return "".join(lines)
+
+
 # ============================================================================
 # Main Entry Point
 # ============================================================================
@@ -873,13 +979,20 @@ def main():
         print("   [DRY RUN MODE — No files will be modified]")
     print("=" * 60)
 
+    stats_exp = {'added_roles': 0, 'added_bullets': 0, 'updated_roles': 0, 'skipped': 0}
+    stats_proj = {'added': 0, 'updated': 0, 'skipped': 0}
+    stats_edu = {'added': 0, 'updated': 0, 'skipped': 0}
+    stats_pubs = {'added': 0, 'updated': 0, 'skipped': 0}
+    stats_skills = {'added': 0, 'updated': 0, 'skipped': 0}
+    stats_ach = {'added': 0, 'updated': 0, 'skipped': 0}
+
     # Experience
     if section in ('all', 'exp', 'experience'):
         if exp_path.exists():
             exp_data = load_yaml(exp_path)
-            stats = sync_experience(exp_data, master_data, force=args.force)
-            print(f"💼 Experience:   +{stats['added_roles']} roles, +{stats['added_bullets']} bullets "
-                  f"({stats['updated_roles']} updated, {stats['skipped']} blank skipped)")
+            stats_exp = sync_experience(exp_data, master_data, force=args.force)
+            print(f"💼 Experience:   +{stats_exp['added_roles']} roles, +{stats_exp['added_bullets']} bullets "
+                  f"({stats_exp['updated_roles']} updated, {stats_exp['skipped']} blank skipped)")
         else:
             print("💼 Experience:   identity/experience.yaml not found (skipped)")
 
@@ -887,8 +1000,8 @@ def main():
     if section in ('all', 'proj', 'projects'):
         if proj_path.exists():
             proj_data = load_yaml(proj_path)
-            stats = sync_projects(proj_data, master_data, force=args.force)
-            print(f"🚀 Projects:     +{stats['added']} projects ({stats['updated']} updated, {stats['skipped']} blank skipped)")
+            stats_proj = sync_projects(proj_data, master_data, force=args.force)
+            print(f"🚀 Projects:     +{stats_proj['added']} projects ({stats_proj['updated']} updated, {stats_proj['skipped']} blank skipped)")
         else:
             print("🚀 Projects:     identity/projects.yaml not found (skipped)")
 
@@ -896,8 +1009,8 @@ def main():
     if section in ('all', 'edu', 'education'):
         if creds_path.exists():
             creds_data = load_yaml(creds_path)
-            stats = sync_education(creds_data, master_data, force=args.force)
-            print(f"🎓 Education:    +{stats['added']} entries ({stats['skipped']} blank skipped)")
+            stats_edu = sync_education(creds_data, master_data, force=args.force)
+            print(f"🎓 Education:    +{stats_edu['added']} entries ({stats_edu['updated']} updated, {stats_edu['skipped']} blank skipped)")
         else:
             print("🎓 Education:    identity/credentials.yaml not found (skipped)")
 
@@ -905,8 +1018,8 @@ def main():
     if section in ('all', 'pubs', 'publications'):
         if creds_path.exists():
             creds_data = load_yaml(creds_path)
-            stats = sync_publications(creds_data, master_data, force=args.force)
-            print(f"📚 Publications: +{stats['added']} entries ({stats['skipped']} blank skipped)")
+            stats_pubs = sync_publications(creds_data, master_data, force=args.force)
+            print(f"📚 Publications: +{stats_pubs['added']} entries ({stats_pubs['updated']} updated, {stats_pubs['skipped']} blank skipped)")
         else:
             print("📚 Publications: identity/credentials.yaml not found (skipped)")
 
@@ -914,8 +1027,8 @@ def main():
     if section in ('all', 'skills', 'technologies'):
         if skills_path.exists():
             skills_data = load_yaml(skills_path)
-            stats = sync_skills(skills_data, master_data, force=args.force)
-            print(f"🛠️  Skills:       +{stats['added']} categories ({stats['updated']} updated, {stats['skipped']} blank skipped)")
+            stats_skills = sync_skills(skills_data, master_data, force=args.force)
+            print(f"🛠️  Skills:       +{stats_skills['added']} categories ({stats_skills['updated']} updated, {stats_skills['skipped']} blank skipped)")
         else:
             print("🛠️  Skills:       identity/skills.yaml not found (skipped)")
 
@@ -924,15 +1037,34 @@ def main():
         creds_data = load_yaml(creds_path) if creds_path.exists() else {}
         speaking_data = load_yaml(speaking_path) if speaking_path.exists() else {}
         if creds_path.exists() or speaking_path.exists():
-            stats = sync_achievements(creds_data, speaking_data, master_data, force=args.force)
-            print(f"🏆 Achievements: +{stats['added']} entries ({stats['updated']} updated, {stats['skipped']} blank skipped)")
+            stats_ach = sync_achievements(creds_data, speaking_data, master_data, force=args.force)
+            print(f"🏆 Achievements: +{stats_ach['added']} entries ({stats_ach['updated']} updated, {stats_ach['skipped']} blank skipped)")
         else:
             print("🏆 Achievements: credentials/speaking YAML not found (skipped)")
 
     print("-" * 60)
 
+    total_added = (
+        stats_exp.get('added_roles', 0) + stats_exp.get('added_bullets', 0) +
+        stats_proj.get('added', 0) +
+        stats_edu.get('added', 0) +
+        stats_pubs.get('added', 0) +
+        stats_skills.get('added', 0) +
+        stats_ach.get('added', 0)
+    )
+    total_updated = (
+        stats_exp.get('updated_roles', 0) +
+        stats_proj.get('updated', 0) +
+        stats_edu.get('updated', 0) +
+        stats_pubs.get('updated', 0) +
+        stats_skills.get('updated', 0) +
+        stats_ach.get('updated', 0)
+    )
+
     if args.dry_run:
         print("🔍 Dry run complete. Master file unchanged.")
+    elif total_added == 0 and total_updated == 0:
+        print("✨ tools/resume/master.yaml is already up to date with identity/ (no changes needed).")
     else:
         # Create a backup before writing
         bak_path = master_path.with_suffix('.yaml.bak')
@@ -942,8 +1074,9 @@ def main():
         except Exception:
             pass
 
-        dump_yaml(master_data, master_path)
-        print("✅ tools/resume/master.yaml successfully updated (backup saved to master.yaml.bak).")
+        header_text = extract_master_header(master_path)
+        dump_yaml(master_data, master_path, header=header_text)
+        print(f"✅ tools/resume/master.yaml successfully updated (+{total_added} additions, {total_updated} updates; backup saved to master.yaml.bak).")
 
 
 if __name__ == '__main__':

@@ -48,6 +48,9 @@ REQUIRED_FILES = [
     "tools/resume/assemble.py",
     "tools/resume/sync.py",
     "tools/resume/_yaml_utils.py",
+    "tools/resume/build.ps1",
+    "tools/resume/build.sh",
+    ".pramedha/manifest.yaml",
 ]
 
 OPTIONAL_FILES = [
@@ -250,7 +253,9 @@ def check_verification_tags(result: ValidationResult):
         "identity/identity.yaml",
         "identity/experience.yaml",
         "identity/credentials.yaml",
+        "identity/projects.yaml",
         "identity/speaking-and-community.yaml",
+        "identity/volunteering.yaml",
     ]
 
     for f in files_to_check:
@@ -272,7 +277,7 @@ def check_verification_tags(result: ValidationResult):
 
 
 def check_cascade_consistency(result: ValidationResult):
-    """Check that resume cascade files are consistent."""
+    """Check that resume cascade files are consistent and active variants reference valid keys."""
     master_path = TEMPLATE_ROOT / "tools" / "resume" / "master.yaml"
     design_path = TEMPLATE_ROOT / "tools" / "resume" / "design.yaml"
 
@@ -292,6 +297,45 @@ def check_cascade_consistency(result: ValidationResult):
             result.note("No active resume variants created yet (only _template.yaml)")
         else:
             result.note(f"{len(real_variants)} resume variant(s) found")
+            try:
+                with open(master_path, 'r', encoding='utf-8') as mf:
+                    master_data = yaml.safe_load(mf) or {}
+
+                for vfile in real_variants:
+                    with open(vfile, 'r', encoding='utf-8') as vf:
+                        vdata = yaml.safe_load(vf) or {}
+                    vname = (vdata.get('variant_name') or vfile.stem).strip()
+
+                    # Validate experience references
+                    v_exp = vdata.get('experience') or {}
+                    m_exp = master_data.get('experience') or {}
+                    for exp_k, b_refs in v_exp.items():
+                        if exp_k not in m_exp:
+                            result.error(f"Variant '{vname}': references role '{exp_k}' not in master.yaml")
+                        else:
+                            exp_obj = m_exp[exp_k]
+                            b_pool = exp_obj.get('bullets', {}) if isinstance(exp_obj, dict) else {}
+                            for ref in (b_refs or []):
+                                b_key = ref.split('.')[0] if '.' in str(ref) else str(ref)
+                                if b_key not in b_pool:
+                                    result.error(f"Variant '{vname}': role '{exp_k}' references bullet '{b_key}' not in master.yaml")
+
+                    # Validate project references
+                    v_proj = vdata.get('projects') or []
+                    m_proj = master_data.get('projects') or {}
+                    for p_ref in v_proj:
+                        p_key = p_ref.split('.')[0] if '.' in str(p_ref) else str(p_ref)
+                        if p_key not in m_proj:
+                            result.error(f"Variant '{vname}': references project '{p_key}' not in master.yaml")
+
+                    # Validate achievement references
+                    v_ach = vdata.get('achievements') or []
+                    m_ach = master_data.get('achievements') or {}
+                    for a_key in v_ach:
+                        if a_key not in m_ach:
+                            result.error(f"Variant '{vname}': references achievement '{a_key}' not in master.yaml")
+            except Exception as e:
+                result.warn(f"Failed to validate variant references against master: {e}")
 
 
 VALID_SKILL_LEVELS = {"beginner", "intermediate", "advanced", "expert"}
@@ -318,7 +362,7 @@ VALID_ROLE_LEVELS = {
 
 
 def parse_flexible_date(date_str):
-    """Parse YYYY-MM or YYYY string into a comparable tuple (year, month). Returns None if unparseable."""
+    """Parse YYYY-MM-DD, YYYY-MM, or YYYY string into a comparable tuple (year, month). Returns None if unparseable."""
     if date_str is None or date_str == '':
         return None
     s = str(date_str).strip().lower()
@@ -326,11 +370,12 @@ def parse_flexible_date(date_str):
         return None
     if s in ('present', 'current', 'now'):
         return (9999, 12)
-    m = re.match(r'^(\d{4})(?:-(\d{2}))?$', s)
+    m = re.match(r'^(\d{4})(?:-(\d{1,2}))?(?:-(\d{1,2}))?$', s)
     if m:
         year = int(m.group(1))
         month = int(m.group(2)) if m.group(2) else 1
-        return (year, month)
+        if 1 <= month <= 12:
+            return (year, month)
     return None
 
 

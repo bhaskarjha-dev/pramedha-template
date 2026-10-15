@@ -2,6 +2,22 @@
 
 All notable changes to the Pramedha Career Template.
 
+## [0.1.0] — 2026-10-16 (Autonomous Quality Audit & Cascade Integrity)
+
+### Fixed — Verification Tag Leakage & Cascade Engine Hardening
+- **Verification Tag Stripping on RenderCV Output (`tools/resume/assemble.py`)** — Implemented `clean_bullet_tags()` to automatically strip internal verification tags (`[measured]`, `[estimated]`, `[to-verify]`, `[unverified]`, `[partially-verified]`) and internal emojis (`✅`, `⚠️`, `❌`) so they never leak into candidate-facing resume PDFs. Added `--keep-tags` CLI flag for internal review and verification auditing.
+- **Social Network URL Sanitization (`tools/resume/assemble.py`)** — Sanitized usernames extracted from full URLs by stripping tracking queries and URL fragments (`?.*`, `#.*`), and properly extracted Google Scholar user IDs from query parameters (`user=...`).
+- **Variant Design Overrides (`tools/resume/assemble.py`)** — Implemented deep-merge of variant-level `design:` block into `design.yaml`, enabling target-specific theme, typography, color, and margin overrides per resume variant.
+- **RenderCV PDF Output Alignment (`tools/resume/assemble.py`)** — Aligned `--render` to use `output_filename` rather than `variant_name`, matching the output structure produced by `build.ps1` and `build.sh`.
+- **Python Subprocess & Virtualenv Reliability (`tools/resume/assemble.py`)** — Used `[sys.executable, "-m", "rendercv"]` for RenderCV invocations, added missing `import re`, and enforced explicit UTF-8 encoding on subprocess pipelines across Windows and Unix platforms.
+
+### Improved — Synchronizer Non-Destructive Behavior & Cascade Validation
+- **Non-Destructive Identity Synchronization (`tools/resume/sync.py`)** — Implemented `extract_master_header()` to preserve top-level documentation comments, and added change detection to skip file writes and backup creation when 0 changes are detected. Added multi-highlight project parsing, coursework extraction from `credentials.yaml`, and complete `--force` update handling for projects, education, and publications.
+- **ISO Date Chronology & Format Relaxations (`.pramedha/validate.py`)** — Upgraded `parse_flexible_date()` regex to support ISO dates (`YYYY-MM-DD` and `YYYY-MM`), with month range validation (1–12) eliminating false invalid date warnings on standard date strings.
+- **Required Build Files & Verification Coverage (`.pramedha/validate.py`, `.pramedha/manifest.yaml`)** — Added `tools/resume/build.ps1`, `tools/resume/build.sh`, and `.pramedha/manifest.yaml` to `REQUIRED_FILES` in validator and synchronized `files.required` in `manifest.yaml`. Added `identity/projects.yaml` and `identity/volunteering.yaml` to verification tag checks.
+- **Deep Cascade Reference Integrity in Validator (`.pramedha/validate.py`)** — Enhanced `check_cascade_consistency()` to validate active resume variants against `master.yaml`, verifying that all referenced roles, bullets, projects, and achievements exist and flagging dangling references before build/render.
+- **Operational Alignment & Authority Clarification (`ops/guide.md`, `ops/authority-map.md`)** — Corrected `sync.py` description from two-way to identity → master.yaml forward synchronizer, scoped the tag preservation rule strictly to source data files, and clarified base design ownership vs. variant design overrides in the authority matrix.
+
 ## [0.1.0] — 2026-10-15 (Runtime Robustness & Multi-Domain Hardening)
 
 ### Fixed — Engine Resilience & Platform Compatibility
