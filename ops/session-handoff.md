@@ -4,7 +4,7 @@
 > can pick up seamlessly without burning context tokens re-reading old transcripts or raw evidence files.
 >
 > **Scope Rule:** Track **career strategy, role decisions, profile facts, and application milestones** here.
-> ⚠️ **NEVER log template software engineering or code development here** (system release notes belong in `.pramedha/CHANGELOG.md`).
+> ⚠️ **NEVER log template software engineering or code development here** — `session-handoff.md` is strictly for the user's career context, facts, decisions, and application progress. System/codebase changes belong in `.github/CHANGELOG.md`.
 >
 > **Usage Rule:** Add each new career session entry directly below the divider (newest first). Never delete prior entries.
 

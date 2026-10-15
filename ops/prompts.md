@@ -5,6 +5,10 @@
 > No conversation history needed.
 >
 > **How to use:** Copy the prompt. Paste it. The AI does the rest.
+>
+> **Note:** For routine tasks (add project, update skills, weekly maintenance, etc.),
+> you don't need a specific prompt — just describe what you want. The AI reads
+> `AGENTS.md` for routing and `ops/guide.md` for the event→file mapping.
 
 ---
 
@@ -12,22 +16,10 @@
 
 1. [Initial Fill (from raw data)](#1-initial-fill-from-raw-data)
 2. [Full System Audit](#2-full-system-audit)
-3. [Add New Project](#3-add-new-project)
-4. [Add New Work Experience / Achievement](#4-add-new-work-experience--achievement)
-5. [Weekly Maintenance](#5-weekly-maintenance)
-6. [Generate Tailored Resume for a Job Posting](#6-generate-tailored-resume-for-a-job-posting)
-7. [New Resume Variant Creation](#7-new-resume-variant-creation)
-8. [Interview Prep for Specific Role](#8-interview-prep-for-specific-role)
-9. [Resume Improvement Pass](#9-resume-improvement-pass)
-10. [LinkedIn / Job Platform Profile Refresh](#10-linkedin--job-platform-profile-refresh)
-11. [Study Plan Progress Update](#11-study-plan-progress-update)
-12. [Claims Register Audit](#12-claims-register-audit)
-13. [Skills Matrix Refresh](#13-skills-matrix-refresh)
-14. [Portfolio Website Content](#14-portfolio-website-content)
-15. [Offer Comparison Analysis](#15-offer-comparison-analysis)
-16. [Lite Career Template Audit & Health Check](#16-lite-career-template-audit--health-check)
-17. [Add Speaking Engagement / Hackathon Win](#17-add-speaking-engagement--hackathon-win)
-18. [Zero-Python Web Resume Generation (for rendercv.com)](#18-zero-python-web-resume-generation-for-rendercvcom)
+3. [Generate Tailored Resume for a Job Posting](#3-generate-tailored-resume-for-a-job-posting)
+4. [Interview Prep for Specific Role](#4-interview-prep-for-specific-role)
+5. [Lite Career Template Audit & Health Check](#5-lite-career-template-audit--health-check)
+6. [Zero-Python Web Resume Generation (for rendercv.com)](#6-zero-python-web-resume-generation-for-rendercvcom)
 
 ---
 
@@ -89,87 +81,7 @@ Overall score: X/10 areas passing.
 
 ---
 
-## 3. Add New Project
-
-```
-TASK: Add a new project to my career data.
-
-PROJECT DETAILS:
-[Paste your project description, what you built, tech used, outcomes]
-
-CONTEXT: Read these files first:
-- identity/projects.yaml (existing projects)
-- identity/experience.yaml (to see if this project relates to work experience)
-- identity/skills.yaml (to update skills if new tech was used)
-- identity/claims-and-evidence.md (to register new claims)
-
-EXECUTE:
-1. Add project to identity/projects.yaml with proper structure
-2. Tag all claims with verification status
-3. If this was a work project, add relevant bullets to experience.yaml
-4. Update identity/skills.yaml if new technologies were used
-5. Add to tools/resume/master.yaml as a keyed project entry
-6. Note any new claims in identity/claims-and-evidence.md
-
-OUTPUT: Show exact changes made to each file. Commit with clear message.
-```
-
----
-
-## 4. Add New Work Experience / Achievement
-
-```
-TASK: Add a new work achievement/deliverable to my career data.
-
-WHAT HAPPENED:
-[Describe what you did, when, what the outcome was, any metrics]
-
-CONTEXT: Read these files first:
-- identity/experience.yaml (current experience)
-- identity/claims-and-evidence.md (claims register)
-- tools/resume/master.yaml (bullet pool)
-- ops/authority-map.md (source rules)
-
-EXECUTE:
-1. Add the deliverable to the correct employer/project in experience.yaml
-2. Write 2-3 bullet variations (default, short, technical)
-3. Tag metrics as [measured] or [estimated]
-4. Tag verification status (✅/⚠️/❌)
-5. Add keyed bullets to tools/resume/master.yaml
-6. Register claims in claims-and-evidence.md
-7. Log the achievement in journal/wins.md
-
-OUTPUT: Show all changes. Suggest which resume variants should include this.
-```
-
----
-
-## 5. Weekly Maintenance
-
-```
-TASK: Weekly maintenance check on my career system.
-
-CONTEXT: Read:
-- ops/guide.md (maintenance rituals section)
-- ops/authority-map.md
-
-EXECUTE the weekly ritual:
-1. Check: Any new work this week to add to journal/work-log/?
-2. Check: Any wins to capture in journal/wins.md?
-3. Check: Any applications sent? Update strategy/job-tracker.md
-4. Check: Any new skills learned? Update identity/skills.yaml
-5. Update strategy/job-tracker.md with top goals and review identity/claims-and-evidence.md
-6. Run: python tools/resume/assemble.py --validate (cascade health check)
-7. Quick scan: Anything in data-corpus/ not yet extracted to identity/?
-8. Check git status — any uncommitted changes?
-
-OUTPUT: Checklist with DONE/SKIPPED/NEEDS ACTION for each item.
-Commit any changes with message: "weekly: maintenance check [date]"
-```
-
----
-
-## 6. Generate Tailored Resume for a Job Posting
+## 3. Generate Tailored Resume for a Job Posting
 
 ```
 TASK: Create a tailored resume for a specific job posting.
@@ -202,34 +114,7 @@ OUTPUT:
 
 ---
 
-## 7. New Resume Variant Creation
-
-```
-TASK: Create a new resume variant for a target role category.
-
-TARGET ROLE: [e.g., "GenAI Engineer", "Backend Lead", "ML Engineer"]
-
-CONTEXT: Read:
-- tools/resume/master.yaml (all bullets)
-- tools/resume/variants/_template.yaml (variant structure)
-- strategy/target-roles.md (role evaluation)
-- identity/skills.yaml (current skills)
-
-EXECUTE:
-1. Analyze what skills/experience matter most for this role
-2. Select the strongest matching bullets from master.yaml
-3. Create tools/resume/variants/[role_name].yaml
-4. Write a role-specific summary
-5. Choose technologies section optimized for ATS
-6. Run: python tools/resume/assemble.py --variant [name]
-7. Review the generated YAML for quality
-
-OUTPUT: The variant file + analysis of how well my profile matches this role.
-```
-
----
-
-## 8. Interview Prep for Specific Role
+## 4. Interview Prep for Specific Role
 
 ```
 TASK: Prepare me for an interview for a specific role.
@@ -258,185 +143,7 @@ OUTPUT: Interview prep document I can review 30 min before the call.
 
 ---
 
-## 9. Resume Improvement Pass
-
-```
-TASK: Improve the quality of my resume bullets.
-
-CONTEXT: Read:
-- tools/resume/master.yaml (current bullets)
-- identity/experience.yaml (source facts)
-- identity/claims-and-evidence.md (what's safe to claim)
-
-EXECUTE for each bullet in master.yaml:
-1. Does it start with a strong action verb?
-2. Does it include a measurable result?
-3. Is the metric tagged [measured] or [estimated]?
-4. Is it concise (under 2 lines when rendered)?
-5. Does it pass the claims register? (no inflated claims)
-6. Can the phrasing be improved for clarity or impact?
-
-OUTPUT:
-- Before/after comparison for each improved bullet
-- List of bullets that need more information from me
-- Overall quality score: X/10
-```
-
----
-
-## 10. LinkedIn / Job Platform Profile Refresh
-
-```
-TASK: Update my LinkedIn/Naukri/job platform profiles based on current career data.
-
-CONTEXT: Read:
-- identity/identity.yaml (contact info)
-- identity/experience.yaml (work history)
-- identity/skills.yaml (skill matrix)
-- identity/professional-summary.md (summary variants and platform copy)
-
-EXECUTE:
-1. Generate optimized headline (max 220 chars)
-2. Write About section (personal, story-driven)
-3. Map experience entries to platform format
-4. Generate skills list ordered by relevance to target roles
-5. Suggest Featured section items
-6. Check for consistency with tools/resume/master.yaml
-
-OUTPUT: Ready-to-paste content for each profile section.
-```
-
----
-
-## 11. Study Plan Progress Update
-
-```
-TASK: Update my learning progress and adjust the study plan.
-
-WHAT I COMPLETED RECENTLY:
-[Describe courses, books, projects, practice completed]
-
-CONTEXT: Read:
-- strategy/study-plan.md (current plan)
-- journal/learning-log.md (learning history)
-- identity/skills.yaml (current skills)
-- identity/credentials.yaml (certifications)
-
-EXECUTE:
-1. Log completed learning in journal/learning-log.md
-2. Update skill levels in identity/skills.yaml if improved
-3. Add new certifications to identity/credentials.yaml
-4. Adjust study-plan.md sprint progress
-5. Recalculate skill gaps against target roles
-
-OUTPUT: Updated files + progress summary + next priorities.
-```
-
----
-
-## 12. Claims Register Audit
-
-```
-TASK: Audit the integrity of my claims register.
-
-CONTEXT: Read:
-- identity/claims-and-evidence.md (claims register)
-- identity/experience.yaml (all experience bullets)
-- tools/resume/master.yaml (resume-facing bullets)
-- data-corpus/ (available evidence)
-
-EXECUTE:
-1. For each bullet in experience.yaml, verify a claims entry exists
-2. For each ✅ VERIFIED claim, check that evidence actually exists
-3. For each ⚠️ ESTIMATED claim, can it be upgraded to ✅?
-4. For each ❌ UNVERIFIED claim, is it still in any resume variant?
-5. Check for any contradictions between files
-6. Check for "claim inflation" — bullets that oversell the reality
-
-OUTPUT:
-- Claims coverage: X% of bullets have claims entries
-- Verification rate: X% ✅, X% ⚠️, X% ❌
-- Action items: specific claims to verify or fix
-```
-
----
-
-## 13. Skills Matrix Refresh
-
-```
-TASK: Refresh my skills matrix based on recent work.
-
-CONTEXT: Read:
-- identity/skills.yaml (current skills)
-- identity/experience.yaml (recent work — check for new tech used)
-- journal/learning-log.md (recent learning)
-- journal/work-log/ (recent work logs)
-
-EXECUTE:
-1. Scan recent experience and learning for new skills
-2. Check if any existing skill levels should increase
-3. Add any new skills with proper evidence references
-4. Remove any skills no longer relevant (or mark as deprecated)
-5. Ensure every skill has evidence linking to a project or course
-6. Update tools/resume/master.yaml technologies sections if needed
-
-OUTPUT: Diff of changes to skills.yaml + justification for each change.
-```
-
----
-
-## 14. Portfolio Website Content
-
-```
-TASK: Generate content for my portfolio/personal website.
-
-CONTEXT: Read:
-- identity/professional-summary.md (summary variants)
-- identity/projects.yaml (portfolio projects)
-- identity/experience.yaml (work highlights)
-- identity/identity.yaml (social profiles & links)
-
-EXECUTE:
-1. Write homepage hero section (name, headline, 1-liner)
-2. Write About page content (professional + personal)
-3. Generate project cards (title, tech, 1-line description, link)
-4. Write Experience section (condensed timeline)
-5. Generate blog topic ideas from expertise areas
-6. Create contact page content
-
-OUTPUT: Website content organized by page, ready to implement.
-```
-
----
-
-## 15. Offer Comparison Analysis
-
-```
-TASK: Compare job offers to make a data-driven decision.
-
-OFFERS:
-[Paste details of each offer: company, role, compensation, benefits, etc.]
-
-CONTEXT: Read:
-- strategy/offer-comparison.md (comparison template)
-- strategy/financial.md (my salary targets)
-- personal/preferences.yaml (work preferences, deal-breakers)
-- personal/life-goals.md (career goals)
-
-EXECUTE:
-1. Normalize compensation (base + bonus + equity + benefits)
-2. Score each offer against my work preferences
-3. Check against deal-breakers
-4. Evaluate growth potential vs career goals
-5. Calculate risk factors (startup stage, visa, relocation)
-6. Generate a weighted comparison matrix
-
-OUTPUT: Recommendation with clear reasoning.
-```
-
----
-
-## 16. Lite Career Template Audit & Health Check
+## 5. Lite Career Template Audit & Health Check
 
 ```
 TASK: Perform a rapid health check and audit of my Pramedha repository.
@@ -468,35 +175,7 @@ OUTPUT: Compact health report with immediate corrective steps.
 
 ---
 
-## 17. Add Speaking Engagement / Hackathon Win
-
-```
-TASK: Add a public speaking engagement or competitive hackathon win to my career system.
-
-EVENT DETAILS:
-[Paste title, event/organizer, date, role/result, topics, prize, slides/code link]
-
-CONTEXT: Read these files first:
-- identity/speaking-and-community.yaml (speaking, hackathons, and community activities)
-- identity/claims-and-evidence.md (claims register)
-- tools/resume/master.yaml (bullet & achievement pool)
-- identity/professional-summary.md (social proof & bio copy)
-- ops/authority-map.md (source authority rules)
-
-EXECUTE:
-1. Add entry to identity/speaking-and-community.yaml (under `speaking:` or `hackathons:`) with full metadata
-2. Tag verification status (✅/⚠️/❌) with evidence path in data-corpus/
-3. If this was a hackathon win or major keynote, sync or add entry to tools/resume/master.yaml (`achievements` pool)
-4. Log the achievement in journal/wins.md
-5. Update identity/professional-summary.md if this strengthens thought leadership
-6. Run: py tools/resume/sync.py --section ach --dry-run (verify synchronization)
-
-OUTPUT: Show exact changes across all files. Commit with message: "feat(community): add [event name]"
-```
-
----
-
-## 18. Zero-Python Web Resume Generation (for rendercv.com)
+## 6. Zero-Python Web Resume Generation (for rendercv.com)
 
 ```
 TASK: Generate a single, standalone RenderCV YAML resume file ready to paste into the browser at rendercv.com (no local Python or build scripts required).

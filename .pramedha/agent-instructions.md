@@ -347,7 +347,7 @@ If the template is **already partially filled**, adapt the protocol:
 | "Prep for interview" | Read identity/ + stories/star-stories.md, generate prep doc |
 | "Fill everything from data-corpus" | Run Phase A → G in order |
 
-See `ops/prompts.md` for ready-to-paste prompts for each of these tasks.
+See `ops/prompts.md` for ready-to-paste prompts for key tasks (initial fill, audit, resume tailoring, interview prep).
 
 ---
 

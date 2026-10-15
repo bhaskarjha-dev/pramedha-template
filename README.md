@@ -115,6 +115,7 @@ Use it standalone with any AI assistant, or import into Pramedha for intelligent
 pramedha-template/
 │
 ├── .github/                   ← Repository governance & GitHub workflows
+│   ├── CHANGELOG.md              Template version history & release notes
 │   └── CONTRIBUTING.md           Open-source contribution guidelines
 ├── GETTING_STARTED.md         ← READ FIRST: 30-minute setup walkthrough (Fast Track: 3 files)
 ├── README.md                  ← System overview & architecture documentation
@@ -178,7 +179,6 @@ pramedha-template/
 │   └── session-handoff.md        Cross-session context log
 │
 ├── .pramedha/                 ← Pramedha ecosystem
-│   ├── CHANGELOG.md              Template version history & release notes
 │   ├── agent-instructions.md     How ANY AI fills this template
 │   ├── schema-reference.md       Field-by-field schema docs
 │   ├── import-guide.md           Import into Pramedha platform
