@@ -67,9 +67,9 @@ When the user asks "what next?" or gives a vague request, recommend based on cur
 | config.yaml empty, data-corpus/ empty | "Drop your career files (resumes, certs, LinkedIn export) into data-corpus/ and I'll fill everything." |
 | identity/ filled, stories/ empty | "Your career facts are set. Let's generate STAR stories and interview prep." |
 | identity/ + stories/ filled, strategy/ empty | "Core profile is complete. Let's draft your target roles and job search strategy." |
-| identity/ + stories/ + strategy/ filled, resume not built | "Everything's ready — let's build your first resume variant." |
-| Fully filled, job-tracker has active applications | "You have active applications. Let's check status, prep for interviews, or tailor a new variant." |
-| Fully filled, no active applications | "Your system is ready. You can: tailor a resume for a JD, prep for an interview, log a win, or start job searching." |
+| identity/ + stories/ + strategy/ filled | "Core career profile is complete. Ready for career exploration, interview prep, logging wins, or tailoring a resume when an opportunity arises." |
+| Fully filled, job-tracker has active applications | "You have active applications. Let's check status, prep for interviews, or tailor a new variant on demand." |
+| Fully filled, no active applications | "Your system is ready. You can: explore target roles, prep for interviews, log a win, or build a resume variant when ready." |
 
 ---
 
@@ -82,7 +82,7 @@ When the user asks "what next?" or gives a vague request, recommend based on cur
 |------------------|---------------------------------|:--------------:|
 | **"What next?" / "Help me" / "Continue"** | `py .pramedha/validate.py --status`, `ops/session-handoff.md`, `strategy/job-tracker.md` | ~1,500 tokens |
 | **First-time fill from data-corpus** | `.pramedha/agent-instructions.md` (full protocol) | ~4,000 tokens |
-| **Tailor Resume for a Job Posting** | `tools/resume/master.yaml`, `identity/experience.yaml`, `identity/skills.yaml`, `tools/resume/variants/<target>.yaml` (or copy `_template.yaml`) | ~2,500 tokens |
+| **Tailor Resume for a Job Posting** | `tools/resume/README.md`, `py tools/resume/sync.py`, `tools/resume/variants/<target>.yaml` | ~1,200 tokens |
 | **Prepare for Behavioral Interview** | `stories/star-stories.md`, `stories/interview-prep/behavioral.md` | ~2,800 tokens |
 | **Prepare for Technical / Domain Interview** | `identity/skills.yaml`, `stories/interview-prep/technical.md`, `identity/projects.yaml` | ~3,200 tokens |
 | **Rapid ATS Application Form Fill** | `personal/form-fill-cheatsheet.md`, `strategy/job-tracker.md` | ~1,800 tokens |
@@ -90,7 +90,6 @@ When the user asks "what next?" or gives a vague request, recommend based on cur
 | **Target Role & Pivot Evaluation** | `strategy/target-roles.md`, `identity/skills.yaml` | ~2,200 tokens |
 | **Offer Evaluation & Comp Negotiation** | `strategy/financial.md`, `strategy/offer-comparison.md`, `personal/preferences.yaml` | ~2,000 tokens |
 | **Log New Win or Shipped Feature** | `journal/wins.md`, `identity/experience.yaml`, `identity/claims-and-evidence.md` | ~2,600 tokens |
-| **Use External Career Tool** | `tools/external/README.md`, `identity/experience.yaml`, `identity/skills.yaml`, `strategy/target-roles.md` | ~3,000 tokens |
 | **Quarterly Audit & System Health** | `ops/guide.md`, `ops/authority-map.md`, `config.yaml` | ~2,000 tokens |
 
 ---
@@ -115,21 +114,13 @@ When the user asks "what next?" or gives a vague request, recommend based on cur
 
 | Decision | Context | Date |
 |----------|---------|------|
+| Satellite Resume Engine Decoupled | `tools/resume/` is an on-demand satellite compiler, not core data; `master.yaml` is synced via `sync.py` when generating resumes; core validation & daily ops never require maintaining `master.yaml` | 2026-10-17 |
 | *Example: Job title uses "SDE" on portfolio* | *Official HR title is different but role is development* | *YYYY-MM-DD* |
 
-## What To Do When Asked to Fill the Template
+## Satellite Resume Engine & First-Time Protocols
 
-Read `.pramedha/agent-instructions.md` — it contains the complete **28-step, 7-phase protocol (Steps 0–27)**:
-
-| Phase | Steps | What Happens |
-|:-----:|:-----:|-------------|
-| A | 0-1 | Scan data-corpus/ → fill config.yaml from evidence |
-| B | 2-10 | Fill identity/ (10 files — career facts + speaking + claims) |
-| C | 11-13 | Generate resume master + variants (in tools/resume/) |
-| D | 14-16 | Generate stories (STAR stories, testimonials, interview prep) |
-| E | 17-21 | Draft strategy (target roles, study plan, financial, tracking) |
-| F | 22-25 | Draft personal (career-narrative, about-me, life-goals, preferences, cheatsheet) |
-| G | 26-27 | Finalize VISION.md + validate |
+- **On-Demand Resume Compilation:** See [`tools/resume/README.md`](tools/resume/README.md) for full compilation and variant tailoring instructions.
+- **First-Time Setup (Reference Only):** If bootstrapping a brand-new blank repo from raw files, see [`.pramedha/agent-instructions.md`](.pramedha/agent-instructions.md).
 
 ## What To Do When Asked to Update/Maintain
 
@@ -137,14 +128,15 @@ Read `ops/guide.md` — it contains event→file mapping:
 
 | Event | Files to Update |
 |-------|----------------|
-| New job/role | experience.yaml → skills.yaml → tools/resume/master.yaml → claims → professional-summary |
-| New certification | credentials.yaml → claims → study-plan → tools/resume/master.yaml |
-| New project | projects.yaml → experience.yaml → tools/resume/master.yaml → claims |
-| Job application | strategy/job-tracker.md → (optional) tools/resume/jd/[company].yaml |
-| Interview scheduled | strategy/company-research/[company].md → stories/interview-prep → stories/star-stories review |
-| Achievement/win | journal/wins.md → experience.yaml → tools/resume/master.yaml → claims |
-| Speaking / hackathon | speaking-and-community.yaml → claims → professional-summary |
+| New job/role | experience.yaml → skills.yaml → claims-and-evidence.md → professional-summary.md |
+| New certification | credentials.yaml → claims-and-evidence.md → study-plan.md |
+| New project | projects.yaml → experience.yaml → claims-and-evidence.md |
+| Job application | strategy/job-tracker.md |
+| Interview scheduled | stories/interview-prep/ → stories/star-stories.md review → strategy/job-tracker.md |
+| Achievement/win | journal/wins.md → experience.yaml → claims-and-evidence.md |
+| Speaking / hackathon | speaking-and-community.yaml → claims-and-evidence.md → professional-summary.md |
 | New raw data in data-corpus | Extract facts → identity/*.yaml → claims-and-evidence.md → downstream |
+| Tailor / compile resume | (On-demand) py tools/resume/sync.py → tools/resume/variants/<target>.yaml → py tools/resume/assemble.py --variant <target> |
 
 ## Key Files for Quick Context
 

@@ -225,6 +225,6 @@ The bridge between raw identity facts and RenderCV resume generation operates as
 | Credentials & Education | ✅ Full | ✅ Full | Split into education, certs, awards |
 | Private Preferences | ✅ Private YAML | ✅ Personal Layer | Strictly guarded, never serialized to outward assets |
 | Claims & Verification | ✅ Markdown Ledger | ✅ Meta Layer | Trust scores and verification tags align |
-| External Tools Integration | ✅ `tools/external/` | ✅ MCP & SDK | Template mounts tools; platform provides native APIs |
+| External Tools Integration | ✅ `tools/` | ✅ MCP & SDK | Decoupled tool satellites mounted under `tools/` (e.g. `tools/resume/`) |
 | Vector Embeddings | ❌ (File-based) | ✅ Qdrant/pgvector | Computed during platform intake |
 | Knowledge Graph | ❌ (File-based) | ✅ NetworkX/Neo4j | Inferred during platform graph queries |

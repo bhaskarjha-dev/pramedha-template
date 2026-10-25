@@ -20,10 +20,13 @@ import subprocess
 import sys
 from pathlib import Path
 
-if sys.platform == "win32" and hasattr(sys.stdout, "buffer"):
-    import io
-    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
-    sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding="utf-8", errors="replace")
+if sys.platform == "win32":
+    if hasattr(sys.stdout, "reconfigure"):
+        try:
+            sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+            sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+        except Exception:
+            pass
 
 # PyYAML is required — same environment as RenderCV (pip install pyyaml)
 import yaml
@@ -98,8 +101,8 @@ def clean_bullet_tags(text: str) -> str:
         str(text),
         flags=re.IGNORECASE
     )
-    # Strip any stray leading verification emoji if pasted from notes
-    cleaned = re.sub(r'^[✅⚠️❌]\s*', '', cleaned)
+    # Strip any stray leading verification emoji if pasted from notes (including multi-code-point emoji like ⚠️)
+    cleaned = re.sub(r'^[✅❌\u26a0\ufe0f]+\s*', '', cleaned)
     # Clean up double spaces or spaces before punctuation
     cleaned = re.sub(r'\s+([,.;])', r'\1', cleaned)
     cleaned = re.sub(r'  +', ' ', cleaned)

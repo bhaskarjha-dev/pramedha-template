@@ -3,15 +3,19 @@
 # ═══════════════════════════════════════════════════════════
 
 # Generated files (auto-built by tools/resume/assemble.py + RenderCV)
-tools/resume/generated/*
-!tools/resume/generated/.gitkeep
-tools/resume/output/*
-!tools/resume/output/.gitkeep
+tools/resume/generated/
+tools/resume/output/
+rendercv_output/
+tools/resume/rendercv_output/
+*.synctex.gz
+*.fls
+*.fdb_latexmk
 
 # External tools sandbox (user-installed tools/clones, not tracked)
 tools/external/*
 !tools/external/.gitkeep
 !tools/external/README.md
+
 
 # Heavy video files in data-corpus (host on YouTube/Loom/Drive or use Git LFS)
 data-corpus/media/*.mp4
@@ -69,26 +73,30 @@ lib/
 lib64/
 parts/
 sdist/
-var/
 wheels/
+pip-wheel-metadata/
 *.egg-info/
 .installed.cfg
 *.egg
 
-# Virtual Environments
+# Virtual Environments & Package Managers
 .venv/
 venv/
 env/
 ENV/
 env.bak/
 venv.bak/
+.uv/
+.uv-cache/
 
-# Testing & Linting Caches
+# Testing, Linting & Notebook Caches
 .pytest_cache/
 .mypy_cache/
 .ruff_cache/
 .coverage
+.coverage.*
 htmlcov/
+.ipynb_checkpoints/
 
 # ═══════════════════════════════════════════════════════════
 # NODE / WEB TOOLING
@@ -118,9 +126,10 @@ ehthumbs_vista.db
 [Tt]humbs.db:encryptable
 desktop.ini
 $RECYCLE.BIN/
+*.lnk
 
 # ═══════════════════════════════════════════════════════════
-# IDEs & EDITORS
+# IDEs & EDITORS & AI TOOLS
 # ═══════════════════════════════════════════════════════════
 .vscode/*
 !.vscode/settings.json
@@ -133,9 +142,14 @@ $RECYCLE.BIN/
 *.sublime-project
 .cursor/
 .claude/
+.gemini/
+.antigravity/
+.continue/
+.copilot/
+.history/
 
 # ═══════════════════════════════════════════════════════════
-# TEMPORARY & BACKUP FILES
+# TEMPORARY, LOG & LOCK FILES
 # ═══════════════════════════════════════════════════════════
 tmp/
 temp/
@@ -143,3 +157,6 @@ temp/
 *.tmp
 *.orig
 *~
+~$*
+*.log
+logs/

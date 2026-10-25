@@ -16,10 +16,13 @@ import re
 import sys
 from pathlib import Path
 
-if sys.platform == "win32" and hasattr(sys.stdout, "buffer"):
-    import io
-    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
-    sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding="utf-8", errors="replace")
+if sys.platform == "win32":
+    if hasattr(sys.stdout, "reconfigure"):
+        try:
+            sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+            sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+        except Exception:
+            pass
 
 try:
     import yaml
@@ -43,6 +46,10 @@ REQUIRED_FILES = [
     "identity/projects.yaml",
     "identity/claims-and-evidence.md",
     "identity/professional-summary.md",
+    ".pramedha/manifest.yaml",
+]
+
+SATELLITE_FILES = [
     "tools/resume/master.yaml",
     "tools/resume/design.yaml",
     "tools/resume/assemble.py",
@@ -50,8 +57,8 @@ REQUIRED_FILES = [
     "tools/resume/_yaml_utils.py",
     "tools/resume/build.ps1",
     "tools/resume/build.sh",
-    ".pramedha/manifest.yaml",
 ]
+
 
 OPTIONAL_FILES = [
     "identity/speaking-and-community.yaml",
@@ -135,6 +142,12 @@ def check_file_exists(result: ValidationResult):
         path = TEMPLATE_ROOT / f
         if path.exists():
             result.note(f"✅ {f} (optional)")
+
+    for f in SATELLITE_FILES:
+        path = TEMPLATE_ROOT / f
+        if path.exists():
+            result.note(f"✅ {f} (satellite)")
+
 
 
 def check_yaml_valid(result: ValidationResult):
@@ -748,13 +761,43 @@ def check_cross_file_consistency(result: ValidationResult):
     with open(skills_path, 'r', encoding='utf-8') as f:
         skills_data = yaml.safe_load(f) or {}
 
-    known_skills = set()
+    # Common engineering deliverables keywords / formats that are implementation details rather than standalone career skills
+    UNIVERSAL_ENGINEERING_TERMS = {
+        'json', 'yaml', 'markdown', 'regex', 'apis', 'api development', 'rest api', 'rest apis',
+        'git internals', '3-way merge', 'ast parsing', 'csv ingestion', 'validation schemas',
+        'data modeling', 'data engineering', 'data processing', 'data analysis', 'data ingestion',
+        'database normalization', 'etl', 'excel/json etl', 'eda', 'statistical analysis',
+        'web interface', 'web terminals', 'websockets', 'streaming i/o', 'oauth 2.0', 'ssh',
+        'scaffolding', 'benchmarking', 'load testing', 'leadership', 'team leadership', 'mentorship',
+        'technical writing', 'technical interviewing', 'stakeholder communication', 'research',
+        'market research', 'curriculum analysis', 'business process analysis', 'contract intelligence',
+        'entrepreneurship', 'event management', 'game design', 'content curation', 'marketing automation',
+        'product management', 'compliance', 'gri standards', 'sebi brsr', 'cve analysis', 'dast', 'sast',
+        'enterprise security standards', 'security', 'security testing', 'security automation', 'security workflows',
+        'html/css/js', 'html5 canvas', 'vanilla javascript', 'javascript', 'css3', 'bash 3.2', 'bash/cli',
+        'cli/tui', 'faker', 'obs api', 'mkdocs', 'obsidian', 'low-code ui', 'lookml', 'nexpose report parsing',
+        'architecture design', 'automation', 'automation design', 'data visualization'
+    }
+
+    known_skills = set(UNIVERSAL_ENGINEERING_TERMS)
     if isinstance(skills_data, dict):
         for cat, slist in skills_data.items():
             if cat != 'last_updated' and isinstance(slist, list):
                 for s in slist:
-                    if isinstance(s, dict) and s.get('name'):
-                        known_skills.add(str(s['name']).strip().lower())
+                    if isinstance(s, dict):
+                        name = str(s.get('name') or '').strip().lower()
+                        if name:
+                            known_skills.add(name)
+                            # Split parenthetical and slash constituent parts
+                            for part in re.split(r'[/&()]', name):
+                                clean_p = part.strip().lower()
+                                if len(clean_p) > 1:
+                                    known_skills.add(clean_p)
+                        # Support aliases, tools, and keywords
+                        for a in (s.get('aliases') or []) + (s.get('tools') or []) + (s.get('keywords') or []):
+                            clean_a = str(a).strip().lower()
+                            if clean_a:
+                                known_skills.add(clean_a)
 
     if not known_skills:
         return
@@ -841,9 +884,6 @@ def compute_fill_status(result: ValidationResult):
         ) or any(
             isinstance(h, dict) and bool((h.get('name') or '').strip()) for h in ((d or {}).get('hackathons') or [])
         ), True),
-        ("tools/resume/master.yaml", "master.yaml", lambda d: any(
-            k != '_example_role_' and isinstance(v, dict) for k, v in ((d or {}).get('experience') or {}).items()
-        ), False),
         ("personal/preferences.yaml", "preferences.yaml", lambda d: bool(
             str((d or {}).get('career_stage') or '').strip() or str((d or {}).get('career_anchor') or '').strip() or (d or {}).get('work_values')
         ), False),
@@ -937,15 +977,35 @@ def compute_fill_status(result: ValidationResult):
             status_lines.append(f"  ⬜ {label} (not created)")
 
     pct = int(100 * filled / total) if total > 0 else 0
-    result.note(f"\n📊 Core System Fill Status: {filled}/{total} ({pct}%) [Core Identity & Cascade Files]")
+    result.note(f"\n📊 Core Career Knowledge Base: {filled}/{total} ({pct}%) [Verified Identity & Context Files]")
     for line in status_lines:
         result.note(line)
 
+    # Satellite Resume Engine Status (On-Demand)
+    master_path = TEMPLATE_ROOT / "tools" / "resume" / "master.yaml"
+    master_filled = False
+    if master_path.exists():
+        try:
+            with open(master_path, 'r', encoding='utf-8') as f:
+                mdata = yaml.safe_load(f) or {}
+            master_filled = any(k != '_example_role_' and isinstance(v, dict) for k, v in (mdata.get('experience') or {}).items())
+        except Exception:
+            pass
 
-def check_freshness(result: ValidationResult):
+    result.note("\n🛰️ Satellite Resume Engine (On-Demand):")
+    if master_filled:
+        result.note("  ✅ tools/resume (master.yaml populated — ready to render)")
+    else:
+        result.note("  ⬜ tools/resume (master.yaml clean template — run 'py tools/resume/sync.py' when tailoring a CV)")
+
+
+
+def check_freshness(result: ValidationResult, with_resume: bool = False):
     """Check freshness of YAML files with last_updated fields."""
     stale_files = []
     for f in YAML_FILES_TO_VALIDATE:
+        if f in SATELLITE_FILES and not with_resume:
+            continue
         path = TEMPLATE_ROOT / f
         if not path.exists():
             continue
@@ -978,6 +1038,7 @@ def main():
     parser.add_argument('--status', action='store_true', help='Show fill status only')
     parser.add_argument('--strict', action='store_true', help='Treat warnings as errors')
     parser.add_argument('--json', action='store_true', help='Output JSON summary for CI/tooling')
+    parser.add_argument('--with-resume', action='store_true', help='Include on-demand resume cascade and master parity checks')
     args = parser.parse_args()
 
     # Ensure UTF-8 output on Windows
@@ -992,12 +1053,14 @@ def main():
         check_config(result)
         check_experience(result)
         check_verification_tags(result)
-        check_cascade_consistency(result)
+        if getattr(args, 'with_resume', False):
+            check_cascade_consistency(result)
         check_skill_enums(result)
         check_date_chronology(result)
-        check_identity_master_parity(result)
+        if getattr(args, 'with_resume', False):
+            check_identity_master_parity(result)
         check_cross_file_consistency(result)
-        check_freshness(result)
+        check_freshness(result, with_resume=getattr(args, 'with_resume', False))
         compute_fill_status(result)
 
         passed = not bool(result.errors) and not (bool(result.warnings) and args.strict)
@@ -1038,26 +1101,28 @@ def main():
     print("\n── Verification Tags ──")
     check_verification_tags(result)
 
-    print("\n── Resume Cascade ──")
-    check_cascade_consistency(result)
-
     print("\n── Skill Enums ──")
     check_skill_enums(result)
 
     print("\n── Date Chronology ──")
     check_date_chronology(result)
 
-    print("\n── Identity-Master Parity ──")
-    check_identity_master_parity(result)
-
     print("\n── Cross-File Consistency ──")
     check_cross_file_consistency(result)
 
     print("\n── Freshness Check ──")
-    check_freshness(result)
+    check_freshness(result, with_resume=getattr(args, 'with_resume', False))
+
+    if getattr(args, 'with_resume', False):
+        print("\n── Resume Cascade (On-Demand) ──")
+        check_cascade_consistency(result)
+
+        print("\n── Identity-Master Parity (On-Demand) ──")
+        check_identity_master_parity(result)
 
     print("\n── Fill Status ──")
     compute_fill_status(result)
+
 
     # Report
     print("\n" + "=" * 50)

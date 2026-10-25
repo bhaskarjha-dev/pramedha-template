@@ -21,10 +21,13 @@ import re
 import sys
 from pathlib import Path
 
-if sys.platform == "win32" and hasattr(sys.stdout, "buffer"):
-    import io
-    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
-    sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding="utf-8", errors="replace")
+if sys.platform == "win32":
+    if hasattr(sys.stdout, "reconfigure"):
+        try:
+            sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+            sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+        except Exception:
+            pass
 
 try:
     import yaml
@@ -141,6 +144,15 @@ def sync_experience(id_data: dict, master_data: dict, force: bool = False):
 
     stats = {'added_roles': 0, 'added_bullets': 0, 'updated_roles': 0, 'skipped': 0}
     existing_keys = set(master_exp.keys())
+
+    # Prune template placeholder scaffolding if real experience entries exist
+    has_real_entries = any(
+        isinstance(e, dict) and bool((e.get('company') or e.get('position') or e.get('title') or '').strip())
+        for e in exp_entries
+    )
+    if has_real_entries and '_example_role_' in master_exp:
+        del master_exp['_example_role_']
+        existing_keys.discard('_example_role_')
 
     for entry in exp_entries:
         if not isinstance(entry, dict):

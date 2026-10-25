@@ -25,7 +25,7 @@ Every file in this template falls into one of these categories:
 | Category | AI Can Auto-Fill? | Files |
 |----------|:-:|-------|
 | **Identity (truth)** | ✅ From data-corpus | experience.yaml, skills.yaml, credentials.yaml, projects.yaml, identity.yaml, volunteering.yaml, speaking-and-community.yaml, references.yaml, claims-and-evidence.md, professional-summary.md |
-| **Resume (generated)** | ✅ From identity | tools/resume/master.yaml, design.yaml, variants/*.yaml |
+| **Resume (Satellite - on demand)** | ✅ From identity | tools/resume/master.yaml, design.yaml, variants/*.yaml (via sync.py) |
 | **Stories (authored)** | ✅ From identity | star-stories.md, testimonials.md, interview-prep/behavioral.md, interview-prep/technical.md |
 | **Strategy (needs user input)** | ⚠️ Draft from context | target-roles.md, study-plan.md, financial.md, job-tracker.md, offer-comparison.md, networking.md |
 | **Personal (needs user input)** | ⚠️ Draft from text/ | about-me.md, career-narrative.md, life-goals.md, preferences.yaml, reflections.md, form-fill-cheatsheet.md |
@@ -143,7 +143,10 @@ This is the most important file. For each employer:
 
 ---
 
-### Phase C: Resume Layer (Steps 11-13) — Generated From Identity
+### Phase C: Resume Satellite Layer (Steps 11-13) — On-Demand Forward Projection
+
+> 💡 **Decoupled Satellite Pipeline:** Phase C is optional during initial repository setup or daily career logging.
+> It is activated on demand via `py tools/resume/sync.py` when preparing to compile targeted resumes for active job applications.
 
 #### Step 11: Populate tools/resume/master.yaml via Bridge Script
 - Run the bridge synchronizer to import verified facts from identity into `master.yaml`:
@@ -275,8 +278,9 @@ This is the most important file. For each employer:
 
 #### Step 27: Final Validation
 ```bash
-python .pramedha/validate.py                 # Check integrity
-python tools/resume/assemble.py --validate   # Check cascade references
+python .pramedha/validate.py                 # Core profile integrity (0 resume dependency)
+# Optional (when satellite resume pipeline is active):
+# python tools/resume/assemble.py --validate   # Check cascade references
 ```
 Report:
 - Files filled vs. empty
@@ -340,9 +344,9 @@ If the template is **already partially filled**, adapt the protocol:
 
 | Task | What to do |
 |------|-----------|
-| "Add a new project" | Update identity/projects.yaml + experience.yaml + tools/resume/master.yaml + claims register |
-| "Add a new achievement" | Update experience.yaml + tools/resume/master.yaml + journal/wins.md + claims register |
-| "Update skills" | Update identity/skills.yaml + tools/resume/master.yaml technologies |
+| "Add a new project" | Update identity/projects.yaml + experience.yaml + claims register (master.yaml synced on demand via sync.py) |
+| "Add a new achievement" | Update experience.yaml + journal/wins.md + claims register (master.yaml synced on demand via sync.py) |
+| "Update skills" | Update identity/skills.yaml + claims register (master.yaml synced on demand via sync.py) |
 | "Create resume variant" | Read tools/resume/master.yaml, create tools/resume/variants/[name].yaml |
 | "Prep for interview" | Read identity/ + stories/star-stories.md, generate prep doc |
 | "Fill everything from data-corpus" | Run Phase A → G in order |
@@ -355,8 +359,9 @@ See `ops/prompts.md` for ready-to-paste prompts for key tasks (initial fill, aud
 
 After any fill or update, run:
 ```bash
-python .pramedha/validate.py                 # Check integrity
-python tools/resume/assemble.py --validate   # Check cascade references
+python .pramedha/validate.py                 # Check core career profile integrity (0 resume dependency)
+# Optional (when satellite resume pipeline is active or tailoring a CV):
+# python tools/resume/assemble.py --validate   # Check cascade references
 ```
 
 ---

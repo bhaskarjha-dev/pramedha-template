@@ -58,10 +58,14 @@ Download the ZIP from the releases page → extract → `git init` in the folder
 ### Then:
 
 ```bash
-# Dump raw career data into data-corpus/ (resumes, certs, LinkedIn export)
+# Dump raw career data into data-corpus/ (inbox/ or archive.zip)
 # Let AI fill everything: "Read .pramedha/agent-instructions.md and fill from data-corpus"
 # Review what AI filled, add private context, write VISION.md
-# Generate resumes:
+# Validate repo integrity:
+py .pramedha/validate.py --status
+
+# (On-demand satellite) When applying for a job:
+py tools/resume/sync.py
 .\tools\resume\build.ps1        # Windows PowerShell (handles UTF-8 & Typst rendering)
 ./tools/resume/build.sh         # Linux / macOS
 ```
@@ -75,7 +79,7 @@ Fill at your own pace. Each layer adds value independently.
 | Layer | What You Fill | What You Get |
 |:-----:|---------------|--------------|
 | **0** | `config.yaml` (name + email) | Repo initialized |
-| **1** | `identity/` (experience + skills) | Working resume via cascade engine |
+| **1** | `identity/` (experience + skills) | Verified career facts database (powers on-demand resumes) |
 | **2** | `stories/` + `strategy/` | Interview prep + job search execution |
 | **3** | `personal/` + `journal/` | Full career knowledge base |
 | **→** | Import into Pramedha | AI matching, portfolio, career intelligence |
@@ -98,9 +102,9 @@ Fill at your own pace. Each layer adds value independently.
 └──────────────────┬──────────────────────────┘
                    │ AI agents read directly
 ┌──────────────────▼──────────────────────────┐
-│        External Tools (optional)            │
-│  career-ops • JobSpy • job-ops • any tool   │
-│  Mount in tools/external/ (gitignored)      │
+│        Satellite Tools (optional)           │
+│  tools/resume/ (RenderCV on-demand compiler)│
+│  Auto-synced from identity/ on demand       │
 └─────────────────────────────────────────────┘
 ```
 
@@ -185,11 +189,9 @@ pramedha-template/
 │   ├── validate.py               Template integrity validator
 │   └── examples/                 Example filled data
 │
-└── tools/                     ← Optional tooling (decoupled from data)
-    ├── external/              ← Mount point for third-party career tools (gitignored)
-    │   └── README.md             Directory guide & recommended tools
-    └── resume/                ← Resume cascade engine
-        ├── master.yaml           Bullet pool (keyed phrasings)
+└── tools/                     ← Decoupled satellite tools
+    └── resume/                ← On-demand resume compiler (decoupled from core profile)
+        ├── master.yaml           Bullet pool template (synced on demand via sync.py)
         ├── design.yaml           Visual theme
         ├── sync.py               Identity-to-master bridge synchronizer
         ├── assemble.py           Cascade engine
@@ -290,9 +292,10 @@ git rm -r --cached personal/ strategy/financial.md strategy/networking.md identi
 Check your template's integrity and fill status:
 
 ```bash
-python .pramedha/validate.py            # Full validation
-python .pramedha/validate.py --status   # Fill percentage only
-python .pramedha/validate.py --strict   # Fail on warnings too
+python .pramedha/validate.py                  # Core career profile validation (0 resume dependency)
+python .pramedha/validate.py --status         # Fill percentage only
+python .pramedha/validate.py --with-resume    # Include satellite resume pipeline parity checks
+python .pramedha/validate.py --strict         # Fail on warnings too
 ```
 
 ---

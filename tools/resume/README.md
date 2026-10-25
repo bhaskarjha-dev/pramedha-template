@@ -1,41 +1,43 @@
-# Resume Cascade System
+# Satellite Resume Engine (RenderCV & Typst)
 
-> **One source of truth → Multiple tailored resumes**
+> **Decoupled On-Demand Compiler:** `identity/*.yaml` (Source of Truth) → `sync.py` → `master.yaml` → `variants/*.yaml` → `assemble.py` → RenderCV PDF
 
-Edit your bullets in `master.yaml` once. Create thin overlay files in `variants/` to
-select which bullets appear for each target role. Run `assemble.py` to generate
-RenderCV-compatible YAML files. Render to PDF.
+This directory is an **on-demand satellite tool**. It is completely decoupled from daily career repository operations. Core career maintenance never requires editing or maintaining `master.yaml` directly. When targeting a specific application, use `sync.py` to forward-bridge facts into `master.yaml`, tailor a variant, and compile.
 
 ---
 
-## How It Works
+## Architecture & Data Flow
 
 ```
-master.yaml          →  ALL your bullets, keyed by role + phrasing
-  × variants/*.yaml  →  Thin overlays selecting bullets per target role
-  = generated/*.yaml →  Complete RenderCV YAML files (auto-generated)
-  → output/*.pdf     →  Final PDFs via `assemble.py --render` or build script
+identity/*.yaml (Source of Truth)
+      │
+      ▼  py tools/resume/sync.py (Forward Bridge)
+master.yaml (RenderCV Bullet Bank, keyed by role + phrasing)
+      │
+      ▼  × variants/*.yaml (Thin overlays selecting bullets per target JD)
+      │  + design.yaml (Theme, typography, margins)
+      │
+      ▼  py tools/resume/assemble.py
+generated/*.yaml (Auto-assembled RenderCV YAML)
+      │
+      ▼  RenderCV / Typst CLI
+output/*.pdf (Targeted ATS-compliant PDFs)
 ```
 
 ---
 
-## Quick Start
+## Quick Start (On-Demand Tailoring)
 
 ```bash
-# 1. Sync verified facts from identity/ (optional, fast-tracks master.yaml population)
+# 1. Forward-sync verified facts from identity/ into master.yaml
 py tools/resume/sync.py
 
-# 2. Enrich master.yaml with phrasing variants (default, short, technical, leadership)
-# 3. Create variants in variants/ for target roles (copy variants/_template.yaml)
-
-# 4. Assemble & Render (1-Step!):
-py tools/resume/assemble.py --validate    # Verify all references
-py tools/resume/assemble.py --render      # Assembles all variants and renders PDFs to output/
-
-# Or run the platform build scripts:
-.\build.ps1        # Windows
-./build.sh         # Linux/Mac
+# 2. Create or edit a role variant in variants/ (copy variants/_template.yaml to your-role.yaml)
+# 3. Build & Render PDF (1-Step):
+pwsh tools/resume/build.ps1        # Windows
+./tools/resume/build.sh            # Linux/macOS
 ```
+
 
 ---
 
@@ -43,10 +45,10 @@ py tools/resume/assemble.py --render      # Assembles all variants and renders P
 
 | File | Edit? | Purpose |
 |------|:-----:|---------|
-| `master.yaml` | ✏️ YES | All bullets, projects, education, publications with keyed phrasings |
+| `master.yaml` | ⚡ SYNC | RenderCV bullet bank (auto-synced from `identity/` via `sync.py`; can enrich with phrasings) |
 | `design.yaml` | ✏️ YES | Visual theme, margins, typography (shared across variants) |
 | `variants/*.yaml` | ✏️ YES | Role-specific bullet, project, and summary selection overlays |
-| `sync.py` | ⚡ RUN | Bridge synchronizer: imports identity facts into `master.yaml` |
+| `sync.py` | ⚡ RUN | Forward bridge: extracts verified facts from `identity/` into `master.yaml` |
 | `assemble.py` | ⚡ RUN | Cascade engine: merges `master` + `design` + `variants` → `generated/*.yaml` |
 | `generated/*.yaml` | ❌ NO | Auto-generated RenderCV YAML with JSON schema. DO NOT EDIT. |
 | `output/*.pdf` | ❌ NO | Rendered PDFs |
@@ -152,11 +154,4 @@ technologies:
   - label: "GenAI"
     details: "RAG, LLM APIs, Vector DBs, vLLM"
 ```
-
----
-
-## Other Tools
-
-Looking for job search, scraping, or matching tools?
-See `tools/external/README.md` for mounting third-party tools.
 

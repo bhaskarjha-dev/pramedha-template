@@ -38,7 +38,7 @@ Then scan ALL files in data-corpus/ (resumes, documents, exports, text, media).
 EXECUTE: Follow the 7-phase protocol in .pramedha/agent-instructions.md exactly:
 - Phase A (Steps 0-1): Scan data-corpus/ and build complete mental model
 - Phase B (Steps 2-10): Fill all 10 identity/ files (verified facts + claims + professional summary)
-- Phase C (Steps 11-13): Generate resume master + variants and validate
+- Phase C (Steps 11-13): (Satellite - on demand) Initialize tools/resume/ via py tools/resume/sync.py when compiling resumes
 - Phase D (Steps 14-16): Generate stories (STAR stories, testimonials, interview prep)
 - Phase E (Steps 17-21): Draft strategy layer (target roles, study plan, financial, tracking, networking)
 - Phase F (Steps 22-25): Draft personal context (career-narrative, about-me, life-goals, preferences, cheatsheet)
@@ -60,19 +60,19 @@ CONTEXT: Read these files FIRST before doing anything:
 - ops/authority-map.md (what's truth for what)
 - README.md (architecture overview)
 
-Then read ALL files in identity/ and tools/resume/.
+Then read ALL files in identity/ (and tools/resume/ if auditing on-demand resume readiness).
 
 EXECUTE: Audit these 10 areas systematically:
-1. CONTACT CONSISTENCY — Does identity.yaml match config.yaml match master.yaml header?
+1. CONTACT CONSISTENCY — Does identity.yaml match config.yaml?
 2. EXPERIENCE FRESHNESS — Is experience.yaml up to date? Missing recent work?
 3. SKILLS ACCURACY — Do skills.yaml levels match evidence in experience.yaml?
-4. CLAIMS INTEGRITY — Pick 5 random bullets from master.yaml. Are they in claims register?
-5. RESUME CASCADE — Run: python tools/resume/assemble.py --validate
+4. CLAIMS INTEGRITY — Pick 5 random deliverables from experience.yaml. Are they in claims register?
+5. RESUME CASCADE (SATELLITE) — Run: python tools/resume/sync.py --dry-run && python tools/resume/assemble.py --validate
 6. VERIFICATION COVERAGE — What % of facts have ✅ tags? What % are ⚠️ or ❌?
 7. CROSS-FILE CONSISTENCY — Do dates, titles, company names match across files?
-8. PRIVACY CHECK — Is any personal/ data leaking into identity/ or tools/resume/?
-9. COMPLETENESS — What important fields are empty? What's the fill rate?
-10. STRATEGY ALIGNMENT — Do resume variants match target roles in strategy/?
+8. PRIVACY CHECK — Is any personal/ data leaking into identity/ or outward assets?
+9. COMPLETENESS — Run: python .pramedha/validate.py --status
+10. STRATEGY ALIGNMENT — Do verified skills match target roles in strategy/?
 
 OUTPUT: For each area, report PASS/FAIL with specific findings.
 For any FAIL, provide the exact fix (file, line, what to change).
@@ -97,13 +97,14 @@ CONTEXT: Read these files:
 - tools/resume/jd/_template.yaml (JD overlay structure)
 
 EXECUTE:
-1. Analyze the JD: extract required skills, experience, keywords
-2. Match against my skills and experience
-3. Create a JD-specific overlay in tools/resume/jd/[company]_[role].yaml
-4. Select the most relevant bullets from master.yaml
-5. Write a tailored summary for this specific role
-6. Choose technologies section matching JD requirements
-7. Run: python tools/resume/assemble.py --jd jd/[company]_[role].yaml
+1. Run: python tools/resume/sync.py to forward-project the latest verified career facts from identity/ into tools/resume/master.yaml
+2. Analyze the JD: extract required skills, experience, keywords
+3. Match against my skills and experience
+4. Create a JD-specific overlay in tools/resume/jd/[company]_[role].yaml
+5. Select the most relevant bullets from master.yaml
+6. Write a tailored summary for this specific role
+7. Choose technologies section matching JD requirements
+8. Run: python tools/resume/assemble.py --jd jd/[company]_[role].yaml
 
 OUTPUT:
 - The JD overlay file (ready to assemble)
@@ -154,11 +155,11 @@ CONTEXT: Read:
 - ops/session-handoff.md (previous session context)
 
 EXECUTE:
-1. Run the validator:
+1. Run the core validator:
    py .pramedha/validate.py
-2. Verify resume cascade consistency:
+2. (Satellite readiness - optional) Verify resume cascade consistency:
    py tools/resume/assemble.py --validate
-3. Preview identity-to-master synchronization:
+3. (Satellite readiness - optional) Preview identity-to-master synchronization:
    py tools/resume/sync.py --dry-run
 4. Audit for anti-inflation:
    - Check if any claims in tools/resume/master.yaml lack verification tags in identity/claims-and-evidence.md

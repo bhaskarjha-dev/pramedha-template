@@ -1,8 +1,9 @@
 # ============================================================================
 # MASTER RESUME — Keyed Bullet Pool
 # ============================================================================
-# This is your SINGLE SOURCE OF TRUTH for all resume content.
-# Edit bullets here. Variants select FROM this file.
+# ⚠️ SATELLITE POOL: All authoritative career facts live in identity/*.yaml.
+# Run 'py tools/resume/sync.py' to forward-project verified facts into this pool.
+# Variants select FROM this file. Never treat this file as primary source of truth.
 #
 # Structure:
 #   header    → Name, contact, links (auto-filled from ../config.yaml)

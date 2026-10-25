@@ -23,7 +23,7 @@
 | **Behavioral STAR story bank** | `stories/star-stories.md` | Memory, improvised interview answers |
 | **Interview prep & talk tracks** | `stories/interview-prep/behavioral.md`, `stories/interview-prep/technical.md` | Ad-hoc prep sheets, generic online lists |
 | **Social proof & endorsements** | `stories/testimonials.md` | Scattered recommendation letters |
-| **Resume bullets & phrasings** | `tools/resume/master.yaml` | Generated files, old YAMLs |
+| **Resume bullets & phrasings** | `tools/resume/master.yaml` (satellite pool, forward-projected from `identity/` via `sync.py`) | Generated files, old YAMLs |
 | **Resume design (base)** | `tools/resume/design.yaml` | Ad-hoc edits in generated files |
 | **Variant selection & design overrides** | `tools/resume/variants/*.yaml` | Manually curated files |
 | **Generated YAMLs** | `tools/resume/generated/*.yaml` | Auto-generated — DO NOT EDIT |
@@ -46,7 +46,6 @@
 | **Career mission** | `VISION.md` | Old plans, brainstorm docs |
 | **Session context & handoff** | `ops/session-handoff.md` | Old conversation transcripts |
 | **Operations, maintenance & audit** | `ops/guide.md` | Ad-hoc maintenance notes |
-| **External tools & third-party integrations** | `tools/external/README.md` | Ad-hoc tool clones |
 | **Sub-project registry** | `VISION.md` (Sub-Projects section) | Scattered project folders |
 
 ---
@@ -68,14 +67,16 @@
 
 ```
 data-corpus/ (raw evidence)
-     ↓ AI extraction
-identity/ (structured truth)
-     ↓ cascade engine (tools/resume/)
-tools/resume/master.yaml (bullet pool)
-     × tools/resume/variants/ (overlays)
-     = tools/resume/generated/ (assembled)
-     → tools/resume/output/ (PDFs)
-
-tools/external/ (mounted third-party tools)
-     ↑ AI agents read identity/ and bridge to tools
+     ↓ AI extraction / manual logging
+identity/ (core structured truth)
+     │
+     ├── stories/ (narratives & interview prep)
+     ├── strategy/ (planning & tracking)
+     │
+     └── [On-Demand Satellite] py tools/resume/sync.py
+              ↓
+         tools/resume/master.yaml (bullet pool)
+              × tools/resume/variants/ (overlays)
+              = tools/resume/generated/ (assembled)
+              → tools/resume/output/ (PDFs)
 ```
