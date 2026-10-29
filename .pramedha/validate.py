@@ -327,8 +327,10 @@ def _verification_values(value, where=''):
     if isinstance(value, dict):
         for key, item in value.items():
             here = f"{where}.{key}" if where else str(key)
-            if key == 'verification' and isinstance(item, str):
-                yield here, item
+            if key == 'verification':
+                text_val = as_text(item)
+                if text_val:
+                    yield here, text_val
             else:
                 yield from _verification_values(item, here)
     elif isinstance(value, list):
@@ -596,7 +598,8 @@ def check_date_chronology(result: ValidationResult):
                 continue
             inst = as_text(edu.get('institution') or edu.get('degree') or 'unnamed')
             start = as_text(edu.get('start_date'))
-            end = as_text(edu.get('end_date') or edu.get('year'))
+            end_val = edu.get('end_date') if edu.get('end_date') not in (None, "") else edu.get('year')
+            end = "" if end_val in (0, "0", None) else as_text(end_val)
             if not start and not end:
                 continue
             p_start = parse_flexible_date(start)

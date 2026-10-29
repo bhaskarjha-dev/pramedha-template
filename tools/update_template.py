@@ -27,7 +27,8 @@ MIXED_FILES = ['AGENTS.md', '.gitignore']  # template text plus your own lines: 
 
 
 def git(*args, check=True):
-    proc = subprocess.run(['git', *args], capture_output=True, text=True, encoding='utf-8')
+    proc = subprocess.run(['git', *args], capture_output=True, text=True,
+                          encoding='utf-8', errors='replace', stdin=subprocess.DEVNULL)
     if check and proc.returncode != 0:
         raise RuntimeError(proc.stderr.strip() or f"git {' '.join(args)} failed")
     return proc

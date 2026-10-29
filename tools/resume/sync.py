@@ -532,7 +532,9 @@ def sync_education(id_data: dict, master_data: dict, force: bool = False):
             highlights.append(f"Coursework: {', '.join(courses)}")
 
         start_date = as_text(item.get('start_date'))
-        end_date = as_text(item.get('end_date') or item.get('year') or '')
+        year_val = item.get('year')
+        raw_end = item.get('end_date') if item.get('end_date') not in (None, '') else (year_val if year_val and year_val != 0 else '')
+        end_date = '' if raw_end in (0, '0') else as_text(raw_end)
 
         if existing_idx is None:
             entry = {
@@ -597,7 +599,9 @@ def sync_publications(id_data: dict, master_data: dict, force: bool = False):
                 break
 
         authors = [as_text(a) for a in (item.get('authors', []) or []) if as_text(a)]
-        date_str = as_text(item.get('year') or item.get('date') or '')
+        year_val = item.get('year')
+        raw_date = item.get('date') if item.get('date') not in (None, '') else (year_val if year_val and year_val != 0 else '')
+        date_str = '' if raw_date in (0, '0') else as_text(raw_date)
         journal_str = as_text(item.get('publisher') or item.get('journal') or '')
         url_str = as_text(item.get('url'))
         doi_str = as_text(item.get('doi'))

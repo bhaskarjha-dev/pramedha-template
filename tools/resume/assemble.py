@@ -1116,7 +1116,7 @@ def main():
             rc_cmd = None
             test_proc = subprocess.run(
                 [sys.executable, "-m", "rendercv", "--version"],
-                capture_output=True, env=render_env
+                capture_output=True, env=render_env, stdin=subprocess.DEVNULL
             )
             if test_proc.returncode == 0:
                 rc_cmd = [sys.executable, "-m", "rendercv"]
@@ -1144,7 +1144,8 @@ def main():
                     var_out_dir.mkdir(parents=True, exist_ok=True)
 
                     full_cmd = rc_cmd + ["render", str(gen_yaml), "-o", str(var_out_dir)]
-                    res = subprocess.run(full_cmd, capture_output=True, text=True, encoding='utf-8', env=render_env)
+                    res = subprocess.run(full_cmd, capture_output=True, text=True,
+                                         encoding='utf-8', errors='replace', env=render_env, stdin=subprocess.DEVNULL)
                     if res.returncode == 0:
                         pdf_files = list(var_out_dir.glob("*.pdf"))
                         if pdf_files:
