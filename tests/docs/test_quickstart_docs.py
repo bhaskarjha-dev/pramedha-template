@@ -92,7 +92,8 @@ def test_quick_starts_create_a_variant_before_building():
 
 def test_build_sh_is_executable_and_docs_run_it_with_bash():
     entry = subprocess.run(['git', 'ls-files', '-s', 'tools/resume/build.sh'], cwd=REPO,
-                           capture_output=True, text=True, stdin=subprocess.DEVNULL).stdout
+                           capture_output=True, text=True, encoding='utf-8', errors='replace',
+                           stdin=subprocess.DEVNULL).stdout
     assert entry.startswith('100755'), entry
     for rel in ['README.md', 'GETTING_STARTED.md', 'tools/resume/README.md']:
         assert 'bash tools/resume/build.sh' in text(rel), rel

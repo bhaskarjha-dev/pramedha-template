@@ -125,7 +125,7 @@ def run(repo, *args, check=False):
     """Run `python <args>` inside repo and return the CompletedProcess."""
     env = dict(os.environ, PYTHONDONTWRITEBYTECODE='1', PYTHONUTF8='1')
     proc = subprocess.run([sys.executable, *map(str, args)], cwd=repo, capture_output=True,
-                          text=True, encoding='utf-8', env=env, stdin=subprocess.DEVNULL)
+                          text=True, encoding='utf-8', errors='replace', env=env, stdin=subprocess.DEVNULL)
     if check and proc.returncode != 0:
         raise AssertionError(f'{args} exited {proc.returncode}\n{proc.stdout}\n{proc.stderr}')
     return proc

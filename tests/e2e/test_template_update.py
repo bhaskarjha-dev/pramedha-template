@@ -34,7 +34,8 @@ def env_for(tmp_path):
 
 
 def git(cwd, env, *args):
-    proc = subprocess.run(['git', *args], cwd=cwd, capture_output=True, text=True, env=env, stdin=subprocess.DEVNULL)
+    proc = subprocess.run(['git', *args], cwd=cwd, capture_output=True, text=True,
+                          encoding='utf-8', errors='replace', env=env, stdin=subprocess.DEVNULL)
     assert proc.returncode == 0, (args, proc.stdout, proc.stderr)
     return proc.stdout
 
@@ -96,7 +97,7 @@ def make_copies(tmp_path, user_has_script):
 
 def run_update_and_check(env, upstream, user, before):
     proc = subprocess.run([sys.executable, SCRIPT], cwd=user, capture_output=True, text=True,
-                          encoding='utf-8', env=env, stdin=subprocess.DEVNULL)
+                          encoding='utf-8', errors='replace', env=env, stdin=subprocess.DEVNULL)
     assert proc.returncode == 0, out(proc)
     fixed = upstream / 'tools/resume/assemble.py'
     assert (user / 'tools/resume/assemble.py').read_text(encoding='utf-8') == fixed.read_text(encoding='utf-8')
