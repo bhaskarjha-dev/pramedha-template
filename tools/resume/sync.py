@@ -10,10 +10,10 @@ Reads:
   - identity/skills.yaml                 → master.yaml technologies
 
 Usage:
-    py tools/resume/sync.py                 # Sync all sections (safe merge, preserves existing)
-    py tools/resume/sync.py --dry-run       # Preview changes without modifying master.yaml
-    py tools/resume/sync.py --section exp   # Sync specific section (exp, proj, edu, pubs, skills, ach, all)
-    py tools/resume/sync.py --force         # Overwrite existing keys with identity values
+    python tools/resume/sync.py                 # Sync all sections (safe merge, preserves existing)
+    python tools/resume/sync.py --dry-run       # Preview changes without modifying master.yaml
+    python tools/resume/sync.py --section exp   # Sync specific section (exp, proj, edu, pubs, skills, ach, all)
+    python tools/resume/sync.py --force         # Also overwrite start dates of matched roles (end dates and locations always follow identity/)
 """
 
 import argparse
@@ -128,8 +128,70 @@ def generate_achievement_key(name: str, existing_keys: set, prefix: str = "") ->
 # Sync Logic
 # ============================================================================
 
+CAREER_BREAK_POSITION = 'Career Transition / Sabbatical'
+
+
+def role_source(company: str, position: str, start_date: str) -> str:
+    """The identity fact a master.yaml role comes from, stored in its `_source` key."""
+    return f"{company} | {position} | {start_date}"
+
+
+def identity_sources(exp_data: dict) -> dict:
+    """Map every role in identity/experience.yaml to its bullet texts: {role_source: {text, ...}}."""
+    sources = {}
+    for entry in (exp_data or {}).get('experience', []) or []:
+        if not isinstance(entry, dict):
+            continue
+        company = as_text(entry.get('company') or entry.get('client') or entry.get('organization')
+                          or entry.get('institution') or entry.get('employer') or entry.get('practice'))
+        position = as_text(entry.get('position') or entry.get('title') or entry.get('role'))
+        start = as_text(entry.get('start_date'))
+        if not company and not position and not start:
+            continue
+        texts = sources.setdefault(role_source(company, position, start), set())
+        for project in entry.get('projects', []) or []:
+            if not isinstance(project, dict):
+                continue
+            for deliverable in project.get('deliverables', []) or []:
+                if not isinstance(deliverable, dict):
+                    continue
+                for bullet in deliverable.get('bullets', []) or []:
+                    if as_text(bullet):
+                        texts.add(as_text(bullet))
+    for brk in (exp_data or {}).get('career_breaks', []) or []:
+        if not isinstance(brk, dict):
+            continue
+        title, start = as_text(brk.get('title')), as_text(brk.get('start_date'))
+        if title or start:
+            sources[role_source(title, CAREER_BREAK_POSITION, start)] = {as_text(brk.get('description')) or title}
+    return sources
+
+
+def stale_entries(master_exp: dict, sources: dict) -> list:
+    """master.yaml roles and bullets whose `_source` no longer exists in identity/experience.yaml."""
+    stale = []
+    for key, role in master_exp.items():
+        if not isinstance(role, dict) or role.get('_source') is None:
+            continue
+        if role['_source'] not in sources:
+            stale.append(key)
+            continue
+        for b_key, bullet in (role.get('bullets') or {}).items():
+            if isinstance(bullet, dict) and bullet.get('_source') is not None \
+                    and bullet['_source'] not in sources[role['_source']]:
+                stale.append(f"{key}.{b_key}")
+    return stale
+
+
 def is_blank_str(val) -> bool:
     return val is None or (isinstance(val, str) and not val.strip())
+
+
+def as_text(value) -> str:
+    """Any YAML scalar as a stripped string: None -> '', 3.8 -> '3.8', True -> 'True'."""
+    if value is None:
+        return ''
+    return str(value).strip()
 
 
 def sync_experience(id_data: dict, master_data: dict, force: bool = False):
@@ -147,7 +209,7 @@ def sync_experience(id_data: dict, master_data: dict, force: bool = False):
 
     # Prune template placeholder scaffolding if real experience entries exist
     has_real_entries = any(
-        isinstance(e, dict) and bool((e.get('company') or e.get('position') or e.get('title') or '').strip())
+        isinstance(e, dict) and bool(as_text(e.get('company') or e.get('position') or e.get('title') or ''))
         for e in exp_entries
     )
     if has_real_entries and '_example_role_' in master_exp:
@@ -158,11 +220,11 @@ def sync_experience(id_data: dict, master_data: dict, force: bool = False):
         if not isinstance(entry, dict):
             continue
 
-        company = str(entry.get('company') or entry.get('client') or entry.get('organization') or entry.get('institution') or entry.get('employer') or entry.get('practice') or '').strip()
-        position = str(entry.get('position') or entry.get('title') or entry.get('role') or '').strip()
-        start_date = str(entry.get('start_date') or '').strip()
-        end_date = str(entry.get('end_date') or 'present').strip()
-        location = str(entry.get('location') or '').strip()
+        company = as_text(entry.get('company') or entry.get('client') or entry.get('organization') or entry.get('institution') or entry.get('employer') or entry.get('practice') or '')
+        position = as_text(entry.get('position') or entry.get('title') or entry.get('role') or '')
+        start_date = as_text(entry.get('start_date') or '')
+        end_date = as_text(entry.get('end_date') or 'present')
+        location = as_text(entry.get('location') or '')
 
         # Skip empty template scaffolding
         if not company and not position and not start_date:
@@ -173,9 +235,9 @@ def sync_experience(id_data: dict, master_data: dict, force: bool = False):
         matching_key = None
         for k, v in master_exp.items():
             if isinstance(v, dict):
-                same_comp = v.get('company', '').lower() == company.lower()
-                same_pos = v.get('position', '').lower() == position.lower()
-                same_start = str(v.get('start_date', '')).strip() == str(start_date).strip()
+                same_comp = as_text(v.get('company')).lower() == company.lower()
+                same_pos = as_text(v.get('position')).lower() == position.lower()
+                same_start = as_text(v.get('start_date')) == start_date
                 if same_comp and same_pos and (same_start or not v.get('start_date')):
                     matching_key = k
                     break
@@ -189,17 +251,22 @@ def sync_experience(id_data: dict, master_data: dict, force: bool = False):
                 'start_date': start_date,
                 'end_date': end_date or 'present',
                 'location': location,
+                '_source': role_source(company, position, start_date),
                 'bullets': {}
             }
             stats['added_roles'] += 1
             matching_key = role_key
         else:
             role_key = matching_key
+            role = master_exp[role_key]
+            fresh = {'end_date': end_date or 'present', '_source': role_source(company, position, start_date)}
+            if location:
+                fresh['location'] = location
             if force:
-                master_exp[role_key]['start_date'] = start_date
-                master_exp[role_key]['end_date'] = end_date or 'present'
-                if location:
-                    master_exp[role_key]['location'] = location
+                fresh['start_date'] = start_date
+            changed = {k: v for k, v in fresh.items() if str(role.get(k) or '') != v}
+            if changed:
+                role.update(changed)
                 stats['updated_roles'] += 1
 
         # Extract bullets from deliverables
@@ -215,11 +282,13 @@ def sync_experience(id_data: dict, master_data: dict, force: bool = False):
         for p in projects:
             if not isinstance(p, dict):
                 continue
-            client = str(p.get('client') or '').strip()
+            client = as_text(p.get('client'))
             deliverables = p.get('deliverables', []) or []
             for d in deliverables:
                 if not isinstance(d, dict):
                     continue
+                status = (as_text(d.get('verification') or '') or as_text(p.get('verification') or '')
+                          or as_text(entry.get('verification') or ''))
                 bullets = d.get('bullets', []) or []
                 for b in bullets:
                     b_text = str(b).strip()
@@ -232,20 +301,29 @@ def sync_experience(id_data: dict, master_data: dict, force: bool = False):
                     else:
                         final_text = b_text
 
-                    # Check if text already exists under any phrasing
+                    # Check if text already exists under any phrasing; keep its source and status current
                     already_present = False
-                    for b_data in role_bullets.values():
+                    for k, b_data in list(role_bullets.items()):
                         if isinstance(b_data, str) and (b_data == final_text or b_data == b_text):
-                            already_present = True
-                            break
-                        elif isinstance(b_data, dict) and (final_text in b_data.values() or b_text in b_data.values()):
+                            role_bullets[k] = b_data = {'default': b_data}
+                        if isinstance(b_data, dict) and (final_text in b_data.values() or b_text in b_data.values()):
+                            fresh = {'_source': b_text, '_verification': status}
+                            changed = {f: v for f, v in fresh.items() if (b_data.get(f) or '') != v}
+                            for f, v in changed.items():
+                                if v:
+                                    b_data[f] = v
+                                else:
+                                    b_data.pop(f, None)
+                            if changed:
+                                stats['updated_roles'] += 1
                             already_present = True
                             break
 
                     if not already_present:
                         b_key = generate_bullet_key(b_text, existing_bullet_keys, bullet_idx)
                         existing_bullet_keys.add(b_key)
-                        role_bullets[b_key] = {'default': final_text}
+                        role_bullets[b_key] = {'default': final_text, '_source': b_text,
+                                               **({'_verification': status} if status else {})}
                         stats['added_bullets'] += 1
                         bullet_idx += 1
 
@@ -254,28 +332,31 @@ def sync_experience(id_data: dict, master_data: dict, force: bool = False):
     for b in career_breaks:
         if not isinstance(b, dict):
             continue
-        b_title = str(b.get('title') or '').strip()
-        b_start = str(b.get('start_date') or '').strip()
+        b_title = as_text(b.get('title'))
+        b_start = as_text(b.get('start_date'))
         if not b_title and not b_start:
             continue
 
         break_slug = slugify(b_title)[:20].strip('_') or 'transition'
         break_key = f"career_break_{break_slug}"
         if break_key not in master_exp:
-            desc = str(b.get('description') or '').strip()
-            bullets = {'summary': {'default': desc}} if desc else {'summary': {'default': b_title}}
+            desc = as_text(b.get('description'))
+            b_content = desc or b_title
+            bullets = {'summary': {'default': b_content, '_source': b_content}}
             master_exp[break_key] = {
                 'company': b_title,
-                'position': 'Career Transition / Sabbatical',
+                'position': CAREER_BREAK_POSITION,
                 'start_date': b_start,
-                'end_date': str(b.get('end_date') or 'present').strip(),
+                'end_date': as_text(b.get('end_date') or 'present'),
                 'location': '',
                 'archived': True,
+                '_source': role_source(b_title, CAREER_BREAK_POSITION, b_start),
                 'bullets': bullets
             }
             stats['added_roles'] += 1
             stats['added_bullets'] += len(bullets)
 
+    stats['stale'] = stale_entries(master_exp, identity_sources(id_data))
     master_data['experience'] = master_exp
     return stats
 
@@ -300,17 +381,17 @@ def sync_projects(id_data: dict, master_data: dict, force: bool = False):
             all_projects.append(p)
 
     for p in all_projects:
-        name = str(p.get('name') or '').strip()
+        name = as_text(p.get('name'))
         if not name:
             stats['skipped'] += 1
             continue
 
-        repo = str(p.get('repo') or '').strip()
-        live_url = str(p.get('live_url') or '').strip()
-        location = repo or live_url or str(p.get('context') or '').strip()
+        repo = as_text(p.get('repo'))
+        live_url = as_text(p.get('live_url'))
+        location = repo or live_url or as_text(p.get('context'))
 
-        start = str(p.get('start_date') or '').strip()
-        end = str(p.get('end_date') or '').strip()
+        start = as_text(p.get('start_date'))
+        end = as_text(p.get('end_date'))
         if start and end:
             date_str = f"{start} – {end}"
         elif start:
@@ -323,7 +404,7 @@ def sync_projects(id_data: dict, master_data: dict, force: bool = False):
         # Find or create key
         proj_key = None
         for k, v in master_proj.items():
-            if isinstance(v, dict) and v.get('name', '').lower() == name.lower():
+            if isinstance(v, dict) and as_text(v.get('name')).lower() == name.lower():
                 proj_key = k
                 break
 
@@ -351,7 +432,7 @@ def sync_projects(id_data: dict, master_data: dict, force: bool = False):
                         existing_bkeys.add(b_k)
                         bullets_dict[b_k] = h_text
             else:
-                tagline = p.get('tagline', '').strip()
+                tagline = as_text(p.get('tagline'))
                 if tagline:
                     bullets_dict['default'] = tagline
 
@@ -420,9 +501,9 @@ def sync_education(id_data: dict, master_data: dict, force: bool = False):
     for item in edu_list:
         if not isinstance(item, dict):
             continue
-        institution = item.get('institution', '').strip()
-        degree = item.get('degree', '').strip()
-        field = item.get('field', '').strip()
+        institution = as_text(item.get('institution'))
+        degree = as_text(item.get('degree'))
+        field = as_text(item.get('field'))
 
         if not institution and not degree:
             stats['skipped'] += 1
@@ -432,26 +513,26 @@ def sync_education(id_data: dict, master_data: dict, force: bool = False):
         existing_idx = None
         for idx, e in enumerate(master_edu):
             if isinstance(e, dict) and (
-                e.get('institution', '').lower() == institution.lower() and
-                e.get('degree', '').lower() == degree.lower()
+                as_text(e.get('institution')).lower() == institution.lower() and
+                as_text(e.get('degree')).lower() == degree.lower()
             ):
                 existing_idx = idx
                 break
 
         highlights = []
-        score = item.get('score', '').strip() if item.get('score') else ''
+        score = as_text(item.get('score'))
         if score:
             highlights.append(f"Score: {score}")
         for honor in (item.get('honors', []) or []):
-            h_str = str(honor).strip()
+            h_str = as_text(honor)
             if h_str:
                 highlights.append(h_str)
-        courses = [str(c).strip() for c in (item.get('courses', []) or []) if str(c).strip()]
+        courses = [as_text(c) for c in (item.get('courses', []) or []) if as_text(c)]
         if courses:
             highlights.append(f"Coursework: {', '.join(courses)}")
 
-        start_date = str(item.get('start_date') or '').strip()
-        end_date = str(item.get('end_date') or item.get('year') or '').strip()
+        start_date = as_text(item.get('start_date'))
+        end_date = as_text(item.get('end_date') or item.get('year') or '')
 
         if existing_idx is None:
             entry = {
@@ -504,22 +585,22 @@ def sync_publications(id_data: dict, master_data: dict, force: bool = False):
     for item in pubs_list:
         if not isinstance(item, dict):
             continue
-        title = (item.get('title') or item.get('name') or '').strip()
+        title = as_text(item.get('title') or item.get('name') or '')
         if not title:
             stats['skipped'] += 1
             continue
 
         existing_idx = None
         for idx, p in enumerate(master_pubs):
-            if isinstance(p, dict) and p.get('title', '').lower() == title.lower():
+            if isinstance(p, dict) and as_text(p.get('title')).lower() == title.lower():
                 existing_idx = idx
                 break
 
-        authors = [str(a).strip() for a in (item.get('authors', []) or []) if str(a).strip()]
-        date_str = str(item.get('year') or item.get('date') or '').strip()
-        journal_str = (item.get('publisher') or item.get('journal') or '').strip()
-        url_str = str(item.get('url') or '').strip()
-        doi_str = str(item.get('doi') or '').strip()
+        authors = [as_text(a) for a in (item.get('authors', []) or []) if as_text(a)]
+        date_str = as_text(item.get('year') or item.get('date') or '')
+        journal_str = as_text(item.get('publisher') or item.get('journal') or '')
+        url_str = as_text(item.get('url'))
+        doi_str = as_text(item.get('doi'))
 
         if existing_idx is None:
             entry = {
@@ -580,7 +661,7 @@ def sync_skills(id_data: dict, master_data: dict, force: bool = False):
         skill_names = []
         for s in skills:
             if isinstance(s, dict):
-                name = str(s.get('name') or '').strip()
+                name = as_text(s.get('name'))
                 if name:
                     skill_names.append(name)
             elif isinstance(s, str) and s.strip():
@@ -596,7 +677,7 @@ def sync_skills(id_data: dict, master_data: dict, force: bool = False):
         # Check if category label already exists in master technologies
         existing_idx = None
         for idx, entry in enumerate(master_tech):
-            if isinstance(entry, dict) and entry.get('label', '').lower() == cat_label.lower():
+            if isinstance(entry, dict) and as_text(entry.get('label')).lower() == cat_label.lower():
                 existing_idx = idx
                 break
 
@@ -631,15 +712,15 @@ def sync_achievements(creds_data: dict, community_data: dict, master_data: dict,
     for item in (creds_data.get('awards', []) or []):
         if not isinstance(item, dict):
             continue
-        title = (item.get('title') or '').strip()
+        title = as_text(item.get('title'))
         if not title:
             stats['skipped'] += 1
             continue
-        awarder = (item.get('awarder') or '').strip()
-        year = str(item.get('year') or '').strip()
+        awarder = as_text(item.get('awarder'))
+        year = as_text(item.get('year'))
         if year == '0':
             year = ''
-        details = (item.get('details') or '').strip()
+        details = as_text(item.get('details'))
 
         parts = [title]
         meta = []
@@ -675,12 +756,12 @@ def sync_achievements(creds_data: dict, community_data: dict, master_data: dict,
     for item in (creds_data.get('certifications', []) or []):
         if not isinstance(item, dict):
             continue
-        name = (item.get('name') or '').strip()
+        name = as_text(item.get('name'))
         if not name:
             stats['skipped'] += 1
             continue
-        issuer = (item.get('issuer') or '').strip()
-        year = str(item.get('year') or '').strip()
+        issuer = as_text(item.get('issuer'))
+        year = as_text(item.get('year'))
         if year == '0':
             year = ''
 
@@ -716,14 +797,14 @@ def sync_achievements(creds_data: dict, community_data: dict, master_data: dict,
     for item in (community_data.get('hackathons', []) or []):
         if not isinstance(item, dict):
             continue
-        name = (item.get('name') or '').strip()
+        name = as_text(item.get('name'))
         if not name:
             stats['skipped'] += 1
             continue
-        result = (item.get('result') or '').strip()
-        organizer = (item.get('organizer') or '').strip()
-        project = (item.get('project') or '').strip()
-        prize = (item.get('prize') or '').strip()
+        result = as_text(item.get('result'))
+        organizer = as_text(item.get('organizer'))
+        project = as_text(item.get('project'))
+        prize = as_text(item.get('prize'))
 
         if result:
             text = f"{result} at {name}"
@@ -758,13 +839,13 @@ def sync_achievements(creds_data: dict, community_data: dict, master_data: dict,
     for item in (creds_data.get('licenses', []) or []):
         if not isinstance(item, dict):
             continue
-        name = (item.get('name') or '').strip()
+        name = as_text(item.get('name'))
         if not name:
             stats['skipped'] += 1
             continue
-        jurisdiction = (item.get('jurisdiction') or '').strip()
-        lic_num = (item.get('license_number') or '').strip()
-        status = (item.get('status') or '').strip()
+        jurisdiction = as_text(item.get('jurisdiction'))
+        lic_num = as_text(item.get('license_number'))
+        status = as_text(item.get('status'))
 
         parts = [name]
         meta = []
@@ -800,13 +881,13 @@ def sync_achievements(creds_data: dict, community_data: dict, master_data: dict,
     for item in (creds_data.get('clearances', []) or []):
         if not isinstance(item, dict):
             continue
-        level = (item.get('level') or '').strip()
+        level = as_text(item.get('level'))
         if not level:
             stats['skipped'] += 1
             continue
-        agency = (item.get('agency') or '').strip()
-        status = (item.get('status') or '').strip()
-        poly = (item.get('polygraph') or '').strip()
+        agency = as_text(item.get('agency'))
+        status = as_text(item.get('status'))
+        poly = as_text(item.get('polygraph'))
 
         parts = [f"{level} Security Clearance"]
         meta = []
@@ -842,13 +923,13 @@ def sync_achievements(creds_data: dict, community_data: dict, master_data: dict,
     for item in (creds_data.get('patents', []) or []):
         if not isinstance(item, dict):
             continue
-        title = (item.get('title') or '').strip()
+        title = as_text(item.get('title'))
         if not title:
             stats['skipped'] += 1
             continue
-        pat_num = str(item.get('patent_number') or item.get('number') or '').strip()
-        filing_date = str(item.get('filing_date') or item.get('date') or '').strip()
-        status = (item.get('status') or '').strip()
+        pat_num = as_text(item.get('patent_number') if item.get('patent_number') is not None else item.get('number'))
+        filing_date = as_text(item.get('filing_date') if item.get('filing_date') is not None else item.get('date'))
+        status = as_text(item.get('status'))
 
         parts = [f"Patent: {title}"]
         meta = []
@@ -884,13 +965,13 @@ def sync_achievements(creds_data: dict, community_data: dict, master_data: dict,
     for item in (creds_data.get('grants', []) or []):
         if not isinstance(item, dict):
             continue
-        title = (item.get('title') or '').strip()
+        title = as_text(item.get('title'))
         if not title:
             stats['skipped'] += 1
             continue
-        funder = str(item.get('funder') or item.get('agency') or '').strip()
-        amount = str(item.get('amount') or '').strip()
-        year = str(item.get('year') or '').strip()
+        funder = as_text(item.get('funder') if item.get('funder') is not None else item.get('agency'))
+        amount = as_text(item.get('amount'))
+        year = as_text(item.get('year'))
         if year == '0':
             year = ''
 
@@ -1005,6 +1086,11 @@ def main():
             stats_exp = sync_experience(exp_data, master_data, force=args.force)
             print(f"💼 Experience:   +{stats_exp['added_roles']} roles, +{stats_exp['added_bullets']} bullets "
                   f"({stats_exp['updated_roles']} updated, {stats_exp['skipped']} blank skipped)")
+            if stats_exp.get('stale'):
+                print("⚠️  Stale in master.yaml (identity/experience.yaml changed or removed them); "
+                      "assemble.py refuses variants that select them:")
+                for entry in stats_exp['stale']:
+                    print(f"     - {entry}")
         else:
             print("💼 Experience:   identity/experience.yaml not found (skipped)")
 

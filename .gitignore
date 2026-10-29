@@ -23,20 +23,6 @@ data-corpus/media/*.mov
 data-corpus/media/*.avi
 data-corpus/media/*.mkv
 
-# ═══════════════════════════════════════════════════════════
-# PUBLIC REPOSITORY SAFETY OVERRIDE (Optional)
-#
-# ⚠️ This repository is designed to be PRIVATE.
-# If you must host this on a PUBLIC repository, uncomment the lines below
-# to exclude personal/confidential files from version control:
-# ═══════════════════════════════════════════════════════════
-# personal/
-# strategy/financial.md
-# strategy/networking.md
-# identity/references.yaml
-# personal/form-fill-cheatsheet.md
-# journal/feedback.md
-# data-corpus/
 
 # ═══════════════════════════════════════════════════════════
 # SECRETS & CREDENTIALS (NEVER commit, even to private repos)

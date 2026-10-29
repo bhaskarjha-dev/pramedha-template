@@ -128,7 +128,7 @@ This repository doesn't die after the job search. It becomes:
 3. Let AI fill everything                   → AI extracts config, identity, resume, stories, strategy
 4. Review & write your mission              → Correct errors, add private context, write VISION
 5. Build resume master & variants           → tools/resume/master.yaml + variants
-6. Validate & render PDFs                   → py .pramedha/validate.py & tools/resume/build
+6. Validate & render PDFs                   → python .pramedha/validate.py & tools/resume/build
 ```
 
 ---

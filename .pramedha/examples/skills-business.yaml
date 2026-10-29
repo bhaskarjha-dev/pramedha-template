@@ -10,24 +10,24 @@ product_management:
     level: "expert"
     years: 5
     evidence: "Led 3 zero-to-one B2B SaaS launches; managed quarterly OKR cycles"
-    verification: "✅ VERIFIED"
+    verification: "⚠️ ESTIMATED — self-assessed"
   - name: "User Research & Customer Discovery"
     level: "advanced"
     years: 4
     evidence: "Conducted 120+ customer interviews across enterprise cohorts"
-    verification: "✅ VERIFIED"
+    verification: "⚠️ ESTIMATED — self-assessed"
   - name: "A/B Testing & Experimentation"
     level: "advanced"
     years: 3
     evidence: "Ran 40+ growth experiments with Amplitude and LaunchDarkly"
-    verification: "✅ VERIFIED"
+    verification: "⚠️ ESTIMATED — self-assessed"
 
 strategy_and_finance:
   - name: "Financial Modeling & Unit Economics"
     level: "advanced"
     years: 4
     evidence: "Built 3-year DCF models and cohort LTV/CAC analyses"
-    verification: "✅ VERIFIED"
+    verification: "⚠️ ESTIMATED — self-assessed"
   - name: "Pricing & Packaging"
     level: "intermediate"
     years: 2
@@ -39,21 +39,21 @@ operations_and_analytics:
     level: "advanced"
     years: 4
     evidence: "Authored self-serve dashboards in Looker & Metabase"
-    verification: "✅ VERIFIED"
+    verification: "⚠️ ESTIMATED — self-assessed"
   - name: "Cross-Functional Leadership"
     level: "expert"
     years: 6
     evidence: "Managed squads across engineering, design, and product marketing"
-    verification: "✅ VERIFIED"
+    verification: "⚠️ ESTIMATED — self-assessed"
 
 tools:
   - name: "JIRA / Linear"
     level: "expert"
     years: 5
     evidence: "Sprint planning and backlog grooming lead"
-    verification: "✅ VERIFIED"
+    verification: "⚠️ ESTIMATED — self-assessed"
   - name: "Mixpanel / Amplitude"
     level: "advanced"
     years: 4
     evidence: "Funnel analysis and retention cohort modeling"
-    verification: "✅ VERIFIED"
+    verification: "⚠️ ESTIMATED — self-assessed"

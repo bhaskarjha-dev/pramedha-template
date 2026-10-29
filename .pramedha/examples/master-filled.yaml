@@ -4,6 +4,9 @@
 # Corresponds to .pramedha/examples/variant-example.yaml (Alex Chen)
 # Shows how master.yaml looks when fully populated with multiple phrasings,
 # projects, education, publications, and achievements.
+#
+# Illustrative pool written by hand: its bullets have no _source, so assemble.py
+# warns or refuses them unless you pass --allow-unsourced. Real pools are written by sync.py.
 # ============================================================================
 
 header:

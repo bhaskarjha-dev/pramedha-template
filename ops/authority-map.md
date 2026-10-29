@@ -73,7 +73,7 @@ identity/ (core structured truth)
      ├── stories/ (narratives & interview prep)
      ├── strategy/ (planning & tracking)
      │
-     └── [On-Demand Satellite] py tools/resume/sync.py
+     └── [On-Demand Satellite] python tools/resume/sync.py
               ↓
          tools/resume/master.yaml (bullet pool)
               × tools/resume/variants/ (overlays)

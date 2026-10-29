@@ -1,0 +1,4 @@
+# Resume engine. PyYAML runs the scripts on Python 3.10+; RenderCV (PDF output) needs Python 3.12+.
+pyyaml==6.0.3
+rendercv[full]==2.8; python_version >= "3.12"
+

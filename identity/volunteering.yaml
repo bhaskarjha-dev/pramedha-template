@@ -33,7 +33,7 @@ open_source:
   #   contributions: ""            # e.g., "42 PRs merged, 3 features shipped"
   #   highlights:
   #     - ""
-  #   verification: ""             # ✅ VERIFIED — commit history public
+  #   verification: ""             # e.g., "✅ VERIFIED — https://github.com/<project>/commits?author=<you>"
 
 mentoring:
   # - context: ""                  # e.g., "College juniors", "Bootcamp students"

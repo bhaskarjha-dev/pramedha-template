@@ -7,7 +7,20 @@ on:
     branches: [main]
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
+  privacy-guard:
+    name: Private repository check
+    if: github.repository != 'bhaskarjha-dev/pramedha-template' && github.event.repository.private == false
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fail because this copy is public
+        run: |
+          echo "::error::This repository is PUBLIC but holds private career data. Make it private now: Settings > General > Danger Zone > Change visibility."
+          exit 1
+
   validate:
     name: Validate (${{ matrix.os }} / Python ${{ matrix.python-version }})
     runs-on: ${{ matrix.os }}
@@ -15,30 +28,48 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest]
-        python-version: ["3.11", "3.12"]
-
+        python-version: ["3.10", "3.13"]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
-
       - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install pyyaml rendercv pytest
-
+        run: python -m pip install pyyaml==6.0.3 pytest==9.2.0
       - name: Validate Career Repository Integrity
         run: python .pramedha/validate.py
-
       - name: Validate Resume Bullet References
         run: python tools/resume/assemble.py --validate
-
       - name: Validate Resume Sync Pipeline (Dry Run)
         run: python tools/resume/sync.py --dry-run
+      - name: Run unit and end-to-end tests
+        run: python -m pytest
 
-      - name: Run Tooling Unit Tests
-        run: pytest
+  template-checks:
+    name: Template docs and PDF render (${{ matrix.os }})
+    if: github.repository == 'bhaskarjha-dev/pramedha-template'
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    env:
+      VIRTUAL_ENV: ${{ github.workspace }}/.venv
+      VENV_PY: ${{ matrix.os == 'windows-latest' && '.venv\Scripts\python' || '.venv/bin/python' }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Create .venv and install the resume engine (README Quick Start)
+        run: |
+          python -m venv .venv
+          ${{ env.VENV_PY }} -m pip install -r tools/resume/requirements.txt pytest==9.2.0
+      - name: Check the docs' claims
+        run: ${{ env.VENV_PY }} -m pytest tests/docs -q
+      - name: Render PDFs with the documented build scripts
+        run: ${{ env.VENV_PY }} -m pytest tests/render tests/e2e/test_build_exit_code.py -q

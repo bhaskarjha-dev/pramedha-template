@@ -4,23 +4,28 @@
 
 set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 
 echo ""
 echo "=== Resume Cascade Build ==="
 
-# Step 1: Assemble
-echo ""
-echo "[1/2] Assembling variants..."
-if command -v python3 >/dev/null 2>&1; then
-    python3 "$SCRIPT_DIR/assemble.py"
-elif command -v python >/dev/null 2>&1; then
-    python "$SCRIPT_DIR/assemble.py"
-elif command -v uv >/dev/null 2>&1; then
-    uv run --with pyyaml python "$SCRIPT_DIR/assemble.py"
+# Use the repository's virtual environment (README Quick Start), else the active one, else python3
+if [ -x "$REPO_ROOT/.venv/bin/python" ]; then
+    PY="$REPO_ROOT/.venv/bin/python"
+elif [ -n "${VIRTUAL_ENV:-}" ] && [ -x "$VIRTUAL_ENV/bin/python" ]; then
+    PY="$VIRTUAL_ENV/bin/python"
+elif command -v python3 >/dev/null 2>&1; then
+    PY="python3"
 else
-    echo "Python not found. Please install Python 3.10+." >&2
+    echo "Python not found. Install Python 3.12+ and create .venv as README Quick Start shows." >&2
     exit 1
 fi
+
+# Step 1: Assemble. generated/ holds only build output: clear it so removed or renamed variants aren't rendered again
+echo ""
+echo "[1/2] Assembling variants..."
+rm -f "$SCRIPT_DIR/generated/"*.yaml
+"$PY" "$SCRIPT_DIR/assemble.py"
 
 # Step 2: Render
 echo ""
@@ -30,51 +35,52 @@ mkdir -p "$OUTPUT_DIR"
 
 yaml_files=("$SCRIPT_DIR/generated/"*.yaml)
 if [ ! -e "${yaml_files[0]}" ]; then
-    echo "  No generated YAML files found in $SCRIPT_DIR/generated/"
-    echo "  Create a variant file in tools/resume/variants/ first (e.g. copy _template.yaml to A_Role.yaml)."
+    echo "  Nothing to render: no files in $SCRIPT_DIR/generated/."
+    echo "  Run python tools/resume/sync.py, copy tools/resume/variants/_template.yaml to"
+    echo "  tools/resume/variants/A_Role.yaml, select bullets, then run this script again."
     echo ""
-    echo "=== Build Complete ==="
-    exit 0
+    echo "=== Build FAILED: no PDF was rendered ==="
+    exit 1
 fi
 
-RENDERCV_CMD=""
-if command -v rendercv >/dev/null 2>&1; then
-    RENDERCV_CMD="rendercv"
-elif command -v python3 >/dev/null 2>&1 && python3 -m rendercv --version >/dev/null 2>&1; then
-    RENDERCV_CMD="python3 -m rendercv"
-elif command -v python >/dev/null 2>&1 && python -m rendercv --version >/dev/null 2>&1; then
-    RENDERCV_CMD="python -m rendercv"
-elif command -v uv >/dev/null 2>&1 && uv run python -m rendercv --version >/dev/null 2>&1; then
-    RENDERCV_CMD="uv run python -m rendercv"
+if "$PY" -m rendercv --version >/dev/null 2>&1; then
+    RENDERCV=("$PY" -m rendercv)
+elif command -v rendercv >/dev/null 2>&1; then
+    RENDERCV=(rendercv)
 else
-    echo "  RenderCV CLI not found in PATH."
-    echo "  Install with: pip install rendercv"
+    echo "  RenderCV not found. It needs Python 3.12+ (this is $("$PY" --version 2>&1))."
+    echo "  Install it in the virtual environment: python -m pip install -r tools/resume/requirements.txt"
     echo "  Generated YAMLs are ready in: $SCRIPT_DIR/generated/"
     echo ""
-    echo "=== Build Complete ==="
-    exit 0
+    echo "=== Build FAILED: no PDF was rendered ==="
+    exit 1
 fi
 
 cd "$SCRIPT_DIR"
+failed=0
 for yaml_file in "${yaml_files[@]}"; do
     [ -f "$yaml_file" ] || continue
     name=$(basename "$yaml_file" .yaml)
     echo "  Rendering $name..."
     variant_out="$OUTPUT_DIR/$name"
     mkdir -p "$variant_out"
-    if $RENDERCV_CMD render "$yaml_file" -o "$variant_out" 2>&1; then
+    pdf_file=""
+    if "${RENDERCV[@]}" render "$yaml_file" -o "$variant_out" 2>&1; then
         pdf_file=$(find "$variant_out" -maxdepth 1 -name "*.pdf" | head -n 1)
-        if [ -n "$pdf_file" ]; then
-            cp "$pdf_file" "$OUTPUT_DIR/$name.pdf"
-            echo "  ✅ $name -> output/$name.pdf"
-        else
-            echo "  ✅ $name"
-        fi
+    fi
+    if [ -n "$pdf_file" ]; then
+        cp "$pdf_file" "$OUTPUT_DIR/$name.pdf"
+        echo "  ✅ $name -> output/$name.pdf"
     else
         echo "  ❌ Failed: $name"
+        failed=$((failed + 1))
     fi
 done
 
 echo ""
+if [ "$failed" -gt 0 ]; then
+    echo "=== Build FAILED: $failed file(s) did not render ==="
+    exit 1
+fi
 echo "=== Build Complete ==="
 echo "PDFs are in: $OUTPUT_DIR"

@@ -8,12 +8,10 @@
 # ============================================================================
 
 variant_name: "General"              # e.g., "Senior Backend Engineer", "GenAI Specialist"
-output_filename: "my-role_CV"         # Output YAML filename in generated/ (without extension). If blank, defaults to {User_Name}_{variant}_CV
+output_filename: ""                   # Optional plain file name (letters, digits, . _ -). Blank = {Your_Name}_{variant_name}_CV
 
 # ─── Summary (specific to this variant) ──────────────────────────────────
-summary: >
-  Write a 2-3 line summary tailored to this specific role.
-  Reference skills and experience most relevant to this variant.
+summary: ""                           # 2-3 lines tailored to this role, from verified facts. Empty = no summary
 
 # ─── Experience Selection ────────────────────────────────────────────────
 # Format: role_key → list of [bullet_key, phrasing] pairs

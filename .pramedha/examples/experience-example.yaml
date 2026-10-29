@@ -10,18 +10,18 @@ experience:
     end_date: "present"
     location: "San Francisco, CA"
     employment_type: "full_time"
-    verification: "✅ VERIFIED — offer letter + LinkedIn"
+    verification: "✅ VERIFIED — data-corpus/documents/offer-letter.pdf"
 
     projects:
       - name: "Payment Retry Intelligence"
         client: "Internal"
         period: "Sep 2023 – Present"
-        verification: "✅ VERIFIED — internal JIRA + launch announcement"
+        verification: "✅ VERIFIED — https://example.com/blog/payment-retry-launch"
 
         deliverables:
           - name: "Smart Retry ML Pipeline"
             period: "Sep–Dec 2023"
-            verification: "✅ VERIFIED — production metrics dashboard"
+            verification: "⚠️ ESTIMATED — internal source, not stored here"
             description: >
               ML pipeline that predicts optimal retry timing for failed
               card payments, increasing recovery rate across all merchants.
@@ -37,17 +37,17 @@ experience:
     end_date: "2022-02"
     location: "Remote"
     employment_type: "full_time"
-    verification: "✅ VERIFIED — experience letter"
+    verification: "✅ VERIFIED — data-corpus/documents/experience-letter.pdf"
 
     projects:
       - name: "Messaging API v3"
         period: "Jan 2021 – Feb 2022"
-        verification: "✅ VERIFIED — public API docs"
+        verification: "✅ VERIFIED — https://example.com/docs/messaging-api"
 
         deliverables:
           - name: "Rate Limiting Service"
             period: "Jan–Jun 2021"
-            verification: "✅ VERIFIED — architecture doc"
+            verification: "⚠️ ESTIMATED — internal source, not stored here"
             description: >
               Distributed rate limiter for the messaging API serving
               100K+ concurrent clients.

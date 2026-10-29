@@ -10,50 +10,50 @@ clinical_care:
     level: "expert"
     years: 6
     evidence: "Attending lead for 28-bed acute medical ward"
-    verification: "✅ VERIFIED"
+    verification: "⚠️ ESTIMATED — self-assessed"
   - name: "Emergency Triage & Resuscitation"
     level: "advanced"
     years: 5
     evidence: "ACLS/BLS certified; managed trauma intake"
-    verification: "✅ VERIFIED"
+    verification: "⚠️ ESTIMATED — self-assessed"
   - name: "Differential Diagnosis"
     level: "expert"
     years: 6
     evidence: "Clinical case reviews and morbidity rounds lead"
-    verification: "✅ VERIFIED"
+    verification: "⚠️ ESTIMATED — self-assessed"
 
 procedures_and_protocols:
   - name: "Central Venous Catheterization"
     level: "advanced"
     years: 4
     evidence: "150+ ultrasound-guided procedures logged"
-    verification: "✅ VERIFIED"
+    verification: "⚠️ ESTIMATED — self-assessed"
   - name: "Infection Control Protocols"
     level: "advanced"
     years: 5
     evidence: "Hospital hygiene committee member; reduced CAUTI rate by 18%"
-    verification: "✅ VERIFIED"
+    verification: "⚠️ ESTIMATED — self-assessed"
 
 health_tech_and_emr:
   - name: "Epic Systems (EMR)"
     level: "expert"
     years: 5
     evidence: "Super-user certification; led department order-set optimization"
-    verification: "✅ VERIFIED"
+    verification: "⚠️ ESTIMATED — self-assessed"
   - name: "Cerner / Oracle Health"
     level: "intermediate"
     years: 2
     evidence: "Used during fellowship residency"
-    verification: "✅ VERIFIED"
+    verification: "⚠️ ESTIMATED — self-assessed"
 
 research_and_compliance:
   - name: "Clinical Trial Protocol Adherence (GCP)"
     level: "advanced"
     years: 3
     evidence: "Sub-investigator on 2 Phase III cardiology trials"
-    verification: "✅ VERIFIED"
+    verification: "⚠️ ESTIMATED — self-assessed"
   - name: "HIPAA & Patient Data Privacy"
     level: "expert"
     years: 6
     evidence: "Annual institutional compliance completion"
-    verification: "✅ VERIFIED"
+    verification: "⚠️ ESTIMATED — self-assessed"

@@ -9,4 +9,4 @@ Drop official verification paperwork, certifications, and institutional document
 - **Performance & Reviews:** Official annual appraisal documents, 360 feedback summaries
 - **Awards & Recognition:** Formal certificates of achievement, hackathon prize citations, patents, publications
 
-> ⚠️ **Privacy Warning:** This directory stores sensitive records. Never push these files to a public repository. If using Git, ensure this directory is excluded in `.gitignore` or kept in a private repository.
+> ⚠️ **Privacy Warning:** This directory stores sensitive records. Never push these files to a public repository. Keep this repository private; these files are committed to it.

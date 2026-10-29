@@ -18,6 +18,50 @@ template:
   standalone: true                        # Works without any external tools
   pramedha_compatible: true               # Also works with the Pramedha platform
 
+# Paths the template owns. tools/update_template.py replaces exactly these from the upstream template.
+# Everything else (your data, config.yaml, VISION.md, AGENTS.md, .gitignore, tools/resume/master.yaml,
+# design.yaml, your variants) is never touched by an update.
+template_owned:
+  - .github/workflows/validate.yml
+  - .github/CHANGELOG.md
+  - .github/CONTRIBUTING.md
+  - .pramedha/agent-instructions.md
+  - .pramedha/examples
+  - .pramedha/import-guide.md
+  - .pramedha/manifest.yaml
+  - .pramedha/schema-reference.md
+  - .pramedha/tests
+  - .pramedha/validate.py
+  - GETTING_STARTED.md
+  - LICENSE
+  - README.md
+  - data-corpus/README.md
+  - data-corpus/documents/README.md
+  - data-corpus/exports/README.md
+  - data-corpus/github/README.md
+  - data-corpus/linkedin/README.md
+  - data-corpus/media/README.md
+  - data-corpus/resumes/README.md
+  - data-corpus/text/README.md
+  - docs
+  - ops/authority-map.md
+  - ops/guide.md
+  - ops/prompts.md
+  - pytest.ini
+  - tests
+  - tools/external/README.md
+  - tools/resume/README.md
+  - tools/resume/_yaml_utils.py
+  - tools/resume/assemble.py
+  - tools/resume/build.ps1
+  - tools/resume/build.sh
+  - tools/resume/jd/_template.yaml
+  - tools/resume/requirements.txt
+  - tools/resume/sync.py
+  - tools/resume/tests
+  - tools/resume/variants/_template.yaml
+  - tools/update_template.py
+
 # File registry — which files are required, optional, or generated
 files:
   required:

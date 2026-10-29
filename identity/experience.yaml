@@ -35,7 +35,7 @@ experience:
     industry: ""                  # e.g., "Fintech", "Healthcare", "EdTech", "E-commerce"
     team_size: 0                  # Size of your team / org
     reporting_to: ""              # Title of your manager (shows your level)
-    verification: ""              # e.g., "✅ VERIFIED — offer letter on file"
+    verification: ""              # e.g., "✅ VERIFIED — data-corpus/documents/offer-letter.pdf"
 
     projects:
       - name: ""
@@ -77,16 +77,16 @@ experience:
   #   industry: "Cloud Infrastructure"
   #   team_size: 8
   #   reporting_to: "VP of Engineering"
-  #   verification: "✅ VERIFIED — offer letter on file"
+  #   verification: "✅ VERIFIED — data-corpus/documents/offer-letter.pdf"
   #   projects:
   #     - name: "Global Event Processing Pipeline"
   #       client: "Internal Infrastructure"
   #       period: "Jan 2023 – Mar 2024"
-  #       verification: "✅ VERIFIED — production metrics dashboard"
+  #       verification: "⚠️ ESTIMATED — internal source, not stored here"
   #       deliverables:
   #         - name: "Kafka Ingestion Service"
   #           period: "2023-01 to 2023-09"
-  #           verification: "✅ VERIFIED — architecture RFC #42"
+  #           verification: "⚠️ ESTIMATED — internal source, not stored here"
   #           description: >
   #             Designed and deployed a distributed Kafka event ingestion service
   #             handling real-time analytics for 12 enterprise services.
@@ -106,7 +106,7 @@ career_breaks: []
   #   title: "Professional Sabbatical & Independent Study"
   #   description: "Intensive independent study in GenAI system architecture; completed 2 production open-source tools"
   #   skills_acquired: ["PyTorch", "vLLM", "RAG Architecture"]
-  #   verification: "✅ VERIFIED — GitHub public repositories"
+  #   verification: "✅ VERIFIED — https://github.com/your-username"
 
 # ─── Non-Linear / Freelance / Academic Guidance ──────────────────────────────
 # For Freelancers / Agency / Portfolio careers:

@@ -10,7 +10,10 @@ Usage:
 """
 
 import argparse
+import contextlib
 import datetime
+import importlib.util
+import io
 import json
 import re
 import sys
@@ -129,6 +132,15 @@ class ValidationResult:
         return len(self.errors) == 0
 
 
+def as_text(value) -> str:
+    """Safely coerce any YAML scalar (int, float, date, bool, str, None) to stripped string."""
+    if value is None:
+        return ""
+    if isinstance(value, str):
+        return value.strip()
+    return str(value).strip()
+
+
 def check_file_exists(result: ValidationResult):
     """Check that all required files exist."""
     for f in REQUIRED_FILES:
@@ -175,8 +187,8 @@ def check_config(result: ValidationResult):
         config = yaml.safe_load(f) or {}
 
     user = config.get('user', {}) or {}
-    name = (user.get('name') or '').strip()
-    email = (user.get('email') or '').strip()
+    name = as_text(user.get('name'))
+    email = as_text(user.get('email'))
 
     # Resolve effective contact details across config.yaml and identity/identity.yaml
     id_path = TEMPLATE_ROOT / "identity" / "identity.yaml"
@@ -188,15 +200,15 @@ def check_config(result: ValidationResult):
         except Exception:
             pass
 
-    effective_name = name or (id_data.get('name') or '').strip()
-    effective_email = email or (id_data.get('email') or '').strip()
+    effective_name = name or as_text(id_data.get('name'))
+    effective_email = email or as_text(id_data.get('email'))
 
     if not effective_name:
         result.warn("config.yaml / identity.yaml: user name is empty in both files")
     if not effective_email:
         result.warn("config.yaml / identity.yaml: user email is empty in both files")
 
-    profession = (config.get('profession_type') or '').strip()
+    profession = as_text(config.get('profession_type'))
     if not profession:
         result.warn("config.yaml: profession_type is empty")
 
@@ -239,9 +251,9 @@ def check_experience(result: ValidationResult):
             result.error(f"experience.yaml: Entry {i} is not a dict")
             continue
 
-        company = str(entry.get('company') or entry.get('organization') or entry.get('client') or entry.get('institution') or entry.get('employer') or entry.get('practice') or '').strip()
-        position = str(entry.get('position') or entry.get('title') or entry.get('role') or '').strip()
-        start = str(entry.get('start_date') or '').strip()
+        company = as_text(entry.get('company') or entry.get('organization') or entry.get('client') or entry.get('institution') or entry.get('employer') or entry.get('practice'))
+        position = as_text(entry.get('position') or entry.get('title') or entry.get('role'))
+        start = as_text(entry.get('start_date'))
 
         # If it's a completely blank scaffolding entry, don't spam individual field warnings
         if not company and not position and not start:
@@ -255,9 +267,34 @@ def check_experience(result: ValidationResult):
             result.warn(f"experience.yaml: Entry {i} missing start_date")
 
         # Check for verification tags
-        verification = (entry.get('verification') or '').strip()
-        if not verification:
-            result.warn(f"experience.yaml: Entry {i} ({company or 'unnamed'}) missing verification tag")
+        verification = as_text(entry.get('verification'))
+        if not TAG_RE.search(verification):
+            result.warn(f"experience.yaml: Entry {i} ({company or 'unnamed'}) verification has no tag (✅/⚠️/❌)")
+
+
+TAG_RE = re.compile(r'\u2705|\u26a0|\u274c|\b(?:UN)?VERIFIED\b|\bESTIMATED\b')
+FILL_KEYS = {'name', 'title', 'company', 'position', 'degree', 'institution', 'language', 'status', 'organization'}
+
+
+def _strings(value):
+    """Every string value inside parsed YAML (comments are not values)."""
+    if isinstance(value, dict):
+        for item in value.values():
+            yield from _strings(item)
+    elif isinstance(value, list):
+        for item in value:
+            yield from _strings(item)
+    elif isinstance(value, str):
+        yield value
+
+
+def _has_real_data(value) -> bool:
+    """True when any name/title/company/... field holds text (template scaffolding leaves them empty)."""
+    if isinstance(value, dict):
+        return any((k in FILL_KEYS and as_text(v)) or _has_real_data(v) for k, v in value.items())
+    if isinstance(value, list):
+        return any(_has_real_data(item) for item in value)
+    return False
 
 
 def check_verification_tags(result: ValidationResult):
@@ -275,18 +312,61 @@ def check_verification_tags(result: ValidationResult):
         path = TEMPLATE_ROOT / f
         if not path.exists():
             continue
+        data = yaml.safe_load(path.read_text(encoding='utf-8'))
+        if _has_real_data(data) and not any(TAG_RE.search(s) for s in _strings(data)):
+            result.warn(f"{f}: No verification tags (✅/⚠️/❌) found in any value")
 
-        content = path.read_text(encoding='utf-8')
-        has_verified = '✅' in content or 'VERIFIED' in content
-        has_estimated = '⚠️' in content or 'ESTIMATED' in content
-        has_unverified = '❌' in content or 'UNVERIFIED' in content
 
-        if not (has_verified or has_estimated or has_unverified):
-            # Only warn if the file has real data (not just template)
-            data = yaml.safe_load(content)
-            if data and not all(v in ('', None, [], {}, 0, False) for v in
-                               (data.values() if isinstance(data, dict) else [data])):
-                result.warn(f"{f}: No verification tags (✅/⚠️/❌) found")
+EVIDENCE_RE = re.compile(r'data-corpus/[^\s;,()"\']+')
+URL_RE = re.compile(r'https?://\S+')
+VERIFIED_RE = re.compile(r'\u2705|\bVERIFIED\b')
+
+
+def _verification_values(value, where=''):
+    """(location, text) for every `verification` value in parsed YAML."""
+    if isinstance(value, dict):
+        for key, item in value.items():
+            here = f"{where}.{key}" if where else str(key)
+            if key == 'verification' and isinstance(item, str):
+                yield here, item
+            else:
+                yield from _verification_values(item, here)
+    elif isinstance(value, list):
+        for index, item in enumerate(value):
+            yield from _verification_values(item, f"{where}[{index}]")
+
+
+def check_evidence_paths(result: ValidationResult):
+    """Every ✅ VERIFIED value must name an evidence file under data-corpus/ that exists, or a public URL."""
+    for f in ("identity/identity.yaml", "identity/experience.yaml", "identity/credentials.yaml",
+              "identity/projects.yaml", "identity/skills.yaml", "identity/speaking-and-community.yaml",
+              "identity/volunteering.yaml"):
+        path = TEMPLATE_ROOT / f
+        if not path.exists():
+            continue
+        data = yaml.safe_load(path.read_text(encoding='utf-8'))
+        for where, text in _verification_values(data):
+            if not VERIFIED_RE.search(text):
+                continue
+            files = [p.rstrip('.') for p in EVIDENCE_RE.findall(text)]
+            if not files and not URL_RE.search(text):
+                result.warn(f"{f}: {where}: ✅ VERIFIED without evidence (name a data-corpus/ file "
+                            f"or a public URL, e.g. data-corpus/documents/offer-letter.pdf)")
+            for evidence in files:
+                if evidence.endswith('/') or (TEMPLATE_ROOT / evidence).is_dir():
+                    result.warn(f"{f}: {where}: evidence must name a file, not a folder: {evidence}")
+                elif not (TEMPLATE_ROOT / evidence).is_file():
+                    result.warn(f"{f}: {where}: evidence file not found: {evidence} (paths can't contain spaces)")
+
+
+def _load_assemble():
+    """Import tools/resume/assemble.py so --with-resume uses the same reference rules as the builder."""
+    if str(TEMPLATE_ROOT) not in sys.path:
+        sys.path.insert(0, str(TEMPLATE_ROOT))
+    spec = importlib.util.spec_from_file_location('pramedha_assemble', TEMPLATE_ROOT / 'tools' / 'resume' / 'assemble.py')
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
 
 
 def check_cascade_consistency(result: ValidationResult):
@@ -314,39 +394,14 @@ def check_cascade_consistency(result: ValidationResult):
                 with open(master_path, 'r', encoding='utf-8') as mf:
                     master_data = yaml.safe_load(mf) or {}
 
+                assemble = _load_assemble()
                 for vfile in real_variants:
                     with open(vfile, 'r', encoding='utf-8') as vf:
                         vdata = yaml.safe_load(vf) or {}
-                    vname = (vdata.get('variant_name') or vfile.stem).strip()
-
-                    # Validate experience references
-                    v_exp = vdata.get('experience') or {}
-                    m_exp = master_data.get('experience') or {}
-                    for exp_k, b_refs in v_exp.items():
-                        if exp_k not in m_exp:
-                            result.error(f"Variant '{vname}': references role '{exp_k}' not in master.yaml")
-                        else:
-                            exp_obj = m_exp[exp_k]
-                            b_pool = exp_obj.get('bullets', {}) if isinstance(exp_obj, dict) else {}
-                            for ref in (b_refs or []):
-                                b_key = ref.split('.')[0] if '.' in str(ref) else str(ref)
-                                if b_key not in b_pool:
-                                    result.error(f"Variant '{vname}': role '{exp_k}' references bullet '{b_key}' not in master.yaml")
-
-                    # Validate project references
-                    v_proj = vdata.get('projects') or []
-                    m_proj = master_data.get('projects') or {}
-                    for p_ref in v_proj:
-                        p_key = p_ref.split('.')[0] if '.' in str(p_ref) else str(p_ref)
-                        if p_key not in m_proj:
-                            result.error(f"Variant '{vname}': references project '{p_key}' not in master.yaml")
-
-                    # Validate achievement references
-                    v_ach = vdata.get('achievements') or []
-                    m_ach = master_data.get('achievements') or {}
-                    for a_key in v_ach:
-                        if a_key not in m_ach:
-                            result.error(f"Variant '{vname}': references achievement '{a_key}' not in master.yaml")
+                    with contextlib.redirect_stdout(io.StringIO()):
+                        messages = assemble.validate_variant(master_data, vdata)
+                    for message in messages:
+                        result.error(f"{vfile.name}: {message}")
             except Exception as e:
                 result.warn(f"Failed to validate variant references against master: {e}")
 
@@ -405,8 +460,8 @@ def check_schema_enums(result: ValidationResult):
                     continue
                 for s in skills:
                     if isinstance(s, dict):
-                        name = (s.get('name') or '').strip()
-                        level = (s.get('level') or '').strip()
+                        name = as_text(s.get('name'))
+                        level = as_text(s.get('level'))
                         if name and level and level.lower() not in VALID_SKILL_LEVELS:
                             result.warn(
                                 f"skills.yaml: Skill '{name}' in '{cat_name}' has invalid level '{level}' "
@@ -418,13 +473,13 @@ def check_schema_enums(result: ValidationResult):
     if cfg_path.exists():
         with open(cfg_path, 'r', encoding='utf-8') as f:
             cfg = yaml.safe_load(f) or {}
-        prof = (cfg.get('profession_type') or '').strip().lower()
+        prof = as_text(cfg.get('profession_type')).lower()
         if prof and prof not in VALID_PROFESSION_TYPES:
             result.warn(f"config.yaml: profession_type '{prof}' not in allowed enums")
-        ctype = (cfg.get('career_type') or '').strip().lower()
+        ctype = as_text(cfg.get('career_type')).lower()
         if ctype and ctype not in VALID_CAREER_TYPES:
             result.warn(f"config.yaml: career_type '{ctype}' not in allowed enums")
-        rlevel = (cfg.get('target_role_level') or '').strip().lower()
+        rlevel = as_text(cfg.get('target_role_level')).lower()
         if rlevel and rlevel not in VALID_ROLE_LEVELS:
             result.warn(f"config.yaml: target_role_level '{rlevel}' not in allowed enums")
 
@@ -435,17 +490,15 @@ def check_schema_enums(result: ValidationResult):
             id_data = yaml.safe_load(f) or {}
         for lang in (id_data.get('languages') or []):
             if isinstance(lang, dict):
-                lvl = (lang.get('level') or '').strip().lower()
-                lname = (lang.get('language') or '').strip()
+                lvl = as_text(lang.get('level')).lower()
+                lname = as_text(lang.get('language'))
                 if lvl and lvl not in VALID_LANGUAGE_FLUENCY:
                     result.warn(f"identity.yaml: Language '{lname}' has invalid fluency '{lvl}'")
         wauth_raw = id_data.get('work_authorization')
         if isinstance(wauth_raw, dict):
-            wauth = (wauth_raw.get('status') or '').strip().lower()
-        elif isinstance(wauth_raw, str):
-            wauth = wauth_raw.strip().lower()
+            wauth = as_text(wauth_raw.get('status')).lower()
         else:
-            wauth = ''
+            wauth = as_text(wauth_raw).lower()
         if wauth and wauth not in VALID_WORK_AUTHORIZATION:
             result.warn(f"identity.yaml: work_authorization status '{wauth}' not in allowed enums")
 
@@ -456,17 +509,17 @@ def check_schema_enums(result: ValidationResult):
             exp_data = yaml.safe_load(f) or {}
         for entry in (exp_data.get('experience') or []):
             if isinstance(entry, dict):
-                comp = (entry.get('company') or '').strip()
-                etype = (entry.get('employment_type') or '').strip().lower()
+                comp = as_text(entry.get('company'))
+                etype = as_text(entry.get('employment_type')).lower()
                 if etype and etype not in VALID_EMPLOYMENT_TYPES:
                     result.warn(f"experience.yaml: Role at '{comp}' has invalid employment_type '{etype}'")
-                ltype = (entry.get('location_type') or '').strip().lower()
+                ltype = as_text(entry.get('location_type')).lower()
                 if ltype and ltype not in VALID_LOCATION_TYPES:
                     result.warn(f"experience.yaml: Role at '{comp}' has invalid location_type '{ltype}'")
         for brk in (exp_data.get('career_breaks') or []):
             if isinstance(brk, dict):
-                btype = (brk.get('type') or '').strip().lower()
-                btitle = (brk.get('title') or '').strip()
+                btype = as_text(brk.get('type')).lower()
+                btitle = as_text(brk.get('title'))
                 if btype and btype not in VALID_CAREER_BREAK_TYPES:
                     result.warn(f"experience.yaml: Career break '{btitle}' has invalid type '{btype}'")
 
@@ -475,7 +528,7 @@ def check_schema_enums(result: ValidationResult):
     if pref_path.exists():
         with open(pref_path, 'r', encoding='utf-8') as f:
             pref_data = yaml.safe_load(f) or {}
-        cstage = (pref_data.get('career_stage') or '').strip().lower()
+        cstage = as_text(pref_data.get('career_stage')).lower()
         if cstage and cstage not in VALID_CAREER_STAGES:
             result.warn(f"preferences.yaml: career_stage '{cstage}' not in allowed enums")
 
@@ -498,9 +551,9 @@ def check_date_chronology(result: ValidationResult):
     for i, entry in enumerate(experience):
         if not isinstance(entry, dict):
             continue
-        company = str(entry.get('company') or '').strip()
-        start = str(entry.get('start_date') or '').strip()
-        end = str(entry.get('end_date') or '').strip()
+        company = as_text(entry.get('company'))
+        start = as_text(entry.get('start_date'))
+        end = as_text(entry.get('end_date'))
 
         if not company and not start:
             continue
@@ -521,9 +574,9 @@ def check_date_chronology(result: ValidationResult):
     for i, b in enumerate(breaks):
         if not isinstance(b, dict):
             continue
-        title = str(b.get('title') or '').strip()
-        start = str(b.get('start_date') or '').strip()
-        end = str(b.get('end_date') or '').strip()
+        title = as_text(b.get('title'))
+        start = as_text(b.get('start_date'))
+        end = as_text(b.get('end_date'))
 
         if not title and not start:
             continue
@@ -541,9 +594,9 @@ def check_date_chronology(result: ValidationResult):
         for i, edu in enumerate(creds_data.get('education', []) or []):
             if not isinstance(edu, dict):
                 continue
-            inst = str(edu.get('institution') or edu.get('degree') or 'unnamed').strip()
-            start = str(edu.get('start_date') or '').strip()
-            end = str(edu.get('end_date') or edu.get('year') or '').strip()
+            inst = as_text(edu.get('institution') or edu.get('degree') or 'unnamed')
+            start = as_text(edu.get('start_date'))
+            end = as_text(edu.get('end_date') or edu.get('year'))
             if not start and not end:
                 continue
             p_start = parse_flexible_date(start)
@@ -564,9 +617,9 @@ def check_date_chronology(result: ValidationResult):
         for i, p in enumerate(all_projs):
             if not isinstance(p, dict):
                 continue
-            pname = str(p.get('name') or 'unnamed').strip()
-            start = str(p.get('start_date') or '').strip()
-            end = str(p.get('end_date') or '').strip()
+            pname = as_text(p.get('name') or 'unnamed')
+            start = as_text(p.get('start_date'))
+            end = as_text(p.get('end_date'))
             if not start and not end:
                 continue
             p_start = parse_flexible_date(start)
@@ -586,9 +639,9 @@ def check_date_chronology(result: ValidationResult):
         for i, v in enumerate(vol_data.get('volunteering', []) or []):
             if not isinstance(v, dict):
                 continue
-            org = str(v.get('organization') or v.get('role') or 'unnamed').strip()
-            start = str(v.get('start_date') or '').strip()
-            end = str(v.get('end_date') or '').strip()
+            org = as_text(v.get('organization') or v.get('role') or 'unnamed')
+            start = as_text(v.get('start_date'))
+            end = as_text(v.get('end_date'))
             if not start and not end:
                 continue
             p_start = parse_flexible_date(start)
@@ -619,7 +672,7 @@ def check_identity_master_parity(result: ValidationResult):
         id_companies = []
         for e in (exp_data.get('experience', []) or []):
             if isinstance(e, dict):
-                comp = str(e.get('company') or e.get('organization') or e.get('client') or e.get('institution') or e.get('employer') or e.get('practice') or '').strip()
+                comp = as_text(e.get('company') or e.get('organization') or e.get('client') or e.get('institution') or e.get('employer') or e.get('practice'))
                 if comp:
                     id_companies.append(comp)
 
@@ -628,7 +681,7 @@ def check_identity_master_parity(result: ValidationResult):
             master_companies = set()
             for k, v in master_exp.items():
                 if k != '_example_role_' and isinstance(v, dict):
-                    comp = str(v.get('company') or v.get('organization') or v.get('client') or '').strip()
+                    comp = as_text(v.get('company') or v.get('organization') or v.get('client'))
                     if comp:
                         master_companies.add(comp.lower())
 
@@ -636,7 +689,7 @@ def check_identity_master_parity(result: ValidationResult):
                 if comp.lower() not in master_companies:
                     result.warn(
                         f"Parity: Employer '{comp}' in experience.yaml is not in tools/resume/master.yaml. "
-                        f"Run 'py tools/resume/sync.py' to synchronize."
+                        f"Run 'python tools/resume/sync.py' to synchronize."
                     )
 
     # 2. Projects Parity
@@ -649,7 +702,7 @@ def check_identity_master_parity(result: ValidationResult):
         all_projs = (proj_data.get('public', []) or []) + (proj_data.get('internal', []) or []) + (proj_data.get('projects', []) or [])
         for p in all_projs:
             if isinstance(p, dict):
-                pname = (p.get('name') or '').strip()
+                pname = as_text(p.get('name'))
                 if pname:
                     id_projects.append(pname)
 
@@ -658,7 +711,7 @@ def check_identity_master_parity(result: ValidationResult):
             master_project_names = set()
             for k, v in master_proj.items():
                 if isinstance(v, dict):
-                    name = (v.get('name') or k).strip().lower()
+                    name = as_text(v.get('name') or k).lower()
                     master_project_names.add(name)
                 elif isinstance(k, str):
                     master_project_names.add(k.lower())
@@ -667,7 +720,7 @@ def check_identity_master_parity(result: ValidationResult):
                 if pname.lower() not in master_project_names:
                     result.warn(
                         f"Parity: Project '{pname}' in projects.yaml is not in tools/resume/master.yaml. "
-                        f"Run 'py tools/resume/sync.py' to synchronize."
+                        f"Run 'python tools/resume/sync.py' to synchronize."
                     )
 
     # 3. Education & Publications Parity
@@ -679,7 +732,7 @@ def check_identity_master_parity(result: ValidationResult):
         id_institutions = []
         for e in (creds_data.get('education', []) or []):
             if isinstance(e, dict):
-                inst = (e.get('institution') or '').strip()
+                inst = as_text(e.get('institution'))
                 if inst:
                     id_institutions.append(inst)
 
@@ -688,7 +741,7 @@ def check_identity_master_parity(result: ValidationResult):
             master_insts = set()
             for e in master_edu:
                 if isinstance(e, dict):
-                    inst = (e.get('institution') or '').strip().lower()
+                    inst = as_text(e.get('institution')).lower()
                     if inst:
                         master_insts.add(inst)
 
@@ -696,14 +749,14 @@ def check_identity_master_parity(result: ValidationResult):
                 if inst.lower() not in master_insts:
                     result.warn(
                         f"Parity: Education institution '{inst}' in credentials.yaml is not in tools/resume/master.yaml. "
-                        f"Run 'py tools/resume/sync.py' to synchronize."
+                        f"Run 'python tools/resume/sync.py' to synchronize."
                     )
 
         # 4. Publications Parity
         id_pubs = []
         for p in (creds_data.get('publications', []) or []):
             if isinstance(p, dict):
-                pub_title = str(p.get('title') or p.get('name') or '').strip()
+                pub_title = as_text(p.get('title') or p.get('name'))
                 if pub_title:
                     id_pubs.append(pub_title)
 
@@ -712,7 +765,7 @@ def check_identity_master_parity(result: ValidationResult):
             master_pub_titles = set()
             for p in master_pubs:
                 if isinstance(p, dict):
-                    t = str(p.get('title') or p.get('name') or '').strip().lower()
+                    t = as_text(p.get('title') or p.get('name')).lower()
                     if t:
                         master_pub_titles.add(t)
 
@@ -720,7 +773,7 @@ def check_identity_master_parity(result: ValidationResult):
                 if pub_title.lower() not in master_pub_titles:
                     result.warn(
                         f"Parity: Publication '{pub_title}' in credentials.yaml is not in tools/resume/master.yaml. "
-                        f"Run 'py tools/resume/sync.py' to synchronize."
+                        f"Run 'python tools/resume/sync.py' to synchronize."
                     )
 
 
@@ -846,46 +899,46 @@ def compute_fill_status(result: ValidationResult):
     status_lines = []
 
     checks = [
-        ("config.yaml", "config.yaml", lambda d: bool(((d or {}).get('user') or {}).get('name', '').strip())),
+        ("config.yaml", "config.yaml", lambda d: bool(as_text(((d or {}).get('user') or {}).get('name')))),
         ("identity/identity.yaml", "identity.yaml", lambda d: (
-            bool((d or {}).get('name', '').strip())
+            bool(as_text((d or {}).get('name')))
             or bool((d or {}).get('total_years_experience', 0) > 0)
-            or any(isinstance(l, dict) and bool(l.get('language', '').strip()) for l in ((d or {}).get('languages') or []))
-            or bool(str((d or {}).get('nationality', '') or (d or {}).get('citizenship', '')).strip())
-            or bool(((d or {}).get('work_authorization') or {}).get('status', '').strip() if isinstance((d or {}).get('work_authorization'), dict) else str((d or {}).get('work_authorization', '')).strip())
+            or any(isinstance(l, dict) and bool(as_text(l.get('language'))) for l in ((d or {}).get('languages') or []))
+            or bool(as_text((d or {}).get('nationality') or (d or {}).get('citizenship')))
+            or bool(as_text(((d or {}).get('work_authorization') or {}).get('status') if isinstance((d or {}).get('work_authorization'), dict) else (d or {}).get('work_authorization')))
         )),
         ("identity/experience.yaml", "experience.yaml", lambda d: any(
-            isinstance(e, dict) and bool((e.get('company') or e.get('organization') or e.get('client') or e.get('institution') or e.get('employer') or e.get('practice') or '').strip()) for e in ((d or {}).get('experience') or [])
+            isinstance(e, dict) and bool(as_text(e.get('company') or e.get('organization') or e.get('client') or e.get('institution') or e.get('employer') or e.get('practice'))) for e in ((d or {}).get('experience') or [])
         )),
         ("identity/skills.yaml", "skills.yaml", lambda d: d is not None and any(
-            isinstance(v, list) and any(isinstance(s, dict) and bool((s.get('name') or '').strip()) for s in v)
+            isinstance(v, list) and any(isinstance(s, dict) and bool(as_text(s.get('name'))) for s in v)
             for v in (d or {}).values() if isinstance(v, list)
         )),
         ("identity/credentials.yaml", "credentials.yaml", lambda d: any(
-            isinstance(e, dict) and bool((e.get('degree') or '').strip()) for e in ((d or {}).get('education') or [])
+            isinstance(e, dict) and bool(as_text(e.get('degree'))) for e in ((d or {}).get('education') or [])
         ) or any(
-            isinstance(c, dict) and bool((c.get('name') or '').strip()) for c in ((d or {}).get('certifications') or [])
+            isinstance(c, dict) and bool(as_text(c.get('name'))) for c in ((d or {}).get('certifications') or [])
         ) or any(
-            isinstance(l, dict) and bool((l.get('name') or '').strip()) for l in ((d or {}).get('licenses') or [])
+            isinstance(l, dict) and bool(as_text(l.get('name'))) for l in ((d or {}).get('licenses') or [])
         ) or any(
-            isinstance(cl, dict) and bool((cl.get('level') or '').strip()) for cl in ((d or {}).get('clearances') or [])
+            isinstance(cl, dict) and bool(as_text(cl.get('level'))) for cl in ((d or {}).get('clearances') or [])
         ) or any(
-            isinstance(p, dict) and bool((p.get('title') or '').strip()) for p in ((d or {}).get('publications') or [])
+            isinstance(p, dict) and bool(as_text(p.get('title'))) for p in ((d or {}).get('publications') or [])
         ) or any(
-            isinstance(a, dict) and bool((a.get('title') or a.get('name') or '').strip()) for a in ((d or {}).get('awards') or [])
+            isinstance(a, dict) and bool(as_text(a.get('title') or a.get('name'))) for a in ((d or {}).get('awards') or [])
         )),
         ("identity/projects.yaml", "projects.yaml", lambda d: any(
-            isinstance(p, dict) and bool((p.get('name') or '').strip()) for p in ((d or {}).get('public') or [])
+            isinstance(p, dict) and bool(as_text(p.get('name'))) for p in ((d or {}).get('public') or [])
         ) or any(
-            isinstance(p, dict) and bool((p.get('name') or '').strip()) for p in ((d or {}).get('internal') or [])
+            isinstance(p, dict) and bool(as_text(p.get('name'))) for p in ((d or {}).get('internal') or [])
         )),
         ("identity/speaking-and-community.yaml", "speaking-and-community.yaml", lambda d: any(
-            isinstance(s, dict) and bool((s.get('title') or '').strip()) for s in ((d or {}).get('speaking') or [])
+            isinstance(s, dict) and bool(as_text(s.get('title'))) for s in ((d or {}).get('speaking') or [])
         ) or any(
-            isinstance(h, dict) and bool((h.get('name') or '').strip()) for h in ((d or {}).get('hackathons') or [])
+            isinstance(h, dict) and bool(as_text(h.get('name'))) for h in ((d or {}).get('hackathons') or [])
         ), True),
         ("personal/preferences.yaml", "preferences.yaml", lambda d: bool(
-            str((d or {}).get('career_stage') or '').strip() or str((d or {}).get('career_anchor') or '').strip() or (d or {}).get('work_values')
+            as_text((d or {}).get('career_stage')) or as_text((d or {}).get('career_anchor')) or (d or {}).get('work_values')
         ), False),
     ]
 
@@ -996,7 +1049,7 @@ def compute_fill_status(result: ValidationResult):
     if master_filled:
         result.note("  ✅ tools/resume (master.yaml populated — ready to render)")
     else:
-        result.note("  ⬜ tools/resume (master.yaml clean template — run 'py tools/resume/sync.py' when tailoring a CV)")
+        result.note("  ⬜ tools/resume (master.yaml clean template — run 'python tools/resume/sync.py' when tailoring a CV)")
 
 
 
@@ -1053,6 +1106,7 @@ def main():
         check_config(result)
         check_experience(result)
         check_verification_tags(result)
+        check_evidence_paths(result)
         if getattr(args, 'with_resume', False):
             check_cascade_consistency(result)
         check_skill_enums(result)
@@ -1100,6 +1154,7 @@ def main():
 
     print("\n── Verification Tags ──")
     check_verification_tags(result)
+    check_evidence_paths(result)
 
     print("\n── Skill Enums ──")
     check_skill_enums(result)

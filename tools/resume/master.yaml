@@ -2,7 +2,7 @@
 # MASTER RESUME — Keyed Bullet Pool
 # ============================================================================
 # ⚠️ SATELLITE POOL: All authoritative career facts live in identity/*.yaml.
-# Run 'py tools/resume/sync.py' to forward-project verified facts into this pool.
+# Run 'python tools/resume/sync.py' to forward-project verified facts into this pool.
 # Variants select FROM this file. Never treat this file as primary source of truth.
 #
 # Structure:

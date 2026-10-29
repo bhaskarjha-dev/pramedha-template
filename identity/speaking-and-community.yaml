@@ -42,7 +42,7 @@ speaking:
   #     - type: "Slides | YouTube Recording | GitHub Codelab | Blog Post"
   #       url: "https://..."
   #   linkedin_post: "https://..."   # optional — social proof
-  #   verification: "✅ VERIFIED — [evidence description]"
+  #   verification: "✅ VERIFIED — data-corpus/media/<file> or a public URL"
 
 
 # ─── Hackathons & Competitions ───────────────────────────────────────────
@@ -62,7 +62,7 @@ hackathons:
   #   prize: "Description of prize if won"    # optional
   #   repo: "https://github.com/..."          # optional
   #   certificate: "data-corpus/documents/..." # optional
-  #   verification: "✅ VERIFIED — [evidence description]"
+  #   verification: "✅ VERIFIED — data-corpus/media/<file> or a public URL"
 
 
 # ─── Community Memberships & Meetups ─────────────────────────────────────
@@ -78,7 +78,7 @@ community:
   #   activity: "Brief description of participation"
   #   url: "https://..."                      # optional
   #   events_attended: 5                       # optional — count
-  #   verification: "✅ VERIFIED — [evidence]"
+  #   verification: "✅ VERIFIED — data-corpus/media/<file> or a public URL"
 
   # Format for one-time events attended:
   # - name: "Event Name"
@@ -87,7 +87,7 @@ community:
   #   date: "YYYY-MM-DD"
   #   location: "City / Virtual"
   #   notes: "Key takeaways or connections made"   # optional
-  #   verification: "✅ VERIFIED — [evidence]"
+  #   verification: "✅ VERIFIED — data-corpus/media/<file> or a public URL"
 
 
 # ─── Content & Platform Metrics ──────────────────────────────────────────

@@ -10,43 +10,43 @@ research_methodologies:
     level: "expert"
     years: 6
     evidence: "Principal investigator on 4 institutional research protocols"
-    verification: "✅ VERIFIED"
+    verification: "⚠️ ESTIMATED — self-assessed"
   - name: "Systematic Literature Review & Meta-Analysis"
     level: "expert"
     years: 5
     evidence: "PRISMA-compliant reviews published in peer-reviewed journals"
-    verification: "✅ VERIFIED"
+    verification: "⚠️ ESTIMATED — self-assessed"
   - name: "Mixed-Methods Research"
     level: "advanced"
     years: 4
     evidence: "Combined qualitative field surveys with quantitative longitudinal analysis"
-    verification: "✅ VERIFIED"
+    verification: "⚠️ ESTIMATED — self-assessed"
 
 data_analysis_and_modeling:
   - name: "R / Bioconductor"
     level: "expert"
     years: 5
     evidence: "Survival analysis, differential expression modeling, and ggplot2 publication charts"
-    verification: "✅ VERIFIED"
+    verification: "⚠️ ESTIMATED — self-assessed"
   - name: "Statistical Modeling (SPSS, SAS, Python)"
     level: "advanced"
     years: 4
     evidence: "ANOVA, multivariate regression, and Bayesian hierarchical models"
-    verification: "✅ VERIFIED"
+    verification: "⚠️ ESTIMATED — self-assessed"
 
 scholarly_communication_and_grants:
   - name: "Grant Writing & Proposal Defense"
     level: "advanced"
     years: 4
     evidence: "Secured $320K in federal and private foundation funding"
-    verification: "✅ VERIFIED"
+    verification: "⚠️ ESTIMATED — self-assessed"
   - name: "Peer-Reviewed Academic Writing"
     level: "expert"
     years: 6
     evidence: "8 first-author journal articles; h-index 7"
-    verification: "✅ VERIFIED"
+    verification: "⚠️ ESTIMATED — self-assessed"
   - name: "Curriculum Design & University Teaching"
     level: "advanced"
     years: 3
     evidence: "Instructor of record for undergraduate and graduate seminar courses"
-    verification: "✅ VERIFIED"
+    verification: "⚠️ ESTIMATED — self-assessed"

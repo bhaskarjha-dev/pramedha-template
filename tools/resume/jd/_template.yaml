@@ -17,8 +17,7 @@ jd_notes: >
   - 
   - 
 
-summary: >
-  Tailored summary matching this specific JD.
+summary: ""                   # Summary tailored to this job, from verified facts. Empty = no summary
 
 experience:
   # Select bullets that match the JD requirements

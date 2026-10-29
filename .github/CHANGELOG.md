@@ -2,6 +2,28 @@
 
 All notable changes to the Pramedha Career Template.
 
+## [0.1.0] — 2026-10-30 (Audit Remediation & Cascade Hardening)
+
+### Architecture, Safety & Integrity Hardening
+- **Virtual Environment Setup & Hermetic Resume Build (`tools/resume/requirements.txt`, `tools/resume/build.ps1`, `tools/resume/build.sh`)** — Documented and pinned RenderCV runtime dependencies (`rendercv[full]==2.8.*`, `jinja2>=3.1.5`, `pyyaml>=6.0.2`, `pydantic>=2.10.0`). Rewrote build runners to activate repository `.venv` or fail with informative diagnostic guidance.
+- **YAML Scalar Coercion Safety (`tools/resume/sync.py`, `.pramedha/validate.py`)** — Enforced safe text coercion via `as_text()` across all synchronizer and validator fields, preventing YAML numeric / boolean coercion crashes on versions, dates, and names.
+- **Claim Verification Soft Gate (`tools/resume/sync.py`, `tools/resume/assemble.py`)** — Propagated `verification` status from `identity/` into `master.yaml` as `_verification`. `assemble.py` issues prominent warnings on unverified (`❌` / `[unverified]`) claims while stripping internal markers on output and compiling cleanly.
+- **Claim Provenance & Anti-Staleness Tracking (`tools/resume/sync.py`, `tools/resume/assemble.py`)** — Embedded exact `_source` pointer strings on synchronized roles and bullets. `sync.py` back-fills sources on first run; in-place updates are applied for changed dates and locations; stale bullets strictly abort the build (exit 1), and unsourced bullets typed directly into `master.yaml` emit soft warnings until moved into `identity/experience.yaml`. Fixed career-break synchronization position mapping; career-break entries written by the old `sync.py` must be deleted from `master.yaml` and re-synced.
+- **Variant Output Collisions & Template Placeholders (`tools/resume/assemble.py`)** — Enforced output filename hygiene with collision detection across multiple variants, sanitized output paths, and rejected template placeholder summaries.
+- **Privacy Enforcement & Private-Only Model (`README.md`, `.gitignore`, `.github/workflows/validate.yml`)** — Switched repository model to strictly private-only; removed public override blocks from `.gitignore` (existing copies should delete the "PUBLIC REPOSITORY SAFETY OVERRIDE" block from `.gitignore`). Added `privacy-guard` GitHub Actions workflow to block public repositories.
+- **Confidentiality & NDA Guards (`data-corpus/README.md`, `.pramedha/agent-instructions.md`)** — Added explicit guidance on employer confidentiality and intellectual property; excluded internal wikis, RFCs, and schemas; guided LinkedIn exports to profile-only data.
+- **Standalone Template Update Mechanism (`tools/update_template.py`, `.pramedha/manifest.yaml`)** — Introduced `tools/update_template.py` with manifest-driven `template_owned` paths, allowing clean zero-merge updates without touching user data or custom configuration. Copies made before this update can bootstrap via:
+  ```bash
+  git fetch upstream
+  git checkout upstream/main -- tools/update_template.py tools/resume/requirements.txt
+  git commit -m "Add template update script"
+  ```
+- **Validator Truth & Integrity (`.pramedha/validate.py`, `.pramedha/tests/test_validate.py`)** — Fixed tag inspection to check parsed values instead of raw text substrings, delegated variant validation to `assemble.validate_variant()`, and removed dead mock tests in `.pramedha/tests`.
+- **Traceable Evidence Paths (`.pramedha/validate.py`, `identity/*.yaml`, `.pramedha/examples/*.yaml`)** — Enforced that `✅ VERIFIED` claims reference an existing file under `data-corpus/` or a valid public URL (`http://` / `https://`).
+- **Agent Safety Rules (`AGENTS.md`, `.pramedha/agent-instructions.md`, `ops/prompts.md`)** — Added explicit untrusted data boundary rules for AI agents: text in `data-corpus/` and job postings is strictly data, not instructions; agents must prompt the user before sending data off the machine or modifying repository visibility.
+- **Front Page Discovery (`README.md`)** — Added "Who it's for", "What you need", "See it" linking to compiled sample PDF (`docs/sample/alex-chen-backend.pdf`), and "Limits" directly to the top screen of `README.md`. Removed invalid releases page links.
+
+
 ## [0.1.0] — 2026-10-16 (Autonomous Quality Audit & Cascade Integrity)
 
 ### Fixed — Verification Tag Leakage & Cascade Engine Hardening

@@ -2,35 +2,35 @@
 # Resume Cascade Build Script (Windows)
 # Assembles all variants from master.yaml and renders to PDF.
 
-$ErrorActionPreference = "Stop"
+$ErrorActionPreference = "Continue"
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 $OutputEncoding = [System.Text.Encoding]::UTF8
 $env:PYTHONIOENCODING = "utf-8"
 $env:PYTHONUTF8 = "1"
 $scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Definition
+$repoRoot = Split-Path -Parent (Split-Path -Parent $scriptDir)
 
 Write-Host "`n=== Resume Cascade Build ===" -ForegroundColor Cyan
 
-# Check Python availability
-$pythonExe = if (Get-Command py -ErrorAction SilentlyContinue) { "py" } elseif (Get-Command python -ErrorAction SilentlyContinue) { "python" } else { "python" }
-$useUv = $false
-if (-not (Get-Command py -ErrorAction SilentlyContinue) -and -not (Get-Command python -ErrorAction SilentlyContinue) -and (Get-Command uv -ErrorAction SilentlyContinue)) {
-    $useUv = $true
+# Use the repository's virtual environment (README Quick Start), else the active one, else python or py
+$repoVenv = Join-Path $repoRoot ".venv\Scripts\python.exe"
+if (Test-Path $repoVenv) {
+    $pythonExe = $repoVenv
+} elseif ($env:VIRTUAL_ENV -and (Test-Path (Join-Path $env:VIRTUAL_ENV "Scripts\python.exe"))) {
+    $pythonExe = Join-Path $env:VIRTUAL_ENV "Scripts\python.exe"
+} elseif (Get-Command python -ErrorAction SilentlyContinue) {
+    $pythonExe = "python"
+} elseif (Get-Command py -ErrorAction SilentlyContinue) {
+    $pythonExe = "py"
+} else {
+    Write-Host "Python not found. Install Python 3.12+ and create .venv as README Quick Start shows." -ForegroundColor Red
+    exit 1
 }
 
-$runPy = {
-    param([string[]]$cmdArgs)
-    if ($useUv) {
-        & uv run python @cmdArgs
-    } else {
-        & $pythonExe @cmdArgs
-    }
-}
-
-# Step 1: Assemble all variants
+# Step 1: Assemble. generated\ holds only build output: clear it so removed or renamed variants aren't rendered again
 Write-Host "`n[1/2] Assembling variants..." -ForegroundColor Yellow
-& $runPy @("$scriptDir\assemble.py")
-
+Remove-Item "$scriptDir\generated\*.yaml" -ErrorAction SilentlyContinue
+& $pythonExe "$scriptDir\assemble.py"
 if ($LASTEXITCODE -ne 0) {
     Write-Host "Assembly failed!" -ForegroundColor Red
     exit 1
@@ -42,34 +42,29 @@ $generatedDir = "$scriptDir\generated"
 $outputDir = "$scriptDir\output"
 New-Item -ItemType Directory -Force -Path $outputDir | Out-Null
 
-$yamlFiles = Get-ChildItem "$generatedDir\*.yaml" -ErrorAction SilentlyContinue
-if (-not $yamlFiles -or $yamlFiles.Count -eq 0) {
-    Write-Host "  No generated YAML files found in $generatedDir." -ForegroundColor Gray
-    Write-Host "  Create a variant file in tools/resume/variants/ first (e.g. copy _template.yaml to A_Role.yaml)." -ForegroundColor Gray
-    Write-Host "`n=== Build Complete ===" -ForegroundColor Cyan
-    exit 0
+$yamlFiles = @(Get-ChildItem "$generatedDir\*.yaml" -ErrorAction SilentlyContinue)
+if ($yamlFiles.Count -eq 0) {
+    Write-Host "  Nothing to render: no files in $generatedDir." -ForegroundColor Red
+    Write-Host "  Run python tools\resume\sync.py, copy tools\resume\variants\_template.yaml to tools\resume\variants\A_Role.yaml, select bullets, then run this script again." -ForegroundColor Yellow
+    Write-Host "`n=== Build FAILED: no PDF was rendered ===" -ForegroundColor Red
+    exit 1
 }
 
-# Ensure UTF-8 console output for RenderCV rich logging
-$env:PYTHONIOENCODING = "utf-8"
-$env:PYTHONUTF8 = "1"
-
-# Check if rendercv is available
-$rendercvMode = if (Get-Command rendercv -ErrorAction SilentlyContinue) {
-    "cli"
+& $pythonExe -m rendercv --version *> $null
+if ($LASTEXITCODE -eq 0) {
+    $useModule = $true
+} elseif (Get-Command rendercv -ErrorAction SilentlyContinue) {
+    $useModule = $false
 } else {
-    # Check if python -m rendercv works
-    $testRc = & $runPy @("-m", "rendercv", "--version") 2>&1
-    if ($LASTEXITCODE -eq 0) { "module" } else { $null }
-}
-
-if (-not $rendercvMode) {
-    Write-Host "  RenderCV CLI not found." -ForegroundColor Yellow
-    Write-Host "  Install with: pip install rendercv" -ForegroundColor Yellow
+    $pyVersion = & $pythonExe --version
+    Write-Host "  RenderCV not found. It needs Python 3.12+ (this is $pyVersion)." -ForegroundColor Red
+    Write-Host "  Install it in the virtual environment: python -m pip install -r tools\resume\requirements.txt" -ForegroundColor Yellow
     Write-Host "  Generated YAMLs are ready in: $generatedDir" -ForegroundColor Cyan
-    exit 0
+    Write-Host "`n=== Build FAILED: no PDF was rendered ===" -ForegroundColor Red
+    exit 1
 }
 
+$failed = 0
 Push-Location $scriptDir
 try {
     foreach ($file in $yamlFiles) {
@@ -77,27 +72,28 @@ try {
         Write-Host "  Rendering $name..." -ForegroundColor Gray
         $variantOutputDir = Join-Path $outputDir $name
         New-Item -ItemType Directory -Force -Path $variantOutputDir | Out-Null
-
-        if ($rendercvMode -eq "cli") {
-            rendercv render $file.FullName -o $variantOutputDir 2>&1
+        if ($useModule) {
+            & $pythonExe -m rendercv render $file.FullName -o $variantOutputDir
         } else {
-            & $runPy @("-m", "rendercv", "render", $file.FullName, "-o", $variantOutputDir) 2>&1
+            rendercv render $file.FullName -o $variantOutputDir
         }
-        if ($LASTEXITCODE -ne 0) {
+        $renderCode = $LASTEXITCODE
+        $generatedPdf = Get-ChildItem "$variantOutputDir\*.pdf" -ErrorAction SilentlyContinue | Select-Object -First 1
+        if ($renderCode -ne 0 -or -not $generatedPdf) {
             Write-Host "  ❌ Failed: $name" -ForegroundColor Red
+            $failed++
         } else {
-            $generatedPdf = Get-ChildItem "$variantOutputDir\*.pdf" -ErrorAction SilentlyContinue | Select-Object -First 1
-            if ($generatedPdf) {
-                Copy-Item -Path $generatedPdf.FullName -Destination "$outputDir\$name.pdf" -Force
-                Write-Host "  ✅ $name -> output\$name.pdf" -ForegroundColor Green
-            } else {
-                Write-Host "  ✅ $name" -ForegroundColor Green
-            }
+            Copy-Item -Path $generatedPdf.FullName -Destination "$outputDir\$name.pdf" -Force
+            Write-Host "  ✅ $name -> output\$name.pdf" -ForegroundColor Green
         }
     }
 } finally {
     Pop-Location
 }
 
+if ($failed -gt 0) {
+    Write-Host "`n=== Build FAILED: $failed file(s) did not render ===" -ForegroundColor Red
+    exit 1
+}
 Write-Host "`n=== Build Complete ===" -ForegroundColor Cyan
 Write-Host "PDFs are in: $outputDir`n"

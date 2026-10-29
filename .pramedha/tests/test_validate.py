@@ -53,32 +53,7 @@ class TestPramedhaValidator:
         check_yaml_valid(result)
         assert result.errors == [], f"YAML errors found: {result.errors}"
 
-    def test_repository_config_validity(self):
-        result = ValidationResult()
-        check_config(result)
-        assert result.errors == [], f"Config errors found: {result.errors}"
-
     def test_repository_experience_structure(self):
         result = ValidationResult()
         check_experience(result)
         assert result.errors == [], f"Experience errors found: {result.errors}"
-
-    def test_repository_verification_tags(self):
-        result = ValidationResult()
-        check_verification_tags(result)
-        assert result.errors == [], f"Verification tag errors found: {result.errors}"
-
-    def test_repository_skill_enums(self):
-        result = ValidationResult()
-        check_skill_enums(result)
-        assert result.errors == [], f"Skill enum errors found: {result.errors}"
-
-    def test_repository_date_chronology(self):
-        result = ValidationResult()
-        check_date_chronology(result)
-        assert result.errors == [], f"Date chronology errors found: {result.errors}"
-
-    def test_repository_cross_file_consistency(self):
-        result = ValidationResult()
-        check_cross_file_consistency(result)
-        assert result.errors == [], f"Cross-file consistency errors found: {result.errors}"

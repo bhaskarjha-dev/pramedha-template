@@ -60,9 +60,9 @@ When modifying or introducing fields in YAML/Markdown schemas, follow this stric
 - [ ] **7. Manifest:** Update `.pramedha/manifest.yaml` (bump version and file registry).
 - [ ] **8. Local Validation:** Confirm all verifications pass cleanly:
   ```bash
-  py .pramedha/validate.py
-  py tools/resume/assemble.py --validate
-  py tools/resume/sync.py --dry-run
+  python .pramedha/validate.py
+  python tools/resume/assemble.py --validate
+  python tools/resume/sync.py --dry-run
   ```
 
 ---
@@ -71,9 +71,9 @@ When modifying or introducing fields in YAML/Markdown schemas, follow this stric
 
 Before opening your pull request, verify:
 - [ ] Code runs on Python 3.10+ without syntax or encoding errors (tested cross-platform)
-- [ ] `py .pramedha/validate.py` passes with zero errors
-- [ ] `py tools/resume/assemble.py --validate` passes
-- [ ] `py tools/resume/sync.py --dry-run` runs cleanly
+- [ ] `python .pramedha/validate.py` passes with zero errors
+- [ ] `python tools/resume/assemble.py --validate` passes
+- [ ] `python tools/resume/sync.py --dry-run` runs cleanly
 - [ ] Cross-references and relative Markdown links remain intact
 - [ ] No personal or proprietary private data is included in commit history
 - [ ] Commit messages follow descriptive conventional commit standards (e.g., `feat:`, `fix:`, `refactor:`)

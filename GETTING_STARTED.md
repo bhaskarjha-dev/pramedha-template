@@ -62,6 +62,8 @@ Drop everything career-related into `data-corpus/`:
 | Brain dumps, career notes | `data-corpus/text/` |
 | Screenshots of projects/metrics | `data-corpus/media/` |
 
+> ⚠️ **Before you add anything:** read [what never goes here](data-corpus/README.md#never-put-these-here) (employer-confidential material, ID numbers, other people's data) and what your AI assistant sends to its provider.
+
 **Don't have LinkedIn export?** Go to LinkedIn → Settings → Data Privacy → Get a copy of your data.
 
 **Don't have certificates?** That's fine. Drop whatever you have. Even a phone photo of a certificate counts.
@@ -124,36 +126,35 @@ a Senior Backend Engineer role within 6 months.
 
 ### Prerequisites
 
-Ensure you have Python 3.10+ and the required packages installed:
+You need Python 3.12 or newer for PDFs (RenderCV 2.8 requires it); everything else also runs on 3.10 and 3.11.
+Check with `python3 --version` (Windows: `py --version`). On macOS and Windows, python.org has installers; on Linux,
+use your distribution's package (Ubuntu 24.04+, Debian 13+) or a tool such as pyenv or uv. On Debian/Ubuntu,
+also run `sudo apt install python3-venv`. Then create the virtual environment once and install the pinned packages:
 ```bash
-pip install pyyaml rendercv
+python3 -m venv .venv                       # Windows: py -m venv .venv
+source .venv/bin/activate                   # macOS / Linux; again in every new terminal
+# Windows PowerShell: Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass -Force; .venv\Scripts\Activate.ps1
+# Windows cmd: .venv\Scripts\activate.bat
+python -m pip install -r tools/resume/requirements.txt
 ```
+Inside the virtual environment, `python` works on every OS.
 
 ### Resume Generation Workflow
 
 After `identity/` is filled:
 
 ```bash
-# Option A (Recommended — 1-Click Automated Build):
-.\tools\resume\build.ps1                 # Windows PowerShell (handles UTF-8 & Typst rendering)
-./tools/resume/build.sh                  # macOS / Linux
+# 1. Sync verified career facts into the resume bullet pool:
+python tools/resume/sync.py
 
-# Option B (Manual CLI step-by-step):
-# 1. Sync verified career facts into master resume bullet pool:
-py tools/resume/sync.py
-
-# 2. Create a tailored variant overlay (copy template):
+# 2. Create a variant (copy the template, then select bullets in it):
 cp tools/resume/variants/_template.yaml tools/resume/variants/my-role.yaml
-# Edit my-role.yaml to select which bullets to include (defaults output to my-role_CV.yaml)
+# Windows: copy tools\resume\variants\_template.yaml tools\resume\variants\my-role.yaml
 
-# 3. Assemble and render PDF (1-step!):
-py tools/resume/assemble.py --validate    # Verify all references
-py tools/resume/assemble.py --render      # Assembles and renders directly to tools/resume/output/*.pdf
-
-# Or run the platform build script:
-# Windows: .\tools\resume\build.ps1
-# Mac/Linux: ./tools/resume/build.sh
-# Your PDF is compiled in tools/resume/output/ in <1s via Typst (no LaTeX needed!)
+# 3. Check the references, then build the PDFs into tools/resume/output/:
+python tools/resume/assemble.py --validate
+bash tools/resume/build.sh                                        # macOS / Linux
+powershell -ExecutionPolicy Bypass -File tools\resume\build.ps1   # Windows
 ```
 
 > 💡 **Modern Workflows & Web Preview:**
@@ -237,11 +238,7 @@ git clone https://github.com/career-ops-hq/career-ops
 
 ## Privacy Reminder
 
-> ⚠️ **Before pushing to GitHub**, ensure your repo is **Private**.
-> If it must be public, uncomment the private file exclusions in `.gitignore`.
-> ```bash
-> git status  # Verify personal/, financial.md, etc. are NOT staged
-> ```
+> ⚠️ **Before pushing to GitHub**, make sure your repo is **Private**. Public repositories are not supported: CI fails in a public copy (job `privacy-guard`).
 
 See `README.md → Security & Privacy` for the complete sensitivity map.
 
@@ -256,14 +253,15 @@ bug fixes, schema improvements):
 # One-time: add the template as upstream
 git remote add upstream https://github.com/bhaskarjha-dev/pramedha-template.git
 
-# When you want to check for updates:
+# One-time, if your copy has no tools/update_template.py yet (copies made before this update):
 git fetch upstream
-git log --oneline upstream/main --not main   # See what's new
+git checkout upstream/main -- tools/update_template.py tools/resume/requirements.txt
+git commit -m "Add template update script"
 
-# Pull updates:
-#   Fresh/unfilled template → use -X theirs (template wins)
-#   Filled with your data  → use -X ours   (your data wins)
-git merge upstream/main --allow-unrelated-histories -X theirs  # or -X ours
+# Each time (inside the virtual environment):
+git fetch upstream
+python tools/update_template.py    # replaces template-owned files only; your data is untouched
+git diff --staged                  # review, then commit
 ```
 
 See `README.md → Staying Updated` for the full guide with examples.

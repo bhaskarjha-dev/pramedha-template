@@ -30,7 +30,7 @@ work_authorization:
   countries:
     - "US"
   visa_details: "US Citizen by birth"
-  verification: "✅ VERIFIED — passport on file"
+  verification: "⚠️ ESTIMATED — self-declared; no ID document stored"
 
 languages:
   - language: "English"

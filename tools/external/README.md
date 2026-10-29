@@ -42,6 +42,4 @@ acts as the adapter — it reads your YAML and feeds it to the tool.
 
 ## Pramedha Platform
 
-If you want intelligent integration (automated matching, artifact generation,
-MCP server for agent access), see [Pramedha](https://github.com/bhaskarjha-dev/pramedha)
-— the full Career OS that this template's data format is compatible with.
+Pramedha, a career platform this template's format is designed for, is in development and not yet available.

@@ -43,14 +43,14 @@ When an AI assistant operates on this repository, these rules apply without exce
 | **assemble.py** (`tools/resume/assemble.py`) | Resume cascade engine (master → variants) with `--orphans` check | ✅ Included |
 | **sync.py** (`tools/resume/sync.py`) | Identity → master.yaml forward synchronizer | ✅ Included |
 | **validate.py** (`.pramedha/validate.py`) | Template integrity, schema enums, and fill rate validator | ✅ Included |
-| **RenderCV** | Resume rendering from assembled YAML → ATS-optimized PDF | 🟡 Optional Automation (`pip install rendercv`) |
+| **RenderCV** | Resume rendering from assembled YAML → ATS-optimized PDF | 🟡 Optional Automation (`python -m pip install -r tools/resume/requirements.txt` inside `.venv`; needs Python 3.12+) |
 
 ### Resume Cascade Pipeline (On-Demand Satellite Tooling)
 
 The resume cascade engine is an **on-demand satellite compiler** completely decoupled from daily career operations. It is invoked ONLY when the user needs to generate, tailor, or review a CV for a target job application.
 
 ```
-identity/*.yaml ──(py tools/resume/sync.py)──> tools/resume/master.yaml ──> assemble.py ──> generated/*.yaml ──> RenderCV ──> PDF
+identity/*.yaml ──(python tools/resume/sync.py)──> tools/resume/master.yaml ──> assemble.py ──> generated/*.yaml ──> RenderCV ──> PDF
 ```
 
 | Component | Path / Tool | Responsibility |
@@ -86,7 +86,7 @@ identity/*.yaml ──(py tools/resume/sync.py)──> tools/resume/master.yaml 
 | **Contact info changed** | — | `identity/identity.yaml` & `config.yaml` | — | — |
 | **Spoke at conference / event** | `journal/wins.md` | `identity/speaking-and-community.yaml` | `identity/claims-and-evidence.md` | `identity/professional-summary.md` |
 | **New evidence in data-corpus** | — | Extract into `identity/*.yaml` | `identity/claims-and-evidence.md` | — |
-| **Compile / tailor a resume** | — | (On-demand) `py tools/resume/sync.py` | — | `tools/resume/variants/<target>.yaml` → `assemble.py` |
+| **Compile / tailor a resume** | — | (On-demand) `python tools/resume/sync.py` | — | `tools/resume/variants/<target>.yaml` → `assemble.py` |
 
 ---
 
@@ -181,8 +181,8 @@ identity/*.yaml ──(py tools/resume/sync.py)──> tools/resume/master.yaml 
 ### 8. Privacy & Boundary Check
 - [ ] No content from `personal/` leaks into `identity/` or `tools/resume/`
 - [ ] No private compensation figures appear in public-facing files
-- [ ] Sensitive files in `data-corpus/` are listed in `.gitignore`
-- [ ] If repository is hosted publicly, no PII (phone, address, DOB) is committed
+- [ ] `data-corpus/` holds only what `data-corpus/README.md` allows
+- [ ] The repository is private (public hosting is not supported)
 
 ### 9. System Completeness
 - [ ] Run: `python .pramedha/validate.py --status`

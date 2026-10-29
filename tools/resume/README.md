@@ -11,13 +11,13 @@ This directory is an **on-demand satellite tool**. It is completely decoupled fr
 ```
 identity/*.yaml (Source of Truth)
       │
-      ▼  py tools/resume/sync.py (Forward Bridge)
+      ▼  python tools/resume/sync.py (Forward Bridge)
 master.yaml (RenderCV Bullet Bank, keyed by role + phrasing)
       │
       ▼  × variants/*.yaml (Thin overlays selecting bullets per target JD)
       │  + design.yaml (Theme, typography, margins)
       │
-      ▼  py tools/resume/assemble.py
+      ▼  python tools/resume/assemble.py
 generated/*.yaml (Auto-assembled RenderCV YAML)
       │
       ▼  RenderCV / Typst CLI
@@ -29,13 +29,23 @@ output/*.pdf (Targeted ATS-compliant PDFs)
 ## Quick Start (On-Demand Tailoring)
 
 ```bash
-# 1. Forward-sync verified facts from identity/ into master.yaml
-py tools/resume/sync.py
+# One-time setup in the repository root (Python 3.12+ for PDFs):
+python3 -m venv .venv                       # Windows: py -m venv .venv
+source .venv/bin/activate                   # macOS / Linux; again in every new terminal
+# Windows PowerShell: Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass -Force; .venv\Scripts\Activate.ps1
+# Windows cmd: .venv\Scripts\activate.bat
+python -m pip install -r tools/resume/requirements.txt
 
-# 2. Create or edit a role variant in variants/ (copy variants/_template.yaml to your-role.yaml)
-# 3. Build & Render PDF (1-Step):
-pwsh tools/resume/build.ps1        # Windows
-./tools/resume/build.sh            # Linux/macOS
+# 1. Forward-sync verified facts from identity/ into master.yaml
+python tools/resume/sync.py
+
+# 2. Create a role variant, then select its bullets
+cp tools/resume/variants/_template.yaml tools/resume/variants/my-role.yaml
+# Windows: copy tools\resume\variants\_template.yaml tools\resume\variants\my-role.yaml
+
+# 3. Build and render the PDFs into tools/resume/output/
+bash tools/resume/build.sh                                        # macOS / Linux
+powershell -ExecutionPolicy Bypass -File tools\resume\build.ps1   # Windows
 ```
 
 
@@ -69,9 +79,6 @@ RenderCV v2.8 renders directly via **Typst**, compiling in <1 second with zero T
 | `ink` | Contemporary | Typography-forward modern aesthetic |
 | `opal` | Executive / Business | Polished contemporary executive style |
 | `ember` | Creative / Tech | Distinctive warm styling |
-| `developer` | Developer | Emphasized technical skills and monospace accents |
-| `compact` | Single-page tight fit | Ultra-high information density |
-| `academic` | Research / Faculty | Multi-page CVs with publications |
 | `engineeringclassic` | Classical Engineering | Timeless clean layout |
 
 ---

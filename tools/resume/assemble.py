@@ -44,6 +44,14 @@ except ImportError:
     except ImportError:
         from resume._yaml_utils import OrderedDumper, PresentLiteral, dump_yaml as _base_dump_yaml, load_yaml
 
+try:
+    from tools.resume.sync import identity_sources
+except ImportError:
+    try:
+        from sync import identity_sources
+    except ImportError:
+        from resume.sync import identity_sources
+
 RENDERCV_SCHEMA_HEADER = (
     "# yaml-language-server: $schema=https://raw.githubusercontent.com/rendercv/rendercv/refs/tags/v2.8/schema.json\n\n"
 )
@@ -85,6 +93,23 @@ LOCALE_MAP = {
 class AssemblyError(Exception):
     """Raised when a variant references something that doesn't exist in master."""
     pass
+
+
+SAFE_NAME_RE = re.compile(r'[\w][\w.\-]*')
+TEMPLATE_PLACEHOLDERS = ('Write a 2-3 line summary', 'Tailored summary matching this specific JD')
+
+
+def output_name(variant: dict, variant_name: str, default_name: str) -> str:
+    """File name (without .yaml) this variant writes inside generated/; AssemblyError if unsafe."""
+    raw = str(variant.get('output_filename') or '').strip()
+    if raw.endswith(('.yaml', '.yml')):
+        raw = raw.rsplit('.', 1)[0]
+    if not raw:
+        return re.sub(r'[^\w.\-]+', '_', f'{default_name}_{variant_name}_CV').strip('_')
+    if not SAFE_NAME_RE.fullmatch(raw) or '..' in raw:
+        raise AssemblyError(f"[{variant_name}] output_filename '{raw}' must be a plain file name "
+                            f"(letters, digits, '.', '_' or '-'); files are written inside generated/")
+    return raw
 
 
 def clean_bullet_tags(text: str) -> str:
@@ -140,8 +165,8 @@ def resolve_bullet(master_exp: dict, exp_key: str, bullet_ref, variant_name: str
     bullet_data = bullets[bullet_key]
     if isinstance(bullet_data, str):
         raw_text = bullet_data
-    elif phrasing not in bullet_data:
-        available = list(bullet_data.keys())
+    elif phrasing not in bullet_data or str(phrasing).startswith('_'):
+        available = [k for k in bullet_data.keys() if not str(k).startswith('_')]
         raise AssemblyError(
             f"[{variant_name}] Phrasing '{phrasing}' not found for bullet '{bullet_key}' in '{exp_key}'.\n"
             f"  Available phrasings: {available}"
@@ -607,6 +632,11 @@ def validate_variant(master: dict, variant: dict) -> list[str]:
         return ["Variant file is empty"]
     variant_name = variant.get('variant_name', 'unknown')
 
+    summary = ' '.join(str(variant.get('summary') or '').split())
+    if summary.startswith(TEMPLATE_PLACEHOLDERS):
+        errors.append(f"[{variant_name}] summary still holds the template placeholder text; "
+                      f"write a real summary or leave it empty")
+
     # Check experience keys and bullets
     variant_exp = variant.get('experience') or {}
     master_exp = master.get('experience') or {}
@@ -637,6 +667,100 @@ def validate_variant(master: dict, variant: dict) -> list[str]:
             errors.append(f"[{variant_name}] Achievement '{ach_key}' not in master")
 
     return errors
+
+
+UNVERIFIED_RE = re.compile(r'\[(?:unverified|to-verify)(?::[^\]]*)?\]|\u274c', re.IGNORECASE)
+ESTIMATED_RE = re.compile(r'\[(?:estimated|partially-verified)(?::[^\]]*)?\]|\u26a0', re.IGNORECASE)
+STATUS_UNVERIFIED_RE = re.compile(r'\u274c|\bUNVERIFIED\b|\bto-verify\b', re.IGNORECASE)
+STATUS_ESTIMATED_RE = re.compile(r'\u26a0|\bESTIMATED\b|\bpartially[- ]verified\b', re.IGNORECASE)
+
+
+def _all_text(value) -> str:
+    """Every string inside a bullet (all phrasings, including _source) joined into one string."""
+    if isinstance(value, dict):
+        return ' '.join(_all_text(v) for v in value.values())
+    if isinstance(value, list):
+        return ' '.join(_all_text(v) for v in value)
+    return '' if value is None else str(value)
+
+
+def selected_claims(master: dict, variant: dict):
+    """Yield (label, raw text, status) for every claim a variant puts on the resume, before tags are stripped.
+    status is the bullet's `_verification` (copied by sync.py from identity/), or ''."""
+    master_exp = master.get('experience') or {}
+    for exp_key, refs in (variant.get('experience') or {}).items():
+        bullets = (master_exp.get(exp_key) or {}).get('bullets') or {}
+        for ref in (refs or []):
+            key = ref[0] if isinstance(ref, list) and ref else str(ref)
+            if key not in bullets and '.' in key:
+                key = key.split('.', 1)[0]
+            if key in bullets:
+                bullet = bullets[key]
+                status = str(bullet.get('_verification') or '') if isinstance(bullet, dict) else ''
+                yield f"{exp_key}.{key}", _all_text(bullet), status
+    master_projects = master.get('projects') or {}
+    for ref in (variant.get('projects') or []):
+        try:
+            entry = resolve_project(master_projects, ref, '', keep_tags=True)
+        except AssemblyError:
+            continue  # reported by validate_variant
+        for highlight in entry.get('highlights', []):
+            yield f"project {entry.get('name')}", str(highlight), ''
+    achievements = master.get('achievements') or {}
+    for key in (variant.get('achievements') or []):
+        if key in achievements:
+            yield f"achievement {key}", _all_text(achievements[key]), ''
+    if variant.get('summary'):
+        yield 'summary', str(variant['summary']), ''
+
+
+def check_unverified(master: dict, variant: dict):
+    """Return (errors, warnings): errors for unverified claims, warnings for estimated ones."""
+    name = variant.get('variant_name', 'unknown')
+    errors, warnings = [], []
+    for label, text, status in selected_claims(master, variant):
+        if UNVERIFIED_RE.search(text) or STATUS_UNVERIFIED_RE.search(status):
+            errors.append(f"[{name}] {label}: unverified claim (❌, [unverified] or [to-verify]); "
+                          f"verify it in identity/ first, or pass --allow-unverified")
+        elif ESTIMATED_RE.search(text) or STATUS_ESTIMATED_RE.search(status):
+            warnings.append(f"[{name}] {label}: estimated claim; use carefully")
+    return errors, warnings
+
+
+def check_sources(master: dict, variant: dict, sources: dict):
+    """Return (stale, unsourced) errors for selected roles and bullets, judged against identity/experience.yaml."""
+    name = variant.get('variant_name', 'unknown')
+    stale, unsourced = [], []
+    master_exp = master.get('experience') or {}
+    for exp_key, refs in (variant.get('experience') or {}).items():
+        role = master_exp.get(exp_key)
+        if not isinstance(role, dict):
+            continue  # reported by validate_variant
+        source = role.get('_source')
+        if source is None:
+            unsourced.append(f"[{name}] {exp_key}: unsourced role (not created by sync.py from identity/experience.yaml); "
+                             f"add it to identity/ and run sync.py, or pass --allow-unsourced")
+            continue
+        if source not in sources:
+            stale.append(f"[{name}] {exp_key}: stale role; identity/experience.yaml no longer has '{source}'. "
+                         f"Run sync.py and select the current role key")
+            continue
+        bullets = role.get('bullets') or {}
+        for ref in (refs or []):
+            key = ref[0] if isinstance(ref, list) and ref else str(ref)
+            if key not in bullets and '.' in key:
+                key = key.split('.', 1)[0]
+            bullet = bullets.get(key)
+            if bullet is None:
+                continue  # reported by validate_variant
+            b_source = bullet.get('_source') if isinstance(bullet, dict) else None
+            if b_source is None:
+                unsourced.append(f"[{name}] {exp_key}.{key}: unsourced bullet (typed into master.yaml); "
+                                 f"add it to identity/experience.yaml and run sync.py, or pass --allow-unsourced")
+            elif b_source not in sources[source]:
+                stale.append(f"[{name}] {exp_key}.{key}: stale bullet; its text in identity/experience.yaml "
+                             f"changed or was removed. Run sync.py and select the current bullet")
+    return stale, unsourced
 
 
 def check_orphans(master: dict, overlay_paths: list[Path]) -> bool:
@@ -764,6 +888,10 @@ def main():
     parser.add_argument('--diff', action='store_true', help='Show what would change vs existing generated files')
     parser.add_argument('--orphans', action='store_true', help='Detect and report unreferenced master.yaml bullets, roles, projects, and achievements')
     parser.add_argument('--no-autofill', action='store_true', help='Disable auto-filling header from config.yaml')
+    parser.add_argument('--allow-unverified', action='store_true',
+                        help='Build even when a selected claim is marked ❌, [unverified] or [to-verify]')
+    parser.add_argument('--allow-unsourced', action='store_true',
+                        help='Build even when a selected role or bullet was typed into master.yaml instead of synced from identity/')
     args = parser.parse_args()
 
     # Paths relative to this script
@@ -807,6 +935,9 @@ def main():
 
     if config_path.exists():
         config_data = load_yaml(config_path) or {}
+
+    experience_path = repo_root / 'identity' / 'experience.yaml'
+    sources = identity_sources(load_yaml(experience_path) if experience_path.exists() else {})
 
     user_name = (
         identity_data.get('name')
@@ -871,6 +1002,21 @@ def main():
                     return
                 return
 
+    # Pre-pass: check output filename collisions
+    planned = {}
+    for overlay_path in overlay_files:
+        overlay = load_yaml(overlay_path) or {}
+        overlay_name = (overlay.get('variant_name') or '').strip() or overlay_path.stem
+        try:
+            planned.setdefault(output_name(overlay, overlay_name, default_name), []).append(overlay_path.name)
+        except AssemblyError:
+            pass  # reported below for that overlay
+    collisions = {name: files for name, files in planned.items() if len(files) > 1}
+    if collisions:
+        for name, files in collisions.items():
+            print(f"❌ {', '.join(files)} all write generated/{name}.yaml; give each variant its own output_filename")
+        sys.exit(1)
+
     # Process each overlay
     total_errors = 0
     built = 0
@@ -881,6 +1027,17 @@ def main():
 
         # Validate
         errors = validate_variant(master, variant)
+        if not errors:
+            claim_errors, claim_warnings = check_unverified(master, variant)
+            for warning in claim_warnings:
+                print(f"   ⚠️  {warning}")
+            for error in claim_errors:
+                print(f"   ⚠️  unverified: {error}")
+            stale, unsourced = check_sources(master, variant, sources)
+            for warning in unsourced:
+                print(f"   ⚠️  unsourced: {warning}")
+            errors = stale
+
         if errors:
             print(f"\n❌ {variant_name} — {len(errors)} error(s):")
             for e in errors:
@@ -906,11 +1063,12 @@ def main():
             continue
 
         # Output filename: from variant or auto-generated from config.yaml name
-        output_filename = (variant.get('output_filename') or '').strip()
-        if output_filename.endswith('.yaml') or output_filename.endswith('.yml'):
-            output_filename = Path(output_filename).stem
-        if not output_filename:
-            output_filename = f'{default_name}_{variant_name}_CV' if default_name else f'{variant_name}_CV'
+        try:
+            output_filename = output_name(variant, variant_name, default_name)
+        except AssemblyError as e:
+            print(f"\n❌ {variant_name} — {e}")
+            total_errors += 1
+            continue
         output_path = generated_dir / f'{output_filename}.yaml'
 
         if args.diff and output_path.exists():
@@ -966,17 +1124,18 @@ def main():
                 rc_cmd = ["rendercv"]
 
             if not rc_cmd:
-                print("  ⚠️  RenderCV CLI not found. Install with: pip install rendercv")
+                print("  ❌ RenderCV not found (it needs Python 3.12+). Install it in the virtual environment: "
+                      "python -m pip install -r tools/resume/requirements.txt")
+                sys.exit(1)
             else:
                 render_errors = 0
                 for overlay_path in overlay_files:
                     variant = load_yaml(overlay_path) or {}
                     variant_name = (variant.get('variant_name') or '').strip() or overlay_path.stem
-                    output_filename = (variant.get('output_filename') or '').strip()
-                    if output_filename.endswith('.yaml') or output_filename.endswith('.yml'):
-                        output_filename = Path(output_filename).stem
-                    if not output_filename:
-                        output_filename = f'{default_name}_{variant_name}_CV' if default_name else f'{variant_name}_CV'
+                    try:
+                        output_filename = output_name(variant, variant_name, default_name)
+                    except AssemblyError:
+                        continue
                     gen_yaml = (generated_dir / f'{output_filename}.yaml').resolve()
                     if not gen_yaml.exists():
                         continue

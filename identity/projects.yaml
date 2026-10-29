@@ -41,7 +41,7 @@ public:
   #     - "Accumulated 1,200 GitHub stars and 4,000 monthly active users [measured]"
   #   impact_metrics: "1.2k stars, 4k MAU, sub-200ms latency"
   #   license: "MIT"
-  #   verification: "✅ VERIFIED — public GitHub repo & live URL"
+  #   verification: "✅ VERIFIED — https://github.com/your-username/your-project"
   #   relevance: ["Senior Backend Engineer", "AI/ML Engineer"]
 
   # - name: ""

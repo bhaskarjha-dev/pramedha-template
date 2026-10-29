@@ -6,6 +6,23 @@
 
 ---
 
+## Never put these here
+
+- Employer-confidential or internal material: internal documents, wikis, code, RFCs, database schemas,
+  dashboards or screenshots of internal systems, customer or colleague data. Describe your work in your
+  own words in `text/` instead.
+- Government ID scans or numbers (passport, national ID, social security), bank details, payslips.
+- Passwords, API keys, tokens.
+- Other people's contact details, messages or connection lists, unless they agreed to be your reference.
+
+## What your AI assistant sends
+
+When an AI assistant reads these files, their contents go to that assistant's provider under its terms
+(retention, training, human review). Check those terms and your employer's AI policy before you start,
+and leave out anything you would not paste into that assistant yourself.
+
+---
+
 ## The 8-Folder System
 
 Drop files into the folder that fits. Don't overthink it — wrong folder is
@@ -38,7 +55,7 @@ Export and download from every platform where you have a professional presence.
 
 | Item | Priority | Destination | How To Get It |
 |------|:--------:|:-----------:|---------------|
-| LinkedIn full data export | 🔴 | `linkedin/` | Settings → Privacy → Get a copy of your data |
+| LinkedIn export of your own profile | 🔴 | `linkedin/` | Settings → Data privacy → Get a copy of your data → pick Profile, Positions, Education, Skills, Certifications, Honors, Projects, Publications, Recommendations received (not messages or connections) |
 | GitHub repos list + contribution graph | 🔴 | `github/` | Settings → Archives → Export account data |
 | Naukri / Indeed profile export | 🔴 | `exports/` | Settings → Download profile |
 | HuggingFace profile, models, datasets | 🟡 | `exports/` | Screenshot profile + copy model cards |
@@ -83,15 +100,11 @@ Tangible evidence of your actual work. This is what turns "I built X" into a ver
 
 | Item | Priority | Where |
 |------|:--------:|:-----:|
-| Architecture & system design diagrams | 🔴 | `media/` |
-| Technical presentations & slide decks | 🔴 | `documents/` |
-| Screen-recorded demos of working projects | 🔴 | `media/` |
-| Screenshots of live products, dashboards, outputs | 🔴 | `media/` |
-| Internal documentation/wikis you authored | 🔴 | `documents/` |
-| API documentation you wrote | 🟡 | `documents/` |
-| Technical reports, RFCs, or proposals | 🟡 | `documents/` |
-| Database schemas, data models, system design docs | 🟡 | `documents/` |
-| README files for private/internal repos | 🟢 | `text/` |
+| Your own notes describing work you did (no copies of employer documents, code, data or internal screenshots) | 🔴 | `text/` |
+| Architecture diagrams of public or personal projects | 🔴 | `media/` |
+| Slides you presented publicly (conference, meetup, course) | 🟡 | `documents/` |
+| Screen recordings of public or personal projects | 🔴 | `media/` |
+| Screenshots of public products or personal projects (no internal dashboards or systems) | 🔴 | `media/` |
 
 ### 5. Social Proof → `documents/` or `text/`
 
@@ -101,10 +114,10 @@ What OTHER people say about your work. The most powerful evidence category.
 |------|:--------:|:-----:|
 | LinkedIn recommendations — full text | 🔴 | `text/` (copy-paste all) |
 | Written manager/skip-level performance feedback | 🔴 | `documents/` |
-| Thank-you emails about specific work | 🔴 | `text/` (copy-paste) |
+| Thank-you notes about your work, with names and contact details removed | 🟡 | `text/` |
 | Client or stakeholder testimonials | 🔴 | `text/` |
 | GitHub stars, forks, watchers per repo | 🔴 | `exports/` (screenshot) |
-| Peer review feedback from performance cycles | 🟡 | `text/` |
+| Peer feedback about you, in your own summary (no names) | 🟡 | `text/` |
 | Media, press, or newsletter mentions | 🟡 | `text/` (links + quotes) |
 | Podcast or panel appearances | 🟡 | `text/` (links + descriptions) |
 | Community shoutouts | 🟢 | `text/` |
@@ -150,10 +163,10 @@ Images, recordings, and design files. These feed into portfolio and project brie
 | Item | Priority |
 |------|:--------:|
 | Professional headshot (high resolution) | 🔴 |
-| Project demo recordings (screen capture + narration) | 🔴 |
+| Demo recordings of public or personal projects | 🔴 |
 | Demo GIFs of working features or outputs | 🔴 |
 | Architecture diagram exports (PNG/SVG) | 🔴 |
-| Screenshots of deployed UIs, dashboards, metrics | 🔴 |
+| Screenshots of public or personal projects (no internal dashboards) | 🔴 |
 | Speaking or event photos | 🟡 |
 | Certificate scans or photos | 🟡 |
 | Award or recognition photos | 🟢 |
