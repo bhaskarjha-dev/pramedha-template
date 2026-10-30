@@ -35,6 +35,7 @@ template_owned:
   - GETTING_STARTED.md
   - LICENSE
   - README.md
+  - ROADMAP.md
   - data-corpus/README.md
   - data-corpus/documents/README.md
   - data-corpus/exports/README.md

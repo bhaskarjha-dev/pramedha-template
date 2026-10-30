@@ -213,3 +213,9 @@ identity/*.yaml ──(python tools/resume/sync.py)──> tools/resume/master.y
 2. **Identity Always Wins:** If a resume or LinkedIn profile contradicts `identity/*.yaml`, the resume must be corrected.
 3. **Evidence Precedes Claims:** No new bullet enters `experience.yaml` without supporting evidence in `journal/work-log/` or `data-corpus/`.
 4. **Verification Precedes Sharing:** Every public-facing claim must be validated through `identity/claims-and-evidence.md`.
+
+---
+
+## 8. Template Evolution & Roadmap
+
+For template engine maintenance, schema versioning, and future architecture planning (modular layout `FUT-01`, model evaluation harness `FUT-02`, and identity schema v1 `FUT-03`), see [ROADMAP.md](../ROADMAP.md).

@@ -158,5 +158,6 @@ Read `ops/guide.md` — it contains event→file mapping:
 | Previous session context? | `ops/session-handoff.md` |
 | Sub-projects (websites, etc.)? | `VISION.md` (Sub-Projects section) |
 | How to maintain this repo? | `ops/guide.md` |
+| System architecture roadmap? | `ROADMAP.md` |
 | Complete field-by-field schema? | `.pramedha/schema-reference.md` |
 | Ready-to-use AI prompts? | `ops/prompts.md` |

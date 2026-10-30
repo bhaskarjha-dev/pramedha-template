@@ -359,6 +359,17 @@ keeps your old template files or replaces your filled data with empty templates.
 
 ---
 
+## Roadmap
+
+See [ROADMAP.md](ROADMAP.md) for the active architectural blueprint:
+- **v0.2.0:** Release packaging & owner governance checklist (`OA-1`–`OA-4`).
+- **v0.3.0:** Core-first modular layout with on-demand context packs (`FUT-01`).
+- **v0.4.0:** AI extraction evaluation harness with synthetic traps & automated scoring (`FUT-02`).
+- **v0.5.0:** Local PII redaction utility (`FUT-04`) and zero-leak air-gapped local model protocol (`FUT-05`).
+- **v1.0.0:** Identity schema v1 with stable bullet IDs, JSON Schema, and direct AST compilation (`FUT-03`).
+
+---
+
 ## Contributing
 
 Contributions to the template engine, schemas, and validators are welcome! See [.github/CONTRIBUTING.md](.github/CONTRIBUTING.md) for guidelines.
