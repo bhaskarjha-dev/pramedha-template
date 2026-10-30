@@ -528,14 +528,18 @@ def assemble_variant(master: dict, design: dict, variant: dict, config: dict = N
         sections['projects'] = project_entries
 
     # Technologies (variant overrides master; falls back to master shared technologies)
-    technologies = variant.get('technologies') or master.get('technologies', [])
-    if technologies:
-        sections['technologies'] = copy.deepcopy(technologies)
+    if 'technologies' in variant and variant['technologies'] is not None:
+        if variant['technologies']:
+            sections['technologies'] = copy.deepcopy(variant['technologies'])
+    elif master.get('technologies'):
+        sections['technologies'] = copy.deepcopy(master['technologies'])
 
     # Education (variant overrides master; falls back to master shared education)
-    education = variant.get('education') or master.get('education', [])
-    if education:
-        sections['education'] = copy.deepcopy(education)
+    if 'education' in variant and variant['education'] is not None:
+        if variant['education']:
+            sections['education'] = copy.deepcopy(variant['education'])
+    elif master.get('education'):
+        sections['education'] = copy.deepcopy(master['education'])
 
     # Achievements (resolve keys)
     achievement_texts = []
@@ -567,14 +571,17 @@ def assemble_variant(master: dict, design: dict, variant: dict, config: dict = N
 
     # Section ordering: variant can specify custom section_order, else default sequence
     default_order = ['summary', 'experience', 'projects', 'technologies', 'education', 'achievements', 'publications']
-    section_order = variant.get('section_order') or default_order
-    ordered_sections = {}
-    for sec in section_order:
-        if sec in sections:
-            ordered_sections[sec] = sections[sec]
-    for sec, val in sections.items():
-        if sec not in ordered_sections:
-            ordered_sections[sec] = val
+    custom_order = variant.get('section_order')
+    if custom_order is not None:
+        ordered_sections = {sec: sections[sec] for sec in custom_order if sec in sections}
+    else:
+        ordered_sections = {}
+        for sec in default_order:
+            if sec in sections:
+                ordered_sections[sec] = sections[sec]
+        for sec, val in sections.items():
+            if sec not in ordered_sections:
+                ordered_sections[sec] = val
 
     # --- Assemble final structure ---
     # RenderCV v2.8 strictly limits Cv fields to avoid extra_forbidden validation errors
@@ -721,7 +728,7 @@ def check_unverified(master: dict, variant: dict):
     for label, text, status in selected_claims(master, variant):
         if UNVERIFIED_RE.search(text) or STATUS_UNVERIFIED_RE.search(status):
             errors.append(f"[{name}] {label}: unverified claim (❌, [unverified] or [to-verify]); "
-                          f"verify it in identity/ first, or pass --allow-unverified")
+                          f"recommended to verify in identity/ before submitting")
         elif ESTIMATED_RE.search(text) or STATUS_ESTIMATED_RE.search(status):
             warnings.append(f"[{name}] {label}: estimated claim; use carefully")
     return errors, warnings
@@ -739,7 +746,7 @@ def check_sources(master: dict, variant: dict, sources: dict):
         source = role.get('_source')
         if source is None:
             unsourced.append(f"[{name}] {exp_key}: unsourced role (not created by sync.py from identity/experience.yaml); "
-                             f"add it to identity/ and run sync.py, or pass --allow-unsourced")
+                             f"add it to identity/ and run sync.py")
             continue
         if source not in sources:
             stale.append(f"[{name}] {exp_key}: stale role; identity/experience.yaml no longer has '{source}'. "
@@ -756,7 +763,7 @@ def check_sources(master: dict, variant: dict, sources: dict):
             b_source = bullet.get('_source') if isinstance(bullet, dict) else None
             if b_source is None:
                 unsourced.append(f"[{name}] {exp_key}.{key}: unsourced bullet (typed into master.yaml); "
-                                 f"add it to identity/experience.yaml and run sync.py, or pass --allow-unsourced")
+                                 f"add it to identity/experience.yaml and run sync.py")
             elif b_source not in sources[source]:
                 stale.append(f"[{name}] {exp_key}.{key}: stale bullet; its text in identity/experience.yaml "
                              f"changed or was removed. Run sync.py and select the current bullet")

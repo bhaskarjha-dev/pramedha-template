@@ -6,7 +6,8 @@ Reads:
   - identity/experience.yaml             → master.yaml experience pool
   - identity/projects.yaml               → master.yaml projects pool
   - identity/credentials.yaml            → master.yaml education, publications, certs & awards
-  - identity/speaking-and-community.yaml → master.yaml achievements (hackathons)
+  - identity/speaking-and-community.yaml → master.yaml achievements (hackathons, speaking)
+  - identity/volunteering.yaml           → master.yaml achievements (volunteering)
   - identity/skills.yaml                 → master.yaml technologies
 
 Usage:
@@ -700,10 +701,11 @@ def sync_skills(id_data: dict, master_data: dict, force: bool = False):
     return stats
 
 
-def sync_achievements(creds_data: dict, community_data: dict, master_data: dict, force: bool = False):
+def sync_achievements(creds_data: dict, community_data: dict, master_data: dict, force: bool = False, vol_data: dict = None):
     """
-    Sync achievements from identity/credentials.yaml (awards, certifications)
-    and identity/speaking-and-community.yaml (hackathons) into master.yaml['achievements'].
+    Sync achievements from identity/credentials.yaml (awards, certifications, licenses, clearances, patents, grants),
+    identity/speaking-and-community.yaml (hackathons, speaking), and identity/volunteering.yaml
+    into master.yaml['achievements'].
     """
     master_ach = master_data.get('achievements', {})
     if not isinstance(master_ach, dict):
@@ -1009,8 +1011,127 @@ def sync_achievements(creds_data: dict, community_data: dict, master_data: dict,
             master_ach[ach_key] = {'text': text}
             stats['updated'] += 1
 
+    # 8. Speaking Engagements from speaking-and-community.yaml
+    for item in (community_data.get('speaking', []) or []):
+        if not isinstance(item, dict):
+            continue
+        title = as_text(item.get('title'))
+        if not title:
+            stats['skipped'] += 1
+            continue
+        event = as_text(item.get('event'))
+        date = as_text(item.get('date'))
+        role = as_text(item.get('role'))
+
+        if event:
+            text = f"Spoke at {event}: \"{title}\""
+        else:
+            text = f"Talk: \"{title}\""
+        meta = []
+        if role and role.lower() != 'speaker':
+            meta.append(role)
+        if date:
+            meta.append(date)
+        if meta:
+            text += f" ({' — '.join(meta)})"
+
+        ach_key = None
+        for k, v in master_ach.items():
+            if isinstance(v, dict) and v.get('text', '').lower() == text.lower():
+                ach_key = k
+                break
+            elif isinstance(v, str) and v.lower() == text.lower():
+                ach_key = k
+                break
+
+        if not ach_key:
+            ach_key = generate_achievement_key(title or event, existing_keys, prefix="talk")
+            existing_keys.add(ach_key)
+            master_ach[ach_key] = {'text': text}
+            stats['added'] += 1
+        elif force:
+            master_ach[ach_key] = {'text': text}
+            stats['updated'] += 1
+
+    # 9. Volunteering from volunteering.yaml
+    if vol_data and isinstance(vol_data, dict):
+        for item in (vol_data.get('volunteering', []) or []):
+            if not isinstance(item, dict):
+                continue
+            org = as_text(item.get('organization'))
+            role = as_text(item.get('role'))
+            if not org and not role:
+                stats['skipped'] += 1
+                continue
+            cause = as_text(item.get('cause'))
+            start = as_text(item.get('start_date'))
+            end = as_text(item.get('end_date'))
+
+            text = f"{role} at {org}" if (role and org) else (role or org)
+            meta = []
+            if cause:
+                meta.append(cause)
+            date_range = f"{start} – {end}" if (start and end) else (start or end)
+            if date_range:
+                meta.append(date_range)
+            if meta:
+                text += f" ({' — '.join(meta)})"
+
+            ach_key = None
+            for k, v in master_ach.items():
+                if isinstance(v, dict) and v.get('text', '').lower() == text.lower():
+                    ach_key = k
+                    break
+                elif isinstance(v, str) and v.lower() == text.lower():
+                    ach_key = k
+                    break
+
+            if not ach_key:
+                ach_key = generate_achievement_key(org or role, existing_keys, prefix="volunteer")
+                existing_keys.add(ach_key)
+                master_ach[ach_key] = {'text': text}
+                stats['added'] += 1
+            elif force:
+                master_ach[ach_key] = {'text': text}
+                stats['updated'] += 1
+
     master_data['achievements'] = master_ach
     return stats
+
+
+MASTER_SECTION_BANNERS = {
+    'experience': "# ─── Experience ──────────────────────────────────────────────────────────\n",
+    'projects': "# ─── Projects ────────────────────────────────────────────────────────────\n",
+    'publications': "# ─── Publications (Academic / Research / Books) ──────────────────────────\n",
+    'education': "# ─── Education ───────────────────────────────────────────────────────────\n",
+    'achievements': "# ─── Achievements ────────────────────────────────────────────────────────\n",
+    'technologies': "# ─── Technologies (shared across variants) ───────────────────────────────\n",
+    'settings': "# ─── RenderCV Settings (Optional overrides) ──────────────────────────────\n",
+    'last_updated': "# ─── Metadata & Maintenance ─────────────────────────────────────────────────\n",
+}
+
+
+def dump_master_yaml(data: dict, path: Path, header: str | None = None):
+    """Write master.yaml preserving top-level section banners and structure."""
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with open(path, 'w', encoding='utf-8') as f:
+        if header:
+            f.write(header)
+            if not header.endswith('\n'):
+                f.write('\n')
+        for key, value in data.items():
+            if key in MASTER_SECTION_BANNERS:
+                f.write(MASTER_SECTION_BANNERS[key])
+            chunk = yaml.dump(
+                {key: value},
+                Dumper=OrderedDumper,
+                default_flow_style=False,
+                allow_unicode=True,
+                width=200,
+                sort_keys=False,
+            )
+            f.write(chunk)
+            f.write('\n')
 
 
 def extract_master_header(master_path: Path) -> str:
@@ -1062,6 +1183,7 @@ def main():
     creds_path = repo_root / 'identity' / 'credentials.yaml'
     skills_path = repo_root / 'identity' / 'skills.yaml'
     speaking_path = repo_root / 'identity' / 'speaking-and-community.yaml'
+    vol_path = repo_root / 'identity' / 'volunteering.yaml'
 
     if not master_path.exists():
         print(f"ERROR: {master_path} not found.", file=sys.stderr)
@@ -1134,15 +1256,16 @@ def main():
         else:
             print("🛠️  Skills:       identity/skills.yaml not found (skipped)")
 
-    # Achievements (Awards, Certifications, Hackathons)
+    # Achievements (Awards, Certifications, Hackathons, Speaking, Volunteering)
     if section in ('all', 'ach', 'achievements'):
         creds_data = load_yaml(creds_path) if creds_path.exists() else {}
         speaking_data = load_yaml(speaking_path) if speaking_path.exists() else {}
-        if creds_path.exists() or speaking_path.exists():
-            stats_ach = sync_achievements(creds_data, speaking_data, master_data, force=args.force)
+        vol_data = load_yaml(vol_path) if vol_path.exists() else {}
+        if creds_path.exists() or speaking_path.exists() or vol_path.exists():
+            stats_ach = sync_achievements(creds_data, speaking_data, master_data, force=args.force, vol_data=vol_data)
             print(f"🏆 Achievements: +{stats_ach['added']} entries ({stats_ach['updated']} updated, {stats_ach['skipped']} blank skipped)")
         else:
-            print("🏆 Achievements: credentials/speaking YAML not found (skipped)")
+            print("🏆 Achievements: credentials/speaking/volunteering YAML not found (skipped)")
 
     print("-" * 60)
 
@@ -1177,7 +1300,7 @@ def main():
             pass
 
         header_text = extract_master_header(master_path)
-        dump_yaml(master_data, master_path, header=header_text)
+        dump_master_yaml(master_data, master_path, header=header_text)
         print(f"✅ tools/resume/master.yaml successfully updated (+{total_added} additions, {total_updated} updates; backup saved to master.yaml.bak).")
 
 

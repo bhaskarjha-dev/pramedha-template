@@ -31,6 +31,7 @@ check_verification_tags = pramedha_validate.check_verification_tags
 check_skill_enums = pramedha_validate.check_skill_enums
 check_date_chronology = pramedha_validate.check_date_chronology
 check_cross_file_consistency = pramedha_validate.check_cross_file_consistency
+parse_flexible_date = pramedha_validate.parse_flexible_date
 
 
 class TestPramedhaValidator:
@@ -57,3 +58,25 @@ class TestPramedhaValidator:
         result = ValidationResult()
         check_experience(result)
         assert result.errors == [], f"Experience errors found: {result.errors}"
+
+    def test_parse_flexible_date_resolution(self):
+        # Start date year-only defaults to month 1
+        assert parse_flexible_date("2024", is_end_date=False) == (2024, 1)
+        # End date year-only defaults to month 12
+        assert parse_flexible_date("2024", is_end_date=True) == (2024, 12)
+        # Explicit month is preserved
+        assert parse_flexible_date("2024-05", is_end_date=True) == (2024, 5)
+        assert parse_flexible_date("2024-05-15", is_end_date=True) == (2024, 5)
+        # Present literals
+        assert parse_flexible_date("present", is_end_date=True) == (9999, 12)
+        assert parse_flexible_date("current", is_end_date=True) == (9999, 12)
+        # Invalid returns None
+        assert parse_flexible_date("invalid") is None
+        assert parse_flexible_date("") is None
+        assert parse_flexible_date(None) is None
+
+    def test_repository_date_chronology(self):
+        result = ValidationResult()
+        check_date_chronology(result)
+        assert result.errors == [], f"Chronology errors found: {result.errors}"
+        assert result.warnings == [], f"Chronology warnings found: {result.warnings}"

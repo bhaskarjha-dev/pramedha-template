@@ -59,3 +59,28 @@ def test_name_with_an_apostrophe_gives_a_safe_default_file_name(tmp_path):
     assert proc.returncode == 0, out(proc)
     assert (repo / 'tools/resume/generated/Dana_O_Brien_Backend_CV.yaml').exists(), out(proc)
 
+
+def test_variant_section_order_omits_unlisted_sections_in_generated_file(tmp_path):
+    repo = make_repo(tmp_path)
+    set_field(repo, 'A_Backend.yaml', 'section_order', ['summary', 'experience'])
+    proc = run(repo, 'tools/resume/assemble.py', '--variant', 'A')
+    assert proc.returncode == 0, out(proc)
+    generated = load(repo / 'tools/resume/generated/Alex_Chen_Backend_CV.yaml')
+    sections = generated['cv']['sections']
+    assert 'summary' in sections
+    assert 'experience' in sections
+    assert 'projects' not in sections
+    assert 'technologies' not in sections
+    assert 'education' not in sections
+
+
+def test_variant_technologies_empty_list_suppresses_technologies(tmp_path):
+    repo = make_repo(tmp_path)
+    set_field(repo, 'A_Backend.yaml', 'technologies', [])
+    proc = run(repo, 'tools/resume/assemble.py', '--variant', 'A')
+    assert proc.returncode == 0, out(proc)
+    generated = load(repo / 'tools/resume/generated/Alex_Chen_Backend_CV.yaml')
+    sections = generated['cv']['sections']
+    assert 'technologies' not in sections
+    assert 'education' in sections
+

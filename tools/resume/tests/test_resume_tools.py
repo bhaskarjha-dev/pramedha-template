@@ -31,11 +31,13 @@ from tools.resume.sync import (
     generate_bullet_key,
     generate_achievement_key,
     sync_experience,
+    sync_achievements,
 )
 from tools.resume.assemble import (
     clean_bullet_tags,
     resolve_bullet,
     AssemblyError,
+    assemble_variant,
 )
 
 
@@ -190,6 +192,35 @@ class TestSyncHelpers:
         sync_experience(id_data, master_data, force=False)
         assert "_example_role_" in master_data["experience"]
 
+    def test_sync_achievements_speaking_and_volunteering(self):
+        creds_data = {}
+        community_data = {
+            "speaking": [
+                {
+                    "title": "Scaling Distributed Systems",
+                    "event": "PyCon",
+                    "date": "2024-04",
+                    "role": "Keynote Speaker"
+                }
+            ]
+        }
+        vol_data = {
+            "volunteering": [
+                {
+                    "organization": "Open Source Initiative",
+                    "role": "Maintainer",
+                    "cause": "Open Source"
+                }
+            ]
+        }
+        master_data = {}
+        stats = sync_achievements(creds_data, community_data, master_data, vol_data=vol_data)
+        assert stats["added"] == 2
+        assert "talk_scaling_distributed_systems" in master_data["achievements"]
+        assert "Spoke at PyCon" in master_data["achievements"]["talk_scaling_distributed_systems"]["text"]
+        assert "volunteer_open_source_initiative" in master_data["achievements"]
+        assert "Maintainer at Open Source Initiative" in master_data["achievements"]["volunteer_open_source_initiative"]["text"]
+
 
 # ============================================================================
 # 3. Assembler Engine Tests
@@ -245,3 +276,59 @@ class TestAssembleHelpers:
         with pytest.raises(AssemblyError) as exc_info:
             resolve_bullet(master_exp, "test_exp", "non_existent_bullet", "VariantA")
         assert "not found in experience" in str(exc_info.value)
+
+    def test_section_order_whitelist_omission(self):
+        master = {
+            "header": {"name": "Test User"},
+            "experience": {},
+            "technologies": [{"label": "Languages", "details": "Python"}],
+            "education": [{"institution": "Test Univ", "area": "CS", "degree": "BS", "start_date": "2020", "end_date": "2024"}]
+        }
+        design = {"theme": "classic"}
+        assembled = assemble_variant(master, design, {"variant_name": "Test", "section_order": ["education"]})
+        assert "education" in assembled["cv"]["sections"]
+        assert "technologies" not in assembled["cv"]["sections"]
+
+    def test_technologies_suppression_and_override(self):
+        master = {
+            "header": {"name": "Test User"},
+            "experience": {},
+            "technologies": [{"label": "Languages", "details": "Python"}],
+            "education": [{"institution": "Test Univ", "area": "CS", "degree": "BS", "start_date": "2020", "end_date": "2024"}]
+        }
+        design = {"theme": "classic"}
+
+        # Empty list suppresses technologies
+        suppressed = assemble_variant(master, design, {"variant_name": "Test", "technologies": []})
+        assert "technologies" not in suppressed["cv"]["sections"]
+        assert "education" in suppressed["cv"]["sections"]
+
+        # Custom list overrides master
+        custom = assemble_variant(master, design, {
+            "variant_name": "Test",
+            "technologies": [{"label": "Cloud", "details": "GCP"}]
+        })
+        assert custom["cv"]["sections"]["technologies"] == [{"label": "Cloud", "details": "GCP"}]
+
+        # Omission falls back to master
+        fallback = assemble_variant(master, design, {"variant_name": "Test"})
+        assert fallback["cv"]["sections"]["technologies"] == [{"label": "Languages", "details": "Python"}]
+
+
+# ============================================================================
+# 4. Validation Date Logic Tests
+# ============================================================================
+
+class TestValidationDateChronology:
+    def test_parse_flexible_date_year_only_end_date(self):
+        import importlib.util
+        spec = importlib.util.spec_from_file_location("validate", REPO_ROOT / ".pramedha" / "validate.py")
+        mod = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(mod)
+
+        # Start date defaults to January
+        assert mod.parse_flexible_date("2024", is_end_date=False) == (2024, 1)
+        # End date year-only defaults to December
+        assert mod.parse_flexible_date("2024", is_end_date=True) == (2024, 12)
+        # Explicit month is preserved
+        assert mod.parse_flexible_date("2024-05", is_end_date=True) == (2024, 5)

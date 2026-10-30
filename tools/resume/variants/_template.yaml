@@ -10,6 +10,16 @@
 variant_name: "General"              # e.g., "Senior Backend Engineer", "GenAI Specialist"
 output_filename: ""                   # Optional plain file name (letters, digits, . _ -). Blank = {Your_Name}_{variant_name}_CV
 
+# ─── Section Order (Optional: reorder or omit sections) ───────────────────
+# Default: [summary, experience, projects, technologies, education, achievements, publications]
+# Only listed sections will appear. Omit this key to include all sections in default order.
+# section_order:
+#   - summary
+#   - experience
+#   - projects
+#   - technologies
+#   - education
+
 # ─── Summary (specific to this variant) ──────────────────────────────────
 summary: ""                           # 2-3 lines tailored to this role, from verified facts. Empty = no summary
 
@@ -34,11 +44,11 @@ projects: []
   # - [another_project_key, technical]
 
 # ─── Technologies (override master if needed) ────────────────────────────
-technologies: []
-  # - label: "GenAI"
-  #   details: "RAG, LLM APIs, LangChain, Vector DBs"
-  # - label: "Backend"
-  #   details: "Python, FastAPI, PostgreSQL"
+# technologies: []
+#   # - label: "GenAI"
+#   #   details: "RAG, LLM APIs, LangChain, Vector DBs"
+#   # - label: "Backend"
+#   #   details: "Python, FastAPI, PostgreSQL"
 
 # ─── Education (override master if needed) ───────────────────────────────
 # education: []

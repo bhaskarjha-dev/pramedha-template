@@ -149,6 +149,7 @@ publications:
 # variants/genai.yaml — Selects from master for GenAI roles
 variant_name: "GenAI Engineer"
 output_filename: "Your_Name_GenAI_CV"
+# section_order: [summary, experience, projects, technologies, education]  # Optional whitelist / ordering
 summary: "One-paragraph summary for this variant"
 experience:
   role_key:                    # Must match a key in master.yaml

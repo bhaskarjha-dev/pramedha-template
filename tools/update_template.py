@@ -52,6 +52,8 @@ def main():
 
     upstream_files = set(git('ls-tree', '-r', '--name-only', '-z', args.ref).stdout.split('\0'))
     paths = [p for p in owned if p in upstream_files or any(f.startswith(p + '/') for f in upstream_files)]
+    if not paths:
+        sys.exit(f"No matching template-owned files found in {args.ref}; nothing to update.")
     dirty = git('status', '--porcelain', '--', *paths).stdout.strip()
     if dirty:
         sys.exit("Commit or stash your changes to these template files first:\n" + dirty)

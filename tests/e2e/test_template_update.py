@@ -117,3 +117,15 @@ def test_copy_made_before_the_script_existed_can_bootstrap_it(tmp_path):
     git(user, env, 'commit', '-qm', 'Add template update script')
     run_update_and_check(env, upstream, user, before)
 
+
+def test_update_exits_cleanly_when_no_template_files_match(tmp_path):
+    env, upstream, user, before = make_copies(tmp_path, user_has_script=True)
+    manifest = {'template_owned': ['non_existent_dir/']}
+    (upstream / '.pramedha/manifest.yaml').write_text(yaml.dump(manifest), encoding='utf-8')
+    git(upstream, env, 'commit', '-qam', 'empty owned')
+    git(user, env, 'fetch', '-q', 'upstream')
+    proc = subprocess.run([sys.executable, SCRIPT], cwd=user, capture_output=True, text=True,
+                          encoding='utf-8', errors='replace', env=env, stdin=subprocess.DEVNULL)
+    assert proc.returncode != 0
+    assert 'No matching template-owned files found' in proc.stderr
+

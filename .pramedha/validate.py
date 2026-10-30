@@ -431,7 +431,7 @@ VALID_ROLE_LEVELS = {
 }
 
 
-def parse_flexible_date(date_str):
+def parse_flexible_date(date_str, is_end_date: bool = False):
     """Parse YYYY-MM-DD, YYYY-MM, or YYYY string into a comparable tuple (year, month). Returns None if unparseable."""
     if date_str is None or date_str == '':
         return None
@@ -443,7 +443,7 @@ def parse_flexible_date(date_str):
     m = re.match(r'^(\d{4})(?:-(\d{1,2}))?(?:-(\d{1,2}))?$', s)
     if m:
         year = int(m.group(1))
-        month = int(m.group(2)) if m.group(2) else 1
+        month = int(m.group(2)) if m.group(2) else (12 if is_end_date else 1)
         if 1 <= month <= 12:
             return (year, month)
     return None
@@ -561,7 +561,7 @@ def check_date_chronology(result: ValidationResult):
             continue
 
         p_start = parse_flexible_date(start)
-        p_end = parse_flexible_date(end)
+        p_end = parse_flexible_date(end, is_end_date=True)
 
         if start and p_start is None:
             result.warn(f"experience.yaml: Entry {i} ({company or 'unnamed'}) has invalid start_date '{start}' (expected YYYY-MM)")
@@ -584,7 +584,7 @@ def check_date_chronology(result: ValidationResult):
             continue
 
         p_start = parse_flexible_date(start)
-        p_end = parse_flexible_date(end)
+        p_end = parse_flexible_date(end, is_end_date=True)
         if p_start and p_end and p_start > p_end:
             result.warn(f"experience.yaml: Career break {i} ('{title}') has start_date '{start}' after end_date '{end}'")
 
@@ -603,7 +603,7 @@ def check_date_chronology(result: ValidationResult):
             if not start and not end:
                 continue
             p_start = parse_flexible_date(start)
-            p_end = parse_flexible_date(end)
+            p_end = parse_flexible_date(end, is_end_date=True)
             if start and p_start is None:
                 result.warn(f"credentials.yaml: Education {i} ('{inst}') has invalid start_date '{start}' (expected YYYY-MM or YYYY)")
             if end and p_end is None:
@@ -626,7 +626,7 @@ def check_date_chronology(result: ValidationResult):
             if not start and not end:
                 continue
             p_start = parse_flexible_date(start)
-            p_end = parse_flexible_date(end)
+            p_end = parse_flexible_date(end, is_end_date=True)
             if start and p_start is None:
                 result.warn(f"projects.yaml: Project {i} ('{pname}') has invalid start_date '{start}' (expected YYYY-MM)")
             if end and p_end is None:
@@ -648,7 +648,7 @@ def check_date_chronology(result: ValidationResult):
             if not start and not end:
                 continue
             p_start = parse_flexible_date(start)
-            p_end = parse_flexible_date(end)
+            p_end = parse_flexible_date(end, is_end_date=True)
             if start and p_start is None:
                 result.warn(f"volunteering.yaml: Entry {i} ('{org}') has invalid start_date '{start}' (expected YYYY-MM)")
             if end and p_end is None:
