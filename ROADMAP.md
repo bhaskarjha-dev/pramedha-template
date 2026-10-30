@@ -177,3 +177,4 @@ Currently, career facts in `identity/` are duplicated into `tools/resume/master.
 - [ ] **v0.4.0 Model Eval:** Automated AI extraction benchmark harness (`FUT-02`).
 - [ ] **v0.5.0 Air-Gap & Redaction:** Local PII scrubber (`FUT-04`) and offline local LLM protocol (`FUT-05`).
 - [ ] **v1.0.0 Identity Schema v1:** Stable bullet IDs, official JSON Schema, and direct AST compiler (`FUT-03`).
+
