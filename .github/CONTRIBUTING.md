@@ -58,11 +58,12 @@ When modifying or introducing fields in YAML/Markdown schemas, follow this stric
 - [ ] **5. Cascade Scripts:** Update `tools/resume/sync.py` and `tools/resume/assemble.py` if the change touches resume generation or identity flattening.
 - [ ] **6. Examples:** Update corresponding examples in `.pramedha/examples/`.
 - [ ] **7. Manifest:** Update `.pramedha/manifest.yaml` (bump version and file registry).
-- [ ] **8. Local Validation:** Confirm all verifications pass cleanly:
+- [ ] **8. Local Validation:** Confirm all verifications and automated tests pass cleanly:
   ```bash
   python .pramedha/validate.py
   python tools/resume/assemble.py --validate
   python tools/resume/sync.py --dry-run
+  python -m pytest
   ```
 
 ---
@@ -74,6 +75,7 @@ Before opening your pull request, verify:
 - [ ] `python .pramedha/validate.py` passes with zero errors
 - [ ] `python tools/resume/assemble.py --validate` passes
 - [ ] `python tools/resume/sync.py --dry-run` runs cleanly
+- [ ] `python -m pytest` passes across all test suites
 - [ ] Cross-references and relative Markdown links remain intact
 - [ ] No personal or proprietary private data is included in commit history
 - [ ] Commit messages follow descriptive conventional commit standards (e.g., `feat:`, `fix:`, `refactor:`)

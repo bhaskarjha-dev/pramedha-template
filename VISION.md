@@ -103,9 +103,9 @@ canonical data layer. Tools orbit around it.
    career-ops for job search, JobSpy for scraping, anything you want.
    AI agents bridge between your data and the tool.
 
-3. **Pramedha Platform** (optional) — Full Career OS with AI intake,
+3. **Pramedha Platform** (optional, not yet available) — Full Career OS with AI intake,
    7-dimension JD matching, resume tailoring, career graph intelligence,
-   MCP server, and plugin SDK. Import this template with one command.
+   MCP server, and plugin SDK. Import this template once the platform is available.
 
 ### Lifecycle
 
@@ -116,7 +116,7 @@ This repository doesn't die after the job search. It becomes:
 3. **Knowledge base** — Reference for interview prep, salary negotiation
 4. **Portfolio data source** — Portfolio website reads from identity/*.yaml
 5. **External tool substrate** — Any new career tool reads from your data
-6. **Pramedha import source** — `pramedha import --format template` when ready
+6. **Pramedha import source** — ready to import once the platform is released
 
 ---
 
