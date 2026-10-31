@@ -195,6 +195,18 @@ def as_text(value) -> str:
     return str(value).strip()
 
 
+def carry_status(entry: dict, status: str) -> bool:
+    """Store an identity entry's `verification` text (✅/⚠️/❌) on its master.yaml copy as `_verification`,
+    so assemble.py can warn about it. Returns True when the stored value changed."""
+    if (entry.get('_verification') or '') == status:
+        return False
+    if status:
+        entry['_verification'] = status
+    else:
+        entry.pop('_verification', None)
+    return True
+
+
 def sync_experience(id_data: dict, master_data: dict, force: bool = False):
     """
     Sync identity/experience.yaml into master.yaml['experience'].
@@ -372,6 +384,7 @@ def sync_projects(id_data: dict, master_data: dict, force: bool = False):
 
     stats = {'added': 0, 'updated': 0, 'skipped': 0}
     existing_keys = set(master_proj.keys())
+    statuses = {}
 
     all_projects = []
     for p in (id_data.get('public', []) or []):
@@ -386,6 +399,7 @@ def sync_projects(id_data: dict, master_data: dict, force: bool = False):
         if not name:
             stats['skipped'] += 1
             continue
+        statuses[name.lower()] = as_text(p.get('verification'))
 
         repo = as_text(p.get('repo'))
         live_url = as_text(p.get('live_url'))
@@ -483,6 +497,11 @@ def sync_projects(id_data: dict, master_data: dict, force: bool = False):
             if updated_any:
                 stats['updated'] += 1
 
+    for v in master_proj.values():
+        if isinstance(v, dict) and as_text(v.get('name')).lower() in statuses:
+            if carry_status(v, statuses[as_text(v.get('name')).lower()]):
+                stats['updated'] += 1
+
     master_data['projects'] = master_proj
     return stats
 
@@ -498,6 +517,7 @@ def sync_education(id_data: dict, master_data: dict, force: bool = False):
         master_edu = []
 
     stats = {'added': 0, 'updated': 0, 'skipped': 0}
+    statuses = {}
 
     for item in edu_list:
         if not isinstance(item, dict):
@@ -509,6 +529,7 @@ def sync_education(id_data: dict, master_data: dict, force: bool = False):
         if not institution and not degree:
             stats['skipped'] += 1
             continue
+        statuses[(institution.lower(), degree.lower())] = as_text(item.get('verification'))
 
         # Check if already present
         existing_idx = None
@@ -568,6 +589,12 @@ def sync_education(id_data: dict, master_data: dict, force: bool = False):
                 entry['highlights'] = highlights
                 updated_any = True
             if updated_any:
+                stats['updated'] += 1
+
+    for e in master_edu:
+        if isinstance(e, dict):
+            key = (as_text(e.get('institution')).lower(), as_text(e.get('degree')).lower())
+            if key in statuses and carry_status(e, statuses[key]):
                 stats['updated'] += 1
 
     master_data['education'] = master_edu
@@ -712,6 +739,7 @@ def sync_achievements(creds_data: dict, community_data: dict, master_data: dict,
         master_ach = {}
 
     stats = {'added': 0, 'updated': 0, 'skipped': 0}
+    statuses = {}
     existing_keys = set(master_ach.keys())
 
     # 1. Awards from credentials.yaml
@@ -740,6 +768,7 @@ def sync_achievements(creds_data: dict, community_data: dict, master_data: dict,
             parts.append(f"— {details}")
         text = " ".join(parts)
 
+        statuses[text.lower()] = as_text(item.get('verification'))
         ach_key = None
         for k, v in master_ach.items():
             if isinstance(v, dict) and v.get('text', '').lower() == text.lower():
@@ -781,6 +810,7 @@ def sync_achievements(creds_data: dict, community_data: dict, master_data: dict,
             parts.append(f"({' — '.join(meta)})")
         text = " ".join(parts)
 
+        statuses[text.lower()] = as_text(item.get('verification'))
         ach_key = None
         for k, v in master_ach.items():
             if isinstance(v, dict) and v.get('text', '').lower() == text.lower():
@@ -823,6 +853,7 @@ def sync_achievements(creds_data: dict, community_data: dict, master_data: dict,
         if prize:
             text += f" [{prize}]"
 
+        statuses[text.lower()] = as_text(item.get('verification'))
         ach_key = None
         for k, v in master_ach.items():
             if isinstance(v, dict) and v.get('text', '').lower() == text.lower():
@@ -865,6 +896,7 @@ def sync_achievements(creds_data: dict, community_data: dict, master_data: dict,
             parts.append(f"({' — '.join(meta)})")
         text = " ".join(parts)
 
+        statuses[text.lower()] = as_text(item.get('verification'))
         ach_key = None
         for k, v in master_ach.items():
             if isinstance(v, dict) and v.get('text', '').lower() == text.lower():
@@ -907,6 +939,7 @@ def sync_achievements(creds_data: dict, community_data: dict, master_data: dict,
             parts.append(f"({' — '.join(meta)})")
         text = " ".join(parts)
 
+        statuses[text.lower()] = as_text(item.get('verification'))
         ach_key = None
         for k, v in master_ach.items():
             if isinstance(v, dict) and v.get('text', '').lower() == text.lower():
@@ -949,6 +982,7 @@ def sync_achievements(creds_data: dict, community_data: dict, master_data: dict,
             parts.append(f"({' — '.join(meta)})")
         text = " ".join(parts)
 
+        statuses[text.lower()] = as_text(item.get('verification'))
         ach_key = None
         for k, v in master_ach.items():
             if isinstance(v, dict) and v.get('text', '').lower() == text.lower():
@@ -993,6 +1027,7 @@ def sync_achievements(creds_data: dict, community_data: dict, master_data: dict,
             parts.append(f"({' — '.join(meta)})")
         text = " ".join(parts)
 
+        statuses[text.lower()] = as_text(item.get('verification'))
         ach_key = None
         for k, v in master_ach.items():
             if isinstance(v, dict) and v.get('text', '').lower() == text.lower():
@@ -1035,6 +1070,7 @@ def sync_achievements(creds_data: dict, community_data: dict, master_data: dict,
         if meta:
             text += f" ({' — '.join(meta)})"
 
+        statuses[text.lower()] = as_text(item.get('verification'))
         ach_key = None
         for k, v in master_ach.items():
             if isinstance(v, dict) and v.get('text', '').lower() == text.lower():
@@ -1077,6 +1113,7 @@ def sync_achievements(creds_data: dict, community_data: dict, master_data: dict,
             if meta:
                 text += f" ({' — '.join(meta)})"
 
+            statuses[text.lower()] = as_text(item.get('verification'))
             ach_key = None
             for k, v in master_ach.items():
                 if isinstance(v, dict) and v.get('text', '').lower() == text.lower():
@@ -1093,6 +1130,14 @@ def sync_achievements(creds_data: dict, community_data: dict, master_data: dict,
                 stats['added'] += 1
             elif force:
                 master_ach[ach_key] = {'text': text}
+                stats['updated'] += 1
+
+    for k, v in list(master_ach.items()):
+        text = (as_text(v.get('text')) if isinstance(v, dict) else as_text(v)).lower()
+        if text in statuses:
+            entry = v if isinstance(v, dict) else {'text': str(v)}
+            if carry_status(entry, statuses[text]):
+                master_ach[k] = entry
                 stats['updated'] += 1
 
     master_data['achievements'] = master_ach

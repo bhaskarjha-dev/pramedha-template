@@ -1,6 +1,7 @@
 """CRIT-01: the build script fails (non-zero exit) whenever it produces no PDF, and never renders
 files that removed or renamed variants left in generated/."""
 import os
+import re
 import subprocess
 import sys
 
@@ -19,10 +20,10 @@ def build(repo):
 
 def test_build_fails_when_a_render_fails_or_rendercv_is_missing(tmp_path):
     repo = make_repo(tmp_path)
-    design = repo / 'tools/resume/design.yaml'
-    body = design.read_text(encoding='utf-8')
-    assert 'theme: engineeringresumes' in body
-    design.write_text(body.replace('theme: engineeringresumes', 'theme: no_such_theme'), encoding='utf-8')
+    design = repo / 'tools/resume/design.yaml'  # the user's own theme file in their copies: any theme may be set
+    body, count = re.subn(r'(?m)^(\s*theme:\s*)\S+', r'\1no_such_theme', design.read_text(encoding='utf-8'), count=1)
+    assert count == 1, body
+    design.write_text(body, encoding='utf-8')
     proc = build(repo)  # RenderCV rejects the theme; without RenderCV the build stops earlier
     out = (proc.stdout or '') + (proc.stderr or '')
     assert proc.returncode != 0, out

@@ -539,7 +539,8 @@ def assemble_variant(master: dict, design: dict, variant: dict, config: dict = N
         if variant['education']:
             sections['education'] = copy.deepcopy(variant['education'])
     elif master.get('education'):
-        sections['education'] = copy.deepcopy(master['education'])
+        sections['education'] = [{k: v for k, v in e.items() if not str(k).startswith('_')}
+                                 if isinstance(e, dict) else e for e in copy.deepcopy(master['education'])]
 
     # Achievements (resolve keys)
     achievement_texts = []
@@ -691,6 +692,17 @@ def _all_text(value) -> str:
     return '' if value is None else str(value)
 
 
+def project_key(ref) -> str:
+    """The master.yaml project key a variant's project reference points to (same rules as resolve_project)."""
+    if isinstance(ref, str):
+        return ref
+    if isinstance(ref, list) and ref:
+        return str(ref[0])
+    if isinstance(ref, dict) and ref:
+        return str(ref.get('project') or ref.get('name') or next(iter(ref)))
+    return ''
+
+
 def selected_claims(master: dict, variant: dict):
     """Yield (label, raw text, status) for every claim a variant puts on the resume, before tags are stripped.
     status is the bullet's `_verification` (copied by sync.py from identity/), or ''."""
@@ -711,12 +723,23 @@ def selected_claims(master: dict, variant: dict):
             entry = resolve_project(master_projects, ref, '', keep_tags=True)
         except AssemblyError:
             continue  # reported by validate_variant
+        project = master_projects.get(project_key(ref)) or {}
+        status = str(project.get('_verification') or '') if isinstance(project, dict) else ''
         for highlight in entry.get('highlights', []):
-            yield f"project {entry.get('name')}", str(highlight), ''
+            yield f"project {entry.get('name')}", str(highlight), status
     achievements = master.get('achievements') or {}
     for key in (variant.get('achievements') or []):
         if key in achievements:
-            yield f"achievement {key}", _all_text(achievements[key]), ''
+            ach = achievements[key]
+            status = str(ach.get('_verification') or '') if isinstance(ach, dict) else ''
+            yield f"achievement {key}", _all_text(ach), status
+    custom_order = variant.get('section_order')
+    if variant.get('education') is None and (custom_order is None or 'education' in custom_order):
+        for entry in (master.get('education') or []):
+            if isinstance(entry, dict):
+                label = f"education {entry.get('degree') or ''} {entry.get('institution') or ''}".rstrip()
+                shown = {k: v for k, v in entry.items() if not str(k).startswith('_')}
+                yield label, _all_text(shown), str(entry.get('_verification') or '')
     if variant.get('summary'):
         yield 'summary', str(variant['summary']), ''
 
@@ -1043,6 +1066,12 @@ def main():
             stale, unsourced = check_sources(master, variant, sources)
             for warning in unsourced:
                 print(f"   ⚠️  unsourced: {warning}")
+            order = variant.get('section_order')
+            for section in ('technologies', 'education'):
+                if variant.get(section) == [] and master.get(section) and (order is None or section in order):
+                    print(f"   ⚠️  [{variant_name}] {section}: [] hides master.yaml's {section} in this variant. Delete "
+                          f"the line to show it; to hide it on purpose, leave {section} out of section_order instead "
+                          f"(variants copied from the v0.1.0 template carry technologies: [])")
             errors = stale
 
         if errors:

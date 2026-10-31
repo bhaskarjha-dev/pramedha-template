@@ -64,6 +64,7 @@ When modifying or introducing fields in YAML/Markdown schemas, follow this stric
   python tools/resume/assemble.py --validate
   python tools/resume/sync.py --dry-run
   python -m pytest
+  python -m pytest tests/docs      # the template's own document checks (CI job template-checks)
   ```
 
 ---
@@ -75,7 +76,7 @@ Before opening your pull request, verify:
 - [ ] `python .pramedha/validate.py` passes with zero errors
 - [ ] `python tools/resume/assemble.py --validate` passes
 - [ ] `python tools/resume/sync.py --dry-run` runs cleanly
-- [ ] `python -m pytest` passes across all test suites
+- [ ] `python -m pytest` and `python -m pytest tests/docs` pass
 - [ ] Cross-references and relative Markdown links remain intact
 - [ ] No personal or proprietary private data is included in commit history
 - [ ] Commit messages follow descriptive conventional commit standards (e.g., `feat:`, `fix:`, `refactor:`)

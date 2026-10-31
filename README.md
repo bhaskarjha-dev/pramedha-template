@@ -247,7 +247,7 @@ Every fact in this repo carries a verification tag:
 | `⚠️ ESTIMATED` | Reasonable but unverified | ⚠️ Use carefully |
 | `❌ UNVERIFIED` | Aspiration or uncertain claim | ❌ Do not use |
 
-`tools/resume/assemble.py` warns on resume builds that select a ❌ claim (tagged `[unverified]` or `[to-verify]`, or whose role, project or deliverable `verification:` says ❌/UNVERIFIED) and lists every ⚠️ estimated claim it uses.
+`tools/resume/assemble.py` warns on resume builds that select a ❌ claim (tagged `[unverified]` or `[to-verify]`, or whose `verification:` in `identity/` says ❌/UNVERIFIED, for a role, project, deliverable, talk, volunteering entry, certification, award or degree) and lists every ⚠️ estimated claim it uses.
 
 This maps directly to Pramedha's `ClaimStatus` enum for import.
 
