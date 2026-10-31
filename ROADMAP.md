@@ -2,7 +2,7 @@
 
 > **Status:** Active Architectural Blueprint  
 > **Current Version:** `v0.1.0` (Hardened Baseline)  
-> **Target Release:** `v0.2.0` (Owner Release Milestone) → `v1.0.0` (Identity Schema v1)  
+> **Target Release:** `v0.1.0` (Hardened Release) → `v1.0.0` (Identity Schema v1)  
 > **Source Documents:** Derived from zero-trust audit findings (`analysis.md`, `changes.md`, and empirical audits).
 
 ---
@@ -15,7 +15,7 @@ This roadmap captures the engineering milestones, architectural transitions, and
 
 ```mermaid
 flowchart LR
-    A["v0.1.0 / v0.2.0<br/>Hardened Baseline<br/>• Soft Gate Claims<br/>• Provenance Tracking<br/>• Updater Script<br/>• Multi-OS CI"] --> B["v0.3.0<br/>Core-First Layout<br/>(FUT-01)<br/>• ≤ 25 Initial Files<br/>• Modular Packs<br/>• Streamlined Onboarding"]
+    A["v0.1.0 Hardened Baseline<br/>• Soft Gate Claims<br/>• Provenance Tracking<br/>• Updater Script<br/>• Multi-OS CI"] --> B["v0.3.0<br/>Core-First Layout<br/>(FUT-01)<br/>• ≤ 25 Initial Files<br/>• Modular Packs<br/>• Streamlined Onboarding"]
     B --> C["v0.4.0<br/>AI Intake Benchmark<br/>(FUT-02)<br/>• Synthetic Corpus<br/>• Trap Detection<br/>• Automated Scorer"]
     C --> D["v0.5.0<br/>Zero-Leak & Air-Gap<br/>(FUT-04 / FUT-05)<br/>• PII Redactor Tool<br/>• Local Ollama / vLLM<br/>• Zero Egress Mode"]
     D --> E["v1.0.0<br/>Identity Schema v1<br/>(FUT-03)<br/>• Stable Bullet IDs<br/>• JSON Schema<br/>• Direct AST Engine"]
@@ -23,15 +23,15 @@ flowchart LR
 
 ---
 
-## 🚀 Immediate Next Step: Release v0.2.0 Packaging (Owner Actions)
+## 🚀 Immediate Next Step: Release v0.1.0 Hardened Packaging (Owner Actions)
 
-The code-level audit remediation is 100% complete with 92 passing automated tests and end-to-end RenderCV PDF compilation. The remaining items for the official `v0.2.0` release require owner governance credentials and external platform actions:
+The code-level audit and re-audit remediation is 100% complete with 106 passing automated tests and end-to-end RenderCV PDF compilation. The remaining items for the official `v0.1.0` release require owner governance credentials and external platform actions:
 
 | Action ID | Scope | Ownership | Description & Verification |
 |:---------:|-------|:---------:|----------------------------|
 | **OA-1** | PyPI Namespace | Owner | **Defensive Namespace Registration:** Register the package name `pramedha` on [PyPI](https://pypi.org) under the owner account to defend against dependency-confusion or typosquatting attacks. *(Note: Codebase is safe under Decision D5=A with all unreleased CLI references removed).* |
 | **OA-2** | Repository Positioning | Owner | **GitHub Repository Metadata:** Update the repository description on GitHub.com: drop *"or as the data layer for Pramedha — the AI-first career platform"* or append `(platform in development)`. |
-| **OA-3** | Release Engineering | Owner | **Version Bump & Tagging:**<br/>1. Bump `template.version` in `.pramedha/manifest.yaml` to `0.2.0`.<br/>2. Finalize `[0.2.0]` release notes in `.github/CHANGELOG.md` including migration notes, virtualenv setup, and updater bootstrap.<br/>3. Verify sample PDF at `docs/sample/alex-chen-backend.pdf` (already compiled).<br/>4. Create annotated git tag `git tag -a v0.2.0 -m "Release v0.2.0"` and publish a GitHub Release. |
+| **OA-3** | Release Engineering | Owner | **Release Alignment & Tagging:**<br/>1. Maintain `template.version` in `.pramedha/manifest.yaml` at `0.1.0`.<br/>2. Finalize `[0.1.0]` release notes in `.github/CHANGELOG.md` including migration notes, virtualenv setup, and updater bootstrap.<br/>3. Verify sample PDF at `docs/sample/alex-chen-backend.pdf` (already compiled).<br/>4. Ensure git tag `v0.1.0` is published. |
 | **OA-4** | Live CI & Windows Verification | Owner | **External Verification Matrix:**<br/>1. Verify that `template-checks` GitHub Actions job passes across `ubuntu-latest`, `windows-latest`, and `macos-latest`.<br/>2. Verify PowerShell 5.1 and `cmd.exe` execution on a stock Windows 11 machine.<br/>3. Push a throwaway public fork to confirm that the `privacy-guard` workflow triggers and blocks public publication. |
 
 ---
@@ -170,9 +170,9 @@ Currently, career facts in `identity/` are duplicated into `tools/resume/master.
 ## 📋 Architectural Governance Checklist
 
 - [x] **v0.1.0 Remediation:** 13 core audit items closed (`CRIT-01`–`CRIT-07`, `HIGH-01`–`HIGH-06`).
-- [x] **Harness Verification:** 17 e2e/docs harness suites (`H1`–`H17`) passing with 92 unit tests.
-- [x] **Cascade Hardening:** Whitelist section omission, empty list suppression, chronology date fix, and speaking/volunteering ingestion.
-- [ ] **v0.2.0 Release:** Version bump in manifest, release notes, git tag `v0.2.0`, and GitHub Release.
+- [x] **Harness Verification:** 21 e2e/docs harness suites (`H1`–`H21`) passing with 106 tests.
+- [x] **Cascade Hardening:** Whitelist section omission, empty list suppression, chronology date fix, speaking/volunteering ingestion, and full verification status propagation (`CRIT-08`).
+- [x] **v0.1.0 Hardened Release:** Manifest version alignment at `0.1.0`, full re-audit remediation, and release readiness.
 - [ ] **v0.3.0 Modularization:** Core-first directory structure (`FUT-01`).
 - [ ] **v0.4.0 Model Eval:** Automated AI extraction benchmark harness (`FUT-02`).
 - [ ] **v0.5.0 Air-Gap & Redaction:** Local PII scrubber (`FUT-04`) and offline local LLM protocol (`FUT-05`).
