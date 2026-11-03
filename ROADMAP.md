@@ -43,7 +43,7 @@ The code-level audit and re-audit remediation is 100% complete with 106 passing 
 - **Status:** Architecture Designed; Ready for Prototyping
 
 ### The Problem
-A fresh clone currently contains 50+ files outside the engine directories (`.pramedha/`, `.github/`, `tools/`). Over 21 of these files are contextual templates (`stories/`, `strategy/`, `personal/`, `journal/`) that are unnecessary during day-one setup and initial resume generation.
+A fresh clone currently contains 50+ files outside the engine directories (`.pramedha/`, `.github/`, `tools/`). Over 21 of these files are contextual templates (`positioning/`, `strategy/`, `personal/`, `records/`) that are unnecessary during day-one setup and initial resume generation.
 
 ### Architecture & Implementation
 1. **Core Distribution Default:**
@@ -54,10 +54,10 @@ A fresh clone currently contains 50+ files outside the engine directories (`.pra
      - Resume: `tools/resume/` (Decoupled compiler)
 2. **Modular Context Packs (`extras/` or Agent-Summoned):**
    - Package contextual files into on-demand modules:
-     - `pack-interview-prep`: Behavioral STAR story bank (`stories/`)
+     - `pack-interview-prep`: Behavioral STAR story bank (`positioning/`)
      - `pack-job-search`: Target roles, application tracker, financial models (`strategy/`)
      - `pack-personal`: Private reflections, career narrative, form-fill cheatsheets (`personal/`)
-     - `pack-journal`: Shipped wins, work logs, learning logs (`journal/`)
+     - `pack-journal`: Shipped wins, work logs, learning logs (`records/`)
 3. **On-Demand Agent Unpacking:**
    - AI assistants unpack relevant modules when the user transitions to specific career phases (e.g., "Prepare for my Google interview" summons `pack-interview-prep`).
 4. **Outcome Metric:**

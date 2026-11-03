@@ -37,11 +37,11 @@ files still work in any editor, but the AI fill and the PDF build won't.
 | After Filling... | You Can... |
 |-----------------|-----------|
 | `config.yaml` + `identity/` | Generate a tailored resume in 30 seconds for any role |
-| `stories/star-stories.md` | Walk into any behavioral interview prepared with 8 stories |
+| `positioning/star-stories.md` | Walk into any behavioral interview prepared with 8 stories |
 | `strategy/target-roles.md` | Know exactly which roles to apply to and why |
 | `strategy/job-tracker.md` | Track 50+ applications with follow-up reminders |
 | `personal/form-fill-cheatsheet.md` | Fill any job application form in 2 minutes flat |
-| `journal/` | Have a brag document ready for performance reviews and promotions |
+| `records/` | Have a brag document ready for performance reviews and promotions |
 
 ---
 
@@ -117,8 +117,8 @@ Fill at your own pace. Each layer adds value independently.
 |:-----:|---------------|--------------|
 | **0** | `config.yaml` (name + email) | Repo initialized |
 | **1** | `identity/` (experience + skills) | Verified career facts database (powers on-demand resumes) |
-| **2** | `stories/` + `strategy/` | Interview prep + job search execution |
-| **3** | `personal/` + `journal/` | Full career knowledge base |
+| **2** | `personal/` + `strategy/` | Private context + job search execution |
+| **3** | `positioning/` + `records/` | Interview prep + full career knowledge base |
 
 ---
 
@@ -133,7 +133,7 @@ Fill at your own pace. Each layer adds value independently.
                    │ import ↕ export
 ┌──────────────────▼──────────────────────────┐
 │       This Template (standalone)            │
-│  identity/ • stories/ • strategy/ • journal/│
+│  identity/ • personal/ • strategy/ • positioning/ • records/│
 │  YAML + Markdown — your career data         │
 └──────────────────┬──────────────────────────┘
                    │ AI agents read directly
@@ -179,14 +179,16 @@ pramedha-template/
 │   ├── credentials.yaml          Education, certs, awards
 │   ├── projects.yaml             Portfolio projects
 │   ├── volunteering.yaml         Community, open source, mentoring
-│   ├── references.yaml           Professional references (⚠️ private)
-│   ├── claims-and-evidence.md    Verification registry
-│   └── professional-summary.md   Elevator pitches (5 variants)
+│   ├── speaking-and-community.yaml  Speaking, hackathons, events
+│   └── claims-and-evidence.md    Verification registry
 │
-├── stories/                   ← Authored narratives for interviews
-│   ├── star-stories.md           8 STAR behavioral stories
-│   ├── testimonials.md           Social proof & endorsements
-│   └── interview-prep/           Technical + behavioral prep
+├── personal/                  ← Phase 2: Private (never shared)
+│   ├── about-me.md               Life story, values, strengths
+│   ├── life-goals.md             Goals, non-negotiables, dream role
+│   ├── reflections.md            Rejection learning & decision patterns
+│   ├── preferences.yaml          Work prefs, deal-breakers, life context
+│   ├── references.yaml           Professional references (⚠️ private)
+│   └── form-fill-cheatsheet.md   Copy-paste job application answers (⚠️)
 │
 ├── strategy/                  ← Phase 2: Career strategy
 │   ├── target-roles.md           Role evaluation framework & 8-parameter scoring
@@ -197,32 +199,31 @@ pramedha-template/
 │   ├── offer-comparison.md       Multi-offer comparison
 │   └── company-research/         Per-company research dossiers
 │
-├── personal/                  ← Phase 3: Private (never shared)
-│   ├── about-me.md               Life story, values, strengths
+├── positioning/               ← Phase 3: Outward presentation & collateral
+│   ├── professional-summary.md   Elevator pitches (5 variants)
 │   ├── career-narrative.md       "Walk me through your career" script
-│   ├── life-goals.md             Goals, non-negotiables, dream role
-│   ├── reflections.md            Rejection learning & decision patterns
-│   ├── preferences.yaml          Work prefs, deal-breakers, life context
-│   └── form-fill-cheatsheet.md   Copy-paste job application answers (⚠️)
+│   ├── star-stories.md           8 STAR behavioral stories
+│   ├── testimonials.md           Social proof & endorsements
+│   ├── github-profile.md         GitHub profile README content
+│   └── interview-prep/           Technical + behavioral prep
 │
-├── journal/                   ← Phase 3: Chronological logs
+├── records/                   ← Phase 3: Chronological logs
 │   ├── wins.md                   Achievement log (brag document)
 │   ├── learning-log.md           Courses, books, growth
 │   ├── feedback.md               Performance reviews & feedback
 │   └── work-log/                 Fiscal year logs + quarterly summaries
 │
-├── ops/                       ← System maintenance & operations
-│   ├── guide.md                  Operations, tooling stack, rituals & audit
-│   ├── authority-map.md          Single source of truth reference
-│   ├── prompts.md                AI operation prompts
-│   └── session-handoff.md        Cross-session context log
-│
-├── .pramedha/                 ← Pramedha ecosystem
+├── .pramedha/                 ← Pramedha ecosystem & system operations
 │   ├── agent-instructions.md     How ANY AI fills this template
 │   ├── schema-reference.md       Field-by-field schema docs
 │   ├── import-guide.md           Import into Pramedha platform
 │   ├── validate.py               Template integrity validator
-│   └── examples/                 Example filled data
+│   ├── examples/                 Example filled data
+│   └── ops/                      System maintenance & operations
+│       ├── guide.md                Operations, tooling stack, rituals & audit
+│       ├── authority-map.md        Single source of truth reference
+│       ├── prompts.md              AI operation prompts
+│       └── session-handoff.md      Cross-session context log
 │
 └── tools/                     ← Decoupled satellite tools
     └── resume/                ← On-demand resume compiler (decoupled from core profile)
@@ -269,9 +270,12 @@ or text editor.
 When the Pramedha platform (not yet available) ships, this template's schema is designed for seamless integration:
 
 ```
-identity/*.yaml     →  PramedhaProfile.professional
-personal/*          →  PramedhaProfile.personal
-claims-and-evidence →  PramedhaProfile.meta.claims_registry
+identity/*.yaml      →  PramedhaProfile.professional
+personal/*           →  PramedhaProfile.personal
+strategy/*           →  PramedhaProfile.strategy
+positioning/*        →  PramedhaProfile.positioning
+records/*            →  PramedhaProfile.records
+claims-and-evidence  →  PramedhaProfile.meta.claims_registry
 ```
 
 The `Maps to:` comments throughout the template files document this mapping.
@@ -296,22 +300,22 @@ They are informational only — removing them has no effect on standalone usage.
 | `config.yaml` | Name, email, phone | ⚠️ Only what appears on your resume |
 | `identity/identity.yaml` | Date of birth, nationality, visa, pronouns | ❌ **Never public** |
 | `identity/` (other files) | Career facts | ⚠️ Only what appears on your resume |
-| `identity/references.yaml` | Contact details of references | ❌ **Never public** |
+| `personal/references.yaml` | Contact details of references | ❌ **Never public** |
 | `personal/` | Life context, salary, deal-breakers, reflections | ❌ **Never public** |
 | `data-corpus/` | Raw evidence — certs, offer letters, IDs | ❌ **Never public** |
 | `strategy/financial.md` | Current salary, targets | ❌ **Never public** |
 | `strategy/networking.md` | Contact details, relationship notes | ❌ **Never public** |
 | `personal/form-fill-cheatsheet.md` | DOB, address, phone, references | ❌ **Never public** |
-| `journal/feedback.md` | Performance review data | ❌ **Never public** |
+| `records/feedback.md` | Performance review data | ❌ **Never public** |
 | `strategy/job-tracker.md` | Where you are applying | ❌ **Never public** |
 | `strategy/offer-comparison.md` | Offer amounts and terms | ❌ **Never public** |
-| `ops/session-handoff.md` | AI session notes (decisions, targets) | ❌ **Never public** |
+| `.pramedha/ops/session-handoff.md` | AI session notes (decisions, targets) | ❌ **Never public** |
 | `tools/resume/output/` | Generated PDFs | ⚠️ Depends on content |
 
 ### Public repositories are not supported
 
 Everything in this repository is private by design, including `identity/identity.yaml` (date of birth,
-nationality, visa), `strategy/` (applications, offers) and `ops/session-handoff.md`. Keep the repository
+nationality, visa), `strategy/` (applications, offers) and `.pramedha/ops/session-handoff.md`. Keep the repository
 private. To publish a resume or a portfolio, copy the generated PDF or chosen text into a separate public
 repository. CI fails in any public copy of this template (job `privacy-guard`).
 

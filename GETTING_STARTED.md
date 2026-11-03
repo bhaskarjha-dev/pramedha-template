@@ -41,7 +41,7 @@ git push -u origin main
 > If you're switching domains (e.g., non-tech → tech, clinical → healthtech, military/law → corporate):
 > - Focus on **transferable outcomes** in [identity/experience.yaml](identity/experience.yaml) (leadership, stakeholder management, optimization).
 > - Showcase self-directed proof (portfolio projects, open-source, case studies) in [identity/projects.yaml](identity/projects.yaml).
-> - Map out your transition story in [personal/career-narrative.md](personal/career-narrative.md) before applying.
+> - Map out your transition story in [positioning/career-narrative.md](positioning/career-narrative.md) before applying.
 >
 > 🚀 **Applying to Jobs Right Away?**
 > Keep [personal/form-fill-cheatsheet.md](personal/form-fill-cheatsheet.md) open in a side window. It centralizes your standard URLs, address formats, visa details, and recurring application question answers so you can breeze through lengthy ATS forms (Workday, Greenhouse, Lever) without repetitive typing.
@@ -83,7 +83,7 @@ following the 7-phase protocol (A through G). For each file:
 - Auto-fill from data-corpus evidence (including config.yaml)
 - Tag every claim with verification status (✅/⚠️/❌)
 - Mark anything you drafted without evidence as <!-- AI-DRAFTED -->
-- Leave empty what needs real-time user input (journal/, reflections)
+- Leave empty what needs real-time user input (records/, reflections)
 ```
 
 The AI will fill **~40 files automatically**:
@@ -92,11 +92,11 @@ The AI will fill **~40 files automatically**:
 - ✅ Resume master + variants — from identity
 - ✅ STAR stories, interview prep, and professional summary variants
 - ⚠️ Strategy files — drafted, needs your review
-- ❌ Journal files — you fill these over time
+- ❌ Records files — you fill these over time
 
 > 💡 **Phased Execution Tip (Avoid Context Limits):** If your AI chat interface has token output constraints, ask it to fill in two stages:
-> 1. **Stage 1:** Execute **Phase A & B** (scan `data-corpus/` → fill `config.yaml` + generate `identity/*.yaml` and `claims-and-evidence.md`). Review the facts.
-> 2. **Stage 2:** Execute **Phase C through G** (generate resume variants, STAR stories, strategy, and platform copy from the verified identity).
+> 1. **Stage 1:** Execute **Phase A–C** (scan `data-corpus/` → fill `config.yaml` + `identity/` + personal context). Review the facts.
+> 2. **Stage 2:** Execute **Phase D through H** (strategy, positioning calibrated to target roles, resume compilation, and governance).
 >
 > **No AI assistant?** Fill the identity files manually. Start with `config.yaml`, then `identity/experience.yaml` — the most important file.
 
@@ -188,8 +188,8 @@ Fill these at your own pace. Each layer adds value independently:
 - [ ] `strategy/financial.md` — What's your salary target?
 
 ### Week 2: Stories & Preparation
-- [ ] `stories/star-stories.md` — Write 3-5 STAR stories for interviews
-- [ ] `stories/interview-prep/behavioral.md` — Tailor behavioral talking points
+- [ ] `positioning/star-stories.md` — Write 3-5 STAR stories for interviews
+- [ ] `positioning/interview-prep/behavioral.md` — Tailor behavioral talking points
 - [ ] `personal/form-fill-cheatsheet.md` — Pre-fill common application fields
 
 ### Week 3: Personal (Private)
@@ -198,9 +198,9 @@ Fill these at your own pace. Each layer adds value independently:
 - [ ] `personal/preferences.yaml` — Deal-breakers and work preferences
 
 ### Ongoing: Journal
-- [ ] `journal/wins.md` — Log every achievement as it happens
-- [ ] `journal/work-log/` — Weekly work log
-- [ ] `journal/learning-log.md` — Track courses and skills development
+- [ ] `records/wins.md` — Log every achievement as it happens
+- [ ] `records/work-log/` — Weekly work log
+- [ ] `records/learning-log.md` — Track courses and skills development
 
 ---
 
@@ -229,10 +229,10 @@ git clone https://github.com/career-ops-hq/career-ops
 | "How do I fill a specific file?" | `.pramedha/agent-instructions.md` |
 | "What fields does each file have?" | `.pramedha/schema-reference.md` |
 | "What's an example of a filled template?" | `.pramedha/examples/` |
-| "What AI prompts can I use?" | `ops/prompts.md` |
-| "What's the source of truth for X?" | `ops/authority-map.md` |
-| "How do I maintain this system?" | `ops/guide.md` |
-| "What tools do I need?" | `ops/guide.md` (Tool Stack section) |
+| "What AI prompts can I use?" | `.pramedha/ops/prompts.md` |
+| "What's the source of truth for X?" | `.pramedha/ops/authority-map.md` |
+| "How do I maintain this system?" | `.pramedha/ops/guide.md` |
+| "What tools do I need?" | `.pramedha/ops/guide.md` (Tool Stack section) |
 
 ---
 

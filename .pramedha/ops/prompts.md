@@ -8,7 +8,7 @@
 >
 > **Note:** For routine tasks (add project, update skills, weekly maintenance, etc.),
 > you don't need a specific prompt — just describe what you want. The AI reads
-> `AGENTS.md` for routing and `ops/guide.md` for the event→file mapping.
+> `AGENTS.md` for routing and `.pramedha/ops/guide.md` for the event→file mapping.
 
 ---
 
@@ -35,14 +35,15 @@ CONTEXT: Read these files FIRST:
 
 Then scan ALL files in data-corpus/ (resumes, documents, exports, text, media).
 
-EXECUTE: Follow the 7-phase protocol in .pramedha/agent-instructions.md exactly:
+EXECUTE: Follow the 8-phase protocol in .pramedha/agent-instructions.md exactly:
 - Phase A (Steps 0-1): Scan data-corpus/ and build complete mental model
-- Phase B (Steps 2-10): Fill all 10 identity/ files (verified facts + claims + professional summary)
-- Phase C (Steps 11-13): (Satellite - on demand) Initialize tools/resume/ via python tools/resume/sync.py when compiling resumes
-- Phase D (Steps 14-16): Generate stories (STAR stories, testimonials, interview prep)
-- Phase E (Steps 17-21): Draft strategy layer (target roles, study plan, financial, tracking, networking)
-- Phase F (Steps 22-25): Draft personal context (career-narrative, about-me, life-goals, preferences, cheatsheet)
-- Phase G (Steps 26-27): Finalize VISION.md and validate entire repository
+- Phase B (Steps 2-9): Fill all identity/ files (verified facts + claims)
+- Phase C (Steps 10-13): Fill personal layer (preferences, about-me, life-goals, references, cheatsheet)
+- Phase D (Steps 14-18): Draft strategy layer (target roles, study plan, financial, tracking, networking)
+- Phase E (Steps 19-22): Generate positioning layer calibrated to target roles (summaries, stories, prep)
+- Phase F (Steps 23-24): Records layer (user fills over time: wins, work-log, feedback, learning-log)
+- Phase G (Steps 25-27): (Satellite - on demand) Resume pipeline via sync.py → variants → assemble.py
+- Phase H (Steps 28-29): Finalize VISION.md and validate entire repository
 
 OUTPUT: Commit after each phase with clear messages.
 Report: files filled, claims count, contradictions found, gaps remaining.
@@ -56,8 +57,8 @@ Report: files filled, claims count, contradictions found, gaps remaining.
 TASK: Comprehensive audit of my pramedha-template career system.
 
 CONTEXT: Read these files FIRST before doing anything:
-- ops/guide.md (system rules, maintenance rituals)
-- ops/authority-map.md (what's truth for what)
+- .pramedha/ops/guide.md (system rules, maintenance rituals)
+- .pramedha/ops/authority-map.md (what's truth for what)
 - README.md (architecture overview)
 
 Then read ALL files in identity/ (and tools/resume/ if auditing on-demand resume readiness).
@@ -129,8 +130,8 @@ INTERVIEW STAGE: [Phone screen / Technical / System design / Behavioral / Final]
 CONTEXT: Read:
 - identity/experience.yaml (my full work history)
 - identity/skills.yaml (my skill levels)
-- stories/star-stories.md (behavioral stories)
-- stories/interview-prep/behavioral.md (questions for interviewer & talking points)
+- positioning/star-stories.md (behavioral stories)
+- positioning/interview-prep/behavioral.md (questions for interviewer & talking points)
 - strategy/target-roles.md (target role requirements and alignment)
 
 EXECUTE:
@@ -153,8 +154,8 @@ TASK: Perform a rapid health check and audit of my Pramedha repository.
 
 CONTEXT: Read:
 - AGENTS.md (system architecture & critical rules)
-- ops/authority-map.md (source-of-truth ownership)
-- ops/session-handoff.md (previous session context)
+- .pramedha/ops/authority-map.md (source-of-truth ownership)
+- .pramedha/ops/session-handoff.md (previous session context)
 
 EXECUTE:
 1. Run the core validator:

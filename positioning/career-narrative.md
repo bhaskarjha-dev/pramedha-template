@@ -1,9 +1,9 @@
 # Career Narrative — Your Story
 
 > **Purpose:** The prepared answer to "Walk me through your career."
-> Maps to: `PramedhaProfile.personal.career_narrative`
+> Maps to: `PramedhaProfile.positioning.career_narrative`
 >
-> ⚠️ PRIVATE — This is your internal script. Adapt for each audience.
+> ⚠️ PREPARATION ONLY — This is your rehearsal script, not shared verbatim. Adapt the delivery for each audience.
 >
 > Your resume is a list of facts. This is the STORY that connects them.
 > Without this, interviewers hear disconnected bullet points.

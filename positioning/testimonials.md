@@ -3,7 +3,7 @@
 > **Purpose:** Collect quotes from people who can vouch for your work.
 > Use these in: portfolio, LinkedIn featured section, cover letters, personal website.
 >
-> These are NOT references (see `identity/references.yaml`).
+> These are NOT references (see `personal/references.yaml`).
 > These are public-facing endorsements you have permission to share.
 
 ---

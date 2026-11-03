@@ -24,14 +24,32 @@ Every file in this template falls into one of these categories:
 
 | Category | AI Can Auto-Fill? | Files |
 |----------|:-:|-------|
-| **Identity (truth)** | ✅ From data-corpus | experience.yaml, skills.yaml, credentials.yaml, projects.yaml, identity.yaml, volunteering.yaml, speaking-and-community.yaml, references.yaml, claims-and-evidence.md, professional-summary.md |
+| **Identity (truth)** | ✅ From data-corpus | experience.yaml, skills.yaml, credentials.yaml, projects.yaml, identity.yaml, volunteering.yaml, speaking-and-community.yaml, claims-and-evidence.md |
 | **Resume (Satellite - on demand)** | ✅ From identity | tools/resume/master.yaml, design.yaml, variants/*.yaml (via sync.py) |
-| **Stories (authored)** | ✅ From identity | star-stories.md, testimonials.md, interview-prep/behavioral.md, interview-prep/technical.md |
+| **Positioning (authored)** | ✅ From identity | professional-summary.md, career-narrative.md, star-stories.md, testimonials.md, interview-prep/behavioral.md, interview-prep/technical.md, github-profile.md |
 | **Strategy (needs user input)** | ⚠️ Draft from context | target-roles.md, study-plan.md, financial.md, job-tracker.md, offer-comparison.md, networking.md |
-| **Personal (needs user input)** | ⚠️ Draft from text/ | about-me.md, career-narrative.md, life-goals.md, preferences.yaml, reflections.md, form-fill-cheatsheet.md |
-| **Journal (real-time only)** | ❌ User fills over time | wins.md, learning-log.md, feedback.md, work-log/*.md |
-| **Ops (don't fill)** | ❌ System files | guide.md, authority-map.md, prompts.md, session-handoff.md |
+| **Personal (needs user input)** | ⚠️ Draft from text/ | about-me.md, life-goals.md, preferences.yaml, reflections.md, form-fill-cheatsheet.md, references.yaml |
+| **Records (real-time only)** | ❌ User fills over time | wins.md, learning-log.md, feedback.md, work-log/*.md |
+| **Ops (don't fill)** | ❌ System files | .pramedha/ops/guide.md, authority-map.md, prompts.md, session-handoff.md |
 | **Config** | ⚠️ User fills basics, AI enriches | config.yaml, VISION.md |
+
+---
+
+## ⚡ The Rational Lifecycle Order
+
+> 🔴 **CRITICAL FOR AI ASSISTANTS:**
+> The phases below follow a strict dependency chain. **Do not reorder them.**
+>
+> Identity (Facts) → Preferences (Filters) → Target Roles (Strategy) → Positioning (Narratives) → Resume (Satellite)
+>
+> **Why this order matters:**
+> 1. You cannot pick target roles without knowing your verified skills (identity/).
+> 2. You cannot score roles without knowing your constraints (personal/preferences.yaml).
+> 3. You cannot calibrate stories or summaries without knowing which roles you're targeting.
+> 4. You cannot select resume bullets without calibrated positioning collateral.
+>
+> Skipping ahead to resume generation or story writing before target roles are defined
+> produces generic, untargeted content that must be rewritten.
 
 ---
 
@@ -73,7 +91,7 @@ Extract and populate `config.yaml` from the evidence scanned in Step 0:
 
 ---
 
-### Phase B: Identity Layer (Steps 2-10) — The Source of Truth
+### Phase B: Identity Layer (Steps 2-9) — The Source of Truth
 
 #### Step 2: Fill identity/identity.yaml
 - Extract name, email, phone from data-corpus evidence (cross-reference resume + LinkedIn)
@@ -119,9 +137,8 @@ This is the most important file. For each employer:
 - Featured items: what to pin on LinkedIn/GitHub/portfolio
 - Cross-reference with experience.yaml to avoid duplication
 
-#### Step 7: Fill identity/volunteering.yaml + references.yaml
+#### Step 7: Fill identity/volunteering.yaml
 - Volunteering: community work, open source, mentoring
-- References: professional references with contact details (mark ⚠️ PRIVATE)
 
 #### Step 8: Fill identity/speaking-and-community.yaml
 - Speaking engagements: title, event, organizer, date, audience, topics, materials links
@@ -138,19 +155,114 @@ This is the most important file. For each employer:
 - Items tagged `[estimated]` or `[to-verify]` will become Claim Debt in identity/claims-and-evidence.md
 - Log any contradictions found between sources
 
-#### Step 10: Fill identity/professional-summary.md
-- Write 3-5 summary variants based on the filled profile
-- Tailor to the user's target roles (from config.yaml or strategy/)
-- Keep factual — every claim in the summary must exist in experience.yaml
+---
+
+### Phase C: Personal Layer (Steps 10-13) — Private, User Input Preferred
+
+> ⚠️ Fill ONLY from `data-corpus/text/` freeform data. Never infer personal
+> information. If no personal context exists, leave these empty.
+>
+> Preferences are filled BEFORE strategy because they act as filters for target
+> role evaluation (compensation floor, location constraints, remote tolerance).
+
+#### Step 10: Draft personal/preferences.yaml
+- Extract work preferences from freeform text (if available)
+- Fill career_stage, risk_tolerance, time_availability if inferrable
+- Otherwise: leave empty
+
+#### Step 11: Draft personal/about-me.md
+- Articulate life context, personal values, and intellectual motivations (extracted only from `data-corpus/text/` evidence)
+
+#### Step 12: Draft personal/life-goals.md + reflections.md
+- If career goals exist in text/: structure into short/medium/long term
+- Fill non-negotiables and dream role if context available
+- Otherwise: leave empty for user
+
+#### Step 13: Fill personal/references.yaml + personal/form-fill-cheatsheet.md
+- **references.yaml**: Professional references with contact details (mark ⚠️ PRIVATE)
+- **form-fill-cheatsheet.md**: Extract from config.yaml + identity.yaml: name, email, phone, DOB, address. Fill education, references, work authorization sections. Pre-fill common application questions with suggested answers. **Mark ⚠️ PRIVATE** — this file is committed to the user's private repository; never copy it anywhere else
 
 ---
 
-### Phase C: Resume Satellite Layer (Steps 11-13) — On-Demand Forward Projection
+### Phase D: Strategy Layer (Steps 14-18) — Needs User Input, AI Drafts
 
-> 💡 **Decoupled Satellite Pipeline:** Phase C is optional during initial repository setup or daily career logging.
+> ⚠️ These files require user preferences/goals. If `data-corpus/text/` contains
+> career plans, brain dumps, or goals — use them. Otherwise, draft what you can
+> and mark sections needing user input with `<!-- USER INPUT NEEDED -->`.
+
+#### Step 14: Draft strategy/target-roles.md
+> **This is the pivotal step.** Target roles define the lens for ALL positioning
+> and resume content that follows.
+
+- Document honest baseline in Part 1 (grounded in verified skills.yaml and experience.yaml)
+- Evaluate roles against skills using the 8-parameter framework (P1–P8, max 40 points)
+- Define Tier A (32-40), Tier B (24-31), Tier C (16-23)
+- Identify shared foundation across Tier A targets and draft unified positioning statement
+- Map roles to resume variants (aim for 2-4 variants max)
+- Complete detailed role deep-dives for Tier A & B targets with ATS keywords
+- Mark as draft: `<!-- AI-SUGGESTED — Review and confirm -->`
+
+#### Step 15: Draft strategy/study-plan.md
+- Identify gaps between current skills.yaml and target role requirements
+- Suggest learning resources and sprint timeline
+- Mark as draft
+
+#### Step 16: Draft strategy/financial.md + strategy/offer-comparison.md
+- **financial.md**: If salary data exists in text/ or config.yaml: structure it. Otherwise: leave fields empty (salary is sensitive). Never fabricate salary information.
+- **offer-comparison.md**: Initialize multi-offer comparison framework and decision weights. Mark as draft: `<!-- AI-SUGGESTED — Review and confirm -->`
+
+#### Step 17: Draft strategy/job-tracker.md
+- Populate initial target companies and pipeline stages.
+- Mark as draft: `<!-- AI-SUGGESTED — Review and confirm -->`
+
+#### Step 18: Draft strategy/networking.md
+- Initialize target contact circles (Tier 1 Advocates, Tier 2 Domain Peers, Tier 3 Aspirations), outreach cadence, and strategic event targets. (User logs individual real-time contacts as conversations occur).
+- Mark as draft: `<!-- AI-SUGGESTED — Review and confirm -->`
+
+---
+
+### Phase E: Positioning Layer (Steps 19-22) — Authored Narratives Calibrated to Target Roles
+
+#### Step 19: Generate positioning/professional-summary.md + positioning/career-narrative.md
+- **professional-summary.md**: Write 3-5 summary variants. Calibrate summaries to the target roles defined in Step 14. Each variant should speak to a specific audience. Keep factual — every claim in the summary must exist in experience.yaml.
+- **career-narrative.md**: Write "walk me through your career" transition arcs in 3 lengths (30s elevator pitch, 2min interview standard, 5min deep dive). Ground every transition strictly in verified facts from `identity/experience.yaml`. Calibrate narrative arcs to target roles.
+
+#### Step 20: Generate positioning/star-stories.md
+- Extract 5-8 stories from experience.yaml bullets
+- Structure each using STAR format: Situation, Task, Action, Result
+- Map to competency categories (leadership, problem-solving, collaboration, etc.)
+- Calibrate emphasis, metrics, and technical depth to Phase D target roles
+- Every story must reference a verified claim
+
+#### Step 21: Generate positioning/testimonials.md + positioning/github-profile.md
+- **testimonials.md**: Extract performance review quotes, LinkedIn recommendations, peer feedback, and client praise from `data-corpus/`. Tag each entry with attribution, relationship context, and verification status.
+- **github-profile.md**: Draft GitHub profile README content based on identity facts and target role positioning.
+
+#### Step 22: Generate positioning/interview-prep/ (behavioral.md & technical.md)
+- **behavioral.md**: Map STAR stories from star-stories.md to common behavioral questions, leadership principles (e.g. Amazon LP, ownership, conflict resolution), and situational frameworks. Ensure each target role has at least 3 matching stories.
+- **technical.md**: Extract core technical competencies from skills.yaml (advanced/expert level); list likely interview topics per target role and add system design topics if applicable. Cross-reference with study-plan.md for gap awareness.
+
+---
+
+### Phase F: Records Layer (Steps 23-24) — User Fills Over Time
+
+> These files are NOT AI-filled. They are chronological flight-recorder logs
+> that the user populates as events happen during their career.
+
+#### Step 23: Note records/work-log/
+- Work logs are weekly engineering flight logs. The AI does not generate these — remind the user to maintain them.
+
+#### Step 24: Note records/wins.md, feedback.md, learning-log.md
+- These are real-time documents. Briefly explain their purpose and leave empty.
+
+---
+
+### Phase G: Resume Satellite Layer (Steps 25-27) — On-Demand Forward Projection
+
+> 💡 **Decoupled Satellite Pipeline:** Phase G is optional during initial repository setup or daily career logging.
 > It is activated on demand via `python tools/resume/sync.py` when preparing to compile targeted resumes for active job applications.
 
-#### Step 11: Populate tools/resume/master.yaml via Bridge Script
+#### Step 25: Populate tools/resume/master.yaml via Bridge Script
 - Run the bridge synchronizer to import verified facts from identity into `master.yaml`:
   ```bash
   python tools/resume/sync.py
@@ -175,110 +287,26 @@ This is the most important file. For each employer:
           leadership: "Emphasizes team orchestration and business impact"
   ```
 
-#### Step 12: Generate tools/resume/variants/
+#### Step 26: Generate tools/resume/variants/
 - Create role-specific overlays in `tools/resume/variants/` (e.g. `A_Backend_Lead.yaml`, `B_Fullstack.yaml`).
 - Each variant selects specific bullets and phrasings from `master.yaml`.
 - Include a tailored summary and select relevant projects and technologies.
 
-#### Step 13: Validate resume pipeline
+#### Step 27: Validate resume pipeline
 - Run `python tools/resume/assemble.py --validate` to verify all bullet and project references.
 - Test building output with `python tools/resume/assemble.py`. RenderCV will compile variants into `tools/resume/generated/*.yaml` and output PDFs/Typst documents in `tools/resume/output/`.
 
 ---
 
-### Phase D: Stories & Interview Prep (Steps 14-16) — Authored Narratives
+### Phase H: Governance (Steps 28-29) — Finalize
 
-#### Step 14: Generate stories/star-stories.md
-- Extract 5-8 stories from experience.yaml bullets
-- Structure each using STAR format: Situation, Task, Action, Result
-- Map to competency categories (leadership, problem-solving, collaboration, etc.)
-- Every story must reference a verified claim
-
-#### Step 15: Generate stories/testimonials.md
-- Extract performance review quotes, LinkedIn recommendations, peer feedback, and client praise from `data-corpus/`.
-- Tag each entry with attribution, relationship context, and verification status.
-
-#### Step 16: Generate stories/interview-prep/ (behavioral.md & technical.md)
-- **behavioral.md**: Map STAR stories from star-stories.md to common behavioral questions, leadership principles (e.g. Amazon LP, ownership, conflict resolution), and situational frameworks. Ensure each target role has at least 3 matching stories.
-- **technical.md**: Extract core technical competencies from skills.yaml (advanced/expert level); list likely interview topics per target role and add system design topics if applicable. Cross-reference with study-plan.md for gap awareness.
-
----
-
-### Phase E: Strategy Layer (Steps 17-21) — Needs User Input, AI Drafts
-
-> ⚠️ These files require user preferences/goals. If `data-corpus/text/` contains
-> career plans, brain dumps, or goals — use them. Otherwise, draft what you can
-> and mark sections needing user input with `<!-- USER INPUT NEEDED -->`.
-
-#### Step 17: Draft strategy/target-roles.md
-- Document honest baseline in Part 1 (grounded in verified skills.yaml and experience.yaml)
-- Evaluate roles against skills using the 8-parameter framework (P1–P8, max 40 points)
-- Define Tier A (32-40), Tier B (24-31), Tier C (16-23)
-- Identify shared foundation across Tier A targets and draft unified positioning statement
-- Map roles to resume variants (aim for 2-4 variants max)
-- Complete detailed role deep-dives for Tier A & B targets with ATS keywords
-- Mark as draft: `<!-- AI-SUGGESTED — Review and confirm -->`
-
-#### Step 18: Draft strategy/study-plan.md
-- Identify gaps between current skills.yaml and target role requirements
-- Suggest learning resources and sprint timeline
-- Mark as draft
-
-#### Step 19: Draft strategy/financial.md
-- If salary data exists in text/ or config.yaml: structure it
-- Otherwise: leave fields empty (salary is sensitive)
-- Never fabricate salary information
-
-#### Step 20: Draft strategy/job-tracker.md and strategy/networking.md
-- **strategy/job-tracker.md**: Populate initial target companies and pipeline stages.
-- **strategy/networking.md**: Initialize target contact circles (Tier 1 Advocates, Tier 2 Domain Peers, Tier 3 Aspirations), outreach cadence, and strategic event targets. (User logs individual real-time contacts as conversations occur).
-- Mark as draft: `<!-- AI-SUGGESTED — Review and confirm -->`
-
-#### Step 21: Draft strategy/offer-comparison.md
-- Initialize multi-offer comparison framework and decision weights.
-- Mark as draft: `<!-- AI-SUGGESTED — Review and confirm -->`
-
----
-
-### Phase F: Personal Layer (Steps 22-25) — Private, User Input Preferred
-
-> ⚠️ Fill ONLY from `data-corpus/text/` freeform data. Never infer personal
-> information. If no personal context exists, leave these empty.
-
-#### Step 22: Draft personal/career-narrative.md, then personal/about-me.md
-- **First, Draft `personal/career-narrative.md`:**
-  - Write "walk me through your career" transition arcs in 3 lengths (30s elevator pitch, 2min interview standard, 5min deep dive).
-  - Ground every transition strictly in verified facts from `identity/experience.yaml`.
-- **Second, Draft `personal/about-me.md`:**
-  - Use the career narrative as grounding to articulate life context, personal values, and intellectual motivations (extracted only from `data-corpus/text/` evidence).
-
-#### Step 23: Draft personal/life-goals.md
-- If career goals exist in text/: structure into short/medium/long term
-- Fill non-negotiables and dream role if context available
-- Otherwise: leave empty for user
-
-#### Step 24: Draft personal/preferences.yaml
-- Extract work preferences from freeform text (if available)
-- Fill career_stage, risk_tolerance, time_availability if inferrable
-- Otherwise: leave empty
-
-#### Step 25: Fill personal/form-fill-cheatsheet.md
-- Extract from config.yaml + identity.yaml: name, email, phone, DOB, address
-- Fill education, references, work authorization sections
-- Pre-fill common application questions with suggested answers
-- **Mark ⚠️ PRIVATE** — this file is committed to the user's private repository; never copy it anywhere else
-
----
-
-### Phase G: Config & Vision (Steps 26-27) — Finalize
-
-#### Step 26: Enrich VISION.md
+#### Step 28: Enrich VISION.md
 - Fill mission statement from config.yaml + career goals
 - Set success criteria from target-roles + financial
 - Update current status based on what's been filled
 - Update "What's Next" pointer
 
-#### Step 27: Final Validation
+#### Step 29: Final Validation
 ```bash
 python .pramedha/validate.py                 # Core profile integrity (0 resume dependency)
 # Optional (when satellite resume pipeline is active):
@@ -289,7 +317,7 @@ Report:
 - Claims verified vs. unverified
 - Contradictions found
 - Items needing user input
-- Update `ops/session-handoff.md` with complete session summary (phases executed, key user decisions discovered, data gaps resolved, contradictions found, and artifacts created)
+- Update `.pramedha/ops/session-handoff.md` with complete session summary (phases executed, key user decisions discovered, data gaps resolved, contradictions found, and artifacts created)
 
 ---
 
@@ -299,11 +327,11 @@ These are system files, templates, or real-time documents:
 
 | File | Why AI Doesn't Fill It |
 |------|----------------------|
-| ops/* | System rules — they're already complete |
-| journal/wins.md | Real-time — user logs as events happen |
-| journal/work-log/* | Real-time — weekly logs |
-| journal/learning-log.md | Real-time — courses as completed |
-| journal/feedback.md | Real-time — reviews as received |
+| .pramedha/ops/* | System rules — they're already complete |
+| records/wins.md | Real-time — user logs as events happen |
+| records/work-log/* | Real-time — weekly logs |
+| records/learning-log.md | Real-time — courses as completed |
+| records/feedback.md | Real-time — reviews as received |
 | personal/reflections.md | Real-time — rejection learning as it happens |
 | strategy/job-tracker.md | Real-time — applications as sent |
 | strategy/offer-comparison.md | Real-time — offers as received |
@@ -326,7 +354,7 @@ These are system files, templates, or real-time documents:
 7. **Mark AI drafts.** Any AI-generated content the user hasn't confirmed gets:
    `<!-- AI-DRAFTED — Review and confirm -->`
 8. **Respect privacy layers:**
-   - identity/ → private facts; only what appears on a generated resume is public. identity/identity.yaml (date of birth, nationality, visa) and identity/references.yaml never leave the repository
+   - identity/ → private facts; only what appears on a generated resume is public. identity/identity.yaml (date of birth, nationality, visa) and personal/references.yaml never leave the repository
    - personal/ → private (never on resume, never shared)
    - data-corpus/ → raw evidence (never shared externally)
 
@@ -348,13 +376,13 @@ If the template is **already partially filled**, adapt the protocol:
 | Task | What to do |
 |------|-----------|
 | "Add a new project" | Update identity/projects.yaml + experience.yaml + claims register (master.yaml synced on demand via sync.py) |
-| "Add a new achievement" | Update experience.yaml + journal/wins.md + claims register (master.yaml synced on demand via sync.py) |
+| "Add a new achievement" | Update experience.yaml + records/wins.md + claims register (master.yaml synced on demand via sync.py) |
 | "Update skills" | Update identity/skills.yaml + claims register (master.yaml synced on demand via sync.py) |
 | "Create resume variant" | Read tools/resume/master.yaml, create tools/resume/variants/[name].yaml |
-| "Prep for interview" | Read identity/ + stories/star-stories.md, generate prep doc |
-| "Fill everything from data-corpus" | Run Phase A → G in order |
+| "Prep for interview" | Read identity/ + positioning/star-stories.md, generate prep doc |
+| "Fill everything from data-corpus" | Run Phase A → H in order |
 
-See `ops/prompts.md` for ready-to-paste prompts for key tasks (initial fill, audit, resume tailoring, interview prep).
+See `.pramedha/ops/prompts.md` for ready-to-paste prompts for key tasks (initial fill, audit, resume tailoring, interview prep).
 
 ---
 
@@ -375,9 +403,12 @@ This template is **fully standalone**. No external tools are required.
 If also using the Pramedha platform, the schema mapping is:
 
 ```
-identity/*.yaml     →  PramedhaProfile.professional
-personal/*          →  PramedhaProfile.personal
-claims-and-evidence →  PramedhaProfile.meta.claims_registry
+identity/*.yaml      →  PramedhaProfile.professional
+personal/*           →  PramedhaProfile.personal
+strategy/*           →  PramedhaProfile.strategy
+positioning/*        →  PramedhaProfile.positioning
+records/*            →  PramedhaProfile.records
+claims-and-evidence  →  PramedhaProfile.meta.claims_registry
 ```
 
 The `Maps to:` comments in individual template files document this mapping

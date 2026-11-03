@@ -26,7 +26,7 @@ def test_manifest_lists_only_template_owned_paths():
         assert path in owned, path
     for path in owned:
         top = path.split('/')[0]
-        if top in ('identity', 'personal', 'strategy', 'journal', 'stories', 'data-corpus'):
+        if top in ('identity', 'personal', 'strategy', 'records', 'positioning', 'data-corpus'):
             assert path.endswith('README.md'), path
         assert path not in ('config.yaml', 'AGENTS.md', 'VISION.md', 'tools', 'tools/resume',
                             'tools/resume/master.yaml', 'tools/resume/design.yaml',

@@ -35,7 +35,7 @@
 
 
 ## Strengths (What I'm Best At)
-<!-- Your top 3 — ask peers if unsure. Cross-reference with journal/feedback.md -->
+<!-- Your top 3 — ask peers if unsure. Cross-reference with records/feedback.md -->
 1.
 2.
 3.

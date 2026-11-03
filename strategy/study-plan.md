@@ -5,7 +5,7 @@
 >
 > Cross-references:
 > - Skills gaps come from: `identity/skills.yaml` vs `strategy/target-roles.md`
-> - Progress feeds into: `journal/learning-log.md`
+> - Progress feeds into: `records/learning-log.md`
 > - Completed items update: `identity/credentials.yaml`
 
 ---

@@ -107,7 +107,7 @@ FILES = {
     'identity/credentials.yaml': CREDENTIALS,
     'identity/projects.yaml': PROJECTS,
     'identity/claims-and-evidence.md': '# Claims\n',
-    'identity/professional-summary.md': '# Professional summary\n',
+    'positioning/professional-summary.md': '# Professional summary\n',
     'tools/resume/master.yaml': EMPTY_POOL,
 }
 EVIDENCE = ['offer-letter.pdf', 'launch-note.txt', 'experience-letter.pdf', 'diploma.pdf',
@@ -175,6 +175,7 @@ def make_repo(tmp_path, variants=True, keep_template_output_name=False):
           'user': {'name': 'Alex Chen', 'email': 'alex.chen@example.com', 'headline': 'Senior Software Engineer'},
           'profession_type': 'engineering', 'career_type': 'employed', 'locale': 'en'}, repo / 'config.yaml')
     for rel, text in FILES.items():
+        (repo / rel).parent.mkdir(parents=True, exist_ok=True)
         (repo / rel).write_text(text, encoding='utf-8')
     for name in EVIDENCE:
         (repo / 'data-corpus/documents' / name).write_text('placeholder evidence for tests\n', encoding='utf-8')

@@ -163,7 +163,7 @@ The bridge between raw identity facts and RenderCV resume generation operates as
 ---
 
 <a id="references"></a>
-## identity/references.yaml → PramedhaProfile.professional.references[]
+## personal/references.yaml → PramedhaProfile.professional.references[]
 
 | Template Field | Pramedha Field | Type |
 |---------------|---------------|------|
@@ -190,6 +190,47 @@ The bridge between raw identity facts and RenderCV resume generation operates as
 | `life-goals.md → medium_term` | `personal.career_goals.medium_term` |
 | `life-goals.md → long_term` | `personal.career_goals.long_term` |
 | `about-me.md → career_stage` | `personal.life_context.career_stage` |
+
+---
+
+<a id="strategy"></a>
+## strategy/ → PramedhaProfile.strategy
+
+| Template File | Pramedha Field | Description |
+|--------------|----------------|-------------|
+| `target-roles.md` | `strategy.target_roles[]` | Scored role targets with tier classification |
+| `study-plan.md` | `strategy.study_plan` | Skill gap analysis and learning sprints |
+| `financial.md` | `strategy.financial` | Compensation targets, thresholds, negotiation bounds |
+| `offer-comparison.md` | `strategy.offer_comparison` | Multi-offer evaluation framework |
+| `job-tracker.md` | `strategy.job_tracker[]` | Application pipeline and status tracking |
+| `networking.md` | `strategy.networking` | Contact circles, outreach cadence, event targets |
+
+---
+
+<a id="positioning"></a>
+## positioning/ → PramedhaProfile.positioning
+
+| Template File | Pramedha Field | Description |
+|--------------|----------------|-------------|
+| `professional-summary.md` | `positioning.professional_summary` | Pre-written summary variants (resume, LinkedIn, elevator pitch) |
+| `career-narrative.md` | `positioning.career_narrative` | "Walk me through your career" scripts (30s/2min/5min) |
+| `star-stories.md` | `positioning.star_stories[]` | STAR framework behavioral interview stories |
+| `testimonials.md` | `positioning.testimonials[]` | Curated endorsement quotes for portfolio/LinkedIn |
+| `github-profile.md` | `positioning.github_profile` | GitHub profile README content |
+| `interview-prep/behavioral.md` | `positioning.interview_prep.behavioral` | Behavioral interview frameworks and question mapping |
+| `interview-prep/technical.md` | `positioning.interview_prep.technical` | Domain-specific technical prep materials |
+
+---
+
+<a id="records"></a>
+## records/ → PramedhaProfile.records
+
+| Template File | Pramedha Field | Description |
+|--------------|----------------|-------------|
+| `wins.md` | `records.wins[]` | Achievement log (brag document) |
+| `learning-log.md` | `records.learning_log[]` | Courses, books, conferences tracked |
+| `feedback.md` | `records.feedback[]` | Performance reviews and informal feedback |
+| `work-log/*.md` | `records.work_log[]` | Weekly engineering flight logs |
 
 ---
 
@@ -224,6 +265,9 @@ The bridge between raw identity facts and RenderCV resume generation operates as
 | Skills Matrix | ✅ Categorized | ✅ Taxonomized | Platform maps names to Lightcast/ESCO canonical IDs |
 | Credentials & Education | ✅ Full | ✅ Full | Split into education, certs, awards |
 | Private Preferences | ✅ Private YAML | ✅ Personal Layer | Strictly guarded, never serialized to outward assets |
+| Strategy & Targeting | ✅ Structured MD | ✅ Strategy Layer | Target roles, study plan, financial, job tracking, networking |
+| Positioning & Narratives | ✅ Authored Markdown | ✅ Positioning Layer | Summaries, stories, and prep calibrated to target roles |
+| Records & Telemetry | ✅ Append-Only Logs | ✅ Records Layer | Chronological wins, feedback, learning, work logs |
 | Claims & Verification | ✅ Markdown Ledger | ✅ Meta Layer | Trust scores and verification tags align |
 | External Tools Integration | ✅ `tools/` | ✅ MCP & SDK | Decoupled tool satellites mounted under `tools/` (e.g. `tools/resume/`) |
 | Vector Embeddings | ❌ (File-based) | ✅ Qdrant/pgvector | Computed during platform intake |
