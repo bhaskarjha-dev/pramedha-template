@@ -270,9 +270,12 @@ or text editor.
 When the Pramedha platform (not yet available) ships, this template's schema is designed for seamless integration:
 
 ```
-identity/*.yaml     →  PramedhaProfile.professional
-personal/*          →  PramedhaProfile.personal
-claims-and-evidence →  PramedhaProfile.meta.claims_registry
+identity/*.yaml      →  PramedhaProfile.professional
+personal/*           →  PramedhaProfile.personal
+strategy/*           →  PramedhaProfile.strategy
+positioning/*        →  PramedhaProfile.positioning
+records/*            →  PramedhaProfile.records
+claims-and-evidence  →  PramedhaProfile.meta.claims_registry
 ```
 
 The `Maps to:` comments throughout the template files document this mapping.

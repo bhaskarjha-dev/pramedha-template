@@ -14,6 +14,14 @@ All notable changes to the Pramedha Career Template.
 - **`identity/references.yaml` → `personal/references.yaml`** — Moved confidential reference contacts into the private `personal/` layer where they belong.
 - **`positioning/github-profile.md`** — New template for GitHub profile README content.
 
+### Lifecycle & Schema
+- **Phase Reordering (`.pramedha/agent-instructions.md`)** — Fixed circular dependency where resume variants and STAR stories were generated before target roles were defined. New phase order follows the strict dependency chain: Identity → Personal (Preferences) → Strategy (Target Roles) → Positioning (Calibrated Narratives) → Resume (On-Demand Satellite). Phases renumbered A–H with Steps 0–29.
+- **Dependency Chain Rationale** — Added explicit rationale block in agent-instructions.md explaining why phase order is invariant.
+- **PramedhaProfile Schema Expansion (`.pramedha/schema-reference.md`)** — Added `strategy/`, `positioning/`, and `records/` sections to the platform schema mapping. Updated Field Coverage Summary table.
+- **Maps to: Comment Updates** — Updated `positioning/career-narrative.md` and `positioning/professional-summary.md` to reference `PramedhaProfile.positioning.*` namespace.
+- **Pramedha Integration Mapping** — Expanded README.md and agent-instructions.md integration blocks from 3 to 6 layer mappings.
+- **Career Narrative Tag Clarification** — Changed `⚠️ PRIVATE` to `⚠️ PREPARATION ONLY` to resolve conceptual tension with positioning/ layer.
+
 ### Documentation
 - Updated all cross-references across 30+ files (README.md, GETTING_STARTED.md, VISION.md, ROADMAP.md, AGENTS.md, agent-instructions.md, schema-reference.md, authority-map.md, guide.md, prompts.md, session-handoff.md, CONTRIBUTING.md, and all content files).
 - Architecture tree in README.md fully rewritten to reflect new 5+1 layer layout.

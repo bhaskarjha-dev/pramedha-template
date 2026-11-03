@@ -53,11 +53,12 @@ If facts change, the identity layer updates first, then everything downstream re
 |-------|:------:|----------------|
 | Phase A: Foundation | ⬜ | Identity config + raw evidence in `data-corpus/` |
 | Phase B: Identity Layer | ⬜ | Fact database: experience, skills, credentials, projects, claims |
-| Phase C: Resume Pipeline | ⬜ | tools/resume/ master.yaml bullet pool + role-specific variants → RenderCV PDF |
-| Phase D: Stories & Narratives | ⬜ | STAR stories, testimonials, interview prep |
-| Phase E: Strategy Layer | ⬜ | Target roles, study plan, job tracking, financial |
-| Phase F: Personal Context | ⬜ | About me, career narrative, preferences, reflections |
-| Phase G: Governance & Vision | ⬜ | VISION.md, validation, maintenance rituals |
+| Phase C: Personal Layer | ⬜ | Preferences, about-me, life-goals, reflections, references |
+| Phase D: Strategy Layer | ⬜ | Target roles, study plan, job tracking, financial, networking |
+| Phase E: Positioning Layer | ⬜ | Professional summary, career narrative, STAR stories, interview prep |
+| Phase F: Records Layer | ⬜ | Work logs, wins, feedback, learning (user fills over time) |
+| Phase G: Resume Satellite | ⬜ | On-demand: sync → master.yaml → role-specific variants → PDF |
+| Phase H: Governance | ⬜ | VISION.md, validation, maintenance rituals |
 
 ---
 

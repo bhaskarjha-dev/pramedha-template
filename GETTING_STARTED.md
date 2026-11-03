@@ -92,11 +92,11 @@ The AI will fill **~40 files automatically**:
 - ✅ Resume master + variants — from identity
 - ✅ STAR stories, interview prep, and professional summary variants
 - ⚠️ Strategy files — drafted, needs your review
-- ❌ Journal files — you fill these over time
+- ❌ Records files — you fill these over time
 
 > 💡 **Phased Execution Tip (Avoid Context Limits):** If your AI chat interface has token output constraints, ask it to fill in two stages:
-> 1. **Stage 1:** Execute **Phase A & B** (scan `data-corpus/` → fill `config.yaml` + generate `identity/*.yaml` and `claims-and-evidence.md`). Review the facts.
-> 2. **Stage 2:** Execute **Phase C through G** (generate resume variants, STAR stories, strategy, and platform copy from the verified identity).
+> 1. **Stage 1:** Execute **Phase A–C** (scan `data-corpus/` → fill `config.yaml` + `identity/` + personal context). Review the facts.
+> 2. **Stage 2:** Execute **Phase D through H** (strategy, positioning calibrated to target roles, resume compilation, and governance).
 >
 > **No AI assistant?** Fill the identity files manually. Start with `config.yaml`, then `identity/experience.yaml` — the most important file.
 

@@ -1,7 +1,7 @@
 # Professional Summary
 
 > **Purpose:** Pre-written summary variants for different contexts.
-> Maps to: `PramedhaProfile.professional.identity.professional_summary`
+> Maps to: `PramedhaProfile.positioning.professional_summary`
 >
 > Write 3-5 variants optimized for different audiences.
 > AI will generate these from your experience data if left empty.
