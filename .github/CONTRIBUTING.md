@@ -50,7 +50,7 @@ When modifying or introducing fields in YAML/Markdown schemas, follow this stric
 
 - [ ] **1. Template Definition:** Update canonical scaffolding files in `identity/`, `tools/resume/`, `strategy/`, or `personal/`. Include clear field comments and verification tag examples.
 - [ ] **2. Schema Reference:** Update `.pramedha/schema-reference.md` (field name, type, enum definitions, PramedhaProfile and RenderCV mappings).
-- [ ] **3. Authority Map:** If data ownership changes, update `ops/authority-map.md`.
+- [ ] **3. Authority Map:** If data ownership changes, update `.pramedha/ops/authority-map.md`.
 - [ ] **4. Validator Logic:** Update `.pramedha/validate.py`:
   - Add required/optional checks and enum validations
   - Update `compute_fill_status()` check predicates if field structure changed

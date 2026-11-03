@@ -7,7 +7,7 @@
 
 ## Network Health Rules
 
-1. **Maintain 3 warm references at all times** (see `identity/references.yaml`)
+1. **Maintain 3 warm references at all times** (see `personal/references.yaml`)
 2. **Reach out to 2-3 contacts per week** during active job search
 3. **Follow up within 48 hours** of any introduction
 4. **Give before you ask** — share articles, congratulate, endorse

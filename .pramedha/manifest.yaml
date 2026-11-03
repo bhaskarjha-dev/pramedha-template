@@ -45,9 +45,9 @@ template_owned:
   - data-corpus/resumes/README.md
   - data-corpus/text/README.md
   - docs
-  - ops/authority-map.md
-  - ops/guide.md
-  - ops/prompts.md
+  - .pramedha/ops/authority-map.md
+  - .pramedha/ops/guide.md
+  - .pramedha/ops/prompts.md
   - pytest.ini
   - tests
   - tools/external/README.md
@@ -80,8 +80,6 @@ files:
       category: "identity"
     - path: "identity/claims-and-evidence.md"
       category: "identity"
-    - path: "identity/professional-summary.md"
-      category: "identity"
     - path: ".pramedha/manifest.yaml"
       category: "system"
 
@@ -111,8 +109,6 @@ files:
   optional:
     - path: "identity/volunteering.yaml"
       category: "identity"
-    - path: "identity/references.yaml"
-      category: "identity"
     - path: "identity/speaking-and-community.yaml"
       category: "identity"
     - path: "personal/about-me.md"
@@ -121,20 +117,26 @@ files:
       category: "personal"
     - path: "personal/preferences.yaml"
       category: "personal"
-    - path: "personal/career-narrative.md"
-      category: "personal"
     - path: "personal/reflections.md"
       category: "personal"
     - path: "personal/form-fill-cheatsheet.md"
       category: "personal"
-    - path: "stories/star-stories.md"
-      category: "stories"
-    - path: "stories/testimonials.md"
-      category: "stories"
-    - path: "stories/interview-prep/behavioral.md"
-      category: "stories"
-    - path: "stories/interview-prep/technical.md"
-      category: "stories"
+    - path: "personal/references.yaml"
+      category: "personal"
+    - path: "positioning/professional-summary.md"
+      category: "positioning"
+    - path: "positioning/career-narrative.md"
+      category: "positioning"
+    - path: "positioning/github-profile.md"
+      category: "positioning"
+    - path: "positioning/star-stories.md"
+      category: "positioning"
+    - path: "positioning/testimonials.md"
+      category: "positioning"
+    - path: "positioning/interview-prep/behavioral.md"
+      category: "positioning"
+    - path: "positioning/interview-prep/technical.md"
+      category: "positioning"
     - path: "strategy/target-roles.md"
       category: "strategy"
     - path: "strategy/study-plan.md"
@@ -147,20 +149,20 @@ files:
       category: "strategy"
     - path: "strategy/offer-comparison.md"
       category: "strategy"
-    - path: "journal/wins.md"
-      category: "journal"
-    - path: "journal/learning-log.md"
-      category: "journal"
-    - path: "journal/feedback.md"
-      category: "journal"
-    - path: "ops/session-handoff.md"
-      category: "ops"
-    - path: "ops/guide.md"
-      category: "ops"
-    - path: "ops/authority-map.md"
-      category: "ops"
-    - path: "ops/prompts.md"
-      category: "ops"
+    - path: "records/wins.md"
+      category: "records"
+    - path: "records/learning-log.md"
+      category: "records"
+    - path: "records/feedback.md"
+      category: "records"
+    - path: ".pramedha/ops/session-handoff.md"
+      category: "system"
+    - path: ".pramedha/ops/guide.md"
+      category: "system"
+    - path: ".pramedha/ops/authority-map.md"
+      category: "system"
+    - path: ".pramedha/ops/prompts.md"
+      category: "system"
 
   generated:
     - path: "tools/resume/generated/*.yaml"

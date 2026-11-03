@@ -2,6 +2,29 @@
 
 All notable changes to the Pramedha Career Template.
 
+## [Unreleased] — Pure 5+1 Layer Architecture
+
+### Architecture
+- **Pure 5+1 Layer Model** — Adopted the five data layers (`identity/`, `personal/`, `strategy/`, `positioning/`, `records/`) plus one system layer (`.pramedha/`), replacing the prior four-layer structure.
+- **`stories/` → `positioning/`** — Renamed to reflect the layer's broader role: outward presentation, collateral, and interview preparation — not just STAR stories.
+- **`journal/` → `records/`** — Renamed to better describe chronological flight-recorder logs (wins, work-log, feedback, learning).
+- **`ops/` → `.pramedha/ops/`** — Moved system maintenance files under `.pramedha/`, consolidating all engine/system files in a single dotfolder and removing `ops/` from the user-visible top level.
+- **`identity/professional-summary.md` → `positioning/professional-summary.md`** — Reclassified elevator pitches as outward positioning collateral, not identity facts. Changed from REQUIRED to OPTIONAL in the validator.
+- **`personal/career-narrative.md` → `positioning/career-narrative.md`** — Reclassified the "walk me through your career" script as positioning collateral.
+- **`identity/references.yaml` → `personal/references.yaml`** — Moved confidential reference contacts into the private `personal/` layer where they belong.
+- **`positioning/github-profile.md`** — New template for GitHub profile README content.
+
+### Documentation
+- Updated all cross-references across 30+ files (README.md, GETTING_STARTED.md, VISION.md, ROADMAP.md, AGENTS.md, agent-instructions.md, schema-reference.md, authority-map.md, guide.md, prompts.md, session-handoff.md, CONTRIBUTING.md, and all content files).
+- Architecture tree in README.md fully rewritten to reflect new 5+1 layer layout.
+- VISION.md updated from "Four-Layer Architecture" to "Five-Layer Architecture".
+- Progressive Layers table reordered: Layer 2 is now `personal/` + `strategy/`, Layer 3 is `positioning/` + `records/`.
+
+### Engine
+- **`_profile.py` test helper** — `make_repo()` now creates parent directories for all FILES entries, supporting the new `positioning/` directory layout.
+- **`validate.py`** — All file path references updated; `professional-summary.md` is OPTIONAL.
+- **`update_template.py`** — Safety comment updated to reference `positioning/`, `records/` instead of `stories/`, `journal/`.
+
 ## [0.1.0] — 2026-10-30 (Audit Remediation & Cascade Hardening)
 
 ### Architecture, Safety & Integrity Hardening

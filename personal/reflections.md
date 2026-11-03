@@ -1,6 +1,6 @@
 # Reflections — Private Career Learning Journal
 
-> **Purpose:** The dark twin of `journal/wins.md`. Track what went wrong,
+> **Purpose:** The dark twin of `records/wins.md`. Track what went wrong,
 > what you learned from rejections, and your decision patterns.
 >
 > Maps to: PramedhaProfile.personal.learning_journal

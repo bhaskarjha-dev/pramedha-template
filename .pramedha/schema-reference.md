@@ -163,7 +163,7 @@ The bridge between raw identity facts and RenderCV resume generation operates as
 ---
 
 <a id="references"></a>
-## identity/references.yaml → PramedhaProfile.professional.references[]
+## personal/references.yaml → PramedhaProfile.professional.references[]
 
 | Template Field | Pramedha Field | Type |
 |---------------|---------------|------|

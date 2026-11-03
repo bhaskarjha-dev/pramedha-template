@@ -36,7 +36,7 @@ When facts conflict, trust sources in this order:
 ```
 1. Official document (certificate, offer letter, scorecard)        ← HIGHEST
 2. Dedicated screenshot / award record / email
-3. Detailed work log (journal/work-log/)
+3. Detailed work log (records/work-log/)
 4. Structured YAML (identity/)
 5. Older resume
 6. Brainstorming doc / freeform notes                              ← LOWEST

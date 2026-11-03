@@ -8,7 +8,7 @@ Usage (from the repository root, inside the virtual environment, after `git fetc
 
 It reads the `template_owned` list from the upstream copy of .pramedha/manifest.yaml and checks out
 exactly those paths from the upstream ref into your working tree and index. It never merges and never
-touches your data: identity/, personal/, strategy/, stories/, journal/, data-corpus/ files, config.yaml,
+touches your data: identity/, personal/, strategy/, positioning/, records/, data-corpus/ files, config.yaml,
 VISION.md, AGENTS.md, .gitignore, tools/resume/master.yaml, design.yaml or your variants. When the template
 changed AGENTS.md or .gitignore, it prints the command to compare them. Review the result with
 `git diff --staged`, then commit.

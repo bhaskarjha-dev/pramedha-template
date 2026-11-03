@@ -8,7 +8,7 @@
 >
 > **Note:** For routine tasks (add project, update skills, weekly maintenance, etc.),
 > you don't need a specific prompt — just describe what you want. The AI reads
-> `AGENTS.md` for routing and `ops/guide.md` for the event→file mapping.
+> `AGENTS.md` for routing and `.pramedha/ops/guide.md` for the event→file mapping.
 
 ---
 
@@ -56,8 +56,8 @@ Report: files filled, claims count, contradictions found, gaps remaining.
 TASK: Comprehensive audit of my pramedha-template career system.
 
 CONTEXT: Read these files FIRST before doing anything:
-- ops/guide.md (system rules, maintenance rituals)
-- ops/authority-map.md (what's truth for what)
+- .pramedha/ops/guide.md (system rules, maintenance rituals)
+- .pramedha/ops/authority-map.md (what's truth for what)
 - README.md (architecture overview)
 
 Then read ALL files in identity/ (and tools/resume/ if auditing on-demand resume readiness).
@@ -129,8 +129,8 @@ INTERVIEW STAGE: [Phone screen / Technical / System design / Behavioral / Final]
 CONTEXT: Read:
 - identity/experience.yaml (my full work history)
 - identity/skills.yaml (my skill levels)
-- stories/star-stories.md (behavioral stories)
-- stories/interview-prep/behavioral.md (questions for interviewer & talking points)
+- positioning/star-stories.md (behavioral stories)
+- positioning/interview-prep/behavioral.md (questions for interviewer & talking points)
 - strategy/target-roles.md (target role requirements and alignment)
 
 EXECUTE:
@@ -153,8 +153,8 @@ TASK: Perform a rapid health check and audit of my Pramedha repository.
 
 CONTEXT: Read:
 - AGENTS.md (system architecture & critical rules)
-- ops/authority-map.md (source-of-truth ownership)
-- ops/session-handoff.md (previous session context)
+- .pramedha/ops/authority-map.md (source-of-truth ownership)
+- .pramedha/ops/session-handoff.md (previous session context)
 
 EXECUTE:
 1. Run the core validator:

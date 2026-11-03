@@ -3,7 +3,7 @@
 > **Purpose:** Track every job application from initial discovery through screening, interviews, offer, and decision.
 >
 > **Cadence:** Review and update at least once weekly during active job search.
-> **Outreach Copy:** Generate follow-up and thank-you messages on demand from `identity/professional-summary.md`.
+> **Outreach Copy:** Generate follow-up and thank-you messages on demand from `positioning/professional-summary.md`.
 
 ---
 
@@ -28,8 +28,8 @@
 
 | Trigger | Action | Recommended Template |
 |---------|--------|----------------------|
-| **Day 7 after application** | Send polite inquiry to recruiter or connection | Generate from `identity/professional-summary.md` |
-| **Within 24h post-interview** | Send personalized thank-you note | Generate from `identity/professional-summary.md` |
+| **Day 7 after application** | Send polite inquiry to recruiter or connection | Generate from `positioning/professional-summary.md` |
+| **Within 24h post-interview** | Send personalized thank-you note | Generate from `positioning/professional-summary.md` |
 | **Day 14 (No response)** | Send second gentle status check; if silent, mark ⏸️ | Generate follow-up |
 | **Post-rejection** | Send graceful acknowledgment; ask for feedback | "Thank you for the update. If possible, I'd value any quick feedback..." |
 
@@ -80,7 +80,7 @@
 - [ ] **Financial runway:** ___ months of expenses covered (grounded in `strategy/financial.md`)
 - [ ] **Resume ready:** Yes / No (last updated: YYYY-MM in `tools/resume/master.yaml`)
 - [ ] **Network activated:** 3+ people I could call today (grounded in `strategy/networking.md`)
-- [ ] **Emergency references:** Listed in `identity/references.yaml`
+- [ ] **Emergency references:** Listed in `personal/references.yaml`
 - [ ] **Portfolio up to date:** `identity/` and resume data current
 - [ ] **Job search channels:** Know where to look (pipeline table set up above)
 

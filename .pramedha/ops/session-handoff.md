@@ -38,12 +38,12 @@ Brief 2-3 sentence overview of what was accomplished in this session.
 
 ### Artifacts Generated & Updated
 - Created: tools/resume/variants/A_Staff_Backend.yaml
-- Updated: stories/star-stories.md (added Story #4 on database migration)
+- Updated: positioning/star-stories.md (added Story #4 on database migration)
 - Rendered: tools/resume/output/A_Staff_Backend.pdf
 
 ### Next Session Priorities
-- [ ] Tailor cover letter for Target Company X (generate from identity/professional-summary.md)
-- [ ] Prepare for technical interview using stories/interview-prep/technical.md
+- [ ] Tailor cover letter for Target Company X (generate from positioning/professional-summary.md)
+- [ ] Prepare for technical interview using positioning/interview-prep/technical.md
 - [ ] Review claim debt items in identity/claims-and-evidence.md
 
 ===================================================================== -->

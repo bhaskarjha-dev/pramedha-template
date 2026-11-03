@@ -44,7 +44,7 @@
 **Challenges overcome:**
 -
 
-**Feedback received:** (see journal/feedback.md for detail)
+**Feedback received:** (see records/feedback.md for detail)
 -
 
 **Goals for next quarter:**

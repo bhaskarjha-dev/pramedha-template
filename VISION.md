@@ -30,18 +30,19 @@ This repository is the **command center** for that transition. It is not a resum
 
 ---
 
-## The Four-Layer Architecture
+## The Five-Layer Architecture
 
 ```
-IDENTITY (who I am)    → identity/*.yaml — verified facts, never inflated
-STORIES  (what I say)  → stories/*.md    — authored narratives for interviews
-STRATEGY (what to do)  → strategy/*.md   — plans, targets, decisions
-PERSONAL (who I am)    → personal/*.md   — private context, never shared
+IDENTITY    (who I am)    → identity/*.yaml    — verified facts, never inflated
+PERSONAL    (my context)  → personal/*.md      — private context, never shared
+STRATEGY    (what to do)  → strategy/*.md      — plans, targets, decisions
+POSITIONING (what I say)  → positioning/*.md   — authored narratives for interviews
+RECORDS     (what I did)  → records/*.md       — chronological logs & brag docs
 ```
 
 Plus: `tools/resume/` — optional cascade engine for deterministic PDF generation.
 
-Everything flows from identity → stories/strategy → tools.
+Everything flows from identity → positioning/strategy → tools.
 If facts change, the identity layer updates first, then everything downstream regenerates.
 
 ---

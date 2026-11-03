@@ -5,7 +5,7 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[2]
 DOCS = ['README.md', 'GETTING_STARTED.md', 'AGENTS.md', 'VISION.md', '.pramedha/agent-instructions.md',
-        'tools/resume/README.md', 'ops/guide.md', 'ops/prompts.md', 'ops/authority-map.md', '.github/CONTRIBUTING.md']
+        'tools/resume/README.md', '.pramedha/ops/guide.md', '.pramedha/ops/prompts.md', '.pramedha/ops/authority-map.md', '.github/CONTRIBUTING.md']
 CODE = ['tools/resume/sync.py', 'tools/resume/assemble.py', '.pramedha/validate.py', 'tools/resume/master.yaml',
         'tools/resume/build.sh', 'tools/resume/build.ps1']
 SETUP = ['python3 -m venv .venv', 'py -m venv .venv', 'source .venv/bin/activate', '.venv\\Scripts\\activate.bat',
@@ -48,7 +48,7 @@ def test_docs_show_the_virtual_environment_setup():
 def test_pdf_build_requires_python_3_12():
     for rel in ['GETTING_STARTED.md', 'tools/resume/build.sh']:
         assert 'Python 3.10+' not in text(rel), rel
-    for rel in ['GETTING_STARTED.md', 'ops/guide.md', 'tools/resume/build.sh']:
+    for rel in ['GETTING_STARTED.md', '.pramedha/ops/guide.md', 'tools/resume/build.sh']:
         assert 'Python 3.12' in text(rel), rel
 
 

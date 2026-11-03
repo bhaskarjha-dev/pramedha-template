@@ -24,13 +24,13 @@ Every file in this template falls into one of these categories:
 
 | Category | AI Can Auto-Fill? | Files |
 |----------|:-:|-------|
-| **Identity (truth)** | ✅ From data-corpus | experience.yaml, skills.yaml, credentials.yaml, projects.yaml, identity.yaml, volunteering.yaml, speaking-and-community.yaml, references.yaml, claims-and-evidence.md, professional-summary.md |
+| **Identity (truth)** | ✅ From data-corpus | experience.yaml, skills.yaml, credentials.yaml, projects.yaml, identity.yaml, volunteering.yaml, speaking-and-community.yaml, claims-and-evidence.md |
 | **Resume (Satellite - on demand)** | ✅ From identity | tools/resume/master.yaml, design.yaml, variants/*.yaml (via sync.py) |
-| **Stories (authored)** | ✅ From identity | star-stories.md, testimonials.md, interview-prep/behavioral.md, interview-prep/technical.md |
+| **Positioning (authored)** | ✅ From identity | professional-summary.md, career-narrative.md, star-stories.md, testimonials.md, interview-prep/behavioral.md, interview-prep/technical.md, github-profile.md |
 | **Strategy (needs user input)** | ⚠️ Draft from context | target-roles.md, study-plan.md, financial.md, job-tracker.md, offer-comparison.md, networking.md |
-| **Personal (needs user input)** | ⚠️ Draft from text/ | about-me.md, career-narrative.md, life-goals.md, preferences.yaml, reflections.md, form-fill-cheatsheet.md |
-| **Journal (real-time only)** | ❌ User fills over time | wins.md, learning-log.md, feedback.md, work-log/*.md |
-| **Ops (don't fill)** | ❌ System files | guide.md, authority-map.md, prompts.md, session-handoff.md |
+| **Personal (needs user input)** | ⚠️ Draft from text/ | about-me.md, life-goals.md, preferences.yaml, reflections.md, form-fill-cheatsheet.md, references.yaml |
+| **Records (real-time only)** | ❌ User fills over time | wins.md, learning-log.md, feedback.md, work-log/*.md |
+| **Ops (don't fill)** | ❌ System files | .pramedha/ops/guide.md, authority-map.md, prompts.md, session-handoff.md |
 | **Config** | ⚠️ User fills basics, AI enriches | config.yaml, VISION.md |
 
 ---
@@ -138,7 +138,7 @@ This is the most important file. For each employer:
 - Items tagged `[estimated]` or `[to-verify]` will become Claim Debt in identity/claims-and-evidence.md
 - Log any contradictions found between sources
 
-#### Step 10: Fill identity/professional-summary.md
+#### Step 10: Fill positioning/professional-summary.md
 - Write 3-5 summary variants based on the filled profile
 - Tailor to the user's target roles (from config.yaml or strategy/)
 - Keep factual — every claim in the summary must exist in experience.yaml
@@ -188,17 +188,17 @@ This is the most important file. For each employer:
 
 ### Phase D: Stories & Interview Prep (Steps 14-16) — Authored Narratives
 
-#### Step 14: Generate stories/star-stories.md
+#### Step 14: Generate positioning/star-stories.md
 - Extract 5-8 stories from experience.yaml bullets
 - Structure each using STAR format: Situation, Task, Action, Result
 - Map to competency categories (leadership, problem-solving, collaboration, etc.)
 - Every story must reference a verified claim
 
-#### Step 15: Generate stories/testimonials.md
+#### Step 15: Generate positioning/testimonials.md
 - Extract performance review quotes, LinkedIn recommendations, peer feedback, and client praise from `data-corpus/`.
 - Tag each entry with attribution, relationship context, and verification status.
 
-#### Step 16: Generate stories/interview-prep/ (behavioral.md & technical.md)
+#### Step 16: Generate positioning/interview-prep/ (behavioral.md & technical.md)
 - **behavioral.md**: Map STAR stories from star-stories.md to common behavioral questions, leadership principles (e.g. Amazon LP, ownership, conflict resolution), and situational frameworks. Ensure each target role has at least 3 matching stories.
 - **technical.md**: Extract core technical competencies from skills.yaml (advanced/expert level); list likely interview topics per target role and add system design topics if applicable. Cross-reference with study-plan.md for gap awareness.
 
@@ -245,8 +245,8 @@ This is the most important file. For each employer:
 > ⚠️ Fill ONLY from `data-corpus/text/` freeform data. Never infer personal
 > information. If no personal context exists, leave these empty.
 
-#### Step 22: Draft personal/career-narrative.md, then personal/about-me.md
-- **First, Draft `personal/career-narrative.md`:**
+#### Step 22: Draft positioning/career-narrative.md, then personal/about-me.md
+- **First, Draft `positioning/career-narrative.md`:**
   - Write "walk me through your career" transition arcs in 3 lengths (30s elevator pitch, 2min interview standard, 5min deep dive).
   - Ground every transition strictly in verified facts from `identity/experience.yaml`.
 - **Second, Draft `personal/about-me.md`:**
@@ -289,7 +289,7 @@ Report:
 - Claims verified vs. unverified
 - Contradictions found
 - Items needing user input
-- Update `ops/session-handoff.md` with complete session summary (phases executed, key user decisions discovered, data gaps resolved, contradictions found, and artifacts created)
+- Update `.pramedha/ops/session-handoff.md` with complete session summary (phases executed, key user decisions discovered, data gaps resolved, contradictions found, and artifacts created)
 
 ---
 
@@ -299,11 +299,11 @@ These are system files, templates, or real-time documents:
 
 | File | Why AI Doesn't Fill It |
 |------|----------------------|
-| ops/* | System rules — they're already complete |
-| journal/wins.md | Real-time — user logs as events happen |
-| journal/work-log/* | Real-time — weekly logs |
-| journal/learning-log.md | Real-time — courses as completed |
-| journal/feedback.md | Real-time — reviews as received |
+| .pramedha/ops/* | System rules — they're already complete |
+| records/wins.md | Real-time — user logs as events happen |
+| records/work-log/* | Real-time — weekly logs |
+| records/learning-log.md | Real-time — courses as completed |
+| records/feedback.md | Real-time — reviews as received |
 | personal/reflections.md | Real-time — rejection learning as it happens |
 | strategy/job-tracker.md | Real-time — applications as sent |
 | strategy/offer-comparison.md | Real-time — offers as received |
@@ -326,7 +326,7 @@ These are system files, templates, or real-time documents:
 7. **Mark AI drafts.** Any AI-generated content the user hasn't confirmed gets:
    `<!-- AI-DRAFTED — Review and confirm -->`
 8. **Respect privacy layers:**
-   - identity/ → private facts; only what appears on a generated resume is public. identity/identity.yaml (date of birth, nationality, visa) and identity/references.yaml never leave the repository
+   - identity/ → private facts; only what appears on a generated resume is public. identity/identity.yaml (date of birth, nationality, visa) and personal/references.yaml never leave the repository
    - personal/ → private (never on resume, never shared)
    - data-corpus/ → raw evidence (never shared externally)
 
@@ -348,13 +348,13 @@ If the template is **already partially filled**, adapt the protocol:
 | Task | What to do |
 |------|-----------|
 | "Add a new project" | Update identity/projects.yaml + experience.yaml + claims register (master.yaml synced on demand via sync.py) |
-| "Add a new achievement" | Update experience.yaml + journal/wins.md + claims register (master.yaml synced on demand via sync.py) |
+| "Add a new achievement" | Update experience.yaml + records/wins.md + claims register (master.yaml synced on demand via sync.py) |
 | "Update skills" | Update identity/skills.yaml + claims register (master.yaml synced on demand via sync.py) |
 | "Create resume variant" | Read tools/resume/master.yaml, create tools/resume/variants/[name].yaml |
-| "Prep for interview" | Read identity/ + stories/star-stories.md, generate prep doc |
+| "Prep for interview" | Read identity/ + positioning/star-stories.md, generate prep doc |
 | "Fill everything from data-corpus" | Run Phase A → G in order |
 
-See `ops/prompts.md` for ready-to-paste prompts for key tasks (initial fill, audit, resume tailoring, interview prep).
+See `.pramedha/ops/prompts.md` for ready-to-paste prompts for key tasks (initial fill, audit, resume tailoring, interview prep).
 
 ---
 

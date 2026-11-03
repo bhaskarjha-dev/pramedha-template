@@ -28,7 +28,7 @@ def test_no_false_privacy_statements():
 def test_sensitivity_map_marks_private_files():
     rows = text('README.md').splitlines()
     for rel in ('identity/identity.yaml', 'strategy/job-tracker.md', 'strategy/offer-comparison.md',
-                'ops/session-handoff.md'):
+                '.pramedha/ops/session-handoff.md'):
         assert any(r.startswith(f'| `{rel}`') and 'Never' in r for r in rows), rel
 
 

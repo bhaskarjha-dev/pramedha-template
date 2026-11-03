@@ -17,12 +17,12 @@
 | **Education, certs, awards, orgs** | `identity/credentials.yaml` | Old CVs |
 | **Speaking, hackathons, events, communities** | `identity/speaking-and-community.yaml` | LinkedIn posts, event photos |
 | **Volunteering / OSS** | `identity/volunteering.yaml` | Informal mentions |
-| **References** | `identity/references.yaml` | Old reference lists |
+| **References** | `personal/references.yaml` | Old reference lists |
 | **Claims verification & debt** | `identity/claims-and-evidence.md` | Resume bullets themselves |
-| **Professional summary** | `identity/professional-summary.md` | Old LinkedIn about |
-| **Behavioral STAR story bank** | `stories/star-stories.md` | Memory, improvised interview answers |
-| **Interview prep & talk tracks** | `stories/interview-prep/behavioral.md`, `stories/interview-prep/technical.md` | Ad-hoc prep sheets, generic online lists |
-| **Social proof & endorsements** | `stories/testimonials.md` | Scattered recommendation letters |
+| **Professional summary** | `positioning/professional-summary.md` | Old LinkedIn about |
+| **Behavioral STAR story bank** | `positioning/star-stories.md` | Memory, improvised interview answers |
+| **Interview prep & talk tracks** | `positioning/interview-prep/behavioral.md`, `positioning/interview-prep/technical.md` | Ad-hoc prep sheets, generic online lists |
+| **Social proof & endorsements** | `positioning/testimonials.md` | Scattered recommendation letters |
 | **Resume bullets & phrasings** | `tools/resume/master.yaml` (satellite pool, forward-projected from `identity/` via `sync.py`) | Generated files, old YAMLs |
 | **Resume design (base)** | `tools/resume/design.yaml` | Ad-hoc edits in generated files |
 | **Variant selection & design overrides** | `tools/resume/variants/*.yaml` | Manually curated files |
@@ -36,16 +36,16 @@
 | **Work preferences & life context** | `personal/preferences.yaml` | Assumptions |
 | **Personal narrative & core identity** | `personal/about-me.md` | Public marketing copy |
 | **Long-term life & personal vision** | `personal/life-goals.md` | Short-term task lists |
-| **Career narrative & pivots** | `personal/career-narrative.md` | Scattered cover letters |
+| **Career narrative & pivots** | `positioning/career-narrative.md` | Scattered cover letters |
 | **Private reflections & notes** | `personal/reflections.md` | Scattered journals |
 | **Form-fill answers** | `personal/form-fill-cheatsheet.md` | Memory, old applications |
-| **Shipped wins & achievements log** | `journal/wins.md` | Memory during annual reviews |
-| **Course & learning log** | `journal/learning-log.md` | Forgotten course history |
-| **Performance reviews & feedback** | `journal/feedback.md` | Scattered 1:1 notes |
-| **Weekly work logs** | `journal/work-log/*.md` | Vague timesheets |
+| **Shipped wins & achievements log** | `records/wins.md` | Memory during annual reviews |
+| **Course & learning log** | `records/learning-log.md` | Forgotten course history |
+| **Performance reviews & feedback** | `records/feedback.md` | Scattered 1:1 notes |
+| **Weekly work logs** | `records/work-log/*.md` | Vague timesheets |
 | **Career mission** | `VISION.md` | Old plans, brainstorm docs |
-| **Session context & handoff** | `ops/session-handoff.md` | Old conversation transcripts |
-| **Operations, maintenance & audit** | `ops/guide.md` | Ad-hoc maintenance notes |
+| **Session context & handoff** | `.pramedha/ops/session-handoff.md` | Old conversation transcripts |
+| **Operations, maintenance & audit** | `.pramedha/ops/guide.md` | Ad-hoc maintenance notes |
 | **Sub-project registry** | `VISION.md` (Sub-Projects section) | Scattered project folders |
 
 ---
@@ -55,7 +55,7 @@
 ```
 1. Official document (cert, offer letter, scorecard)     ← HIGHEST
 2. Screenshot / award record / email
-3. Detailed work log (journal/work-log/)
+3. Detailed work log (records/work-log/)
 4. Structured YAML (identity/)
 5. Older resume
 6. Brainstorming doc / freeform notes                    ← LOWEST
@@ -70,7 +70,7 @@ data-corpus/ (raw evidence)
      ↓ AI extraction / manual logging
 identity/ (core structured truth)
      │
-     ├── stories/ (narratives & interview prep)
+     ├── positioning/ (outward collateral & interview prep)
      ├── strategy/ (planning & tracking)
      │
      └── [On-Demand Satellite] python tools/resume/sync.py

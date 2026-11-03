@@ -106,7 +106,7 @@
 
 ---
 
-## References (Quick Copy — see identity/references.yaml for detail)
+## References (Quick Copy — see personal/references.yaml for detail)
 
 | Name | Title | Company | Phone | Email |
 |------|-------|---------|-------|-------|
