@@ -611,6 +611,7 @@ def sync_publications(id_data: dict, master_data: dict, force: bool = False):
         master_pubs = []
 
     stats = {'added': 0, 'updated': 0, 'skipped': 0}
+    statuses = {}
 
     for item in pubs_list:
         if not isinstance(item, dict):
@@ -619,6 +620,7 @@ def sync_publications(id_data: dict, master_data: dict, force: bool = False):
         if not title:
             stats['skipped'] += 1
             continue
+        statuses[title.lower()] = as_text(item.get('verification'))
 
         existing_idx = None
         for idx, p in enumerate(master_pubs):
@@ -669,6 +671,11 @@ def sync_publications(id_data: dict, master_data: dict, force: bool = False):
             if updated_any:
                 stats['updated'] += 1
 
+    for p in master_pubs:
+        if isinstance(p, dict) and as_text(p.get('title')).lower() in statuses:
+            if carry_status(p, statuses[as_text(p.get('title')).lower()]):
+                stats['updated'] += 1
+
     master_data['publications'] = master_pubs
     return stats
 
@@ -683,6 +690,7 @@ def sync_skills(id_data: dict, master_data: dict, force: bool = False):
         master_tech = []
 
     stats = {'added': 0, 'updated': 0, 'skipped': 0}
+    statuses = {}
     if not isinstance(id_data, dict):
         return stats
 
@@ -691,11 +699,14 @@ def sync_skills(id_data: dict, master_data: dict, force: bool = False):
             continue
 
         skill_names = []
+        skill_statuses = {}
         for s in skills:
             if isinstance(s, dict):
                 name = as_text(s.get('name'))
                 if name:
                     skill_names.append(name)
+                    if as_text(s.get('verification')):
+                        skill_statuses[name] = as_text(s.get('verification'))
             elif isinstance(s, str) and s.strip():
                 skill_names.append(s.strip())
 
@@ -704,6 +715,7 @@ def sync_skills(id_data: dict, master_data: dict, force: bool = False):
             continue
 
         cat_label = cat_name.replace('_', ' ').title()
+        statuses[cat_label.lower()] = skill_statuses or ''
         details_str = ", ".join(skill_names)
 
         # Check if category label already exists in master technologies
@@ -723,6 +735,11 @@ def sync_skills(id_data: dict, master_data: dict, force: bool = False):
                 'details': details_str
             })
             stats['added'] += 1
+
+    for entry in master_tech:
+        if isinstance(entry, dict) and as_text(entry.get('label')).lower() in statuses:
+            if carry_status(entry, statuses[as_text(entry.get('label')).lower()]):
+                stats['updated'] += 1
 
     master_data['technologies'] = master_tech
     return stats

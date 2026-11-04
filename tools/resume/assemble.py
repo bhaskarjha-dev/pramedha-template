@@ -570,6 +570,11 @@ def assemble_variant(master: dict, design: dict, variant: dict, config: dict = N
     elif 'publications' in master and master.get('publications') and variant.get('include_publications', False):
         sections['publications'] = copy.deepcopy(master['publications'])
 
+    for section in ('technologies', 'education', 'publications'):
+        if sections.get(section):
+            sections[section] = [{k: v for k, v in e.items() if not str(k).startswith('_')}
+                                 if isinstance(e, dict) else e for e in sections[section]]
+
     # Section ordering: variant can specify custom section_order, else default sequence
     default_order = ['summary', 'experience', 'projects', 'technologies', 'education', 'achievements', 'publications']
     custom_order = variant.get('section_order')
@@ -703,6 +708,11 @@ def project_key(ref) -> str:
     return ''
 
 
+def _comma_items(text) -> str:
+    """A comma-separated list with the spacing around each comma normalised ('A ,B' -> 'A, B')."""
+    return ', '.join(part.strip() for part in str(text or '').split(','))
+
+
 def selected_claims(master: dict, variant: dict):
     """Yield (label, raw text, status) for every claim a variant puts on the resume, before tags are stripped.
     status is the bullet's `_verification` (copied by sync.py from identity/), or ''."""
@@ -740,6 +750,40 @@ def selected_claims(master: dict, variant: dict):
                 label = f"education {entry.get('degree') or ''} {entry.get('institution') or ''}".rstrip()
                 shown = {k: v for k, v in entry.items() if not str(k).startswith('_')}
                 yield label, _all_text(shown), str(entry.get('_verification') or '')
+    techs = master.get('technologies') if variant.get('technologies') is None else variant.get('technologies')
+    if isinstance(techs, list) and (custom_order is None or 'technologies' in custom_order):
+        known = {}
+        for entry in (master.get('technologies') or []):
+            if isinstance(entry, dict) and isinstance(entry.get('_verification'), dict):
+                known.update(entry['_verification'])
+        for entry in techs:
+            if not isinstance(entry, dict):
+                continue
+            statuses = entry.get('_verification') if isinstance(entry.get('_verification'), dict) else known
+            listed = f", {_comma_items(entry.get('details'))},".lower()
+            shown = [s for s in statuses if f", {_comma_items(s)},".lower() in listed]
+            unverified = [s for s in shown if STATUS_UNVERIFIED_RE.search(str(statuses.get(s) or ''))]
+            estimated = [s for s in shown if s not in unverified
+                         and STATUS_ESTIMATED_RE.search(str(statuses.get(s) or ''))]
+            for names, status in ((unverified, '❌ UNVERIFIED'), (estimated, '⚠️ ESTIMATED')):
+                if names:
+                    yield f"skills {', '.join(names)} ({entry.get('label')})", ', '.join(names), status
+    pubs = variant.get('publications')
+    if pubs and isinstance(pubs, list):
+        chosen = pubs
+    elif pubs is True or (not pubs and variant.get('include_publications', False)):
+        chosen = master.get('publications') or []
+    else:
+        chosen = []
+    if custom_order is None or 'publications' in custom_order:
+        by_title = {str(p.get('title') or '').strip().lower(): str(p.get('_verification') or '')
+                    for p in (master.get('publications') or []) if isinstance(p, dict)}
+        for entry in chosen:
+            if isinstance(entry, dict):
+                title = str(entry.get('title') or '').strip()
+                shown = {k: v for k, v in entry.items() if not str(k).startswith('_')}
+                yield (f"publication {title}".rstrip(), _all_text(shown),
+                       str(entry.get('_verification') or by_title.get(title.lower(), '')))
     if variant.get('summary'):
         yield 'summary', str(variant['summary']), ''
 

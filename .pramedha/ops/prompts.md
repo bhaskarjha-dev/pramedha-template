@@ -198,7 +198,7 @@ EXECUTE:
    - cv: (name, location, email, phone, website, social_networks)
    - sections: (summary, experience, education, projects, skills/technologies, achievements)
    - design: (theme, font, colors, margins)
-3. Leave out every bullet, highlight, achievement or degree marked ❌, [unverified] or [to-verify] (in any phrasing, or in the verification field of its own identity entry or of its role, project or deliverable); list the ⚠️ estimated ones you kept.
+3. Leave out every bullet, highlight, achievement, degree, skill or publication marked ❌, [unverified] or [to-verify] (in any phrasing, or in the verification field of its own identity entry or of its role, project or deliverable); list the ⚠️ estimated ones you kept. Copy no key that starts with `_` (such as `_verification` or `_source`); they are private build data.
 4. Output the complete YAML document in a single copyable code block.
 
 USAGE: Copy the generated YAML and paste it directly into https://rendercv.com for instant visual PDF rendering and download.
