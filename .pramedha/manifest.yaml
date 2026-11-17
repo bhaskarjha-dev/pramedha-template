@@ -63,6 +63,22 @@ template_owned:
   - tools/resume/variants/_template.yaml
   - tools/update_template.py
 
+# Paths the template has moved, oldest first. When a copy still has an old path, tools/update_template.py
+# prints the `git mv` command that moves it; it never moves your files itself.
+moved:
+  stories: positioning
+  journal: records
+  ops/session-handoff.md: .pramedha/ops/session-handoff.md
+  identity/professional-summary.md: positioning/professional-summary.md
+  personal/career-narrative.md: positioning/career-narrative.md
+  identity/references.yaml: personal/references.yaml
+
+# Template files the template no longer ships. tools/update_template.py prints the `git rm` command for each.
+retired:
+  - ops/guide.md
+  - ops/prompts.md
+  - ops/authority-map.md
+
 # File registry — which files are required, optional, or generated
 files:
   required:

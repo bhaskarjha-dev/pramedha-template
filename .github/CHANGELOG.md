@@ -2,7 +2,7 @@
 
 All notable changes to the Pramedha Career Template.
 
-## [Unreleased] — Pure 5+1 Layer Architecture
+## [0.1.0] — 2026-11-16 (Pure 5+1 Layer Architecture & Audit Hardening)
 
 ### Architecture
 - **Pure 5+1 Layer Model** — Adopted the five data layers (`identity/`, `personal/`, `strategy/`, `positioning/`, `records/`) plus one system layer (`.pramedha/`), replacing the prior four-layer structure.
@@ -13,6 +13,7 @@ All notable changes to the Pramedha Career Template.
 - **`personal/career-narrative.md` → `positioning/career-narrative.md`** — Reclassified the "walk me through your career" script as positioning collateral.
 - **`identity/references.yaml` → `personal/references.yaml`** — Moved confidential reference contacts into the private `personal/` layer where they belong.
 - **`positioning/github-profile.md`** — New template for GitHub profile README content.
+- **Copies made before this layout** — `tools/update_template.py` prints the `git mv` and `git rm` commands that move your files to the new folders (from `moved` and `retired` in `.pramedha/manifest.yaml`). It never moves them itself. Copies made before v0.1.0 first fetch the current script (README → Staying Updated).
 
 ### Lifecycle & Schema
 - **Phase Reordering (`.pramedha/agent-instructions.md`)** — Fixed circular dependency where resume variants and STAR stories were generated before target roles were defined. New phase order follows the strict dependency chain: Identity → Personal (Preferences) → Strategy (Target Roles) → Positioning (Calibrated Narratives) → Resume (On-Demand Satellite). Phases renumbered A–H with Steps 0–29.
@@ -31,11 +32,9 @@ All notable changes to the Pramedha Career Template.
 ### Engine
 - **`_profile.py` test helper** — `make_repo()` now creates parent directories for all FILES entries, supporting the new `positioning/` directory layout.
 - **`validate.py`** — All file path references updated; `professional-summary.md` is OPTIONAL.
-- **`update_template.py`** — Safety comment updated to reference `positioning/`, `records/` instead of `stories/`, `journal/`.
+- **`update_template.py`** — Safety comment updated to reference `positioning/`, `records/` instead of `stories/`, `journal/`; added manifest-driven `moved`/`retired` layout migration guidance.
 
-## [0.1.0] — 2026-10-30 (Audit Remediation & Cascade Hardening)
-
-### Architecture, Safety & Integrity Hardening
+### Safety & Integrity Hardening
 - **Variant Section Omission & Whitelist Ordering (`tools/resume/assemble.py`)** — Fixed section omission logic so specifying `section_order` in a variant acts as an intentional whitelist, cleanly omitting unlisted sections rather than re-appending them. Fixed `technologies: []` and `education: []` to allow explicit section suppression instead of falling back to `master.yaml`.
 - **Variant Template Scaffolding Alignment (`tools/resume/variants/_template.yaml`, `tools/resume/jd/_template.yaml`)** — Commented out `# technologies: []` in variant scaffolding templates, aligning with `# education: []` so new variants cleanly inherit master technologies by default while enabling intentional override or suppression.
 - **Year-Only Date Chronology Resolution (`.pramedha/validate.py`)** — Upgraded `parse_flexible_date()` with `is_end_date` context, resolving year-only end dates (`YYYY`) to month 12 for chronology checks and eliminating false warnings when start dates contain explicit months (e.g., `2024-05` to `2024`).

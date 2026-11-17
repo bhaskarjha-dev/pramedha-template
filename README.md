@@ -345,7 +345,7 @@ the update script. It replaces only the files the template owns (the `template_o
 # Once:
 git remote add upstream https://github.com/bhaskarjha-dev/pramedha-template.git
 
-# Once, if your copy has no tools/update_template.py yet (copies made before this update):
+# Once, if your copy was made before v0.1.0 (no tools/update_template.py, or an older one):
 git fetch upstream
 git checkout upstream/main -- tools/update_template.py tools/resume/requirements.txt
 git commit -m "Add template update script"
@@ -357,6 +357,8 @@ python tools/update_template.py              # replace template-owned files
 git diff --staged                            # review, then commit
 git commit -m "Update template files"
 ```
+
+When the template has moved files since your copy was made, the script also prints the `git mv` and `git rm` commands that bring your copy to the new layout. Run them, commit, and merge `AGENTS.md`.
 
 Don't merge the template's branch into your repository: the histories are unrelated, and a merge either
 keeps your old template files or replaces your filled data with empty templates.

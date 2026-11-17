@@ -253,7 +253,7 @@ bug fixes, schema improvements):
 # One-time: add the template as upstream
 git remote add upstream https://github.com/bhaskarjha-dev/pramedha-template.git
 
-# One-time, if your copy has no tools/update_template.py yet (copies made before this update):
+# One-time, if your copy was made before v0.1.0 (no tools/update_template.py, or an older one):
 git fetch upstream
 git checkout upstream/main -- tools/update_template.py tools/resume/requirements.txt
 git commit -m "Add template update script"

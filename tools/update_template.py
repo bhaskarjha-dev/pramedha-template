@@ -34,6 +34,46 @@ def git(*args, check=True):
     return proc
 
 
+def layout_steps(manifest: dict):
+    """Commands that bring a copy made before a template restructure to the template's layout.
+
+    `moved` in the upstream manifest maps old git-tracked paths to new ones; `retired` lists
+    git-tracked template files the template no longer ships. Single-level parent folders are
+    created when missing; nested targets must live under a `template_owned` folder or a folder
+    moved earlier in `moved`. Returns (commands, conflicts). Moves nothing itself.
+    """
+    commands, conflicts, made = [], [], set()
+    for old, new in (manifest.get('moved') or {}).items():
+        old, new = str(old), str(new)
+        if not Path(old).exists():
+            continue
+        if Path(new).exists():
+            conflicts.append(f"{old} and {new} both exist: move your content from {old} into {new} by hand")
+            continue
+        parent = new.rsplit('/', 1)[0] if '/' in new else ''
+        if parent and '/' not in parent and not Path(parent).exists() and parent not in made:
+            commands.append(f"mkdir {parent}")
+            made.add(parent)
+        commands.append(f"git mv {old} {new}")
+        made.add(new)
+    for old in (manifest.get('retired') or []):
+        if Path(str(old)).exists():
+            commands.append(f"git rm -q {old}")
+    return commands, conflicts
+
+
+def print_layout_steps(manifest: dict, dry_run: bool = False):
+    commands, conflicts = layout_steps(manifest)
+    for conflict in conflicts:
+        print(conflict)
+    if commands:
+        lead = "After updating, run" if dry_run else "Run"
+        print("The template moved or retired files since your copy was made. "
+              f"{lead} these to match its layout (file contents don't change), then commit and merge AGENTS.md:")
+        for command in commands:
+            print(f"  {command}")
+
+
 def main():
     parser = argparse.ArgumentParser(description='Update template-owned files from the upstream template.')
     parser.add_argument('--ref', default='upstream/main', help='upstream ref to update from (default: upstream/main)')
@@ -67,12 +107,14 @@ def main():
     if args.dry_run:
         print(git('diff', '--stat', '--no-renames', '--diff-filter=AM', 'HEAD', args.ref, '--', *paths).stdout
               or 'No changes.')
+        print_layout_steps(manifest, dry_run=True)
         return
     git('checkout', args.ref, '--', *paths)
     print(git('status', '--short', '--', *paths).stdout or 'Already up to date.')
     for mixed in MIXED_FILES:
         if git('diff', '--quiet', 'HEAD', args.ref, '--', mixed, check=False).returncode == 1:
             print(f"{mixed} differs from the template; merge template changes by hand: git diff HEAD {args.ref} -- {mixed}")
+    print_layout_steps(manifest)
     print("Review with: git diff --staged    then commit.")
 
 
